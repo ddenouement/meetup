@@ -1,6 +1,27 @@
-image: maven:latest
+stages:
+  - build
+  - test
+  - deploy
 
-test:
-  stage: test
+maven-build:
+  image: maven:3-jdk-8
+  stage: build
   script:
-    - mvn test
+    - mvn package -B
+    - mvn clean install
+
+maven-test:
+  image: maven:3-jdk-8
+  stage: test
+  script: "mvn test -B"
+
+deploy:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=fierce-depths-70875 --api-key=d6745144-16bd-43c4-b778-e65dacfe2490
+  only:
+    - master
