@@ -6,12 +6,36 @@ public class Listener {
     private String password;
     private int listener_id;
 
-    public int getListener_id(){return this.listener_id;}
-    public String getPassword(){return this.password;}
-    public String getEmail(){return this.email;}
-    public String getLogin(){return this.login;}
-    public void setLogin(String a) {this.login=a;}
-    public void setEmail(String a) {this.email=a;}
-    public void setPassword(String a) {this.password=a;}
-    public void setId(int a) {this.listener_id=a;}
+    public int getListener_id() {
+        return listener_id;
+    }
+
+    public void setListener_id(int listener_id) {
+        this.listener_id = listener_id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }
+

@@ -8,7 +8,7 @@ spring:
     password: QCwd3DcEysPt0euG0gTZyVGbJ6sEGcbP
     username: cpoomlzp
     continue-on-error: false
-    schema: classpath:Schema.sql
+    schema: classpath:sql/Schema.sql
     initialization-mode: never
 
 server:

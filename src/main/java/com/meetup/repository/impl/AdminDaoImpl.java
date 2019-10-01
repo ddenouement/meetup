@@ -1,7 +1,10 @@
-package com.meetup.repository;
+package com.meetup.repository.impl;
 
 import com.meetup.entities.Admin;
+import com.meetup.repository.IAdminDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,7 +14,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 @Repository
-public class ImplAdminDAO implements IAdminDAO {
+
+@PropertySource("classpath:sql/user_queries.properties")
+public class AdminDaoImpl implements IAdminDAO {
     @Autowired
     DataSource dataSource;
     @Autowired
@@ -23,15 +28,18 @@ public class ImplAdminDAO implements IAdminDAO {
     public void setDataSource(DataSource d) {
         this.dataSource = d;
     }
+    @Value("${get_all_users}")
+    private String GET_ALL_USERS;
 
+    @Value("${insert_new_user}")
+    private String INSERT_NEW_USER;
 
     @Override
     public void insertAdmin(Admin emp) {
-        final String sql = "insert into users(userLogin, userEmail , userPassword) values(?,?,?)";
-        Connection conn = null;
+         Connection conn = null;
         try {
             conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(INSERT_NEW_USER);
             ps.setString(1, emp.getLogin());
             ps.setString(2, emp.getEmail());
             ps.setString(3, emp.getPassword());
@@ -53,7 +61,7 @@ public class ImplAdminDAO implements IAdminDAO {
 
     @Override
     public List<Admin> getAllAdmins() {
-        String query = "select userLogin, userEmail, userPassword from users";
+
 
         List<Admin> empList = new ArrayList<Admin>();
         Connection con = null;
@@ -61,7 +69,7 @@ public class ImplAdminDAO implements IAdminDAO {
         ResultSet rs = null;
         try{
             con = dataSource.getConnection();
-            ps = con.prepareStatement(query);
+            ps = con.prepareStatement(GET_ALL_USERS);
             rs = ps.executeQuery();
             while(rs.next()){
                 Admin e = new Admin();

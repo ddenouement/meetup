@@ -5,10 +5,27 @@ public class Admin {
     private String email;
     private String password;
 
-    public String getPassword(){return this.password;}
-    public String getEmail(){return this.email;}
-    public String getLogin(){return this.login;}
-    public void setLogin(String a) {this.login=a;}
-    public void setEmail(String a) {this.email=a;}
-    public void setPassword(String a) {this.password=a;}
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

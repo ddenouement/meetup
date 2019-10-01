@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS speakers;
 CREATE TABLE users
 ( userLogin varchar(100) NOT NULL,
 
-  userEmail varchar(30) UNIQUE NOT NULL,
+  userEmail varchar(50) UNIQUE NOT NULL,
 
   userPassword varchar(30) NOT NULL,
 
