@@ -3,6 +3,13 @@ spring:
     active: production
   application:
     name: MeetUp
+  datasource:
+    url: jdbc:postgresql://salt.db.elephantsql.com/cpoomlzp
+    password: QCwd3DcEysPt0euG0gTZyVGbJ6sEGcbP
+    username: cpoomlzp
+    continue-on-error: false
+    schema: classpath:Schema.sql
+    initialization-mode: never
 
 server:
   port: ${PORT:9990}

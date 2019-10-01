@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <h1> {{ text }}</h1>\n  <button (click)=\"foo()\"></button>\n</div>\n<router-outlet></router-outlet>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\r\n  <h1> {{ text }}</h1>\r\n  <button (click)=\"foo()\"></button>\r\n</div>\r\n<router-outlet></router-outlet>\r\n");
 
 /***/ }),
 
@@ -448,7 +448,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_2__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/dmytrozubko/Desktop/nc-autumn-2019/frontend/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! D:\NBprojects\nc-autumn-2019\frontend\src\main.ts */"./src/main.ts");
 
 
 /***/ })
