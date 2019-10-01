@@ -1,1 +1,1 @@
-web: java -jar target/meetup-0.0.1-SNAPSHOT.jar
+web: java -jar target/meetup-0.1-SNAPSHOT.jar

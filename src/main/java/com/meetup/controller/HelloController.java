@@ -13,8 +13,18 @@ public class HelloController {
 
     @RequestMapping(value="/hello", method=GET)
     @ResponseBody
-    public String foo() {
-        return "{\"a\": \"b\"}";
+    public Client foo() {
+        return new Client("foo", "bar");
     }
 
+}
+
+class Client {
+    public String login;
+    public String password;
+
+    public Client(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
 }

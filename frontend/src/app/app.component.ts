@@ -13,7 +13,15 @@ export class AppComponent {
 
   public foo(): void {
     this.httpClient
-      .get("http://localhost:9990/hello")
-      .subscribe(_ => this.text += _["a"]);
+      .get<Client>("/hello")
+      .subscribe(z => this.text =  z.login);
+  }
+}
+
+class Client {
+  public login: string;
+  public password: string;
+  public fullCreds() : string {
+    return `${this.login} - ${this.password}`;
   }
 }
