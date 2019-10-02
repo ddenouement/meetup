@@ -24,6 +24,7 @@ public class DBtestService {
     public String testInsert(){
 
         Speaker a0 = new Speaker ();
+
         a0.setPassword("123");
         a0.setEmail("ssss@gmail.com");
         a0.setNativeLanguage("english");
