@@ -14,5 +14,14 @@ public class Listener {
     private int listener_id;
 
 
+    @Override
+    public String toString() {
+        return "Listener{" +
+                "login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", listener_id=" + listener_id +
+                '}';
+    }
 }
 

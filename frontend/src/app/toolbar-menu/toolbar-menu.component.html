@@ -1,0 +1,11 @@
+<mat-toolbar>
+  <span  routerLink="/">MeetUp</span>
+  <span class = "filler"></span>
+  <button mat-button routerLink="/login">Log in</button>
+  <button mat-button [matMenuTriggerFor]="signUp">Sign up</button>
+  <mat-menu #signUp="matMenu">
+    <button mat-menu-item routerLink="/register-speaker">As speaker</button>
+    <button mat-menu-item routerLink="/register">As listener</button>
+  </mat-menu>
+</mat-toolbar>
+
