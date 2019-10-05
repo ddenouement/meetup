@@ -1,6 +1,7 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Admin;
+import com.meetup.entities.Listener;
 import com.meetup.repository.IAdminDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 
 @PropertySource("classpath:sql/user_queries.properties")
@@ -28,6 +30,7 @@ public class AdminDaoImpl implements IAdminDAO {
     public void setDataSource(DataSource d) {
         this.dataSource = d;
     }
+
     @Value("${get_all_users}")
     private String GET_ALL_USERS;
 
@@ -36,7 +39,7 @@ public class AdminDaoImpl implements IAdminDAO {
 
     @Override
     public void insertAdmin(Admin emp) {
-         Connection conn = null;
+        Connection conn = null;
         try {
             conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(INSERT_NEW_USER);
@@ -67,20 +70,20 @@ public class AdminDaoImpl implements IAdminDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        try{
+        try {
             con = dataSource.getConnection();
             ps = con.prepareStatement(GET_ALL_USERS);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Admin e = new Admin();
                 e.setLogin(rs.getString(1));
                 e.setEmail(rs.getString(2));
                 e.setPassword(rs.getString(3));
                 empList.add(e);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 rs.close();
                 ps.close();
@@ -92,5 +95,12 @@ public class AdminDaoImpl implements IAdminDAO {
         return empList;
     }
 
+    @Override
+    public Admin findAdminByLogin(String login) {
+        for (Admin a : getAllAdmins()) {
+            if (a.getLogin().equals(login)) return a;
+        }
+        return null;
+    }
 
 }

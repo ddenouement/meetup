@@ -1,20 +1,28 @@
 package com.meetup.entities;
 
-public final class User {
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Arrays;
+import java.util.List;
+
+@Getter
+@Setter
+public class User {
+    private String login;
     private String email;
     private String password;
+    public List<String> roles;
 
-    public User(String email, String password) {
+    public User(String[] roles) {
+        this.roles = Arrays.asList(roles);
+    }
+
+    public User(String email, String login, String password, List<String> roles) {
         this.email = email;
+        this.login = login;
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
+        this.roles = roles;
     }
 
     @Override

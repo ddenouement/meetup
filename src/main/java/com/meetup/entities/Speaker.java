@@ -2,15 +2,17 @@ package com.meetup.entities;
 
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class Speaker {
-    private String login;
-    private String email;
-    private String password;
+@ToString
+public class Speaker extends User {
+    public Speaker() {
+        super(new String[]{"SPEAKER", "LISTENER"});
+    }
+
     private int speaker_id;
     private String about;
     private String nativeLanguage;

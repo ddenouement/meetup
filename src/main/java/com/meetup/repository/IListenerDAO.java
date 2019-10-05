@@ -7,5 +7,8 @@ import java.util.List;
 public interface IListenerDAO {
 
     List<Listener> getAllListeners();
+
     void insertListener(Listener emp);
+
+    Listener findListenerByLogin(String login);
 }

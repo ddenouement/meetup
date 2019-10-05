@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<p>register-speaker works!</p>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <h1> Register speaker</h1>\n  <p>Login</p>\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\n  <p>E-mail</p>\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\n  <p>Password</p>\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\n  <p>Name</p>\n  <input matInput [(ngModel)]=\"name\" type=\"text\"/>\n  <p>Surname</p>\n  <input matInput [(ngModel)]=\"surname\" type=\"text\"/>\n  <p>Native language</p>\n  <input matInput [(ngModel)]=\"nativeLanguage\" type=\"text\"/>\n  <button (click)=\"register()\"></button>\n</div>\n");
 
 /***/ }),
 
@@ -84,7 +84,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<p>REGISTER LISTENER</p>\n<div>\n  <h1> Register listener</h1>\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\n  <button (click)=\"register()\"></button>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <h1> Register listener</h1>\n  <p>Login</p>\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\n  <p>E-mail</p>\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\n  <p>Password</p>\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\n  <button (click)=\"register()\"></button>\n</div>\n");
 
 /***/ }),
 
@@ -606,13 +606,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterSpeakerComponent", function() { return RegisterSpeakerComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+
 
 
 let RegisterSpeakerComponent = class RegisterSpeakerComponent {
-    constructor() { }
+    constructor(httpClient) {
+        this.httpClient = httpClient;
+    }
+    register() {
+        const speaker = { login: this.login, email: this.email, password: this.password, name: this.name, surname: this.surname, nativeLanguage: this.nativeLanguage };
+        this.httpClient.post("/api/v1/user/register/speaker", speaker).subscribe();
+    }
     ngOnInit() {
     }
 };
+RegisterSpeakerComponent.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
+];
 RegisterSpeakerComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-register-speaker',
@@ -660,7 +671,7 @@ let RegisterComponent = class RegisterComponent {
     }
     register() {
         const listener = { login: this.login, email: this.email, password: this.password };
-        this.httpClient.post("/api/register", listener).subscribe();
+        this.httpClient.post("/api/v1/user/register/listener", listener).subscribe();
     }
     ngOnInit() {
     }

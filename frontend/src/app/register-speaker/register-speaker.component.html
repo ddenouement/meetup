@@ -1,1 +1,16 @@
-<p>register-speaker works!</p>
+<div>
+  <h1> Register speaker</h1>
+  <p>Login</p>
+  <input matInput [(ngModel)]="login" type="text"/>
+  <p>E-mail</p>
+  <input matInput [(ngModel)]="email" type="email"/>
+  <p>Password</p>
+  <input matInput [(ngModel)]="password" type="password"/>
+  <p>Name</p>
+  <input matInput [(ngModel)]="name" type="text"/>
+  <p>Surname</p>
+  <input matInput [(ngModel)]="surname" type="text"/>
+  <p>Native language</p>
+  <input matInput [(ngModel)]="nativeLanguage" type="text"/>
+  <button (click)="register()"></button>
+</div>

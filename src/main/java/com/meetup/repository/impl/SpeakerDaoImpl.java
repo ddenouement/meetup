@@ -1,4 +1,5 @@
 package com.meetup.repository.impl;
+
 import com.meetup.entities.Speaker;
 import com.meetup.repository.ISpeakerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@PropertySource({"classpath:sql/speaker_queries.properties","classpath:sql/user_queries.properties"})
+@PropertySource({"classpath:sql/speaker_queries.properties", "classpath:sql/user_queries.properties"})
 public class SpeakerDaoImpl implements ISpeakerDAO {
     @Autowired
     DataSource dataSource;
@@ -86,10 +87,10 @@ public class SpeakerDaoImpl implements ISpeakerDAO {
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource param2 = new MapSqlParameterSource()
                     .addValue("login", emp.getLogin())
-           .addValue("name", emp.getName())
-            .addValue("surname", emp.getSurname())
-            .addValue("native", emp.getNativeLanguage())
-            .addValue("abt",emp.getAbout());
+                    .addValue("name", emp.getName())
+                    .addValue("surname", emp.getSurname())
+                    .addValue("native", emp.getNativeLanguage())
+                    .addValue("abt", emp.getAbout());
             template.update(INSERT_NEW_SPEAKER, param2, holder, new String[]{"speakerid"});
 
             if (holder.getKeys() != null) {
@@ -102,5 +103,13 @@ public class SpeakerDaoImpl implements ISpeakerDAO {
 
         }
 
+    }
+
+    @Override
+    public Speaker findSpeakerByLogin(String login) {
+        for (Speaker s : getAllSpeakers()) {
+            if (s.getLogin().equals(login)) return s;
+        }
+        return null;
     }
 }

@@ -1,7 +1,6 @@
 package com.meetup;
 
 
-import com.meetup.service.DBtestService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

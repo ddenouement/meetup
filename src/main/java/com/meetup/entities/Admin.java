@@ -7,8 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Admin {
-    private String login;
-    private String email;
-    private String password;
+public class Admin extends User {
+
+    public Admin() {
+        super(new String[]{"ADMIN"});
+    }
 }

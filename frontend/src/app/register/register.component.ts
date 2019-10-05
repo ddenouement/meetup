@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
 
   public register(): void {
     const listener = <Listener>{login: this.login, email: this.email, password: this.password};
-    this.httpClient.post("/api/register", listener).subscribe();
+    this.httpClient.post("/api/v1/user/register/listener", listener).subscribe();
   }
 
   ngOnInit() {

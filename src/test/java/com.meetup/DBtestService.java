@@ -1,4 +1,4 @@
-package com.meetup.service;
+package com.meetup;
 
 import com.meetup.entities.Listener;
 import com.meetup.entities.Speaker;
