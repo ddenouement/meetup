@@ -4,6 +4,7 @@ import com.meetup.entities.Listener;
 import com.meetup.repository.impl.AdminDaoImpl;
 import com.meetup.repository.impl.ListenerDaoImpl;
 import com.meetup.repository.impl.SpeakerDaoImpl;
+import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ListenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ public class ListenerServiceImpl implements ListenerService {
     SpeakerDaoImpl speakerDao;
     @Autowired
     AdminDaoImpl adminDao;
+    @Autowired
+    UserDaoImpl userDao;
 
     @Override
     public ResponseEntity<String> login(Listener listener) {
@@ -28,12 +31,9 @@ public class ListenerServiceImpl implements ListenerService {
 
     @Override
     public ResponseEntity<String> register(Listener listener) {
-        if (listenerDao.findListenerByLogin(listener.getLogin()) != null
-                || adminDao.findAdminByLogin(listener.getLogin()) != null
-                || speakerDao.findSpeakerByLogin(listener.getLogin()) != null) {
-            return new ResponseEntity<>("User already exists", HttpStatus.FORBIDDEN);
-        } else {
-            listenerDao.insertListener(listener);
+        if(userDao.isLoginUsed(listener.getLogin())||userDao.isEmailUsed(listener.getEmail()))   return new ResponseEntity<>("User already exists", HttpStatus.FORBIDDEN);
+        else {
+            userDao.insertNewUser(listener);
             return new ResponseEntity<>("Registered successful", HttpStatus.CREATED);
         }
     }

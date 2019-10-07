@@ -1,15 +1,23 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   profiles:
     active: production
   application:
     name: MeetUp
   datasource:
-    url: jdbc:postgresql://salt.db.elephantsql.com/cpoomlzp
-    password: QCwd3DcEysPt0euG0gTZyVGbJ6sEGcbP
-    username: cpoomlzp
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    password:
+    username: sa
     continue-on-error: false
     schema: classpath:sql/Schema.sql
-    initialization-mode: never
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+  h2:
+    console:
+      enabled: true
+      path: /h2
 
 server:
   port: ${PORT:9990}
