@@ -1,0 +1,35 @@
+package com.meetup.controller;
+
+import com.meetup.entities.Meeting;
+import com.meetup.entities.Speaker;
+import com.meetup.entities.Topic;
+import com.meetup.service.SpeakerService;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/user")
+@Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
+public class SpeakerController {
+
+    @Autowired
+    SpeakerService speakerService;
+
+    //TODO Find out, if speaker required for meeting creation
+    @PostMapping(value = "/createMeeting")
+    public ResponseEntity<String> createMeeting(@RequestBody Meeting meeting, Speaker speaker) {
+        return speakerService.createMeeting(meeting, speaker);
+    }
+
+    @GetMapping(value = "/createMeeting/topics")
+    public ResponseEntity<List<Topic>> getAvailableTopics() {
+        return new ResponseEntity<>(speakerService.getAllTopics(), HttpStatus.OK);
+    }
+
+
+}
