@@ -1,6 +1,5 @@
 package com.meetup.repository.impl;
 
-import com.meetup.entities.Speaker;
 import com.meetup.entities.User;
 import com.meetup.repository.IUserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
