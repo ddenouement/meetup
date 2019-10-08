@@ -2,20 +2,20 @@
   <h1 class="form__headline">Register as a listener</h1>
   <main>
     <div class="content">
-      <form>
+      <form [formGroup]="registrForm" #regForm="ngForm" (ngSubmit)="onSubmit()">
         <p class="form__headline">Login</p>
-        <input class="form__input" matInput [(ngModel)]="login" type="text" placeholder="Login"/>
+        <input class="form__input" matInput formControlName="login" type="text" placeholder="Login" required/>
         <p class="form__headline">E-mail</p>
-        <input class="form__input" matInput [(ngModel)]="email" type="email" placeholder="E-mail"/>
+        <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail" ngModel email required/>
         <p class="form__headline">Password</p>
-        <input type="password" class="form__input password" matInput [(ngModel)]="password" placeholder="Create password">
+        <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password" required>
         <div class="complexity">
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
         </div>
         <input type="password" class="form__input" placeholder="Confirm password">
-        <button class="form__button" (click)="register()" type="submit">Sign Up</button>
+        <button class="form__button" type="submit" [disabled]="!regForm.valid" disabled>Sign Up</button>
       </form>
     </div>
   </main>

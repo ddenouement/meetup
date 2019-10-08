@@ -2,13 +2,13 @@
   <h1 class="form__headline"> Login, my user: </h1>
   <main>
     <div class="content">
-      <form>
+      <form [formGroup]="loginForm" #logForm="ngForm" (ngSubmit)="onSubmit()">
         <p class="form__headline">Login</p>
-        <input class="form__input" matInput [(ngModel)]="login" type="text"/>
+        <input class="form__input" matInput formControlName="login" type="text" required/>
         <p class="form__headline">Password</p>
-        <input class="form__input" matInput [(ngModel)]="password" type="password"/>
+        <input class="form__input" matInput formControlName="password" type="password" required/>
         <a href='reset.html' class="form__help">Forgot password?</a>
-        <button class="form__button" (click)="do_login()">Sign In</button>
+        <button class="form__button" [disabled]="!logForm.valid" disabled>Sign In</button>
       </form>
     </div>
   </main>

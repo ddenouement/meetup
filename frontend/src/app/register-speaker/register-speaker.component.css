@@ -77,7 +77,6 @@ form {
 
 .form__input:focus {
   background-color: #fff;
-  border-left: 2px solid #2A74DB;
 }
 
 .form__headline {
@@ -136,6 +135,9 @@ form {
   cursor: pointer;
   margin-top: 14px;
 }
+.form__button:disabled {
+  background: #dddddd;
+}
 
 @media (max-width: 620px) {
   .form__button {
@@ -180,3 +182,10 @@ form {
   background: #38ECAC;
 }
 
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #38ECAC; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}

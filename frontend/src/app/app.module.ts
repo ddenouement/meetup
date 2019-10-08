@@ -14,7 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterSpeakerComponent } from './register-speaker/register-speaker.component';
 import {MatInputModule} from "@angular/material";
 import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -37,9 +37,8 @@ import {FormsModule} from "@angular/forms";
     MatGridListModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
-
-
+    FormsModule,
+    ReactiveFormsModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

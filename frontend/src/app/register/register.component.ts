@@ -1,13 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
+
 export class RegisterComponent implements OnInit {
+
+  registrForm = new FormGroup({
+    login: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+  });
 
   public login: string;
   public email: string;
@@ -17,8 +25,14 @@ export class RegisterComponent implements OnInit {
     private httpClient: HttpClient
   ) { }
 
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+   //console.warn(this.registrForm.value);
+   this.register();
+  }
+
   public register(): void {
-    const user = <User>{login: this.login, email: this.email, password: this.password};
+    const user = <User>{login: this.registrForm.get('login').value, email: this.registrForm.get('email').value, password: this.registrForm.get('password').value};
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe();
   }
 
