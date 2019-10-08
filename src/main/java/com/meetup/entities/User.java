@@ -37,7 +37,10 @@ public class User {
     }
 
     public User() {
-        this.roles = new ArrayList<String>();
+       this.roles = new ArrayList<String>();
+    }
+    public void addRole(String role){
+        this.roles.add(role);
     }
 
     public User(String email, String login, String password, String name, String lastName, List<String> roles) {

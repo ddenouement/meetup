@@ -11,15 +11,19 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Meeting {
 
     private int id;
+    private int speakerId;
+    private int languageId;
     private String title;
     private LocalDateTime date;
     private Duration duration;
     private int minAttendees;
     private int maxAttendees;
-    private State state;
+    private int state;
     private String description;
     private List<Topic> topics;
 

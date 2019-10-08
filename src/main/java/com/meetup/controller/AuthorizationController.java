@@ -34,13 +34,15 @@ public class AuthorizationController {
 
     @PostMapping("/login")
     public ResponseEntity signin(@RequestBody AuthentificationRequest data) {
+
         try {
-            String username = data.getUsername();
+            String username = data.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             String token = jwtTokenProvider.createToken(username, findByUsernameAmongAll(username).getRoles());
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
+            System.out.println("Succesfull Login: "+username+"\ntoken: "+token.toString());
             return ok(model);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");

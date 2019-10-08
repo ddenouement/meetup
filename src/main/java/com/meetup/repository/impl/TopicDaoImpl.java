@@ -1,16 +1,14 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Topic;
+import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.ITopicDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -29,13 +27,4 @@ public class TopicDaoImpl implements ITopicDAO {
     }
 
 
-
-    private static final class TopicMapper implements RowMapper<Topic> {
-        public Topic mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Topic topic = new Topic();
-            topic.setId(rs.getInt("id"));
-            topic.setName(rs.getString("name"));
-            return topic;
-        }
-    }
 }
