@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("cc<app-toolbar-menu></app-toolbar-menu>\n<router-outlet></router-outlet>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("cc<app-toolbar-menu></app-toolbar-menu>\r\n<router-outlet></router-outlet>\r\n");
 
 /***/ }),
 
@@ -58,7 +58,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <h1> Login, my  user: </h1>\n  <p>Login</p>\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\n  <p>Password</p>\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\n  <button (click)=\"do_login()\"></button>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\r\n  <h1> Login, my  user: </h1>\r\n  <p>Login</p>\r\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\r\n  <p>Password</p>\r\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\r\n  <button (click)=\"do_login()\"></button>\r\n</div>\r\n");
 
 /***/ }),
 
@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <h1> Register speaker</h1>\n  <p>Login</p>\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\n  <p>E-mail</p>\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\n  <p>Password</p>\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\n  <button (click)=\"register()\"></button>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\r\n  <h1> Register speaker</h1>\r\n  <p>Login</p>\r\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\r\n  <p>E-mail</p>\r\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\r\n  <p>Password</p>\r\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\r\n  <button (click)=\"register()\"></button>\r\n</div>\r\n");
 
 /***/ }),
 
@@ -84,7 +84,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <h1>Register listener</h1>\n  <p>Login</p>\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\n  <p>E-mail</p>\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\n  <p>Password</p>\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\n  <button (click)=\"register()\"></button>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\r\n  <h1>Register listener</h1>\r\n  <p>Login</p>\r\n  <input matInput [(ngModel)]=\"login\" type=\"text\"/>\r\n  <p>E-mail</p>\r\n  <input matInput [(ngModel)]=\"email\" type=\"email\"/>\r\n  <p>Password</p>\r\n  <input matInput [(ngModel)]=\"password\" type=\"password\"/>\r\n  <button (click)=\"register()\"></button>\r\n</div>\r\n");
 
 /***/ }),
 
@@ -97,7 +97,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<mat-toolbar>\n  <span  routerLink=\"/\">MeetUp</span>\n  <span class = \"filler\"></span>\n  <button mat-button routerLink=\"/login\">Log in</button>\n  <button mat-button [matMenuTriggerFor]=\"signUp\">Sign up</button>\n  <mat-menu #signUp=\"matMenu\">\n    <button mat-menu-item routerLink=\"/register-speaker\">As speaker</button>\n    <button mat-menu-item routerLink=\"/register\">As listener</button>\n  </mat-menu>\n</mat-toolbar>\n\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<mat-toolbar>\r\n  <span  routerLink=\"/\">MeetUp</span>\r\n  <span class = \"filler\"></span>\r\n  <button mat-button routerLink=\"/login\">Log in</button>\r\n  <button mat-button [matMenuTriggerFor]=\"signUp\">Sign up</button>\r\n  <mat-menu #signUp=\"matMenu\">\r\n    <button mat-menu-item routerLink=\"/register-speaker\">As speaker</button>\r\n    <button mat-menu-item routerLink=\"/register\">As listener</button>\r\n  </mat-menu>\r\n</mat-toolbar>\r\n\r\n");
 
 /***/ }),
 
@@ -828,7 +828,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_3__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/dmytrozubko/Desktop/nc-autumn-2019/frontend/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! D:\NBprojects\projectBackendSpeaker\nc-autumn-2019\frontend\src\main.ts */"./src/main.ts");
 
 
 /***/ })

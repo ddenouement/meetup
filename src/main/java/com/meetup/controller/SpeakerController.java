@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/user/speaker")
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
 public class SpeakerController {
 
     @Autowired
     UserService userService;
+
 
     //TODO Find out, if speaker required for meeting creation
     @PostMapping(value = "/createMeeting")
