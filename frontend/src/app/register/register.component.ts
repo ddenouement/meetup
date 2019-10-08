@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Listener} from "../models/listener";
+import {User} from "../models/user";
 
 @Component({
   selector: 'app-register',
@@ -18,8 +18,8 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   public register(): void {
-    const listener = <Listener>{login: this.login, email: this.email, password: this.password};
-    this.httpClient.post("/api/v1/user/register/listener", listener).subscribe();
+    const user = <User>{login: this.login, email: this.email, password: this.password};
+    this.httpClient.post("/api/v1/user/register/listener", user).subscribe();
   }
 
   ngOnInit() {

@@ -1,0 +1,1 @@
+INSERT  into  roles (id,name) values (1,'ADMIN'),(2,'SPEAKER'),(3,'LISTENER');

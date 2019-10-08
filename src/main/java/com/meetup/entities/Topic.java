@@ -7,7 +7,9 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class Topic {
+    private int id;
     private String name;
 }
 

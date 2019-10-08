@@ -24,12 +24,6 @@ public class MeetingTest {
     }
 
     @Test
-    public void defaultValuesTest(){
-        Meeting meeting = Meeting.builder().build();
-        Assert.assertEquals(meeting.getDescription(), "Another interesting meeting");
-    }
-
-    @Test
     public void hashCodeTest(){
         Meeting meeting = Meeting.builder().build();
         Meeting meeting2 = Meeting.builder().build();

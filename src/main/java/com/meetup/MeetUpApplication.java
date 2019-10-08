@@ -12,3 +12,10 @@ public class MeetUpApplication {
         SpringApplication.run(MeetUpApplication.class, args);
     }
 }
+/*
+* url: jdbc:postgresql://salt.db.elephantsql.com/cpoomlzp
+    password: QCwd3DcEysPt0euG0gTZyVGbJ6sEGcbP
+    username: cpoomlzp
+    continue-on-error: false
+    schema: classpath:sql/Schema.sql
+    initialization-mode: never*/

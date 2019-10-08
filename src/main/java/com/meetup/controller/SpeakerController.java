@@ -1,9 +1,9 @@
 package com.meetup.controller;
 
 import com.meetup.entities.Meeting;
-import com.meetup.entities.Speaker;
 import com.meetup.entities.Topic;
-import com.meetup.service.SpeakerService;
+import com.meetup.entities.User;
+import com.meetup.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,17 +18,17 @@ import java.util.List;
 public class SpeakerController {
 
     @Autowired
-    SpeakerService speakerService;
+    UserService userService;
 
     //TODO Find out, if speaker required for meeting creation
     @PostMapping(value = "/createMeeting")
-    public ResponseEntity<String> createMeeting(@RequestBody Meeting meeting, Speaker speaker) {
-        return speakerService.createMeeting(meeting, speaker);
+    public ResponseEntity<String> createMeeting(@RequestBody Meeting meeting, User user) {
+        return userService.createMeeting(meeting, user);
     }
 
     @GetMapping(value = "/createMeeting/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics() {
-        return new ResponseEntity<>(speakerService.getAllTopics(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllTopics(), HttpStatus.OK);
     }
 
 

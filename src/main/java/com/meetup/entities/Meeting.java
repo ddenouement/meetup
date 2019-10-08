@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -14,21 +13,14 @@ import java.util.List;
 @Builder
 public class Meeting {
 
-    @Builder.Default
-    private String title = "My meeting";
-    @Builder.Default
-    private LocalDateTime date = LocalDateTime.now().plusHours(1);
-    @Builder.Default
-    private Duration duration = Duration.ofHours(1);
-    @Builder.Default
-    private int minAttendees = 1;
-    @Builder.Default
-    private int maxAttendees = 1000;
-    @Builder.Default
-    private State state = State.SCHEDULED;
-    @Builder.Default
-    private String description = "Another interesting meeting";
-    @Builder.Default
-    private List<Topic> topics = Arrays.asList(new Topic("General"));
+    private int id;
+    private String title;
+    private LocalDateTime date;
+    private Duration duration;
+    private int minAttendees;
+    private int maxAttendees;
+    private State state;
+    private String description;
+    private List<Topic> topics;
 
 }
