@@ -1,10 +1,22 @@
 <div>
-  <h1>Register listener</h1>
-  <p>Login</p>
-  <input matInput [(ngModel)]="login" type="text"/>
-  <p>E-mail</p>
-  <input matInput [(ngModel)]="email" type="email"/>
-  <p>Password</p>
-  <input matInput [(ngModel)]="password" type="password"/>
-  <button (click)="register()"></button>
+  <h1 class="form__headline">Register as a listener</h1>
+  <main>
+    <div class="content">
+      <form>
+        <p class="form__headline">Login</p>
+        <input class="form__input" matInput [(ngModel)]="login" type="text" placeholder="Login"/>
+        <p class="form__headline">E-mail</p>
+        <input class="form__input" matInput [(ngModel)]="email" type="email" placeholder="E-mail"/>
+        <p class="form__headline">Password</p>
+        <input type="password" class="form__input password" matInput [(ngModel)]="password" placeholder="Create password">
+        <div class="complexity">
+          <div class="complexity__item"></div>
+          <div class="complexity__item"></div>
+          <div class="complexity__item"></div>
+        </div>
+        <input type="password" class="form__input" placeholder="Confirm password">
+        <button class="form__button" (click)="register()" type="submit">Sign Up</button>
+      </form>
+    </div>
+  </main>
 </div>
