@@ -61,8 +61,8 @@ public class UserDaoImpl implements IUserDAO {
         person.setPassword(resultSet.getString("password")  );
         person.setActive(resultSet.getBoolean("active"));
         person.setRate(resultSet.getFloat("rate"));
-
-        person.setRoles(findUserRolesByLogin(l));
+       for( String a : findUserRolesByLogin(l))
+           person.addRole(a);
         return person;
     }
     @Override
@@ -143,11 +143,13 @@ public class UserDaoImpl implements IUserDAO {
         ResultSet rs = null;
         return
                 template.query(FIND_USER_ROLES_BY_LOGIN, param, (resultSet, i) -> {
+            //        System.out.println("+");
                     return toRole(resultSet);
                 });
     }
 
     private String toRole(ResultSet resultSet) throws SQLException {
+     //   System.out.println(resultSet.getString("name"));
         return resultSet.getString("name");
     }
 }

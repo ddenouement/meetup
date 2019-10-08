@@ -37,18 +37,9 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().anonymous()
-                //TODO make login redirect
-      /*          .and()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll()*/
-                .and()
+               .and().authorizeRequests().antMatchers("/api/v1/user/hello").authenticated()
+                .antMatchers("/api/v1/user/speaker/**").hasAuthority("SPEAKER").and()
+
                 .apply(new JwtConfigurer(jwtTokenProvider));
         //@formatter:on
     }

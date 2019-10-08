@@ -2,7 +2,6 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Meeting;
 import com.meetup.entities.Topic;
-import com.meetup.entities.User;
 import com.meetup.model.mapper.MeetingMapper;
 import com.meetup.repository.IMeetingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
