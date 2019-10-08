@@ -10,8 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
+
+/**
+ * @author Dmytro Zubko
+ */
 
 @RestController
 @RequestMapping("/api/v1/user/speaker")
@@ -38,14 +41,8 @@ public class SpeakerController {
     }
 
     @GetMapping(value = "/myMeetings")
-    public ResponseEntity<List<Meeting>> getMyMeetings(@RequestBody User user){
+    public ResponseEntity<List<Meeting>> getMyMeetings(@RequestBody User user) {
         return new ResponseEntity<>(meetingService.getSpeakerMeetings(user), HttpStatus.OK);
-    }
-    
-    @GetMapping(value="/test")
-    public String currentUserName(Principal principal) {
-        return principal.getName();
-
     }
 
 }

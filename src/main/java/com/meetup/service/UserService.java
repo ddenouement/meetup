@@ -3,6 +3,9 @@ package com.meetup.service;
 import com.meetup.entities.*;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * @author Dmytro Zubko
+ */
 
 public interface UserService {
 

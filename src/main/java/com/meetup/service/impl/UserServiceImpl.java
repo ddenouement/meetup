@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Dmytro Zubko
+ */
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -16,9 +19,17 @@ public class UserServiceImpl implements UserService {
     private static final String SPEAKER = "SPEAKER";
     private static final String ADMIN = "ADMIN";
 
+
     @Autowired
     UserDaoImpl userDao;
 
+    /**
+     *
+     * @param user
+     * User (that has role of listener) to register
+     * @return
+     * Entity, representing information about register status
+     */
     @Override
     public ResponseEntity<String> registerAsListener(User user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao.isEmailUsed(user.getEmail())) {
@@ -27,10 +38,17 @@ public class UserServiceImpl implements UserService {
             user.getRoles().add(LISTENER);
             System.out.println(user.toString());
             userDao.insertNewUser(user);
-            return new ResponseEntity<>("Registered successful", HttpStatus.CREATED);
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
 
+    /**
+     *
+     * @param user
+     * User (that has role of speaker) to register
+     * @return
+     * Entity, representing information about register status
+     */
     @Override
     public ResponseEntity<String> registerAsSpeaker(User user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao.isEmailUsed(user.getEmail())) {
@@ -40,7 +58,7 @@ public class UserServiceImpl implements UserService {
             user.getRoles().add(SPEAKER);
             System.out.println(user.toString());
             userDao.insertNewUser(user);
-            return new ResponseEntity<>("Registered successful", HttpStatus.CREATED);
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
 

@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+/**
+ * @author Dmytro Zubko
+ */
+
 public interface MeetingService {
     ResponseEntity<String> createMeeting(Meeting meeting, User user);
 

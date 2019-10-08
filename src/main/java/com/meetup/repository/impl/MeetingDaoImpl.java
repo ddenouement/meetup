@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Dmytro Zubko
+ */
+
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class MeetingDaoImpl implements IMeetingDAO {
@@ -46,16 +50,17 @@ public class MeetingDaoImpl implements IMeetingDAO {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id_speaker", meeting.getSpeakerId())
-                .addValue("id_language",meeting.getLanguageId())
-                .addValue("title",meeting.getTitle())
-                .addValue("start_time",meeting.getDate())
-                .addValue("min_atendees",meeting.getMinAttendees())
-                .addValue("max_atendees",meeting.getMaxAttendees())
-                .addValue("description",meeting.getDescription());
-        template.update(INSERT_NEW_MEETING, param,  holder, new String[]{"id"});
+                .addValue("id_language", meeting.getLanguageId())
+                .addValue("title", meeting.getTitle())
+                .addValue("start_time", meeting.getDate())
+                .addValue("min_atendees", meeting.getMinAttendees())
+                .addValue("max_atendees", meeting.getMaxAttendees())
+                .addValue("description", meeting.getDescription());
+        template.update(INSERT_NEW_MEETING, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             meeting.setId(holder.getKey().intValue());
             //adding topics to DB
+            //TODO rewrite
             for (Topic topic : meeting.getTopics()) {
                 addTopicToMeeting(meeting, topic);
             }
@@ -63,9 +68,9 @@ public class MeetingDaoImpl implements IMeetingDAO {
     }
 
     @Override
-    public void addTopicToMeeting(Meeting meeting, Topic topic){
+    public void addTopicToMeeting(Meeting meeting, Topic topic) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("name", topic.getName());
-        Integer topic_id = template.queryForObject (FIND_TOPIC_ID_BY_NAME, namedParameters, Integer.class);
+        Integer topic_id = template.queryForObject(FIND_TOPIC_ID_BY_NAME, namedParameters, Integer.class);
 
         Map parametersForAddingTopic = new HashMap();
         parametersForAddingTopic.put("id_meetup", meeting.getId());

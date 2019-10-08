@@ -24,7 +24,6 @@ public class User {
     private String password;
     public List<String> roles;
 
-    //TODO transfer roles through frontend
     public User(String[] roles) {
         this.roles = Arrays.asList(roles);
     }
@@ -37,9 +36,10 @@ public class User {
     }
 
     public User() {
-       this.roles = new ArrayList<String>();
+        this.roles = new ArrayList<String>();
     }
-    public void addRole(String role){
+
+    public void addRole(String role) {
         this.roles.add(role);
     }
 

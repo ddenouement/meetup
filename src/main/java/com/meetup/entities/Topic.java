@@ -2,6 +2,10 @@ package com.meetup.entities;
 
 import lombok.*;
 
+/**
+ * @author Dmytro Zubko
+ */
+
 @Getter
 @Setter
 @EqualsAndHashCode

@@ -1,5 +1,9 @@
 package com.meetup.entities;
 
+/**
+ * @author Dmytro Zubko
+ */
+
 public enum State {
     SCHEDULED,
     BOOKED,

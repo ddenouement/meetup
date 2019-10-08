@@ -6,6 +6,10 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author Dmytro Zubko
+ */
+
 public final class TopicMapper implements RowMapper<Topic> {
     public final Topic mapRow(ResultSet rs, int rowNum) throws SQLException {
         Topic topic = new Topic();
