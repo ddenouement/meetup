@@ -33,36 +33,36 @@ public class SpeakerController {
     public ResponseEntity createMeeting(@CookieValue(value = "token", defaultValue = "") String token,
                                         @RequestBody Meeting meeting) {
         if (meetingService.createMeeting(meeting, extractLogin(token)) == null) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
     @GetMapping(value = "/createMeeting/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics(@CookieValue(value = "token", defaultValue = "") String token) {
         if (meetingService.getAllTopics(extractLogin(token)) == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
     @GetMapping(value = "/getAllMeetings")
     public ResponseEntity<List<Meeting>> getAllMeetings(@CookieValue(value = "token", defaultValue = "") String token) {
         if (meetingService.getAllMeetings(extractLogin(token)) == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
     @GetMapping(value = "/myMeetings")
     public ResponseEntity<List<Meeting>> getMyMeetings(@CookieValue(value = "token", defaultValue = "") String token) {
         if (meetingService.getSpeakerMeetings(extractLogin(token)) == null) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 

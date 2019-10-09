@@ -36,8 +36,10 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public List<Topic> getAllTopics(String login) {
         if (userDao.findUserByLogin(login) == null) {
+            System.out.println("USER token login parse error");
             return null;
         } else {
+            System.out.println("Gone to else, topics returned");
             return topicDao.getAllTopics();
         }
     }
