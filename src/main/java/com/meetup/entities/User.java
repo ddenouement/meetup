@@ -20,7 +20,7 @@ public class User {
     private String lastName;
     private boolean isActive;
     private String about;
-    private double rate;
+    private Float rate;
     private String password;
     public List<String> roles;
 
