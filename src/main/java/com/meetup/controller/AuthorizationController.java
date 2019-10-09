@@ -11,8 +11,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +36,7 @@ public class AuthorizationController {
     JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity signin(@RequestBody AuthentificationRequest data) {
-
+    public ResponseEntity signin(@RequestBody AuthentificationRequest data, HttpServletResponse response) {
         try {
             String username = data.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
@@ -43,6 +45,10 @@ public class AuthorizationController {
             model.put("username", username);
             model.put("token", token);
             System.out.println("Succesfull Login: "+username+"\ntoken: "+token.toString());
+//            System.out.println("username: " + jwtTokenProvider.getUsername(token));
+            Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/"); // global cookie accessible everywhere
+            response.addCookie(cookie);
             return ok(model);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");

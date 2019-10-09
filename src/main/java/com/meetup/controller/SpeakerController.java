@@ -1,5 +1,6 @@
 package com.meetup.controller;
 
+import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.Meeting;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
@@ -21,12 +22,19 @@ import java.util.List;
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
 public class SpeakerController {
 
-    @Autowired
     MeetingService meetingService;
+    JwtTokenProvider jwtTokenProvider;
+
+    SpeakerController(@Autowired MeetingService meetingService, @Autowired JwtTokenProvider jwtTokenProvider) {
+        this.meetingService = meetingService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     //TODO Find out, if speaker required for meeting creation
     @PostMapping(value = "/createMeeting")
-    public ResponseEntity<String> createMeeting(@RequestBody Meeting meeting, User user) {
+    public ResponseEntity<String> createMeeting(@CookieValue(value = "token", defaultValue = "") String token,
+                                                @RequestBody Meeting meeting, User user) {
+        String login = jwtTokenProvider.getUsername(token);
         return meetingService.createMeeting(meeting, user);
     }
 
