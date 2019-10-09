@@ -45,4 +45,5 @@ public class SpeakerController {
         return new ResponseEntity<>(meetingService.getSpeakerMeetings(user), HttpStatus.OK);
     }
 
+
 }

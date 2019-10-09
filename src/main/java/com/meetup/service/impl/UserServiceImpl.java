@@ -74,4 +74,11 @@ public class UserServiceImpl implements UserService {
         //TODO implement
         return null;
     }
+
+    @Override
+    public User getProfile(String login) {
+        return userDao.findUserByLogin(login);
+    }
+
+
 }
