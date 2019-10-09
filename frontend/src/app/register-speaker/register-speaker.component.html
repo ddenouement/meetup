@@ -2,11 +2,9 @@
   <main>
     <div class="content">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <p class="form__headline">Login</p>
+        <p class="form__headline">Sign up as speaker</p>
         <input class="form__input" matInput formControlName="login" type="text" placeholder="Login"/>
-        <p class="form__headline">E-mail</p>
         <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail"/>
-        <p class="form__headline">Password</p>
         <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password">
         <div class="complexity">
           <div class="complexity__item"></div>
