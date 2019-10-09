@@ -1,20 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {FormControl, FormGroup} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, Validators, FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-register-speaker',
   templateUrl: './register-speaker.component.html',
   styleUrls: ['./register-speaker.component.css']
 })
+
 export class RegisterSpeakerComponent implements OnInit {
 
-  registrForm = new FormGroup({
-    login: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-  });
+  registerForm: FormGroup;
+  submitted = false;
 
   public login: string;
   public email: string;
@@ -22,27 +20,44 @@ export class RegisterSpeakerComponent implements OnInit {
 
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private formBuilder: FormBuilder,
   ) {
   }
 
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    //console.warn(this.registrForm.value);
     this.register();
   }
 
   public register(): void {
-    const user = <User>{login: this.registrForm.get('login').value, email: this.registrForm.get('email').value, password: this.registrForm.get('password').value};
+    const user = <User>{
+      login: this.registerForm.get('login').value,
+      email: this.registerForm.get('email').value,
+      password: this.registerForm.get('password').value
+    };
     this.httpClient.post("/api/v1/user/register/speaker", user).subscribe();
   }
 
+  get form() {
+    return this.registerForm.controls;
+  }
+
   ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      login: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: MustMatch('password', 'confirmPassword')
+    });
+
+    // TODO: change to password-strength
     const pass = document.querySelector('.password');
     const complexityItem = document.getElementsByClassName('complexity__item');
     const complexity = document.querySelector('.complexity');
     const content = document.querySelector('.content');
-// On click
+
     content.addEventListener('click', (event) => {
       // Toggle class "is-active"
       if (event.target === pass) {
@@ -79,7 +94,25 @@ export class RegisterSpeakerComponent implements OnInit {
           }
         }
       });
-      // Do something else, like open/close menu
     });
+  }
+}
+
+export function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({mustMatch: true});
+    } else {
+      matchingControl.setErrors(null);
+    }
   }
 }
