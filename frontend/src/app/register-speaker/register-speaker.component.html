@@ -1,21 +1,20 @@
 <div>
-  <h1 class="form__headline"> Register speaker</h1>
   <main>
     <div class="content">
-      <form [formGroup]="registrForm" #regForm="ngForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <p class="form__headline">Login</p>
-        <input class="form__input" matInput formControlName="login" type="text" placeholder="Login" required/>
+        <input class="form__input" matInput formControlName="login" type="text" placeholder="Login"/>
         <p class="form__headline">E-mail</p>
-        <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail" ngModel email required/>
+        <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail"/>
         <p class="form__headline">Password</p>
-        <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password" required>
+        <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password">
         <div class="complexity">
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
         </div>
-        <input type="password" class="form__input" placeholder="Confirm password">
-        <button class="form__button" type="submit" [disabled]="!regForm.valid" disabled>Sign Up</button>
+        <input type="password" class="form__input" matInput formControlName="confirmPassword" placeholder="Confirm password">
+        <button class="form__button" type="submit" [disabled]="!registerForm.valid" disabled>Sign Up</button>
       </form>
     </div>
   </main>
