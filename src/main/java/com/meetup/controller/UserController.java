@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
-@Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
+@Api(value = "meetup-application", description = "Operations used to manage user functionality")
 public class UserController {
 
     @Autowired
