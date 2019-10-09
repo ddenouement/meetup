@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author Dmytro Zubko
  */
@@ -74,4 +76,16 @@ public class UserServiceImpl implements UserService {
         //TODO implement
         return null;
     }
+
+    @Override
+    public User getProfile(String login) {
+        return userDao.findUserByLogin(login);
+    }
+
+    @Override
+    public List<User> getAllSpeakers() {
+        return null;
+    }
+
+
 }

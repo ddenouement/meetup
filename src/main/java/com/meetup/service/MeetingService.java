@@ -3,7 +3,6 @@ package com.meetup.service;
 import com.meetup.entities.Meeting;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -12,11 +11,11 @@ import java.util.List;
  */
 
 public interface MeetingService {
-    ResponseEntity<String> createMeeting(Meeting meeting, User user);
+    Meeting createMeeting(Meeting meeting, String login);
 
-    List<Topic> getAllTopics();
+    List<Topic> getAllTopics(String login);
 
-    List<Meeting> getAllMeetings();
+    List<Meeting> getAllMeetings(String login);
 
-    List<Meeting> getSpeakerMeetings(User user);
+    List<Meeting> getSpeakerMeetings(String login);
 }

@@ -3,7 +3,6 @@ package com.meetup.controller;
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.Meeting;
 import com.meetup.entities.Topic;
-import com.meetup.entities.User;
 import com.meetup.service.MeetingService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,27 +29,46 @@ public class SpeakerController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    //TODO Find out, if speaker required for meeting creation
     @PostMapping(value = "/createMeeting")
-    public ResponseEntity<String> createMeeting(@CookieValue(value = "token", defaultValue = "") String token,
-                                                @RequestBody Meeting meeting, User user) {
-        String login = jwtTokenProvider.getUsername(token);
-        return meetingService.createMeeting(meeting, user);
+    public ResponseEntity createMeeting(@CookieValue(value = "token", defaultValue = "") String token,
+                                        @RequestBody Meeting meeting) {
+        if (meetingService.createMeeting(meeting, extractLogin(token)) == null) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping(value = "/createMeeting/topics")
-    public ResponseEntity<List<Topic>> getAvailableTopics() {
-        return new ResponseEntity<>(meetingService.getAllTopics(), HttpStatus.OK);
+    public ResponseEntity<List<Topic>> getAvailableTopics(@CookieValue(value = "token", defaultValue = "") String token) {
+        if (meetingService.getAllTopics(extractLogin(token)) == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping(value = "/getAllMeetings")
-    public ResponseEntity<List<Meeting>> getAllMeetings() {
-        return new ResponseEntity<>(meetingService.getAllMeetings(), HttpStatus.OK);
+    public ResponseEntity<List<Meeting>> getAllMeetings(@CookieValue(value = "token", defaultValue = "") String token) {
+        if (meetingService.getAllMeetings(extractLogin(token)) == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping(value = "/myMeetings")
-    public ResponseEntity<List<Meeting>> getMyMeetings(@RequestBody User user) {
-        return new ResponseEntity<>(meetingService.getSpeakerMeetings(user), HttpStatus.OK);
+    public ResponseEntity<List<Meeting>> getMyMeetings(@CookieValue(value = "token", defaultValue = "") String token) {
+        if (meetingService.getSpeakerMeetings(extractLogin(token)) == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
+
+    private String extractLogin(String token) {
+        return jwtTokenProvider.getUsername(token);
+    }
+
 
 }

@@ -86,7 +86,7 @@ form {
   font-size: 28px;
   line-height: 34px;
   letter-spacing: 0.4px;
-  color: #002396;
+  color: #322b6b;
   margin-bottom: 25px;
 }
 
@@ -149,9 +149,6 @@ form {
   .form__button {
     align-self: center;
   }
-}
-.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #38ECAC; /* green */
 }
 
 .ng-invalid:not(form)  {

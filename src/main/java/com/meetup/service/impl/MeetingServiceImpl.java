@@ -5,13 +5,14 @@ import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.repository.impl.MeetingDaoImpl;
 import com.meetup.repository.impl.TopicDaoImpl;
+import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static com.meetup.service.RoleProcessor.isSpeaker;
 
 /**
  * @author Dmytro Zubko
@@ -24,50 +25,65 @@ public class MeetingServiceImpl implements MeetingService {
     TopicDaoImpl topicDao;
     @Autowired
     MeetingDaoImpl meetingDao;
+    @Autowired
+    UserDaoImpl userDao;
 
     /**
      * Method used to get topics list from database, using topic repository (TopicDao)
-     * @return
-     * List of "Topic" objects
+     *
+     * @return List of "Topic" objects
      */
     @Override
-    public List<Topic> getAllTopics() {
-        return topicDao.getAllTopics();
+    public List<Topic> getAllTopics(String login) {
+        if (userDao.findUserByLogin(login) == null) {
+            return null;
+        } else {
+            return topicDao.getAllTopics();
+        }
     }
 
     /**
      * Method used to get meetings list from database, using meeting repository (MeetingDao)
-     * @return
-     * List of "Meeting" objects
+     *
+     * @return List of "Meeting" objects
      */
     @Override
-    public List<Meeting> getAllMeetings() {
-        return meetingDao.getAllMeetings();
+    public List<Meeting> getAllMeetings(String login) {
+        if (userDao.findUserByLogin(login) == null) {
+            return null;
+        } else {
+            return meetingDao.getAllMeetings();
+        }
     }
 
     /**
-     *
-     * @param meeting
-     * Object, to be added to database
-     * @param user
-     * User (Speaker) that creates a meeting
-     * @return
-     * Entity, representing information about creating meeting status
+     * @param meeting Object, to be added to database
+     * @param login   User (Speaker) login that creates a meeting
+     * @return Meeting that was just created
      */
     @Override
-    public ResponseEntity<String> createMeeting(Meeting meeting, User user) {
-        //TODO Find out, if speaker required for meeting creation
-        meetingDao.insertNewMeeting(meeting);
-        return new ResponseEntity<>("Successful created", HttpStatus.CREATED);
+    public Meeting createMeeting(Meeting meeting, String login) {
+        if (isSpeaker(userDao.findUserByLogin(login))) {
+            meetingDao.insertNewMeeting(meeting);
+            return meeting;
+        } else {
+            return null;
+        }
+
     }
 
     /**
      * Method used to get specific speaker meetings list from database, using meeting repository (MeetingDao)
-     * @return
-     * List of "Meeting" objects
+     *
+     * @return List of "Meeting" objects
      */
     @Override
-    public List<Meeting> getSpeakerMeetings(User user) {
-        return meetingDao.getSpeakerMeetings(user.getId());
+    public List<Meeting> getSpeakerMeetings(String login) {
+        User user = userDao.findUserByLogin(login);
+        if (isSpeaker(user)) {
+            return meetingDao.getSpeakerMeetings(user.getId());
+        } else {
+            return null;
+        }
     }
 }

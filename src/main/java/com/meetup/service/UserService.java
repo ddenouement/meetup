@@ -3,6 +3,8 @@ package com.meetup.service;
 import com.meetup.entities.*;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 /**
  * @author Dmytro Zubko
  */
@@ -16,5 +18,9 @@ public interface UserService {
     User updateProfile(User user);
 
     User changePassword(User user);
+
+    User getProfile(String login);
+
+    List<User> getAllSpeakers();
 
 }
