@@ -1,12 +1,12 @@
 <div>
   <main>
     <div class="content">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <p class="form__headline">Log In</p>
-        <input class="form__input" matInput formControlName="login" type="text" placeholder="Login"/>
-        <input class="form__input" matInput formControlName="password" type="password" placeholder="Password"/>
-        <a href='reset.html' class="form__help">Forgot password?</a>
-        <button class="form__button" [disabled]="!loginForm.valid" disabled>Sign In</button>
+        <input class="form__input" formControlName="login" matInput placeholder="Login" type="text"/>
+        <input class="form__input" formControlName="password" matInput placeholder="Password" type="password"/>
+        <a class="form__help" href='reset.html'>Forgot password?</a>
+        <button [disabled]="!loginForm.valid" class="form__button" disabled>Sign In</button>
       </form>
     </div>
   </main>

@@ -3,7 +3,6 @@ package com.meetup.entities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +12,7 @@ import java.util.List;
 @Setter
 @ToString
 public class User {
+    public List<String> roles;
     private int id;
     private String login;
     private String email;
@@ -22,7 +22,6 @@ public class User {
     private String about;
     private Float rate;
     private String password;
-    public List<String> roles;
 
     public User(String[] roles) {
         this.roles = Arrays.asList(roles);
@@ -39,10 +38,6 @@ public class User {
         this.roles = new ArrayList<String>();
     }
 
-    public void addRole(String role) {
-        this.roles.add(role);
-    }
-
     public User(String email, String login, String password, String name, String lastName, List<String> roles) {
         this.email = email;
         this.login = login;
@@ -50,5 +45,9 @@ public class User {
         this.lastName = lastName;
         this.password = password;
         this.roles = roles;
+    }
+
+    public void addRole(String role) {
+        this.roles.add(role);
     }
 }

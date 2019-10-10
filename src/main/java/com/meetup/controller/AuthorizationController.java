@@ -11,8 +11,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +46,7 @@ public class AuthorizationController {
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
-            System.out.println("Succesfull Login: "+username+"\ntoken: "+token.toString());
+            System.out.println("Succesfull Login: " + username + "\ntoken: " + token.toString());
 //            System.out.println("username: " + jwtTokenProvider.getUsername(token));
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/"); // global cookie accessible everywhere

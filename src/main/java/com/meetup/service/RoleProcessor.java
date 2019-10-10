@@ -6,10 +6,10 @@ import java.util.List;
 
 public class RoleProcessor {
 
-    public static boolean isSpeaker(User user){
+    public static boolean isSpeaker(User user) {
         List<String> roles = user.getRoles();
-        for (String s: roles){
-            if (s.equals("SPEAKER")){
+        for (String s : roles) {
+            if (s.equals("SPEAKER")) {
                 return true;
             }
         }

@@ -135,6 +135,7 @@ form {
   cursor: pointer;
   margin-top: 14px;
 }
+
 .form__button:disabled {
   background: #dddddd;
 }
@@ -151,6 +152,6 @@ form {
   }
 }
 
-.ng-invalid:not(form)  {
+.ng-invalid:not(form) {
   border-left: 5px solid #a94442; /* red */
 }

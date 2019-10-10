@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {AbstractControl, FormControl, FormGroup, Validators, FormBuilder} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-register-speaker',
@@ -25,6 +25,10 @@ export class RegisterSpeakerComponent implements OnInit {
   ) {
   }
 
+  get form() {
+    return this.registerForm.controls;
+  }
+
   onSubmit() {
     this.register();
   }
@@ -36,10 +40,6 @@ export class RegisterSpeakerComponent implements OnInit {
       password: this.registerForm.get('password').value
     };
     this.httpClient.post("/api/v1/user/register/speaker", user).subscribe();
-  }
-
-  get form() {
-    return this.registerForm.controls;
   }
 
   ngOnInit() {
