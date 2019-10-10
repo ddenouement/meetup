@@ -4,18 +4,22 @@
       <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
         <p class="form__headline">Sign up as listener</p>
         <div class="form__user">
-        <input type="text" class="form__input" matInput formControlName="firstName" placeholder="First name"/>
-        <input type="text" class="form__input" matInput formControlName="lastName" placeholder="Last name"/>
+          <input type="text" class="form__input" formControlName="firstName" pattern="[A-Z]{1}[a-z]{2,20}"
+                 placeholder="First name"/>
+          <input type="text" class="form__input" formControlName="lastName" pattern="[A-Z]{1}[a-z]{2,20}"
+                 placeholder="Last name"/>
         </div>
-        <input class="form__input" matInput formControlName="login" type="text" placeholder="Login" />
-        <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail" />
-        <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password" >
+        <input class="form__input" formControlName="login" type="text" placeholder="Login"/>
+        <input class="form__input" formControlName="email" type="email" placeholder="E-mail"/>
+        <textarea class="form__input form__textarea" formControlName="about" maxlength="30" matInput
+                  placeholder="About"></textarea>
+        <input type="password" class="form__input password" formControlName="password" placeholder="Create password">
         <div class="complexity">
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
         </div>
-        <input class="form__input" formControlName="confirmPassword" matInput placeholder="Confirm password"
+        <input class="form__input" formControlName="confirmPassword" placeholder="Confirm password"
                type="password">
         <button [disabled]="!registerForm.valid" class="form__button" disabled type="submit">Sign Up</button>
       </form>
