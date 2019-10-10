@@ -44,6 +44,9 @@ public class MeetingServiceImpl implements MeetingService {
         }
     }
 
+
+    //TODO pagination
+
     /**
      * Method used to get meetings list from database, using meeting repository (MeetingDao)
      *

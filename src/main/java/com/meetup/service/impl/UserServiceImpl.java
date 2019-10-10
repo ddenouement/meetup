@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ import java.util.List;
 @Component
 public class UserServiceImpl implements UserService {
 
+    //TODO enum
     private static final String LISTENER = "LISTENER";
     private static final String SPEAKER = "SPEAKER";
     private static final String ADMIN = "ADMIN";
@@ -26,11 +28,8 @@ public class UserServiceImpl implements UserService {
     UserDaoImpl userDao;
 
     /**
-     *
-     * @param user
-     * User (that has role of listener) to register
-     * @return
-     * Entity, representing information about register status
+     * @param user User (that has role of listener) to register
+     * @return Entity, representing information about register status
      */
     @Override
     public ResponseEntity<String> registerAsListener(User user) {
@@ -45,20 +44,15 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
-     * @param user
-     * User (that has role of speaker) to register
-     * @return
-     * Entity, representing information about register status
+     * @param user User (that has role of speaker) to register
+     * @return Entity, representing information about register status
      */
     @Override
     public ResponseEntity<String> registerAsSpeaker(User user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao.isEmailUsed(user.getEmail())) {
             return new ResponseEntity<>("User already exists", HttpStatus.FORBIDDEN);
         } else {
-            user.getRoles().add(LISTENER);
-            user.getRoles().add(SPEAKER);
-            System.out.println(user.toString());
+            user.getRoles().addAll(Arrays.asList(LISTENER, SPEAKER));
             userDao.insertNewUser(user);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }

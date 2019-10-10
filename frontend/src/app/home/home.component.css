@@ -1,6 +1,6 @@
 /*.responsive {*/
-  /*width: 100%;*/
-  /*height: auto;*/
+/*width: 100%;*/
+/*height: auto;*/
 /*}*/
 /* Container needed to position the button. Adjust the width as needed */
 .container {
@@ -36,7 +36,8 @@
   background-color: red;
   opacity: 1;
 }
-.topics{
+
+.topics {
   margin-left: 20%;
   margin-right: 20%;
 }

@@ -29,17 +29,20 @@ public class SpeakerController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    //TODO move api/v1 to method-level mapping
+    //TODO AOP (security Config, Filter)
     @PostMapping(value = "/createMeeting")
     public ResponseEntity createMeeting(@CookieValue(value = "token", defaultValue = "") String token,
                                         @RequestBody Meeting meeting) {
         if (meetingService.createMeeting(meeting, extractLogin(token)) == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
+            //TODO create response in short form (e.g. ok)
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
-    @GetMapping(value = "/createMeeting/topics")
+    @GetMapping("/createMeeting/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics(@CookieValue(value = "token", defaultValue = "") String token) {
         if (meetingService.getAllTopics(extractLogin(token)) == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/availableSpeakers")
-    public ResponseEntity<List<User>> getAllSpeakers(){
-        return new ResponseEntity<>(userService.getAllSpeakers(),HttpStatus.OK);
+    public ResponseEntity<List<User>> getAllSpeakers() {
+        return new ResponseEntity<>(userService.getAllSpeakers(), HttpStatus.OK);
     }
 
 
