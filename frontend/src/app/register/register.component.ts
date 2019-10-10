@@ -14,10 +14,12 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
+  public about: string;
   public password: string;
 
   constructor(
@@ -31,7 +33,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    //console.warn(this.registrForm.value);
     this.register();
   }
 
@@ -41,6 +42,7 @@ export class RegisterComponent implements OnInit {
       lastName: this.registerForm.get('lastName').value,
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('email').value,
+      about: this.registerForm.get('about').value,
       password: this.registerForm.get('password').value
     };
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe();
@@ -48,10 +50,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      firstName:['',Validators.required],
-      lastName:['',Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      about: [''],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     }, {
@@ -66,7 +69,6 @@ export class RegisterComponent implements OnInit {
 
 
     content.addEventListener('click', (event) => {
-      // Toggle class "is-active"
       if (event.target === pass) {
         complexity.classList.add('active');
       } else {

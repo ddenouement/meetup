@@ -195,10 +195,26 @@ form {
   background: #38ECAC;
 }
 
-.ng-valid[required], .ng-valid.required {
+.ng-valid:not(form) {
   border-left: 5px solid #38ECAC; /* green */
 }
 
 .ng-invalid:not(form) {
   border-left: 5px solid #a94442; /* red */
+}
+
+.form__textarea {
+  resize: none;
+}
+
+.form__textarea::-webkit-scrollbar {
+  width: 4px;
+  background: #fdfeff;
+  mix-blend-mode: normal;
+  border-radius: 2px;
+}
+
+.form__textarea::-webkit-scrollbar-thumb {
+  background-color: #edf2ff;
+  border-radius: 2px;
 }
