@@ -1,6 +1,6 @@
 package com.meetup.service;
 
-import com.meetup.entities.*;
+import com.meetup.entities.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

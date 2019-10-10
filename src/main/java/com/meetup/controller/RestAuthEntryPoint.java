@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class RestAuthEntryPoint  implements AuthenticationEntryPoint {
+public class RestAuthEntryPoint implements AuthenticationEntryPoint {
 
-        @Override
-        public void commence(
-                HttpServletRequest request,
-                HttpServletResponse response,
-                AuthenticationException authException) throws IOException {
+    @Override
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException) throws IOException {
 
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                    "Unauthorized");
-        }
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                "Unauthorized");
+    }
 
 }

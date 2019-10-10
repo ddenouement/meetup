@@ -1,18 +1,20 @@
 <div>
   <main>
     <div class="content">
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
         <p class="form__headline">Sign up as speaker</p>
-        <input class="form__input" matInput formControlName="login" type="text" placeholder="Login"/>
-        <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail"/>
-        <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password">
+        <input class="form__input" formControlName="login" matInput placeholder="Login" type="text"/>
+        <input class="form__input" formControlName="email" matInput placeholder="E-mail" type="email"/>
+        <input class="form__input password" formControlName="password" matInput placeholder="Create password"
+               type="password">
         <div class="complexity">
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
           <div class="complexity__item"></div>
         </div>
-        <input type="password" class="form__input" matInput formControlName="confirmPassword" placeholder="Confirm password">
-        <button class="form__button" type="submit" [disabled]="!registerForm.valid" disabled>Sign Up</button>
+        <input class="form__input" formControlName="confirmPassword" matInput placeholder="Confirm password"
+               type="password">
+        <button [disabled]="!registerForm.valid" class="form__button" disabled type="submit">Sign Up</button>
       </form>
     </div>
   </main>

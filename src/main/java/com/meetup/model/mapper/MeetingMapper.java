@@ -8,10 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-/**
- * @author Dmytro Zubko
- */
-
 public final class MeetingMapper implements RowMapper<Meeting> {
     public final Meeting mapRow(ResultSet rs, int rowNum) throws SQLException {
         Meeting meeting = new Meeting();

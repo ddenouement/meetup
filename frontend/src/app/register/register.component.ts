@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +14,8 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+  public firstName: string;
+  public lastName: string;
   public login: string;
   public email: string;
   public password: string;
@@ -24,6 +26,10 @@ export class RegisterComponent implements OnInit {
   ) {
   }
 
+  get form() {
+    return this.registerForm.controls;
+  }
+
   onSubmit() {
     //console.warn(this.registrForm.value);
     this.register();
@@ -31,6 +37,8 @@ export class RegisterComponent implements OnInit {
 
   public register(): void {
     const user = <User>{
+      firstName: this.registerForm.get('firstName').value,
+      lastName: this.registerForm.get('lastName').value,
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('email').value,
       password: this.registerForm.get('password').value
@@ -38,12 +46,10 @@ export class RegisterComponent implements OnInit {
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe();
   }
 
-  get form() {
-    return this.registerForm.controls;
-  }
-
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
+      firstName:['',Validators.required],
+      lastName:['',Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -99,6 +105,7 @@ export class RegisterComponent implements OnInit {
   }
 
 }
+
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
     const control = formGroup.controls[controlName];

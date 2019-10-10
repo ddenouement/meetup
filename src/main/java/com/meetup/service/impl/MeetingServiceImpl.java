@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.meetup.service.RoleProcessor.isSpeaker;
 
@@ -23,6 +24,8 @@ public class MeetingServiceImpl implements MeetingService {
     MeetingDaoImpl meetingDao;
     @Autowired
     UserDaoImpl userDao;
+    @Autowired
+    LoginValidatorServiceImpl loginValidatorService;
 
     /**
      * Method used to get topics list from database, using topic repository (TopicDao)
@@ -30,25 +33,26 @@ public class MeetingServiceImpl implements MeetingService {
      * @return List of "Topic" objects
      */
     @Override
-    public List<Topic> getAllTopics(String login) {
-        if (userDao.findUserByLogin(login) == null) {
-            System.out.println("USER token login parse error");
-            return null;
+    public List<Topic> getAllTopics(String token) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        if (userDao.findUserByLogin(userLogin) == null) {
+            throw new NoSuchElementException();
         } else {
-            System.out.println("Gone to else, topics returned");
             return topicDao.getAllTopics();
         }
     }
 
+    //TODO pagination
     /**
      * Method used to get meetings list from database, using meeting repository (MeetingDao)
      *
      * @return List of "Meeting" objects
      */
     @Override
-    public List<Meeting> getAllMeetings(String login) {
-        if (userDao.findUserByLogin(login) == null) {
-            return null;
+    public List<Meeting> getAllMeetings(String token) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        if (userDao.findUserByLogin(userLogin) == null) {
+            throw new NoSuchElementException();
         } else {
             return meetingDao.getAllMeetings();
         }
@@ -56,16 +60,17 @@ public class MeetingServiceImpl implements MeetingService {
 
     /**
      * @param meeting Object, to be added to database
-     * @param login   User (Speaker) login that creates a meeting
+     * @param token   Token with user login that creates a meeting
      * @return Meeting that was just created
      */
     @Override
-    public Meeting createMeeting(Meeting meeting, String login) {
-        if (isSpeaker(userDao.findUserByLogin(login))) {
+    public Meeting createMeeting(Meeting meeting, String token) throws IllegalAccessException {
+        String userLogin = loginValidatorService.extractLogin(token);
+        if (isSpeaker(userDao.findUserByLogin(userLogin))) {
             meetingDao.insertNewMeeting(meeting);
             return meeting;
         } else {
-            return null;
+            throw new IllegalAccessException();
         }
 
     }
@@ -76,12 +81,13 @@ public class MeetingServiceImpl implements MeetingService {
      * @return List of "Meeting" objects
      */
     @Override
-    public List<Meeting> getSpeakerMeetings(String login) {
-        User user = userDao.findUserByLogin(login);
+    public List<Meeting> getSpeakerMeetings(String token) throws IllegalAccessException {
+        String userLogin = loginValidatorService.extractLogin(token);
+        User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             return meetingDao.getSpeakerMeetings(user.getId());
         } else {
-            return null;
+            throw new IllegalAccessException();
         }
     }
 }
