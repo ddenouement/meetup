@@ -14,6 +14,8 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+  public firstName: string;
+  public lastName: string;
   public login: string;
   public email: string;
   public password: string;
@@ -31,6 +33,8 @@ export class RegisterComponent implements OnInit {
 
   public register(): void {
     const user = <User>{
+      firstName: this.registerForm.get('firstName').value,
+      lastName: this.registerForm.get('lastName').value,
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('email').value,
       password: this.registerForm.get('password').value
@@ -44,6 +48,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
+      firstName:['',Validators.required],
+      lastName:['',Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],

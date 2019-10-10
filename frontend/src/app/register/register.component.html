@@ -3,6 +3,10 @@
     <div class="content">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <p class="form__headline">Sign up as listener</p>
+        <div class="form__user">
+        <input type="text" class="form__input" matInput formControlName="firstName" placeholder="First name"/>
+        <input type="text" class="form__input" matInput formControlName="lastName" placeholder="Last name"/>
+        </div>
         <input class="form__input" matInput formControlName="login" type="text" placeholder="Login" />
         <input class="form__input" matInput formControlName="email" type="email" placeholder="E-mail" />
         <input type="password" class="form__input password" matInput formControlName="password" placeholder="Create password" >
