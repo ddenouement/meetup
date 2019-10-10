@@ -5,10 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-/**
- * @author Dmytro Zubko
- */
-
 public interface UserService {
 
     ResponseEntity<String> registerAsListener(User user);

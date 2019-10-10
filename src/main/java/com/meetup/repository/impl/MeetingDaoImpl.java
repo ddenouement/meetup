@@ -18,10 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Dmytro Zubko
- */
-
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class MeetingDaoImpl implements IMeetingDAO {

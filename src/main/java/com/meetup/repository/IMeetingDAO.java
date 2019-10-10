@@ -5,10 +5,6 @@ import com.meetup.entities.Topic;
 
 import java.util.List;
 
-/**
- * @author Dmytro Zubko
- */
-
 public interface IMeetingDAO {
     List<Meeting> getAllMeetings();
 

@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * @author Dmytro Zubko
- */
-
 @RestController
 @RequestMapping("/api/v1/user/speaker")
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")

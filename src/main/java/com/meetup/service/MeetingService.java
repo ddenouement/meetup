@@ -6,10 +6,6 @@ import com.meetup.entities.User;
 
 import java.util.List;
 
-/**
- * @author Dmytro Zubko
- */
-
 public interface MeetingService {
     Meeting createMeeting(Meeting meeting, String login);
 

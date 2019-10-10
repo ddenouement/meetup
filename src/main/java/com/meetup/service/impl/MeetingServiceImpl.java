@@ -14,10 +14,6 @@ import java.util.List;
 
 import static com.meetup.service.RoleProcessor.isSpeaker;
 
-/**
- * @author Dmytro Zubko
- */
-
 @Component
 public class MeetingServiceImpl implements MeetingService {
 

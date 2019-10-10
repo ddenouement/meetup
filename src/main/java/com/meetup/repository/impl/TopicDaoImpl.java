@@ -11,10 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @author Dmytro Zubko
- */
-
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class TopicDaoImpl implements ITopicDAO {
