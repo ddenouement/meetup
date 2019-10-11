@@ -4,6 +4,9 @@ import com.meetup.entities.Meeting;
 import com.meetup.entities.Topic;
 import com.meetup.model.mapper.MeetingMapper;
 import com.meetup.repository.IMeetingDAO;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -13,10 +16,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
@@ -45,13 +44,13 @@ public class MeetingDaoImpl implements IMeetingDAO {
     public void insertNewMeeting(Meeting meeting) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_speaker", meeting.getSpeakerId())
-                .addValue("id_language", meeting.getLanguageId())
-                .addValue("title", meeting.getTitle())
-                .addValue("start_time", meeting.getDate())
-                .addValue("min_atendees", meeting.getMinAttendees())
-                .addValue("max_atendees", meeting.getMaxAttendees())
-                .addValue("description", meeting.getDescription());
+            .addValue("id_speaker", meeting.getSpeakerId())
+            .addValue("id_language", meeting.getLanguageId())
+            .addValue("title", meeting.getTitle())
+            .addValue("start_time", meeting.getDate())
+            .addValue("min_atendees", meeting.getMinAttendees())
+            .addValue("max_atendees", meeting.getMaxAttendees())
+            .addValue("description", meeting.getDescription());
         template.update(INSERT_NEW_MEETING, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             meeting.setId(holder.getKey().intValue());
@@ -65,8 +64,11 @@ public class MeetingDaoImpl implements IMeetingDAO {
 
     @Override
     public void addTopicToMeeting(Meeting meeting, Topic topic) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("name", topic.getName());
-        Integer topic_id = template.queryForObject(FIND_TOPIC_ID_BY_NAME, namedParameters, Integer.class);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("name",
+            topic.getName());
+        Integer topic_id = template
+            .queryForObject(FIND_TOPIC_ID_BY_NAME, namedParameters,
+                Integer.class);
 
         Map parametersForAddingTopic = new HashMap();
         parametersForAddingTopic.put("id_meetup", meeting.getId());
@@ -77,7 +79,8 @@ public class MeetingDaoImpl implements IMeetingDAO {
     @Override
     public List<Meeting> getSpeakerMeetings(int speakerID) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_speaker", speakerID);
-        return this.template.query(GET_SPEAKER_MEETINGS, param, new MeetingMapper());
+            .addValue("id_speaker", speakerID);
+        return this.template
+            .query(GET_SPEAKER_MEETINGS, param, new MeetingMapper());
     }
 }

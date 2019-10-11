@@ -3,10 +3,9 @@ package com.meetup.service.impl;
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.LoginValidatorService;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.NoSuchElementException;
 
 @Component
 public class LoginValidatorServiceImpl implements LoginValidatorService {
@@ -29,9 +28,6 @@ public class LoginValidatorServiceImpl implements LoginValidatorService {
     }
 
     private boolean userExists(String login) {
-        if (userDao.findUserByLogin(login) == null) {
-            return false;
-        }
-        return true;
+        return userDao.findUserByLogin(login) != null;
     }
 }

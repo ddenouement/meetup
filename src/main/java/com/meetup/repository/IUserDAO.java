@@ -1,10 +1,10 @@
 package com.meetup.repository;
 
 import com.meetup.entities.User;
-
 import java.util.List;
 
 public interface IUserDAO {
+
     boolean isLoginUsed(String login);
 
     boolean isEmailUsed(String email);
