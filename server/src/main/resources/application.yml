@@ -1,0 +1,31 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  profiles:
+    active: production
+  application:
+    name: MeetUp
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    password:
+    username: sa
+    continue-on-error: false
+    schema: classpath:sql/Schema.sql
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+server:
+  port: ${PORT:9990}
+
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+#        loggerLevel: full

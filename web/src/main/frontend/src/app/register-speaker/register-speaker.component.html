@@ -1,0 +1,21 @@
+<div>
+  <main>
+    <div class="content">
+      <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+        <p class="form__headline">Sign up as speaker</p>
+        <input class="form__input" formControlName="login" matInput placeholder="Login" type="text"/>
+        <input class="form__input" formControlName="email" matInput placeholder="E-mail" type="email"/>
+        <input class="form__input password" formControlName="password" matInput placeholder="Create password"
+               type="password">
+        <div class="complexity">
+          <div class="complexity__item"></div>
+          <div class="complexity__item"></div>
+          <div class="complexity__item"></div>
+        </div>
+        <input class="form__input" formControlName="confirmPassword" matInput placeholder="Confirm password"
+               type="password">
+        <button [disabled]="!registerForm.valid" class="form__button" disabled type="submit">Sign Up</button>
+      </form>
+    </div>
+  </main>
+</div>
