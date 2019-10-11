@@ -11,6 +11,15 @@
         </div>
         <input class="form__input" formControlName="login" type="text" placeholder="Login"/>
         <input class="form__input" formControlName="email" type="email" placeholder="E-mail"/>
+        <mat-select class="form__select" placeholder="Languages" formControlName="languages" multiple>
+          <mat-select-trigger> {{registerForm.get('languages').value ? registerForm.get('languages').value[0] : ''}}
+            <span *ngIf="registerForm.get('languages').value?.length > 1" class="example-additional-selection">
+              (+{{registerForm.get('languages').value.length - 1}} {{registerForm.get('languages').value?.length === 2 ? 'other' : 'others'}}
+              )
+              </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let languages of languagesList" [value]="languages">{{languages}}</mat-option>
+        </mat-select>
         <textarea class="form__input form__textarea" formControlName="about" maxlength="30" matInput
                   placeholder="About"></textarea>
         <input type="password" class="form__input password" formControlName="password" placeholder="Create password">

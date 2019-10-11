@@ -21,6 +21,8 @@ import {HomeComponent} from './home/home.component';
 import {RegisterSpeakerComponent} from './register-speaker/register-speaker.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -44,7 +46,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],
