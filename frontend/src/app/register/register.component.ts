@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.warn(this.registerForm.value);
+    //console.warn(this.registerForm.value);
     this.register();
   }
 
@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       about: [''],
       languages: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.pattern(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)]],
       confirmPassword: ['', Validators.required]
     }, {
       validator: MustMatch('password', 'confirmPassword')
@@ -85,21 +85,7 @@ export class RegisterComponent implements OnInit {
         const lengthOfPass = (<HTMLInputElement>eve.target).value.split('').length;
         if (lengthOfPass == 0) {
           complexity.classList.remove('active');
-        } else if (lengthOfPass <= 7) {
-          for (let i = 0; i < complexityItem.length; i++) {
-            complexityItem[i].classList.remove('complexity__item--good');
-            complexityItem[i].classList.remove('complexity__item--perfect');
-          }
-          complexityItem[0].classList.add('complexity__item--bad');
-        } else if (lengthOfPass <= 8 && (<HTMLInputElement>eve.target).value.match(/[A-Z]/i)) {
-          for (let i = 0; i < complexityItem.length; i++) {
-            complexityItem[i].classList.remove('complexity__item--bad');
-            complexityItem[i].classList.remove('complexity__item--perfect');
-          }
-          for (let i = 0; i < complexityItem.length - 1; i++) {
-            complexityItem[i].classList.add('complexity__item--good');
-          }
-        } else if (lengthOfPass > 8 && (<HTMLInputElement>eve.target).value.match(/[A-Z]/i) && (<HTMLInputElement>eve.target).value.match(/\d/i) && (<HTMLInputElement>eve.target).value.match(/[a-z]/i)) {
+        }  else if ((<HTMLInputElement>eve.target).value.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)) {
           for (let i = 0; i < complexityItem.length; i++) {
             complexityItem[i].classList.remove('complexity__item--bad');
             complexityItem[i].classList.remove('complexity__item--good');
@@ -107,6 +93,21 @@ export class RegisterComponent implements OnInit {
           for (let i = 0; i < complexityItem.length; i++) {
             complexityItem[i].classList.add('complexity__item--perfect');
           }
+        } else if ((<HTMLInputElement>eve.target).value.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}/i)) {
+          for (let i = 0; i < complexityItem.length; i++) {
+            complexityItem[i].classList.remove('complexity__item--bad');
+            complexityItem[i].classList.remove('complexity__item--perfect');
+          }
+          for (let i = 0; i < complexityItem.length - 1; i++) {
+            complexityItem[i].classList.add('complexity__item--good');
+          }
+        }
+        else if (lengthOfPass <= 7) {
+          for (let i = 0; i < complexityItem.length; i++) {
+            complexityItem[i].classList.remove('complexity__item--good');
+            complexityItem[i].classList.remove('complexity__item--perfect');
+          }
+          complexityItem[0].classList.add('complexity__item--bad');
         }
       });
     });

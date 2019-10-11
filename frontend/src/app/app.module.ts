@@ -48,7 +48,7 @@ import {MatSelectModule} from "@angular/material/select";
     FormsModule,
     ReactiveFormsModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],
