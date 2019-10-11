@@ -3,5 +3,6 @@ export class User {
   public lastName: string;
   public login: string;
   public email: string;
+  public about: string;
   public password: string;
 }

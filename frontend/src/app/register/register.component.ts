@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -14,12 +14,16 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+  //TODO create database of languages
+  languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
+
 
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
   public about: string;
+  public languages: string[];
   public password: string;
 
   constructor(
@@ -33,6 +37,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    console.warn(this.registerForm.value);
     this.register();
   }
 
@@ -55,6 +60,7 @@ export class RegisterComponent implements OnInit {
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       about: [''],
+      languages: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     }, {
