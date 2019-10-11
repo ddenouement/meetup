@@ -3,13 +3,12 @@ package com.meetup.service.impl;
 import com.meetup.entities.User;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.UserService;
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -28,8 +27,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResponseEntity<String> registerAsListener(User user) {
-        if (userDao.isLoginUsed(user.getLogin()) || userDao.isEmailUsed(user.getEmail())) {
-            return new ResponseEntity<>("User already exists", HttpStatus.FORBIDDEN);
+        if (userDao.isLoginUsed(user.getLogin()) || userDao
+            .isEmailUsed(user.getEmail())) {
+            return new ResponseEntity<>("User already exists",
+                HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().add(LISTENER);
             System.out.println(user.toString());
@@ -44,8 +45,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResponseEntity<String> registerAsSpeaker(User user) {
-        if (userDao.isLoginUsed(user.getLogin()) || userDao.isEmailUsed(user.getEmail())) {
-            return new ResponseEntity<>("User already exists", HttpStatus.FORBIDDEN);
+        if (userDao.isLoginUsed(user.getLogin()) || userDao
+            .isEmailUsed(user.getEmail())) {
+            return new ResponseEntity<>("User already exists",
+                HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().addAll(Arrays.asList(LISTENER, SPEAKER));
             userDao.insertNewUser(user);

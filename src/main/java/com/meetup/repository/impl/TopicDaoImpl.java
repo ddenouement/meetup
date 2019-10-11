@@ -3,13 +3,12 @@ package com.meetup.repository.impl;
 import com.meetup.entities.Topic;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.ITopicDAO;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")

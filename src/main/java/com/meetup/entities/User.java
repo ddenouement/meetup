@@ -1,17 +1,17 @@
 package com.meetup.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
 public class User {
+
     public List<String> roles;
     private int id;
     private String login;
@@ -38,7 +38,8 @@ public class User {
         this.roles = new ArrayList<String>();
     }
 
-    public User(String email, String login, String password, String name, String lastName, List<String> roles) {
+    public User(String email, String login, String password, String name,
+        String lastName, List<String> roles) {
         this.email = email;
         this.login = login;
         this.firstName = name;

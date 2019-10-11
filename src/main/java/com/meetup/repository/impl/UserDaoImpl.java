@@ -2,6 +2,11 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.User;
 import com.meetup.repository.IUserDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -12,15 +17,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @Repository
 @PropertySource("classpath:sql/user_queries.properties")
 public class UserDaoImpl implements IUserDAO {
+
     @Autowired
     private NamedParameterJdbcTemplate template;
     @Value("${find_role_id}")
@@ -40,14 +40,12 @@ public class UserDaoImpl implements IUserDAO {
 
     @Override
     public boolean isLoginUsed(String login) {
-        if (findUserByLogin(login) != null) return true;
-        return false;
+        return findUserByLogin(login) != null;
     }
 
     @Override
     public boolean isEmailUsed(String email) {
-        if (findUserByEmail(email) != null) return true;
-        return false;
+        return findUserByEmail(email) != null;
     }
 
     private User toPerson(ResultSet resultSet) throws SQLException {
@@ -62,15 +60,19 @@ public class UserDaoImpl implements IUserDAO {
         person.setPassword(resultSet.getString("password"));
         person.setActive(resultSet.getBoolean("active"));
         person.setRate(resultSet.getFloat("rate"));
-        for (String a : findUserRolesByLogin(l))
+        for (String a : findUserRolesByLogin(l)) {
             person.addRole(a);
+        }
         return person;
     }
 
     @Override
     public void addRoleToUser(User us, String r) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("text", r);
-        Integer role_id = template.queryForObject(FIND_ROLE_ID_BY_NAME, namedParameters, Integer.class);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("text",
+            r);
+        Integer role_id = template
+            .queryForObject(FIND_ROLE_ID_BY_NAME, namedParameters,
+                Integer.class);
 
         Map namedParameters2 = new HashMap();
         namedParameters2.put("usId", us.getId());
@@ -85,14 +87,14 @@ public class UserDaoImpl implements IUserDAO {
 
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource param = new MapSqlParameterSource()
-                    .addValue("login", a.getLogin())
-                    .addValue("email", a.getEmail())
-                    .addValue("pass", a.getPassword())
-                    .addValue("firstName", a.getFirstName())
-                    .addValue("lastName", a.getLastName())
-                    .addValue("rate", a.getRate())
-                    .addValue("active", a.isActive())
-                    .addValue("about", a.getAbout());
+                .addValue("login", a.getLogin())
+                .addValue("email", a.getEmail())
+                .addValue("pass", a.getPassword())
+                .addValue("firstName", a.getFirstName())
+                .addValue("lastName", a.getLastName())
+                .addValue("rate", a.getRate())
+                .addValue("active", a.isActive())
+                .addValue("about", a.getAbout());
             template.update(INSERT_NEW_USER, param, holder, new String[]{"id"});
 
             if (holder.getKeys() != null) {
@@ -114,40 +116,46 @@ public class UserDaoImpl implements IUserDAO {
     public User findUserByLogin(String log) {
 
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("login", log);
+            .addValue("login", log);
         ResultSet rs = null;
         List<User> found_users =
-                template.query(FIND_BY_LOGIN, param, (resultSet, i) -> {
-                    return toPerson(resultSet);
-                });
-        if (found_users.size() == 0) return null;
-        else return found_users.get(0);
+            template.query(FIND_BY_LOGIN, param, (resultSet, i) -> {
+                return toPerson(resultSet);
+            });
+        if (found_users.size() == 0) {
+            return null;
+        } else {
+            return found_users.get(0);
+        }
 
     }
 
     @Override
     public User findUserByEmail(String em) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("email", em);
+            .addValue("email", em);
         ResultSet rs = null;
         List<User> found_users =
-                template.query(FIND_BY_EMAIL, param, (resultSet, i) -> {
-                    return toPerson(resultSet);
-                });
-        if (found_users.size() == 0) return null;
-        else return found_users.get(0);
+            template.query(FIND_BY_EMAIL, param, (resultSet, i) -> {
+                return toPerson(resultSet);
+            });
+        if (found_users.size() == 0) {
+            return null;
+        } else {
+            return found_users.get(0);
+        }
     }
 
     @Override
     public List<String> findUserRolesByLogin(String login) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("login", login);
+            .addValue("login", login);
         ResultSet rs = null;
         return
-                template.query(FIND_USER_ROLES_BY_LOGIN, param, (resultSet, i) -> {
-                    //        System.out.println("+");
-                    return toRole(resultSet);
-                });
+            template.query(FIND_USER_ROLES_BY_LOGIN, param, (resultSet, i) -> {
+                //        System.out.println("+");
+                return toRole(resultSet);
+            });
     }
 
     private String toRole(ResultSet resultSet) throws SQLException {

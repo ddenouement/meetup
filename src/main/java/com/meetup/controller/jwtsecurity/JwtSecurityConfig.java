@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 @Configuration
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     JwtTokenProvider jwtTokenProvider;
     @Autowired
@@ -25,7 +26,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+    public void configAuthentication(AuthenticationManagerBuilder auth)
+        throws Exception {
         auth.userDetailsService(customUserDetailsService);
     }
 
@@ -33,17 +35,20 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //@formatter:off
         http
-                .headers()
-                .frameOptions()
-                .disable()//this one to enable /h2 console in browser
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().anonymous()
-                .and().authorizeRequests().antMatchers("/api/v1/user/hello").authenticated()
-                .antMatchers("/api/v1/user/speaker/**").hasAuthority("SPEAKER").and()
+            .headers()
+            .frameOptions()
+            .disable()//this one to enable /h2 console in browser
+            .httpBasic().disable()
+            .csrf().disable()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().anonymous()
+            .and().authorizeRequests().antMatchers("/api/v1/user/hello")
+            .authenticated()
+            .antMatchers("/api/v1/user/speaker/**").hasAuthority("SPEAKER")
+            .and()
 
-                .apply(new JwtConfigurer(jwtTokenProvider));
+            .apply(new JwtConfigurer(jwtTokenProvider));
         //@formatter:on
     }
 
