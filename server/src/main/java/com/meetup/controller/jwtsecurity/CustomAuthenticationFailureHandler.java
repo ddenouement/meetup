@@ -12,16 +12,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+/**.
+ * implementation of AuthenticationFailureHandler
+ */
 public class CustomAuthenticationFailureHandler implements
     AuthenticationFailureHandler {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**.
+     *
+     * @param request
+     * @param response
+     * @param exception
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onAuthenticationFailure(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        AuthenticationException exception)
+      final   HttpServletRequest request,
+    final    HttpServletResponse response,
+     final   AuthenticationException exception)
         throws IOException, ServletException {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

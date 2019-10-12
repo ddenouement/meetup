@@ -6,52 +6,75 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+/**.
+ * set the security for rest api
+ */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    /**.
+     *jwttokenprovide, custom class
+     */
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+    /**
+     * UserDetails Service, custom class
+     */
     @Autowired
     private AuthenticationService customUserDetailsService;
-
+/**.
+ * get AuthenticationManager
+ */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**.
+     *set the UserDetailsService
+     * @param auth AuthenticationManagerBuilder
+     * @throws Exception exception
+     */
     @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth)
+    public void configAuthentication(final AuthenticationManagerBuilder auth)
         throws Exception {
         auth.userDetailsService(customUserDetailsService);
     }
 
+    /**.
+     * set explicitly security params and tokenprovider
+     * @param http HttpSecurity
+     * @throws Exception exception
+     */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         //@formatter:off
         http
-            .headers()
-            .frameOptions()
-            .disable()//this one to enable /h2 console in browser
-            .httpBasic().disable()
-            .csrf().disable()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().anonymous()
-            .and().authorizeRequests().antMatchers("/api/v1/user/hello")
-            .authenticated()
-            .antMatchers("/api/v1/user/speaker/**").hasAuthority("SPEAKER")
-            .and()
+                .headers()
+                .frameOptions()
+                .disable()//this one to enable /h2 console in browser
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
 
-            .apply(new JwtConfigurer(jwtTokenProvider));
+
+                .apply(new JwtConfigurer(jwtTokenProvider));
         //@formatter:on
     }
 
+    /**.
+     * set CustomAuthenticationFailureHandler
+     * @return CustomAuthenticationFailureHandler
+     */
     @Bean
     public AuthenticationFailureHandler customAuthenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();

@@ -11,8 +11,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthentificationRequest implements Serializable {
+/**.
+        * Represents a JSON object with Login and Password
+ */
+    public class AuthentificationRequest implements Serializable {
 
-    private String login;
-    private String password;
-}
+        /**.
+         * login
+         */
+        private String login;
+
+        /**.
+         * password
+         */
+        private String password;
+    }

@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ public class MeetingController {
         this.meetingService = meetingService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "api/v1/meetings")
     public ResponseEntity<List<Meeting>> getAllMeetings(
         @CookieValue(value = "token", defaultValue = "") String token) {
@@ -34,6 +36,7 @@ public class MeetingController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping("api/v1/meetings/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics(
         @CookieValue(value = "token", defaultValue = "") String token) {

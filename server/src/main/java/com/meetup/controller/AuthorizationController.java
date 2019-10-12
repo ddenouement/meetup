@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,61 +21,96 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**...
+ * Class that handles authorization and generates token for signup
+ *
+ */
 @RestController
-@Api(value = "meetup-application", description = "Operations used to manage user sign in/sign up")
+@Api(value = "meetup-application")
 
 public class AuthorizationController {
+    /**,.
+     * UserService
+     */
+    @Autowired
+    private   UserService userService;
+    /**,
+     * userDao
+     */
+    @Autowired
+    private  UserDaoImpl userDao;
+    /**,.
+     * Spring class
+     */
+    @Autowired
+    private   AuthenticationManager authenticationManager;
+    /**,.
+     * Class to extraxt token from cookie
+     */
+    @Autowired
+    private  JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserDaoImpl userDao;
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-
+    /**,.
+     * SignIn doesnt generate a token
+     *@return  ResponseEntity
+     * @param data AuthentificationRequest
+     *  @param response HttpServletResponse**/
     @PostMapping("/api/v1/user/login")
-    public ResponseEntity signin(@RequestBody AuthentificationRequest data,
-        HttpServletResponse response) {
+    public ResponseEntity signin(
+            final @RequestBody AuthentificationRequest data,
+            final   HttpServletResponse response) {
         try {
             String username = data.getLogin();
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username,
-                    data.getPassword()));
+                    new UsernamePasswordAuthenticationToken(username,
+                            data.getPassword()));
             String token = jwtTokenProvider.createToken(username,
-                findByUsernameAmongAll(username).getRoles());
+                    findByUsernameAmongAll(username).getRoles());
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
             System.out
-                .println("Succesfull Login: " + username + "\ntoken: " + token);
-//            System.out.println("username: " + jwtTokenProvider.getUsername(token));
+            .println("Succesfull Login: " + username + "\ntoken: " + token);
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/"); // global cookie accessible everywhere
             response.addCookie(cookie);
             return ok(model);
         } catch (AuthenticationException e) {
-            return new ResponseEntity<String>("Invalid username/password",
-                HttpStatus.UNAUTHORIZED);
+            throw new BadCredentialsException(
+                    "Invalid username/password supplied");
         }
     }
-
-    public User findByUsernameAmongAll(String login) {
+    /**.
+     * Helper method
+     * @return User
+     *@param login String
+     */
+    private User findByUsernameAmongAll(final String login) {
         User a = userDao.findUserByLogin(login);
         if (a == null) {
             throw new BadCredentialsException("No such person");
         }
         return a;
     }
-
+    /**,.
+     * sign as listener
+     * @return ResponseEntity
+     * @param user User
+     */
     @PostMapping(value = "/api/v1/user/register/listener")
-    public ResponseEntity registerListener(@RequestBody User user) {
+    public ResponseEntity registerListener(final @RequestBody User user) {
+
         return userService.registerAsListener(user);
     }
 
+    /**.
+     * sign as speaker
+     * @return ResponseEntity
+     * @param user User
+     */
     @PostMapping(value = "/api/v1/user/register/speaker")
-    public ResponseEntity<String> registerSpeaker(@RequestBody User user) {
+    public ResponseEntity<String> registerSpeaker(
+            final @RequestBody User user) {
         return userService.registerAsSpeaker(user);
     }
 }
