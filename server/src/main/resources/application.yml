@@ -7,17 +7,22 @@ spring:
   application:
     name: MeetUp
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
-    password:
-    username: sa
+    url: jdbc:postgresql://ec2-54-197-238-238.compute-1.amazonaws.com:5432/dc72m1l1vrrhs0
+    username: hwfgkkvlxomhnc
+    password: c2757e017c207706006d9a70475719a4404a5019f12d19ce9e728a1cf5619f4b
+  #datasource:
+  #  url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+  #  password:
+  #  username: sa
     continue-on-error: false
     schema: classpath:sql/Schema.sql
-    driver-class-name: org.h2.Driver
+#    driver-class-name: org.h2.Driver
     initialization-mode: always
-  h2:
-    console:
-      enabled: true
-      path: /h2
+#  h2:
+ #   console:
+  #    enabled: true
+   #   path: /h2
+    driver-class-name: org.postgresql.Driver
 
 server:
   port: ${PORT:9990}
