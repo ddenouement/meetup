@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +21,14 @@ public class SpeakerController {
 
     MeetingService meetingService;
 
+
     SpeakerController(@Autowired MeetingService meetingService) {
         this.meetingService = meetingService;
     }
 
-    //TODO AOP (security Config, Filter)
+
+
+    @PreAuthorize("hasRole('SPEAKER')")
     @PostMapping(value = "/api/v1/user/speaker/meetings")
     public ResponseEntity<Meeting> createMeeting(
         @CookieValue(value = "token", defaultValue = "") String token,
@@ -38,6 +42,8 @@ public class SpeakerController {
         }
     }
 
+
+    @PreAuthorize("hasRole('SPEAKER')")
     @GetMapping(value = "/api/v1/user/speaker/meetings")
     public ResponseEntity<List<Meeting>> getMyMeetings(
         @CookieValue(value = "token", defaultValue = "") String token) {
