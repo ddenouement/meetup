@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "meetup-application", description = "Operations used to manage meeting functionality")
 public class MeetingController {
 
-    MeetingService meetingService;
+    /**
+     * Service, that manages meeting functionality
+     */
+    private MeetingService meetingService;
 
     MeetingController(@Autowired MeetingService meetingService) {
         this.meetingService = meetingService;

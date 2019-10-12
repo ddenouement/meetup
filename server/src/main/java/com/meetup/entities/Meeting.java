@@ -20,6 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Meeting {
 
+    
     private int id;
     private int speakerId;
     private int languageId;

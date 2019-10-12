@@ -3,6 +3,7 @@ package com.meetup.service;
 import com.meetup.entities.User;
 import java.util.List;
 
+
 public class RoleProcessor {
 
     public static boolean isSpeaker(User user) {

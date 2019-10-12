@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
                 HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().add(LISTENER);
-            System.out.println(user.toString());
             userDao.insertNewUser(user);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
