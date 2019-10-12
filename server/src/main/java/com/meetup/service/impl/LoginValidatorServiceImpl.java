@@ -29,8 +29,8 @@ public class LoginValidatorServiceImpl implements LoginValidatorService {
      * @param jwtTokenProvider JSON web token provider
      * @param userDao User repository
      */
-    LoginValidatorServiceImpl
-    (@Autowired final JwtTokenProvider jwtTokenProvider,
+    LoginValidatorServiceImpl(
+        @Autowired final JwtTokenProvider jwtTokenProvider,
         @Autowired final UserDaoImpl userDao) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDao = userDao;

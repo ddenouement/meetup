@@ -10,6 +10,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Topic repository class.
+ * Used to communicate with database, to perform operations with Topic.
+ */
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class TopicDaoImpl implements ITopicDAO {
