@@ -1,6 +1,7 @@
 package com.meetup.controller.jwtsecurity;
 
-
+import static  com.meetup.controller.jwtsecurity.JwtSecurityConstants.SECRET;
+import static  com.meetup.controller.jwtsecurity.JwtSecurityConstants.VALIDITY_IN_MS;
 import com.meetup.service.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -14,36 +15,47 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+/**.
+ * gets token from cookie and authenticates user
+ */
 @Component
 public class JwtTokenProvider {
-
-    @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "secret";
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 3600000; // 1h
-
-
+    /**.
+     * string that will be an encoded SECRET
+     */
+     private String secretKey;
+    /**.
+     * custom UserDetailsService
+     */
     @Autowired
     private AuthenticationService userDetailsService;
 
+    /**.
+     *encode secret
+     */
     @PostConstruct
     protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey
+        secretKey = Base64.getEncoder().encodeToString(SECRET
             .getBytes()); //userDetailsService   = new AuthenticationService();
     }
 
-    public String createToken(String username, List<String> roles) {
+    /**.
+     *creates new token
+     * @param username String
+     * @param roles List<String>
+     * @return string token
+     */
+    public String createToken(final String username, final List<String> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + VALIDITY_IN_MS);
         return Jwts.builder()//
             .setClaims(claims)//
             .setIssuedAt(now)//
@@ -52,7 +64,12 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    /**.
+     *authenticate user by token
+     * @param token String
+     * @return Authentication
+     */
+    public Authentication getAuthentication(final String token) {
 
         UserDetails userDetails = this.userDetailsService
             .loadUserByUsername(getUsername(token));
@@ -64,13 +81,22 @@ public class JwtTokenProvider {
             userDetails.getAuthorities());
     }
 
-
-    public String getUsername(String token) {
+    /**.
+     *
+     * @param token String
+     * @return String
+     */
+    public String getUsername(final String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
             .getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest req) {
+    /**.
+     * method for getting tok from Cookies
+     * @param req HttpRequest
+     * @return String
+     */
+    public String resolveToken(final HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
             for (Cookie c : cookies) {
@@ -82,7 +108,12 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
+    /**.
+     *
+     * @param token String
+     * @return bool
+     */
+    boolean validateToken(final String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token);

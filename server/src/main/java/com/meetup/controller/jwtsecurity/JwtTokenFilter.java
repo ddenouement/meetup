@@ -10,17 +10,34 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
+/**.
+ * Invoke tokenProvider
+ */
 public class JwtTokenFilter extends GenericFilterBean {
-
+    /**.
+     * custom JwtTokenProvider
+     */
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    /**.
+     *
+     * @param mjwtTokenProvider JwtTokenProvider
+     */
+    public JwtTokenFilter(final JwtTokenProvider mjwtTokenProvider) {
+        this.jwtTokenProvider = mjwtTokenProvider;
     }
 
+    /**.
+     *
+     * @param req ServletRequest
+     * @param res ServletResponse
+     * @param filterChain FilterChain
+     * @throws IOException exception
+     * @throws ServletException exception
+     */
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res,
-        FilterChain filterChain)
+    public void doFilter(final ServletRequest req, final ServletResponse res,
+      final   FilterChain filterChain)
         throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
         if (token != null && jwtTokenProvider.validateToken(token)) {

@@ -22,8 +22,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
      *jwttokenprovide, custom class
      */
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
-    /**
+ private   JwtTokenProvider jwtTokenProvider;
+    /**.
      * UserDetails Service, custom class
      */
     @Autowired

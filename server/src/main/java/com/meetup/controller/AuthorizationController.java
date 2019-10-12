@@ -34,7 +34,7 @@ public class AuthorizationController {
      */
     @Autowired
     private   UserService userService;
-    /**,
+    /**.
      * userDao
      */
     @Autowired

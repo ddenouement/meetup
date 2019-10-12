@@ -17,7 +17,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
  */
 public class CustomAuthenticationFailureHandler implements
     AuthenticationFailureHandler {
-
+    /**.
+     * object mapper
+     */
     private ObjectMapper objectMapper = new ObjectMapper();
 
     /**.

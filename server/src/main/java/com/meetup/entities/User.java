@@ -7,48 +7,109 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * model class of User
+ */
 @Getter
 @Setter
 @ToString
 public class User {
-
-    public List<String> roles;
+    /**.
+     * roles of user
+     */
+    private List<String> roles;
+    /**.
+     * id (from DB)
+     */
     private int id;
+    /**.
+     * login
+     */
     private String login;
+    /**.
+     * email
+     */
     private String email;
+    /**.
+     * first name
+     */
     private String firstName;
+    /**.
+     * last name
+     */
     private String lastName;
+    /**.
+     * is user active
+     */
     private boolean isActive;
+    /**.
+     * about user
+     */
     private String about;
+    /**.
+     * rate of user
+     */
     private Float rate;
+    /**.
+     * password
+     */
     private String password;
 
-    public User(String[] roles) {
-        this.roles = Arrays.asList(roles);
+    /**.
+     * Constructor
+     * @param _roles String[]
+     */
+    public User(final String[] _roles) {
+        this.roles = Arrays.asList(_roles);
     }
 
-    public User(String email, String login, String password) {
-        this.email = email;
-        this.login = login;
-        this.password = password;
+    /**.
+     * Constructor
+     * @param memail String
+     * @param mlogin String
+     * @param mpassword String
+     */
+    public User(final String memail, final String mlogin,
+                final String mpassword) {
+        this.email = memail;
+        this.login = mlogin;
+        this.password = mpassword;
         this.roles = new ArrayList<String>();
     }
 
+    /**.
+     * constructor()
+     */
     public User() {
         this.roles = new ArrayList<String>();
     }
 
-    public User(String email, String login, String password, String name,
-        String lastName, List<String> roles) {
-        this.email = email;
-        this.login = login;
-        this.firstName = name;
-        this.lastName = lastName;
-        this.password = password;
-        this.roles = roles;
+    /**.
+     *
+     * @param memail String
+     * @param mlogin String
+     * @param mpassword String
+     * @param mname String
+     * @param mlastName String
+     * @param mroles List<String>
+     */
+    public User(final String memail, final String mlogin,
+                final String mpassword,
+                final String mname, final String mlastName,
+                final List<String> mroles) {
+        this.email = memail;
+        this.login = mlogin;
+        this.firstName = mname;
+        this.lastName = mlastName;
+        this.password = mpassword;
+        this.roles = mroles;
     }
 
-    public void addRole(String role) {
+    /**.
+     *
+     * @param role String
+     */
+    public void addRole(final String role) {
         this.roles.add(role);
     }
 }

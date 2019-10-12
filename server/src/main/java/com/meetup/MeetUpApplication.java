@@ -3,10 +3,22 @@ package com.meetup;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**.
+ * runner class for MeetUp
+ */
 @SpringBootApplication
 public class MeetUpApplication {
-
-    public static void main(String[] args) {
+    /**.
+     * constructor, closed for calls
+     */
+    private MeetUpApplication(){
+        //not user
+    }
+    /**.
+     *main method
+     * @param args String[]
+     */
+    public static void main(final String[] args) {
         SpringApplication.run(MeetUpApplication.class, args);
     }
 }

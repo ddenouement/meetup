@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**.
+ * Represents a JSON object with Login and Password
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-/**.
-        * Represents a JSON object with Login and Password
- */
+
     public class AuthentificationRequest implements Serializable {
 
         /**.

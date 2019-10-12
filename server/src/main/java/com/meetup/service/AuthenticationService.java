@@ -12,14 +12,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**.
+ * Implementation of UserDetailsService
+ */
 @Service
 public class AuthenticationService implements UserDetailsService {
-
+    /**.
+     * methods to work with DB (in aspect of Users)
+     */
     @Autowired
     private UserDaoImpl userDAO;
 
+    /**.
+     *
+     * @param userlogin String
+     * @return UserDetails (spring class)
+     * @throws UsernameNotFoundException exc
+     */
     @Override
-    public UserDetails loadUserByUsername(String userlogin)
+    public UserDetails loadUserByUsername(final String userlogin)
         throws UsernameNotFoundException {
         com.meetup.entities.User userInfo = userDAO.findUserByLogin(userlogin);
         List<GrantedAuthority> authorities = new ArrayList<>();
