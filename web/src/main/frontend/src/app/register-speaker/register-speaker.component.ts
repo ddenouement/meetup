@@ -14,10 +14,17 @@ export class RegisterSpeakerComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+  //TODO create database of languages
+  languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
+
+
+  public firstName: string;
+  public lastName: string;
   public login: string;
   public email: string;
+  public about: string;
+  public languages: string[];
   public password: string;
-
 
   constructor(
     private httpClient: HttpClient,
@@ -30,13 +37,17 @@ export class RegisterSpeakerComponent implements OnInit {
   }
 
   onSubmit() {
+    //console.warn(this.registerForm.value);
     this.register();
   }
 
   public register(): void {
     const user = <User>{
+      firstName: this.registerForm.get('firstName').value,
+      lastName: this.registerForm.get('lastName').value,
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('email').value,
+      about: this.registerForm.get('about').value,
       password: this.registerForm.get('password').value
     };
     this.httpClient.post("/api/v1/user/register/speaker", user).subscribe();
@@ -44,8 +55,12 @@ export class RegisterSpeakerComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      about: [''],
+      languages: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)]],
       confirmPassword: ['', Validators.required]
     }, {

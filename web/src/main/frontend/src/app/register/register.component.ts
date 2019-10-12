@@ -14,17 +14,10 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
-  //TODO create database of languages
-  languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
-
-
-  public firstName: string;
-  public lastName: string;
   public login: string;
   public email: string;
-  public about: string;
-  public languages: string[];
   public password: string;
+
 
   constructor(
     private httpClient: HttpClient,
@@ -37,17 +30,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    //console.warn(this.registerForm.value);
     this.register();
   }
 
   public register(): void {
     const user = <User>{
-      firstName: this.registerForm.get('firstName').value,
-      lastName: this.registerForm.get('lastName').value,
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('email').value,
-      about: this.registerForm.get('about').value,
       password: this.registerForm.get('password').value
     };
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe();
@@ -55,12 +44,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      about: [''],
-      languages: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)]],
       confirmPassword: ['', Validators.required]
     }, {
@@ -85,7 +70,7 @@ export class RegisterComponent implements OnInit {
         const lengthOfPass = (<HTMLInputElement>eve.target).value.split('').length;
         if (lengthOfPass == 0) {
           complexity.classList.remove('active');
-        }  else if ((<HTMLInputElement>eve.target).value.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)) {
+        } else if ((<HTMLInputElement>eve.target).value.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)) {
           for (let i = 0; i < complexityItem.length; i++) {
             complexityItem[i].classList.remove('complexity__item--bad');
             complexityItem[i].classList.remove('complexity__item--good');
@@ -101,8 +86,7 @@ export class RegisterComponent implements OnInit {
           for (let i = 0; i < complexityItem.length - 1; i++) {
             complexityItem[i].classList.add('complexity__item--good');
           }
-        }
-        else if (lengthOfPass <= 7) {
+        } else if (lengthOfPass <= 7) {
           for (let i = 0; i < complexityItem.length; i++) {
             complexityItem[i].classList.remove('complexity__item--good');
             complexityItem[i].classList.remove('complexity__item--perfect');
