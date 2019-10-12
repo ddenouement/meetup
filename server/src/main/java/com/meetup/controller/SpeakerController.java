@@ -1,7 +1,7 @@
 package com.meetup.controller;
 
-import com.meetup.entities.Meeting;
-import com.meetup.service.MeetingService;
+import com.meetup.entities.Meetup;
+import com.meetup.service.MeetupService;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,23 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
 public class SpeakerController {
 
-    MeetingService meetingService;
+    private MeetupService meetupService;
 
 
-    SpeakerController(@Autowired MeetingService meetingService) {
-        this.meetingService = meetingService;
+    SpeakerController(@Autowired MeetupService meetupService) {
+        this.meetupService = meetupService;
     }
 
 
 
     @PreAuthorize("hasRole('SPEAKER')")
-    @PostMapping(value = "/api/v1/user/speaker/meetings")
-    public ResponseEntity<Meeting> createMeeting(
+    @PostMapping(value = "/api/v1/user/speaker/meetups")
+    public ResponseEntity<Meetup> createMeetup(
         @CookieValue(value = "token", defaultValue = "") String token,
-        @RequestBody Meeting meeting) {
+        @RequestBody Meetup meetup) {
         try {
             return new ResponseEntity<>(
-                meetingService.createMeeting(meeting, token),
+                meetupService.createMeetup(meetup, token),
                 HttpStatus.CREATED);
         } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -44,12 +44,12 @@ public class SpeakerController {
 
 
     @PreAuthorize("hasRole('SPEAKER')")
-    @GetMapping(value = "/api/v1/user/speaker/meetings")
-    public ResponseEntity<List<Meeting>> getMyMeetings(
+    @GetMapping(value = "/api/v1/user/speaker/meetups")
+    public ResponseEntity<List<Meetup>> getMyMeetups(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
             return new ResponseEntity<>(
-                meetingService.getSpeakerMeetings(token), HttpStatus.OK);
+                meetupService.getSpeakerMeetups(token), HttpStatus.OK);
         } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

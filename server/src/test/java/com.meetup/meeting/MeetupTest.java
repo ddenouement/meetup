@@ -1,33 +1,33 @@
 package com.meetup.meeting;
 
-import com.meetup.entities.Meeting;
+import com.meetup.entities.Meetup;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class MeetingTest {
+public class MeetupTest {
     @Test
     public void equalsTest() {
-        Meeting meeting = Meeting.builder()
+        Meetup meetup = Meetup.builder()
                 .duration(Duration.ofHours(1))
                 .date(LocalDateTime.of(2019, 10, 6, 12, 0))
                 .build();
 
-        Meeting meeting2 = Meeting.builder()
+        Meetup meetup2 = Meetup.builder()
                 .duration(Duration.ofHours(1))
                 .date(LocalDateTime.of(2019, 10, 6, 12, 0))
                 .build();
 
-        Assert.assertEquals(meeting, meeting2);
+        Assert.assertEquals(meetup, meetup2);
     }
 
     @Test
     public void hashCodeTest() {
-        Meeting meeting = Meeting.builder().build();
-        Meeting meeting2 = Meeting.builder().build();
-        Assert.assertEquals(meeting.hashCode(), meeting2.hashCode());
+        Meetup meetup = Meetup.builder().build();
+        Meetup meetup2 = Meetup.builder().build();
+        Assert.assertEquals(meetup.hashCode(), meetup2.hashCode());
     }
 
 

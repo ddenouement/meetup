@@ -18,9 +18,8 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Meeting {
+public class Meetup {
 
-    
     private int id;
     private int speakerId;
     private int languageId;

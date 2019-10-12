@@ -2,32 +2,33 @@ package com.meetup.service.impl;
 
 import static com.meetup.service.RoleProcessor.isSpeaker;
 
-import com.meetup.entities.Meeting;
+import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
-import com.meetup.repository.impl.MeetingDaoImpl;
+import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.MeetingService;
+import com.meetup.service.MeetupService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Meeting service (implementation). Used to manage user functionality.
+ * Meetup service (implementation).
+ * Used to manage meetup functionality.
  */
 @Component
-public class MeetingServiceImpl implements MeetingService {
+public class MeetupServiceImpl implements MeetupService {
 
     /**
      * Topic repository.
      */
     private TopicDaoImpl topicDao;
     /**
-     * Meeting repository.
+     * Meetup repository.
      */
-    private MeetingDaoImpl meetingDao;
+    private MeetupDaoImpl meetupDao;
     /**
      * User repository.
      */
@@ -38,19 +39,19 @@ public class MeetingServiceImpl implements MeetingService {
     private LoginValidatorServiceImpl loginValidatorService;
 
     /**
-     * Meeting service constructor.
+     * Meetup service constructor.
      *
      * @param topicDao Topic repository
-     * @param meetingDao Meeting repository
+     * @param meetupDao Meetup repository
      * @param userDao User repository
      * @param loginValidatorService Login validation service
      */
-    MeetingServiceImpl(@Autowired final TopicDaoImpl topicDao,
-        @Autowired final MeetingDaoImpl meetingDao,
+    MeetupServiceImpl(@Autowired final TopicDaoImpl topicDao,
+        @Autowired final MeetupDaoImpl meetupDao,
         @Autowired final UserDaoImpl userDao,
         @Autowired final LoginValidatorServiceImpl loginValidatorService) {
         this.topicDao = topicDao;
-        this.meetingDao = meetingDao;
+        this.meetupDao = meetupDao;
         this.userDao = userDao;
         this.loginValidatorService = loginValidatorService;
     }
@@ -74,33 +75,33 @@ public class MeetingServiceImpl implements MeetingService {
     //TODO pagination
 
     /**
-     * Method used to get meetings list from database, using meeting repository
-     * (MeetingDao).
+     * Method used to get meetups list from database, using meetup repository
+     * (MeetupDao).
      *
-     * @return List of "Meeting" objects
+     * @return List of "Meetup" objects
      */
     @Override
-    public List<Meeting> getAllMeetings(final String token) {
+    public List<Meetup> getAllMeetups(final String token) {
         String userLogin = loginValidatorService.extractLogin(token);
         if (userDao.findUserByLogin(userLogin) == null) {
             throw new NoSuchElementException();
         } else {
-            return meetingDao.getAllMeetings();
+            return meetupDao.getAllMeetups();
         }
     }
 
     /**
-     * @param meeting Object, to be added to database.
-     * @param token Token with user login that creates a meeting
-     * @return Meeting that was just created
+     * @param meetup Object, to be added to database.
+     * @param token Token with user login that creates a meetup
+     * @return Meetup that was just created
      */
     @Override
-    public Meeting createMeeting(final Meeting meeting, final String token)
+    public Meetup createMeetup(final Meetup meetup, final String token)
         throws IllegalAccessException {
         String userLogin = loginValidatorService.extractLogin(token);
         if (isSpeaker(userDao.findUserByLogin(userLogin))) {
-            meetingDao.insertNewMeeting(meeting);
-            return meeting;
+            meetupDao.insertNewMeetup(meetup);
+            return meetup;
         } else {
             throw new IllegalAccessException();
         }
@@ -109,17 +110,17 @@ public class MeetingServiceImpl implements MeetingService {
 
     /**
      * Method used to get specific speaker meetings list from database, using
-     * meeting repository (MeetingDao).
+     * meeting repository (MeetupDao).
      *
-     * @return List of "Meeting" objects
+     * @return List of "Meetup" objects
      */
     @Override
-    public List<Meeting> getSpeakerMeetings(final String token)
+    public List<Meetup> getSpeakerMeetups(final String token)
         throws IllegalAccessException {
         String userLogin = loginValidatorService.extractLogin(token);
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
-            return meetingDao.getSpeakerMeetings(user.getId());
+            return meetupDao.getSpeakerMeetups(user.getId());
         } else {
             throw new IllegalAccessException();
         }

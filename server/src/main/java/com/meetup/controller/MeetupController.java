@@ -1,8 +1,8 @@
 package com.meetup.controller;
 
-import com.meetup.entities.Meeting;
+import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import com.meetup.service.MeetingService;
+import com.meetup.service.MeetupService;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(value = "meetup-application", description = "Operations used to manage meeting functionality")
-public class MeetingController {
+@Api(value = "meetup-application", description = "Operations used to manage meetup functionality")
+public class MeetupController {
 
     /**
-     * Service, that manages meeting functionality
+     * Service, that manages meetup functionality
      */
-    private MeetingService meetingService;
+    private MeetupService meetupService;
 
-    MeetingController(@Autowired MeetingService meetingService) {
-        this.meetingService = meetingService;
+    MeetupController(@Autowired MeetupService meetupService) {
+        this.meetupService = meetupService;
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
-    @GetMapping(value = "api/v1/meetings")
-    public ResponseEntity<List<Meeting>> getAllMeetings(
+    @GetMapping(value = "api/v1/meetups")
+    public ResponseEntity<List<Meetup>> getAllMeetups(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
-            return new ResponseEntity<>(meetingService.getAllMeetings(token),
+            return new ResponseEntity<>(meetupService.getAllMeetups(token),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -40,11 +40,11 @@ public class MeetingController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
-    @GetMapping("api/v1/meetings/topics")
+    @GetMapping("api/v1/meetups/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
-            return new ResponseEntity<>(meetingService.getAllTopics(token),
+            return new ResponseEntity<>(meetupService.getAllTopics(token),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

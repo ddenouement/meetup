@@ -1,9 +1,9 @@
 package com.meetup.repository.impl;
 
-import com.meetup.entities.Meeting;
+import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import com.meetup.model.mapper.MeetingMapper;
-import com.meetup.repository.IMeetingDAO;
+import com.meetup.model.mapper.MeetupMapper;
+import com.meetup.repository.IMeetupDAO;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,51 +19,51 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
-public class MeetingDaoImpl implements IMeetingDAO {
+public class MeetupDaoImpl implements IMeetupDAO {
 
     @Autowired
     private NamedParameterJdbcTemplate template;
 
     @Value("${get_all_meetings}")
-    private String GET_ALL_MEETINGS;
+    private String GET_ALL_MEETUPS;
     @Value("${get_speaker_meetings}")
-    private String GET_SPEAKER_MEETINGS;
+    private String GET_SPEAKER_MEETUPS;
     @Value("${insert_new_meeting}")
-    private String INSERT_NEW_MEETING;
+    private String INSERT_NEW_MEETUP;
     @Value("${find_topic_id}")
     private String FIND_TOPIC_ID_BY_NAME;
     @Value("${add_topic_to_meeting}")
-    private String ADD_TOPIC_TO_MEETING;
+    private String ADD_TOPIC_TO_MEETUP;
 
     @Override
-    public List<Meeting> getAllMeetings() {
-        return this.template.query(GET_ALL_MEETINGS, new MeetingMapper());
+    public List<Meetup> getAllMeetups() {
+        return this.template.query(GET_ALL_MEETUPS, new MeetupMapper());
     }
 
     @Override
-    public void insertNewMeeting(Meeting meeting) {
+    public void insertNewMeetup(Meetup meetup) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id_speaker", meeting.getSpeakerId())
-            .addValue("id_language", meeting.getLanguageId())
-            .addValue("title", meeting.getTitle())
-            .addValue("start_time", meeting.getDate())
-            .addValue("min_atendees", meeting.getMinAttendees())
-            .addValue("max_atendees", meeting.getMaxAttendees())
-            .addValue("description", meeting.getDescription());
-        template.update(INSERT_NEW_MEETING, param, holder, new String[]{"id"});
+            .addValue("id_speaker", meetup.getSpeakerId())
+            .addValue("id_language", meetup.getLanguageId())
+            .addValue("title", meetup.getTitle())
+            .addValue("start_time", meetup.getDate())
+            .addValue("min_atendees", meetup.getMinAttendees())
+            .addValue("max_atendees", meetup.getMaxAttendees())
+            .addValue("description", meetup.getDescription());
+        template.update(INSERT_NEW_MEETUP, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
-            meeting.setId(holder.getKey().intValue());
+            meetup.setId(holder.getKey().intValue());
             //adding topics to DB
             //TODO rewrite
-            for (Topic topic : meeting.getTopics()) {
-                addTopicToMeeting(meeting, topic);
+            for (Topic topic : meetup.getTopics()) {
+                addTopicToMeetup(meetup, topic);
             }
         }
     }
 
     @Override
-    public void addTopicToMeeting(Meeting meeting, Topic topic) {
+    public void addTopicToMeetup(Meetup meetup, Topic topic) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("name",
             topic.getName());
         Integer topic_id = template
@@ -71,16 +71,16 @@ public class MeetingDaoImpl implements IMeetingDAO {
                 Integer.class);
 
         Map parametersForAddingTopic = new HashMap();
-        parametersForAddingTopic.put("id_meetup", meeting.getId());
+        parametersForAddingTopic.put("id_meetup", meetup.getId());
         parametersForAddingTopic.put("id_topic", topic_id);
-        template.update(ADD_TOPIC_TO_MEETING, parametersForAddingTopic);
+        template.update(ADD_TOPIC_TO_MEETUP, parametersForAddingTopic);
     }
 
     @Override
-    public List<Meeting> getSpeakerMeetings(int speakerID) {
+    public List<Meetup> getSpeakerMeetups(int speakerID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_speaker", speakerID);
         return this.template
-            .query(GET_SPEAKER_MEETINGS, param, new MeetingMapper());
+            .query(GET_SPEAKER_MEETUPS, param, new MeetupMapper());
     }
 }
