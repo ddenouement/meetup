@@ -67,6 +67,7 @@
           </mat-error>
         </mat-form-field>
         <button [disabled]="!registerForm.valid" class="form__button" disabled type="submit">Sign Up</button>
+        <mat-error *ngIf="error">{{error}}</mat-error>
       </form>
     </div>
   </main>
