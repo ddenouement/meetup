@@ -7,6 +7,7 @@ import {User} from "../models/user";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
+import {Router} from "@angular/router";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -35,17 +36,18 @@ export class RegisterSpeakerComponent implements OnInit {
   languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
 
   showDetails3: boolean;
+  public error: '';
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
   public about: string;
-  public languages: string[];
   public password: string;
 
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
+    private router: Router,
   ) {
   }
 
@@ -70,7 +72,12 @@ export class RegisterSpeakerComponent implements OnInit {
       about: this.registerForm.get('about').value,
       password: this.passwordComponentWithConfirmation.password
     };
-    this.httpClient.post("/api/v1/user/register/speaker", user).subscribe();
+    this.httpClient.post("/api/v1/user/register/speaker", user).subscribe(data => {
+        this.router.navigate(['/login']);
+      },
+      error => {
+        this.error = error.error;
+      });
   }
 
   ngOnInit() {
