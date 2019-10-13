@@ -32,10 +32,10 @@ public class MeetupController {
     public ResponseEntity<List<Meetup>> getAllMeetups(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
-            return new ResponseEntity<>(meetupService.getAllMeetups(token),
+            return new ResponseEntity<>(meetupService.getAllMeetups(),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -44,10 +44,10 @@ public class MeetupController {
     public ResponseEntity<List<Topic>> getAvailableTopics(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
-            return new ResponseEntity<>(meetupService.getAllTopics(token),
+            return new ResponseEntity<>(meetupService.getAllTopics(),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

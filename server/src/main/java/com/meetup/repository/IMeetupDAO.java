@@ -14,11 +14,18 @@ public interface IMeetupDAO {
     List<Meetup> getAllMeetups();
 
     /**
-     * Add meetup to database
+     * Add meetup to database.
      * @param meetup
      * Meetup object to be added
      */
     void insertNewMeetup(Meetup meetup);
+
+    /**
+     * Update existing meetup.
+     * @param meetup
+     * Meetup object to be updated
+     */
+    void updateMeetup(Meetup meetup);
 
     /**
      * Retrieve meetups of specified speaker.

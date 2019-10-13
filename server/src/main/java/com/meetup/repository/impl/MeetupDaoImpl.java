@@ -30,6 +30,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
     private String GET_SPEAKER_MEETUPS;
     @Value("${insert_new_meeting}")
     private String INSERT_NEW_MEETUP;
+    @Value("${update_meetup}")
+    private String UPDATE_MEETUP;
     @Value("${find_topic_id}")
     private String FIND_TOPIC_ID_BY_NAME;
     @Value("${add_topic_to_meeting}")
@@ -52,6 +54,29 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("max_atendees", meetup.getMaxAttendees())
             .addValue("description", meetup.getDescription());
         template.update(INSERT_NEW_MEETUP, param, holder, new String[]{"id"});
+        if (holder.getKeys() != null) {
+            meetup.setId(holder.getKey().intValue());
+            //adding topics to DB
+            //TODO rewrite
+            for (Topic topic : meetup.getTopics()) {
+                addTopicToMeetup(meetup, topic);
+            }
+        }
+    }
+
+    @Override
+    public void updateMeetup(Meetup meetup){
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id",meetup.getId())
+            .addValue("id_speaker", meetup.getSpeakerId())
+            .addValue("id_language", meetup.getLanguageId())
+            .addValue("title", meetup.getTitle())
+            .addValue("start_time", meetup.getDate())
+            .addValue("min_atendees", meetup.getMinAttendees())
+            .addValue("max_atendees", meetup.getMaxAttendees())
+            .addValue("description", meetup.getDescription());
+        template.update(UPDATE_MEETUP, param, holder);
         if (holder.getKeys() != null) {
             meetup.setId(holder.getKey().intValue());
             //adding topics to DB

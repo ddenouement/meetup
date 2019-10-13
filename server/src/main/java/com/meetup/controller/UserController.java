@@ -22,7 +22,6 @@ public class UserController {
 
     //TODO implement
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
-
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity<User> getUserProfile(@RequestParam String login) {
         return new ResponseEntity<>(userService.getProfile(login),
@@ -36,6 +35,5 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllSpeakers(),
             HttpStatus.OK);
     }
-
 
 }

@@ -21,7 +21,8 @@ public final class TopicMapper implements RowMapper<Topic> {
      * @throws SQLException
      * Exception due to SQL
      */
-    public Topic mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+    public Topic mapRow(final ResultSet rs, final int rowNum)
+        throws SQLException {
         Topic topic = new Topic();
         topic.setId(rs.getInt("id"));
         topic.setName(rs.getString("name"));
