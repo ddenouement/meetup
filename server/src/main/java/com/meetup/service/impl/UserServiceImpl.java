@@ -1,7 +1,10 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.User;
+import com.meetup.entities.UserDTO;
+import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
+import com.meetup.service.RoleProcessor;
 import com.meetup.service.UserService;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +36,9 @@ public class UserServiceImpl implements UserService {
      * methods to DB
      */
     @Autowired
-    UserDaoImpl userDao;
+    private UserDaoImpl userDao;
+    @Autowired
+    private MeetupDaoImpl meetupDao;
 
     /**.
      * @param user User (that has role of listener) to register
@@ -97,10 +102,34 @@ public class UserServiceImpl implements UserService {
      * @return User
      */
     @Override
-    public User getProfile(final String login) {
-        //TODO implement
-        return null;
+    public UserDTO getProfile(final String login) {
+        User us = userDao.findUserByLogin(login);
+        return convertToUserDTO(us);
+
     }
+
+    private UserDTO convertToUserDTO(User us) {
+        UserDTO newUser = new UserDTO();
+        newUser.setAbout(us.getAbout());
+        newUser.setActive(us.isActive());
+        newUser.setEmail(us.getEmail());
+        newUser.setId(us.getId());
+        newUser.setFirstName(us.getFirstName());
+        newUser.setLastName(us.getLastName());
+        newUser.setRoles(us.getRoles());
+        newUser.setPassword(us.getPassword());
+        newUser.setLogin(us.getLogin());
+        newUser.setRate(us.getRate());
+        if(RoleProcessor.isSpeaker(us)) {
+            newUser.setHosted(meetupDao.getSpeakerMeetups(us.getId()));
+        }
+        newUser.setJoined(meetupDao.getUsersJoinedMeetups(us.getId()));
+    //    newUser.s
+
+
+        return newUser;
+    }
+
 
     /**.
      *

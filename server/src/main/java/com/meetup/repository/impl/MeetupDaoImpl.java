@@ -34,6 +34,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
     private String FIND_TOPIC_ID_BY_NAME;
     @Value("${add_topic_to_meeting}")
     private String ADD_TOPIC_TO_MEETUP;
+    @Value("${get_joined_meetups_of_user}")
+    private String GET_USERS_JOINED_MEETUPS;
 
     @Override
     public List<Meetup> getAllMeetups() {
@@ -82,5 +84,12 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("id_speaker", speakerID);
         return this.template
             .query(GET_SPEAKER_MEETUPS, param, new MeetupMapper());
+    }
+    @Override
+    public List<Meetup> getUsersJoinedMeetups(int userID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_user", userID);
+        return this.template
+                .query(GET_USERS_JOINED_MEETUPS, param, new MeetupMapper());
     }
 }

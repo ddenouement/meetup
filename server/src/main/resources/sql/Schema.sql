@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS meetup_states CASCADE;
 DROP TABLE IF EXISTS meetups CASCADE;
 DROP TABLE IF EXISTS topics CASCADE;
 DROP TABLE IF EXISTS meetups_topics CASCADE;
+DROP TABLE IF EXISTS meetups_users CASCADE;
 
 CREATE TABLE users
 (
@@ -95,4 +96,15 @@ CREATE TABLE meetups_topics
     FOREIGN KEY (id_meetup) REFERENCES meetups (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_topic) REFERENCES topics (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_meetup, id_topic)
+);
+
+CREATE TABLE meetups_users
+(
+    id_meetup BIGINT NOT NULL,
+    id_user  BIGINT NOT NULL,
+    speaker_feedback VARCHAR(100) NULL,
+    time_posted TIMESTAMP NULL,
+    FOREIGN KEY (id_meetup) REFERENCES meetups (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (id_meetup, id_user)
 );

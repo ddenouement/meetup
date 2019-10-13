@@ -2,6 +2,8 @@ package com.meetup.service;
 
 import com.meetup.entities.User;
 import java.util.List;
+
+import com.meetup.entities.UserDTO;
 import org.springframework.http.ResponseEntity;
 
 /**.
@@ -41,7 +43,7 @@ public interface UserService {
      * @param login String
      * @return User
      */
-    User getProfile(String login);
+    UserDTO getProfile(String login);
 
     /**.
      *

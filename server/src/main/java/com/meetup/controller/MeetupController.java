@@ -14,19 +14,31 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**.
+ * API Rest Controller for Meetups
+ */
 @RestController
-@Api(value = "meetup-application", description = "Operations used to manage meetup functionality")
+@Api(value = "meetup-application")
 public class MeetupController {
 
-    /**
+    /**.
      * Service, that manages meetup functionality
      */
     private MeetupService meetupService;
 
+    /**.
+     * set the MeetupService
+     * @param meetupService MeetupService custom
+     */
     MeetupController(@Autowired MeetupService meetupService) {
         this.meetupService = meetupService;
     }
 
+    /**.
+     *
+     * @param token String
+     * @return ResponseEntity<List<Meetup>>
+     */
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "api/v1/meetups")
     public ResponseEntity<List<Meetup>> getAllMeetups(

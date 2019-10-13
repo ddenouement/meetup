@@ -28,6 +28,14 @@ public interface IMeetupDAO {
      * List of meetups of specified speaker
      */
     List<Meetup> getSpeakerMeetups(int speakerID);
+    /**
+     * Retrieve meetups of specified user.
+     * @param userID
+     * User ID
+     * @return
+     * List of meetups of specified user
+     */
+    List<Meetup> getUsersJoinedMeetups(int userID);
 
     /**
      * Add specific topic to database for meetup.
