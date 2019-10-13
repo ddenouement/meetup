@@ -25,22 +25,32 @@ public interface MeetupService {
         throws IllegalAccessException;
 
     /**
-     * Retrieve all available topics.
+     * Updates an existing meetup.
+     * @param meetup
+     * Meetup to be updated
      * @param login
-     * User login (that retrieves topics)
+     * User login (that updates the meetup)
+     * @return
+     * Updated meetup
+     * @throws IllegalAccessException
+     * If meetup is updated not by speaker, IllegalAccessException is thrown.
+     */
+    Meetup updateMeetup(Meetup meetup, String login)
+        throws IllegalAccessException;
+
+    /**
+     * Retrieve all available topics.
      * @return
      * List of all topics
      */
-    List<Topic> getAllTopics(String login);
+    List<Topic> getAllTopics();
 
     /**
      * Retrieve all available meetups.
-     * @param login
-     * User login (that retrieves meetups)
      * @return
      * List of all meetups
      */
-    List<Meetup> getAllMeetups(String login);
+    List<Meetup> getAllMeetups();
 
     /**
      * Get all meetups of specified speaker.

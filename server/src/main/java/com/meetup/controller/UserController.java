@@ -1,6 +1,7 @@
 package com.meetup.controller;
 
 import com.meetup.entities.User;
+import com.meetup.entities.UserDTO;
 import com.meetup.service.UserService;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserController {
     //TODO implement
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "/api/v1/user/profile")
-    public ResponseEntity<User> getUserProfile(@RequestParam String login) {
+    public ResponseEntity<UserDTO> getUserProfile(@RequestParam String login) {
         return new ResponseEntity<>(userService.getProfile(login),
             HttpStatus.OK);
     }
@@ -35,6 +36,5 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllSpeakers(),
             HttpStatus.OK);
     }
-
 
 }

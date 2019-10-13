@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,6 @@ public class SpeakerController {
     SpeakerController(@Autowired MeetupService meetupService) {
         this.meetupService = meetupService;
     }
-
 
 
     @PreAuthorize("hasRole('SPEAKER')")
@@ -42,6 +42,19 @@ public class SpeakerController {
         }
     }
 
+    @PreAuthorize("hasRole('SPEAKER')")
+    @PutMapping(value = "/api/v1/user/speaker/meetups/{id}")
+    public ResponseEntity<Meetup> updateMeetup(
+        @CookieValue(value = "token", defaultValue = "") String token,
+        @RequestBody Meetup meetup) {
+        try {
+            return new ResponseEntity<>(
+                meetupService.updateMeetup(meetup, token),
+                HttpStatus.OK);
+        } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
 
     @PreAuthorize("hasRole('SPEAKER')")
     @GetMapping(value = "/api/v1/user/speaker/meetups")
@@ -50,8 +63,10 @@ public class SpeakerController {
         try {
             return new ResponseEntity<>(
                 meetupService.getSpeakerMeetups(token), HttpStatus.OK);
-        } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
+        } catch (IllegalAccessException | NullPointerException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (NoSuchElementException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -9,14 +9,14 @@ import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.MeetupService;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Meetup service (implementation).
- * Used to manage meetup functionality.
+ * Meetup service (implementation). Used to manage meetup functionality.
  */
 @Component
 public class MeetupServiceImpl implements MeetupService {
@@ -63,13 +63,12 @@ public class MeetupServiceImpl implements MeetupService {
      * @return List of "Topic" objects
      */
     @Override
-    public List<Topic> getAllTopics(final String token) {
-        String userLogin = loginValidatorService.extractLogin(token);
-        if (userDao.findUserByLogin(userLogin) == null) {
+    public List<Topic> getAllTopics() {
+        List<Topic> allTopics = topicDao.getAllTopics();
+        if (allTopics.isEmpty()){
             throw new NoSuchElementException();
-        } else {
-            return topicDao.getAllTopics();
         }
+        return allTopics;
     }
 
     //TODO pagination
@@ -81,13 +80,13 @@ public class MeetupServiceImpl implements MeetupService {
      * @return List of "Meetup" objects
      */
     @Override
-    public List<Meetup> getAllMeetups(final String token) {
-        String userLogin = loginValidatorService.extractLogin(token);
-        if (userDao.findUserByLogin(userLogin) == null) {
+    public List<Meetup> getAllMeetups() {
+        List<Meetup> allMeetups = meetupDao.getAllMeetups();
+        if (allMeetups.isEmpty()){
             throw new NoSuchElementException();
-        } else {
-            return meetupDao.getAllMeetups();
         }
+        return allMeetups;
+
     }
 
     /**
@@ -99,13 +98,34 @@ public class MeetupServiceImpl implements MeetupService {
     public Meetup createMeetup(final Meetup meetup, final String token)
         throws IllegalAccessException {
         String userLogin = loginValidatorService.extractLogin(token);
-        if (isSpeaker(userDao.findUserByLogin(userLogin))) {
+        User user = userDao.findUserByLogin(userLogin);
+        if (isSpeaker(user)) {
+            meetup.setSpeakerId(user.getId());
             meetupDao.insertNewMeetup(meetup);
             return meetup;
         } else {
             throw new IllegalAccessException();
         }
+    }
 
+    /**
+     * @param meetup Object, to be added to database.
+     * @param token Token with user login that creates a meetup
+     * @return Meetup that was just created
+     */
+    @Override
+    public Meetup updateMeetup(final Meetup meetup, final String token)
+        throws IllegalAccessException {
+        String userLogin = loginValidatorService.extractLogin(token);
+        User user = userDao.findUserByLogin(userLogin);
+        if (isSpeaker(user)) {
+            meetup.setSpeakerId(user.getId());
+            meetupDao.updateMeetup(meetup);
+            //TODO return new meetup
+            return meetup;
+        } else {
+            throw new IllegalAccessException();
+        }
     }
 
     /**

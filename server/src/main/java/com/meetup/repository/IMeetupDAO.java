@@ -14,11 +14,18 @@ public interface IMeetupDAO {
     List<Meetup> getAllMeetups();
 
     /**
-     * Add meetup to database
+     * Add meetup to database.
      * @param meetup
      * Meetup object to be added
      */
     void insertNewMeetup(Meetup meetup);
+
+    /**
+     * Update existing meetup.
+     * @param meetup
+     * Meetup object to be updated
+     */
+    void updateMeetup(Meetup meetup);
 
     /**
      * Retrieve meetups of specified speaker.
@@ -28,6 +35,14 @@ public interface IMeetupDAO {
      * List of meetups of specified speaker
      */
     List<Meetup> getSpeakerMeetups(int speakerID);
+    /**
+     * Retrieve meetups of specified user.
+     * @param userID
+     * User ID
+     * @return
+     * List of meetups of specified user
+     */
+    List<Meetup> getUsersJoinedMeetups(int userID);
 
     /**
      * Add specific topic to database for meetup.

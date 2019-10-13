@@ -23,7 +23,8 @@ public final class MeetupMapper implements RowMapper<Meetup> {
      * @throws SQLException
      * Exception due to SQL
      */
-    public Meetup mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+    public Meetup mapRow(final ResultSet rs, final int rowNum)
+        throws SQLException {
         Meetup meetup = new Meetup();
         meetup.setId(rs.getInt("id"));
         meetup.setSpeakerId(rs.getInt("id_speaker"));

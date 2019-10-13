@@ -112,12 +112,12 @@ public class UserDaoImpl implements IUserDAO {
     public void addRoleToUser(final User us, final String r) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(
                 "text", r);
-        Integer role_id = template
+        Integer roleid = template
             .queryForObject(findRoleIdByName, namedParameters,
                 Integer.class);
         Map namedParameters2 = new HashMap();
         namedParameters2.put("usId", us.getId());
-        namedParameters2.put("roleId", role_id);
+        namedParameters2.put("roleId", roleid);
         template.update(addRoleToUser, namedParameters2);
 
     }
@@ -127,7 +127,7 @@ public class UserDaoImpl implements IUserDAO {
      * @param a User
      */
     @Override
-    public void insertNewUser(  User a) {
+    public void insertNewUser(User a) {
         try {
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource param = new MapSqlParameterSource()
@@ -189,14 +189,14 @@ public class UserDaoImpl implements IUserDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("email", em);
         ResultSet rs = null;
-        List<User> found_users =
+        List<User> foundUsers =
             template.query(findUserByEmail, param, (resultSet, i) -> {
                 return toPerson(resultSet);
             });
-        if (found_users.size() == 0) {
+        if (foundUsers.size() == 0) {
             return null;
         } else {
-            return found_users.get(0);
+            return foundUsers.get(0);
         }
     }
 

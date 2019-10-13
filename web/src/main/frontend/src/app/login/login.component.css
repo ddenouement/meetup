@@ -64,19 +64,9 @@ form {
 }
 
 .form__input {
-  background-color: #FCFCFC;
   font-family: "Roboto", sans-serif;
-  font-size: 14px;
   height: 40px;
-  padding-left: 14px;
   margin-bottom: 24px;
-  border: 2px solid #F2F2F2;
-  border-radius: 2px;
-  outline: none;
-}
-
-.form__input:focus {
-  background-color: #fff;
 }
 
 .form__headline {
@@ -100,26 +90,6 @@ form {
   letter-spacing: 0.28px;
   margin-top: -10px;
   color: #222428;
-}
-
-.form__input::-webkit-input-placeholder {
-  color: rgba(135, 144, 167, 0.57);
-}
-
-.form__input::-moz-placeholder {
-  color: rgba(135, 144, 167, 0.57);
-}
-
-.form__input:-ms-input-placeholder {
-  color: rgba(135, 144, 167, 0.57);
-}
-
-.form__input::-ms-input-placeholder {
-  color: rgba(135, 144, 167, 0.57);
-}
-
-.form__input::placeholder {
-  color: rgba(135, 144, 167, 0.57);
 }
 
 .form__button {
@@ -150,13 +120,5 @@ form {
   .form__button {
     align-self: center;
   }
-}
-
-.ng-valid:not(form) {
-  border-left: 5px solid #38ECAC; /* green */
-}
-
-.ng-invalid:not(form) {
-  border-left: 5px solid #a94442; /* red */
 }
 
