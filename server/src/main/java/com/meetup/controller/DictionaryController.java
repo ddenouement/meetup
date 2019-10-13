@@ -33,7 +33,7 @@ public class DictionaryController {
      * order
      * @return a ResponseEntity with a list of all languages
      */
-    //@PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "/api/v1/languages")
     public ResponseEntity<List<Language>> getLanguages(
         @RequestParam final boolean sorted) {
