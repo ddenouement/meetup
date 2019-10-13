@@ -4,32 +4,92 @@
       <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
         <p class="form__headline">Sign up as speaker</p>
         <div class="form__user">
-          <input type="text" class="form__input" formControlName="firstName" pattern="[A-Z]{1}[a-z]{2,20}"
-                 placeholder="First name"/>
-          <input type="text" class="form__input" formControlName="lastName" pattern="[A-Z]{1}[a-z]{2,20}"
-                 placeholder="Last name"/>
+          <mat-form-field class="form__input">
+            <input matInput type="text" formControlName="firstName" pattern="[A-Z]{1}[a-z]{2,20}"
+                   placeholder="First name"/>
+          </mat-form-field>
+          <mat-form-field class="form__input">
+            <input matInput type="text" formControlName="lastName" pattern="[A-Z]{1}[a-z]{2,20}"
+                   placeholder="Last name"/>
+          </mat-form-field>
         </div>
-        <input class="form__input" formControlName="login" type="text" placeholder="Login"/>
-        <input class="form__input" formControlName="email" type="email" placeholder="E-mail"/>
-        <mat-select class="form__select" placeholder="Languages" formControlName="languages" multiple>
-          <mat-select-trigger> {{registerForm.get('languages').value ? registerForm.get('languages').value[0] : ''}}
-            <span *ngIf="registerForm.get('languages').value?.length > 1" class="example-additional-selection">
+        <mat-form-field class="form__input">
+          <input matInput formControlName="login" type="text" placeholder="Login">
+        </mat-form-field>
+        <mat-form-field class="form__input">
+          <input matInput placeholder="Email" formControlName="email"
+                 [errorStateMatcher]="matcher">
+          <mat-error
+            *ngIf="registerForm.get('email').hasError('email') && !registerForm.get('email').hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('email').hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form__input">
+          <mat-select placeholder="Languages" formControlName="languages" multiple>
+            <mat-select-trigger> {{registerForm.get('languages').value ? registerForm.get('languages').value[0] : ''}}
+              <span *ngIf="registerForm.get('languages').value?.length > 1" class="example-additional-selection">
               (+{{registerForm.get('languages').value.length - 1}} {{registerForm.get('languages').value?.length === 2 ? 'other' : 'others'}}
-              )
+                )
               </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let languages of languagesList" [value]="languages">{{languages}}</mat-option>
-        </mat-select>
-        <textarea class="form__input form__textarea" formControlName="about" maxlength="30" matInput
-                  placeholder="About"></textarea>
-        <input type="password" class="form__input password" formControlName="password" placeholder="Create password">
-        <div class="complexity">
-          <div class="complexity__item"></div>
-          <div class="complexity__item"></div>
-          <div class="complexity__item"></div>
-        </div>
-        <input class="form__input" formControlName="confirmPassword" placeholder="Confirm password"
-               type="password">
+            </mat-select-trigger>
+            <mat-option *ngFor="let languages of languagesList" [value]="languages">{{languages}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form__input area">
+          <textarea class="form__textarea" matInput placeholder="About"></textarea>
+        </mat-form-field>
+        <mat-card-subtitle>
+          <mat-slide-toggle [(ngModel)]="showDetails3"
+                            [ngModelOptions]="{standalone: true}">
+            Show Password Details
+          </mat-slide-toggle>
+        </mat-card-subtitle>
+        <mat-form-field class="form__input password" appearance="outline" style="width: 100%">
+          <mat-label>Password</mat-label>
+          <mat-pass-toggle-visibility #toggle3 matSuffix></mat-pass-toggle-visibility>
+          <input matInput #passwordWithConfirmation
+                 [type]="toggle3.type"
+                 formControlName="password"
+                 placeholder="Password" minlength="8" maxlength="30">
+          <mat-hint align="end" aria-live="polite">
+            {{passwordWithConfirmation.value.length}} / {{passwordComponentWithConfirmation.max}}
+          </mat-hint>
+          <mat-error *ngIf="passwordComponentWithConfirmation.passwordFormControl.hasError('required')">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="passwordComponentWithConfirmation.passwordFormControl.hasError('pattern')">
+            Password is not valid
+          </mat-error>
+        </mat-form-field>
+        <mat-password-strength #passwordComponentWithConfirmation
+                               (onStrengthChanged)="onStrengthChanged($event)"
+                               [password]="passwordWithConfirmation.value">
+        </mat-password-strength>
+        <mat-password-strength-info
+          *ngIf="showDetails3"
+          [passwordComponent]="passwordComponentWithConfirmation">
+        </mat-password-strength-info>
+        <mat-form-field appearance="outline" class="mt-3 form__input confirm" style="width: 100%">
+          <mat-label>Confirm Password</mat-label>
+          <mat-pass-toggle-visibility #toggleConfirmPassword matSuffix></mat-pass-toggle-visibility>
+          <input matInput #passwordToConfirm
+                 [type]="toggleConfirmPassword.type"
+                 formControlName="confirmPassword"
+                 placeholder="Password">
+          <mat-hint align="end" aria-live="polite">
+            {{passwordToConfirm.value.length}} / {{passwordComponentWithConfirmation.max}}
+          </mat-hint>
+          <mat-error *ngIf="passwordComponentWithConfirmation.passwordConfirmationFormControl.hasError('required')">
+            Password confirmation is required
+          </mat-error>
+          <mat-error
+            *ngIf="passwordComponentWithConfirmation.passwordConfirmationFormControl.hasError('notConfirmed')">
+            Password is not the same
+          </mat-error>
+        </mat-form-field>
         <button [disabled]="!registerForm.valid" class="form__button" disabled type="submit">Sign Up</button>
       </form>
     </div>

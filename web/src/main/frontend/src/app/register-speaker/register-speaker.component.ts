@@ -1,8 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+// @ts-ignore
+import {Component, OnInit, ViewChild} from '@angular/core';
+// @ts-ignore
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+// @ts-ignore
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {ErrorStateMatcher} from '@angular/material/core';
+import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
+
+// @ts-ignore
 @Component({
   selector: 'app-register-speaker',
   templateUrl: './register-speaker.component.html',
@@ -11,13 +25,16 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 export class RegisterSpeakerComponent implements OnInit {
 
+  @ViewChild('passwordComponentWithConfirmation', {static: true})
+  passwordComponentWithConfirmation: MatPasswordStrengthComponent;
+
   registerForm: FormGroup;
   submitted = false;
-
+  matcher = new MyErrorStateMatcher();
   //TODO create database of languages
   languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
 
-
+  showDetails3: boolean;
   public firstName: string;
   public lastName: string;
   public login: string;
@@ -37,8 +54,11 @@ export class RegisterSpeakerComponent implements OnInit {
   }
 
   onSubmit() {
-    //console.warn(this.registerForm.value);
+    //console.log(this.registerForm);
     this.register();
+  }
+
+  onStrengthChanged(strength: number) {
   }
 
   public register(): void {
@@ -48,7 +68,7 @@ export class RegisterSpeakerComponent implements OnInit {
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('email').value,
       about: this.registerForm.get('about').value,
-      password: this.registerForm.get('password').value
+      password: this.passwordComponentWithConfirmation.password
     };
     this.httpClient.post("/api/v1/user/register/speaker", user).subscribe();
   }
@@ -61,53 +81,10 @@ export class RegisterSpeakerComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       about: [''],
       languages: ['', Validators.required],
-      password: ['', [Validators.required, Validators.pattern(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)]],
+      password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
     }, {
       validator: MustMatch('password', 'confirmPassword')
-    });
-
-    // TODO: change to password-strength
-    const pass = document.querySelector('.password');
-    const complexityItem = document.getElementsByClassName('complexity__item');
-    const complexity = document.querySelector('.complexity');
-    const content = document.querySelector('.content');
-
-    content.addEventListener('click', (event) => {
-      if (event.target === pass) {
-        complexity.classList.add('active');
-      } else {
-        complexity.classList.remove('active');
-      }
-
-      pass.addEventListener('input', (eve) => {
-        const lengthOfPass = (<HTMLInputElement>eve.target).value.split('').length;
-        if (lengthOfPass == 0) {
-          complexity.classList.remove('active');
-        } else if ((<HTMLInputElement>eve.target).value.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[_$@$!%*?&])[A-Za-zd_$@$!%*?&].{8,}/i)) {
-          for (let i = 0; i < complexityItem.length; i++) {
-            complexityItem[i].classList.remove('complexity__item--bad');
-            complexityItem[i].classList.remove('complexity__item--good');
-          }
-          for (let i = 0; i < complexityItem.length; i++) {
-            complexityItem[i].classList.add('complexity__item--perfect');
-          }
-        } else if ((<HTMLInputElement>eve.target).value.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}/i)) {
-          for (let i = 0; i < complexityItem.length; i++) {
-            complexityItem[i].classList.remove('complexity__item--bad');
-            complexityItem[i].classList.remove('complexity__item--perfect');
-          }
-          for (let i = 0; i < complexityItem.length - 1; i++) {
-            complexityItem[i].classList.add('complexity__item--good');
-          }
-        } else if (lengthOfPass <= 7) {
-          for (let i = 0; i < complexityItem.length; i++) {
-            complexityItem[i].classList.remove('complexity__item--good');
-            complexityItem[i].classList.remove('complexity__item--perfect');
-          }
-          complexityItem[0].classList.add('complexity__item--bad');
-        }
-      });
     });
   }
 }

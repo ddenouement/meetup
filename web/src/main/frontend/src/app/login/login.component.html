@@ -3,8 +3,12 @@
     <div class="content">
       <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <p class="form__headline">Log In</p>
-        <input class="form__input" formControlName="login" matInput placeholder="Login" type="text"/>
-        <input class="form__input" formControlName="password" matInput placeholder="Password" type="password"/>
+        <mat-form-field class="form__input">
+          <input matInput formControlName="login" type="text" placeholder="Login">
+        </mat-form-field>
+        <mat-form-field class="form__input">
+          <input matInput formControlName="password" type="password" placeholder="Password">
+        </mat-form-field>
         <a class="form__help" href='reset.html'>Forgot password?</a>
         <button [disabled]="!loginForm.valid" class="form__button" disabled>Sign In</button>
       </form>

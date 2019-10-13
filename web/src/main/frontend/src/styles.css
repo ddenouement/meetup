@@ -10,6 +10,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 body {
   background: #f9fafc;
+  overflow-x: hidden;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -42,4 +43,15 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+body::-webkit-scrollbar {
+  width: 12px;
+  background: #fdfeff;
+  mix-blend-mode: normal;
+  border-radius: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #d7dce9;
+  border-radius: 6px;
 }
