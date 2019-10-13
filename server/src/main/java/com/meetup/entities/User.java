@@ -112,4 +112,5 @@ public class User {
     public void addRole(final String role) {
         this.roles.add(role);
     }
+
 }
