@@ -7,16 +7,43 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Login validator service (implementation). Used to manage validity of user
+ * login.
+ */
 @Component
 public class LoginValidatorServiceImpl implements LoginValidatorService {
 
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    UserDaoImpl userDao;
+    /**
+     * JSON web token provider.
+     */
+    private JwtTokenProvider jwtTokenProvider;
+    /**
+     * User repository.
+     */
+    private UserDaoImpl userDao;
 
+    /**
+     * Login validator service constructor.
+     *
+     * @param jwtTokenProvider JSON web token provider
+     * @param userDao User repository
+     */
+    LoginValidatorServiceImpl(
+        @Autowired final JwtTokenProvider jwtTokenProvider,
+        @Autowired final UserDaoImpl userDao) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userDao = userDao;
+    }
+
+    /**
+     * Extracting login from JSON web token.
+     *
+     * @param token Token, that used to extract login from
+     * @return String representation of user login
+     */
     @Override
-    public String extractLogin(String token) {
+    public String extractLogin(final String token) {
         String userLogin = jwtTokenProvider.getUsername(token);
         if (userLogin == null) {
             throw new NullPointerException();
@@ -27,7 +54,13 @@ public class LoginValidatorServiceImpl implements LoginValidatorService {
         }
     }
 
-    private boolean userExists(String login) {
+    /**
+     * Check if user exists in database.
+     *
+     * @param login User login
+     * @return Boolean value (exists or not)
+     */
+    private boolean userExists(final String login) {
         return userDao.findUserByLogin(login) != null;
     }
 }
