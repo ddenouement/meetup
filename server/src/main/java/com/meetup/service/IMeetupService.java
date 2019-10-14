@@ -63,4 +63,15 @@ public interface IMeetupService {
      */
     List<Meetup> getSpeakerMeetups(String login)
         throws IllegalAccessException;
+
+    /**
+     * Register user for meetup.
+     * @param meetup
+     * Meetup, that will be used to register user to
+     * @param token
+     * JSON web token to extract user credentials
+     * @return
+     * Meetup object
+     */
+    Meetup joinMeetup(Meetup meetup, String token);
 }

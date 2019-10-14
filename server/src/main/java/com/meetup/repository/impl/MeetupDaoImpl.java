@@ -51,7 +51,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("id_speaker", meetup.getSpeakerId())
             .addValue("id_language", meetup.getLanguageId())
             .addValue("title", meetup.getTitle())
-            .addValue("start_time", meetup.getDate())
+            .addValue("start_time", meetup.getStartDate())
+//            .addValue("duration",meetup.getDuration())
             .addValue("min_atendees", meetup.getMinAttendees())
             .addValue("max_atendees", meetup.getMaxAttendees())
             .addValue("description", meetup.getDescription());
@@ -74,7 +75,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("id_speaker", meetup.getSpeakerId())
             .addValue("id_language", meetup.getLanguageId())
             .addValue("title", meetup.getTitle())
-            .addValue("start_time", meetup.getDate())
+            .addValue("start_time", meetup.getStartDate())
+//            .addValue("duration", meetup.getDuration())
             .addValue("min_atendees", meetup.getMinAttendees())
             .addValue("max_atendees", meetup.getMaxAttendees())
             .addValue("description", meetup.getDescription());

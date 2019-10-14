@@ -149,4 +149,10 @@ public class MeetupServiceImpl implements IMeetupService {
             throw new IllegalAccessException();
         }
     }
+
+    @Override
+    public Meetup joinMeetup(Meetup meetup, String token) {
+
+        return null;
+    }
 }

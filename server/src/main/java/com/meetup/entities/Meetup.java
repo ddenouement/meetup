@@ -23,12 +23,12 @@ public class Meetup {
     private int id;
     private int speakerId;
     private int languageId;
+    private int stateId;
     private String title;
-    private LocalDateTime date;
+    private LocalDateTime startDate;
     private Duration duration;
     private int minAttendees;
     private int maxAttendees;
-    private int state;
     private String description;
     private List<Topic> topics;
 

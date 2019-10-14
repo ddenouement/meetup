@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**.
@@ -63,4 +65,16 @@ public class MeetupController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PutMapping("api/v1/meetups/join")
+    public ResponseEntity<Meetup> joinMeetup(
+        @CookieValue(value = "token", defaultValue = "") String token,
+        @RequestBody Meetup meetup){
+        try {
+            return new ResponseEntity<>(
+                IMeetupService.joinMeetup(meetup,token),HttpStatus.OK);
+        } catch (NullPointerException | NoSuchElementException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
