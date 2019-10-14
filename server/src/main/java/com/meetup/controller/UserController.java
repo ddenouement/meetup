@@ -2,7 +2,7 @@ package com.meetup.controller;
 
 import com.meetup.entities.User;
 import com.meetup.entities.UserDTO;
-import com.meetup.service.UserService;
+import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private IUserService IUserService;
 
     //TODO implement
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity<UserDTO> getUserProfile(@RequestParam String login) {
-        return new ResponseEntity<>(userService.getProfile(login),
+        return new ResponseEntity<>(IUserService.getProfile(login),
             HttpStatus.OK);
     }
 
@@ -33,7 +33,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "/api/v1/user/availableSpeakers")
     public ResponseEntity<List<User>> getAllSpeakers() {
-        return new ResponseEntity<>(userService.getAllSpeakers(),
+        return new ResponseEntity<>(IUserService.getAllSpeakers(),
             HttpStatus.OK);
     }
 

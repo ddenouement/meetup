@@ -55,7 +55,7 @@ public class UserDTO {
         private String password;
 private List<Meetup> hosted;
 private List<Meetup> joined;
-private  List<String> languages;
+private  List<Language> languages;
 private List<User> subscriptedToSpeakers;
 private List<Filter> filters;
 
@@ -65,7 +65,7 @@ private List<Filter> filters;
          */
         public UserDTO(final String[] mroles) {
             this.roles = Arrays.asList(mroles);
-            this.languages = new ArrayList<String>();
+            this.languages = new ArrayList<Language>();
             this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
@@ -85,7 +85,7 @@ private List<Filter> filters;
             this.login = mlogin;
             this.password = mpassword;
             this.roles = new ArrayList<String>();
-            this.languages = new ArrayList<String>();
+            this.languages = new ArrayList<Language>();
             this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
@@ -97,7 +97,7 @@ private List<Filter> filters;
          */
         public UserDTO() {
             this.roles = new ArrayList<String>();
-            this.languages = new ArrayList<String>();
+            this.languages = new ArrayList<Language>();
             this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
@@ -123,7 +123,7 @@ private List<Filter> filters;
             this.lastName = mlastName;
             this.password = mpassword;
             this.roles = mroles;
-            this.languages = new ArrayList<String>();
+            this.languages = new ArrayList<Language>();
             this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
@@ -140,7 +140,7 @@ private List<Filter> filters;
         public void addSpeakerToSubscriptions(final User u) {
             this.subscriptedToSpeakers.add(u);
         }
-        public void addLanguage(final String lan) {
+        public void addLanguage(final Language lan) {
             this.languages.add(lan);
         }
         public void joinMeeting(final Meetup a) {

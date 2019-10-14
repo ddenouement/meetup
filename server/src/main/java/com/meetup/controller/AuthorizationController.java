@@ -5,7 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.UserService;
+import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class AuthorizationController {
      * ,. UserService
      */
     @Autowired
-    private UserService userService;
+    private IUserService userService;
     /**
      * . userDao
      */
@@ -52,7 +52,7 @@ public class AuthorizationController {
     private JwtTokenProvider jwtTokenProvider;
 
     /**
-     * ,. SignIn doesnt generate a token
+     * ,. SignIn   generates a token
      *
      * @param data AuthentificationRequest
      * @param response HttpServletResponse

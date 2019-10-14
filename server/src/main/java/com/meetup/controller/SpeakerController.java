@@ -1,7 +1,7 @@
 package com.meetup.controller;
 
 import com.meetup.entities.Meetup;
-import com.meetup.service.MeetupService;
+import com.meetup.service.IMeetupService;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
 public class SpeakerController {
 
-    private MeetupService meetupService;
+    private IMeetupService IMeetupService;
 
 
-    SpeakerController(@Autowired MeetupService meetupService) {
-        this.meetupService = meetupService;
+    SpeakerController(@Autowired IMeetupService meetupService) {
+        this.IMeetupService = meetupService;
     }
 
 
@@ -35,7 +35,7 @@ public class SpeakerController {
         @RequestBody Meetup meetup) {
         try {
             return new ResponseEntity<>(
-                meetupService.createMeetup(meetup, token),
+                IMeetupService.createMeetup(meetup, token),
                 HttpStatus.CREATED);
         } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -49,7 +49,7 @@ public class SpeakerController {
         @RequestBody Meetup meetup) {
         try {
             return new ResponseEntity<>(
-                meetupService.updateMeetup(meetup, token),
+                IMeetupService.updateMeetup(meetup, token),
                 HttpStatus.OK);
         } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -62,7 +62,7 @@ public class SpeakerController {
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
             return new ResponseEntity<>(
-                meetupService.getSpeakerMeetups(token), HttpStatus.OK);
+                IMeetupService.getSpeakerMeetups(token), HttpStatus.OK);
         } catch (IllegalAccessException | NullPointerException ex) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (NoSuchElementException ex){

@@ -3,7 +3,7 @@ package com.meetup.service;
 /**
  * Interface, used to manage user login validity.
  */
-public interface LoginValidatorService {
+public interface ILoginValidatorService {
 
     /**
      * Method, used to extract user login from JWT.

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 /**.
  * UserService interface. Working with abstract User
  */
-public interface UserService {
+public interface IUserService {
     /**.
      *
      * @param user User

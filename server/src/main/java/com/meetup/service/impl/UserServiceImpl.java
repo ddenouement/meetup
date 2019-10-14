@@ -2,10 +2,12 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.User;
 import com.meetup.entities.UserDTO;
+import com.meetup.repository.IMeetupDAO;
+import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.RoleProcessor;
-import com.meetup.service.UserService;
+import com.meetup.service.IUserService;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Component;
  * Class for working with users
  */
 @Component
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
     //TODO enum
     /**.
@@ -33,12 +35,12 @@ public class UserServiceImpl implements UserService {
      */
     private static final String ADMIN = "ADMIN";
     /**.
-     * methods to DB
+     * methods to DB considering users.
      */
     @Autowired
-    private UserDaoImpl userDao;
+    private IUserDAO userDao;
     @Autowired
-    private MeetupDaoImpl meetupDao;
+    private IMeetupDAO meetupDao;
 
     /**.
      * @param user User (that has role of listener) to register
@@ -124,8 +126,8 @@ public class UserServiceImpl implements UserService {
             newUser.setHosted(meetupDao.getSpeakerMeetups(us.getId()));
         }
         newUser.setJoined(meetupDao.getUsersJoinedMeetups(us.getId()));
-    //    newUser.s
-
+        newUser.setSubscriptedToSpeakers(userDao.getUsersSubscriptionsToSpeakers(us.getId()));
+        newUser.setLanguages(userDao.getUsersLanguages(us.getId()));
 
         return newUser;
     }

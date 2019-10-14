@@ -1,8 +1,9 @@
 package com.meetup.service.impl;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.LoginValidatorService;
+import com.meetup.service.ILoginValidatorService;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
  * login.
  */
 @Component
-public class LoginValidatorServiceImpl implements LoginValidatorService {
+public class LoginValidatorServiceImpl implements ILoginValidatorService {
 
     /**
      * JSON web token provider.
@@ -21,7 +22,7 @@ public class LoginValidatorServiceImpl implements LoginValidatorService {
     /**
      * User repository.
      */
-    private UserDaoImpl userDao;
+    private IUserDAO userDao;
 
     /**
      * Login validator service constructor.

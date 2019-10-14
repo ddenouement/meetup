@@ -5,11 +5,15 @@ import static com.meetup.service.RoleProcessor.isSpeaker;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import com.meetup.repository.IMeetupDAO;
+import com.meetup.repository.ITopicDAO;
+import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.MeetupService;
-import java.util.Collections;
+import com.meetup.service.ILoginValidatorService;
+import com.meetup.service.IMeetupService;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +23,24 @@ import org.springframework.stereotype.Component;
  * Meetup service (implementation). Used to manage meetup functionality.
  */
 @Component
-public class MeetupServiceImpl implements MeetupService {
+public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * Topic repository.
      */
-    private TopicDaoImpl topicDao;
+    private ITopicDAO topicDao;
     /**
      * Meetup repository.
      */
-    private MeetupDaoImpl meetupDao;
+    private IMeetupDAO meetupDao;
     /**
      * User repository.
      */
-    private UserDaoImpl userDao;
+    private IUserDAO userDao;
     /**
      * Login validation service.
      */
-    private LoginValidatorServiceImpl loginValidatorService;
+    private ILoginValidatorService loginValidatorService;
 
     /**
      * Meetup service constructor.

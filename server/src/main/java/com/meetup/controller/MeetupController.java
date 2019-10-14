@@ -2,7 +2,7 @@ package com.meetup.controller;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import com.meetup.service.MeetupService;
+import com.meetup.service.IMeetupService;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,14 +24,14 @@ public class MeetupController {
     /**.
      * Service, that manages meetup functionality
      */
-    private MeetupService meetupService;
+    private IMeetupService IMeetupService;
 
     /**.
      * set the MeetupService
-     * @param meetupService MeetupService custom
+     * @param IMeetupService MeetupService custom
      */
-    MeetupController(@Autowired MeetupService meetupService) {
-        this.meetupService = meetupService;
+    MeetupController(@Autowired IMeetupService IMeetupService) {
+        this.IMeetupService = IMeetupService;
     }
 
     /**.
@@ -44,7 +44,7 @@ public class MeetupController {
     public ResponseEntity<List<Meetup>> getAllMeetups(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
-            return new ResponseEntity<>(meetupService.getAllMeetups(),
+            return new ResponseEntity<>(IMeetupService.getAllMeetups(),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,7 +56,7 @@ public class MeetupController {
     public ResponseEntity<List<Topic>> getAvailableTopics(
         @CookieValue(value = "token", defaultValue = "") String token) {
         try {
-            return new ResponseEntity<>(meetupService.getAllTopics(),
+            return new ResponseEntity<>(IMeetupService.getAllTopics(),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

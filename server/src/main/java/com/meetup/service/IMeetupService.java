@@ -8,7 +8,7 @@ import java.util.List;
  * Meetup service interface.
  * Used to manage meetup functionality.
  */
-public interface MeetupService {
+public interface IMeetupService {
 
     /**
      * Creates a new meetup and adds it to database.
