@@ -43,7 +43,7 @@ public interface IUserService {
      * @param login String
      * @return User
      */
-    UserDTO getProfile(String login);
+    UserDTO getProfileUserDTO(String login);
 
     /**.
      *

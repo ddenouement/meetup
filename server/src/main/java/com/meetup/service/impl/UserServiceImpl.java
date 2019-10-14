@@ -101,10 +101,10 @@ public class UserServiceImpl implements IUserService {
     /**.
      *
      * @param login String
-     * @return User
+     * @return UserDTO
      */
     @Override
-    public UserDTO getProfile(final String login) {
+    public UserDTO getProfileUserDTO(final String login) {
         User us = userDao.findUserByLogin(login);
         return convertToUserDTO(us);
 
@@ -119,7 +119,6 @@ public class UserServiceImpl implements IUserService {
         newUser.setFirstName(us.getFirstName());
         newUser.setLastName(us.getLastName());
         newUser.setRoles(us.getRoles());
-        newUser.setPassword(us.getPassword());
         newUser.setLogin(us.getLogin());
         newUser.setRate(us.getRate());
         if(RoleProcessor.isSpeaker(us)) {
