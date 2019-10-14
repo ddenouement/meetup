@@ -18,15 +18,27 @@ import org.springframework.stereotype.Repository;
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class TopicDaoImpl implements ITopicDAO {
 
+    /**
+     * JDBC template.
+     */
     @Autowired
     private NamedParameterJdbcTemplate template;
 
+    /**
+     * SQL reference script.
+     * Retrieve all topics.
+     */
     @Value("${get_all_topics}")
-    private String GET_ALL_TOPICS;
+    private String getAllTopicsScript;
 
+    /**
+     * Retrieve all available topics from database.
+     * @return
+     * List of topics
+     */
     @Override
     public List<Topic> getAllTopics() {
-        return this.template.query(GET_ALL_TOPICS, new TopicMapper());
+        return this.template.query(getAllTopicsScript, new TopicMapper());
     }
 
 

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Model class of Topic.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -15,7 +18,13 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Topic {
 
+    /**
+     * Id of topic.
+     */
     private int id;
+    /**
+     * Name of topic.
+     */
     private String name;
 }
 

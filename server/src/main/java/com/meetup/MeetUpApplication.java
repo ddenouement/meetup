@@ -11,7 +11,7 @@ public class MeetUpApplication {
     /**.
      * constructor, closed for calls
      */
-    public MeetUpApplication(){
+    public MeetUpApplication() {
         //not user
     }
     /**.

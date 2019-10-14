@@ -67,7 +67,7 @@
     <property name="message" value="Line has trailing spaces."/>
   </module>
 
-  <module name="LineLength"/>
+  <!--<module name="LineLength"/>-->
 
   <!-- Checks for Headers                                -->
   <!-- See http://checkstyle.sf.net/config_header.html   -->

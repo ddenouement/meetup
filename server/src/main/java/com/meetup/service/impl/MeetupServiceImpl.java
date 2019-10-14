@@ -69,7 +69,7 @@ public class MeetupServiceImpl implements IMeetupService {
     @Override
     public List<Topic> getAllTopics() {
         List<Topic> allTopics = topicDao.getAllTopics();
-        if (allTopics.isEmpty()){
+        if (allTopics.isEmpty()) {
             throw new NoSuchElementException();
         }
         return allTopics;
@@ -86,7 +86,7 @@ public class MeetupServiceImpl implements IMeetupService {
     @Override
     public List<Meetup> getAllMeetups() {
         List<Meetup> allMeetups = meetupDao.getAllMeetups();
-        if (allMeetups.isEmpty()){
+        if (allMeetups.isEmpty()) {
             throw new NoSuchElementException();
         }
         return allMeetups;
@@ -150,8 +150,17 @@ public class MeetupServiceImpl implements IMeetupService {
         }
     }
 
+    /**
+     * Register user for specified meetup.
+     * @param meetup
+     * Meetup, that will be used to register user to
+     * @param token
+     * JSON web token to extract user credentials
+     * @return
+     * Meetup
+     */
     @Override
-    public Meetup joinMeetup(Meetup meetup, String token) {
+    public Meetup joinMeetup(final Meetup meetup, final String token) {
 
         return null;
     }

@@ -4,6 +4,9 @@ import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import java.util.List;
 
+/**
+ * Interface for meetup repository (DAO).
+ */
 public interface IMeetupDAO {
 
     /**

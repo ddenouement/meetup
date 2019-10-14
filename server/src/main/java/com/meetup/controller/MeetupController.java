@@ -2,7 +2,7 @@ package com.meetup.controller;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import com.meetup.service.IMeetupService;
+import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,14 +26,14 @@ public class MeetupController {
     /**.
      * Service, that manages meetup functionality
      */
-    private IMeetupService IMeetupService;
+    private MeetupServiceImpl meetupService;
 
     /**.
      * set the MeetupService
-     * @param IMeetupService MeetupService custom
+     * @param meetupService MeetupService custom
      */
-    MeetupController(@Autowired IMeetupService IMeetupService) {
-        this.IMeetupService = IMeetupService;
+    MeetupController(@Autowired final MeetupServiceImpl meetupService) {
+        this.meetupService = meetupService;
     }
 
     /**.
@@ -44,35 +44,53 @@ public class MeetupController {
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "api/v1/meetups")
     public ResponseEntity<List<Meetup>> getAllMeetups(
-        @CookieValue(value = "token", defaultValue = "") String token) {
+        @CookieValue(value = "token", defaultValue = "")
+            final String token) {
         try {
-            return new ResponseEntity<>(IMeetupService.getAllMeetups(),
+            return new ResponseEntity<>(meetupService.getAllMeetups(),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * Get all topics mapping.
+     * @param token
+     * JSON web token.
+     * @return
+     * Response entity with list of all topics.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping("api/v1/meetups/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics(
-        @CookieValue(value = "token", defaultValue = "") String token) {
+        @CookieValue(value = "token", defaultValue = "")
+        final String token) {
         try {
-            return new ResponseEntity<>(IMeetupService.getAllTopics(),
+            return new ResponseEntity<>(meetupService.getAllTopics(),
                 HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * Join user to meeetup.
+     * @param token
+     * JSON web token.
+     * @param meetup
+     * Meetup, that user should join.
+     * @return
+     * Response entity with meetup.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @PutMapping("api/v1/meetups/join")
     public ResponseEntity<Meetup> joinMeetup(
-        @CookieValue(value = "token", defaultValue = "") String token,
-        @RequestBody Meetup meetup){
+        @CookieValue(value = "token", defaultValue = "")
+        final String token, @RequestBody final Meetup meetup) {
         try {
             return new ResponseEntity<>(
-                IMeetupService.joinMeetup(meetup,token),HttpStatus.OK);
+                meetupService.joinMeetup(meetup, token), HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -12,12 +12,12 @@ public class MeetupTest {
     public void equalsTest() {
         Meetup meetup = Meetup.builder()
                 .duration(Duration.ofHours(1))
-                .date(LocalDateTime.of(2019, 10, 6, 12, 0))
+                .startDate(LocalDateTime.of(2019, 10, 6, 12, 0))
                 .build();
 
         Meetup meetup2 = Meetup.builder()
                 .duration(Duration.ofHours(1))
-                .date(LocalDateTime.of(2019, 10, 6, 12, 0))
+                .startDate(LocalDateTime.of(2019, 10, 6, 12, 0))
                 .build();
 
         Assert.assertEquals(meetup, meetup2);
