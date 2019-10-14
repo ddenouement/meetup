@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   public error = '';
+  public loading = false;
   public login: string;
   public password: string;
 
@@ -32,12 +33,14 @@ export class LoginComponent implements OnInit {
       login: this.loginForm.get('login').value,
       password: this.loginForm.get('password').value
     };
+    this.loading = true;
     this.httpClient.post("/api/v1/user/login", user)
     .subscribe(data => {
         this.router.navigate(['/']);
     },
     error => {
-      this.error = error.error.error;
+      this.error = error.error;
+      this.loading = false;
     });
   }
 

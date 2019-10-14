@@ -8,6 +8,7 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {ErrorStateMatcher} from "@angular/material/core";
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
+import {delay} from "rxjs/operators";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,7 +31,7 @@ export class RegisterComponent implements OnInit {
   passwordComponentWithConfirmation: MatPasswordStrengthComponent;
 
   registerForm: FormGroup;
-  submitted = false;
+  public loading = false;
   public error: '';
   public login: string;
   public email: string;
@@ -62,11 +63,13 @@ export class RegisterComponent implements OnInit {
       email: this.registerForm.get('email').value,
       password: this.passwordComponentWithConfirmation.password
     };
+    this.loading = true;
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe(data => {
         this.router.navigate(['/login']);
       },
       error => {
         this.error = error.error;
+        this.loading = false;
       });
   }
 

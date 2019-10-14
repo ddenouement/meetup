@@ -36,6 +36,7 @@ export class RegisterSpeakerComponent implements OnInit {
   languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
 
   showDetails3: boolean;
+  public loading = false;
   public error: '';
   public firstName: string;
   public lastName: string;
@@ -72,11 +73,13 @@ export class RegisterSpeakerComponent implements OnInit {
       about: this.registerForm.get('about').value,
       password: this.passwordComponentWithConfirmation.password
     };
+    this.loading = true;
     this.httpClient.post("/api/v1/user/register/speaker", user).subscribe(data => {
         this.router.navigate(['/login']);
       },
       error => {
         this.error = error.error;
+        this.loading = false;
       });
   }
 
