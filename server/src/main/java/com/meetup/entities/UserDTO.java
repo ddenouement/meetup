@@ -49,10 +49,7 @@ public class UserDTO {
          * rate of user
          */
         private Float rate;
-        /**.
-         * password
-         */
-        private String password;
+
 private List<Meetup> hosted;
 private List<Meetup> joined;
 private  List<Language> languages;
@@ -77,13 +74,10 @@ private List<Filter> filters;
          * Constructor
          * @param memail String
          * @param mlogin String
-         * @param mpassword String
          */
-        public UserDTO(final String memail, final String mlogin,
-                    final String mpassword) {
+        public UserDTO(final String memail, final String mlogin ) {
             this.email = memail;
             this.login = mlogin;
-            this.password = mpassword;
             this.roles = new ArrayList<String>();
             this.languages = new ArrayList<Language>();
             this.filters = new ArrayList<Filter>();
@@ -108,20 +102,17 @@ private List<Filter> filters;
          *
          * @param memail String
          * @param mlogin String
-         * @param mpassword String
          * @param mname String
          * @param mlastName String
          * @param mroles List<String>
          */
         public UserDTO(final String memail, final String mlogin,
-                    final String mpassword,
                     final String mname, final String mlastName,
                     final List<String> mroles) {
             this.email = memail;
             this.login = mlogin;
             this.firstName = mname;
             this.lastName = mlastName;
-            this.password = mpassword;
             this.roles = mroles;
             this.languages = new ArrayList<Language>();
             this.filters = new ArrayList<Filter>();

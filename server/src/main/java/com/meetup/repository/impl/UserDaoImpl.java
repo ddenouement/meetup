@@ -76,7 +76,7 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${find_subscriptions_by_user_id}")
     private String findSubscriptionOfUserById;
 
-    @Value("find_languages_by_user_id")
+    @Value("${find_languages_by_user_id}")
     private String findUsersLanguages;
 
     /**
