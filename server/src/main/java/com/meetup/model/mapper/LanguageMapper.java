@@ -5,9 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
+/**.
+ * custom RowMapper
+ */
 public final class LanguageMapper implements RowMapper<Language> {
 
-    /**
+    /**.
      * Map a row from a result set to an instance of class Language.
      *
      * @param rs result set

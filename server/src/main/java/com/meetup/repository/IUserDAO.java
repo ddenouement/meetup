@@ -70,6 +70,7 @@ public interface IUserDAO {
      * get from DB users subscriptions (speakers)
      *
      * @param id int, id of user
+     * @return  List of users
      */
     List<User> getUsersSubscriptionsToSpeakers(int id);
 
@@ -78,6 +79,7 @@ public interface IUserDAO {
      * get from DB users languages
      *
      * @param id int, id of user
+     * @return list of Languages
      */
-    List<Language> getUsersLanguages(final int id);
+    List<Language> getUsersLanguages(int id);
 }

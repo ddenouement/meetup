@@ -6,7 +6,6 @@ import com.meetup.entities.UserDTO;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
-import com.meetup.service.RoleProcessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserServiceImpl implements IUserService {
 
-    //TODO enum
     /**
      * . role
      */
@@ -39,6 +37,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Autowired
     private IUserDAO userDao;
+    /**
+     * .
+     */
     @Autowired
     private IMeetupDAO meetupDao;
 
@@ -88,7 +89,7 @@ public class UserServiceImpl implements IUserService {
      * @return User, but with new profile
      */
     @Override
-    public User updateProfile(User user) {
+    public User updateProfile(final User user) {
         //TODO implement
         return null;
     }
@@ -100,7 +101,7 @@ public class UserServiceImpl implements IUserService {
      * @return User with new password
      */
     @Override
-    public User changePassword(User user) {
+    public User changePassword(final User user) {
         //TODO implement
         return null;
     }
@@ -118,7 +119,13 @@ public class UserServiceImpl implements IUserService {
 
     }
 
-    private UserDTO convertToUserDTO(User us) {
+    /**
+     * . Convert a User exemplar to UserDTO exemplar (e.g. without password)
+     *
+     * @param us User
+     * @return UserDTO
+     */
+    private UserDTO convertToUserDTO(final User us) {
         UserDTO newUser = new UserDTO();
         newUser.setAbout(us.getAbout());
         newUser.setActive(us.isActive());
@@ -129,12 +136,6 @@ public class UserServiceImpl implements IUserService {
         newUser.setRoles(us.getRoles());
         newUser.setLogin(us.getLogin());
         newUser.setRate(us.getRate());
-        if (RoleProcessor.isSpeaker(us)) {
-            newUser.setHosted(meetupDao.getSpeakerMeetups(us.getId()));
-        }
-        newUser.setJoined(meetupDao.getUsersJoinedMeetups(us.getId()));
-        newUser.setSubscriptedToSpeakers(
-            userDao.getUsersSubscriptionsToSpeakers(us.getId()));
         newUser.setLanguages(userDao.getUsersLanguages(us.getId()));
 
         return newUser;
@@ -148,8 +149,19 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public List<User> getAllSpeakers() {
-        //TODO implement
+        //TODOo implement
         return null;
+    }
+
+    /**
+     * .
+     *
+     * @param id id
+     * @return List of speakers, that user is subscripted to
+     */
+    @Override
+    public List<User> getUsersSubscriptionsToSpeakers(final int id) {
+        return userDao.getUsersSubscriptionsToSpeakers(id);
     }
 
 

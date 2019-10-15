@@ -71,12 +71,14 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${find_subscriptions_by_user_id}")
     private String findSubscriptionOfUserById;
-
+    /**
+     * . sql for finding languages of a user
+     */
     @Value("${find_languages_by_user_id}")
     private String findUsersLanguages;
 
     /**
-     * .
+     * . .
      *
      * @param login String
      * @return bool
@@ -119,7 +121,6 @@ public class UserDaoImpl implements IUserDAO {
         for (String a : findUserRolesByLogin(l)) {
             person.addRole(a);
         }
-        //TODO: do we need to init languages, subscriptions etc here???????????
         return person;
     }
 
@@ -181,14 +182,14 @@ public class UserDaoImpl implements IUserDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("login", log);
         ResultSet rs = null;
-        List<User> found_users =
+        List<User> foundusers =
             template.query(findByLogin, param, (resultSet, i) -> {
                 return toPerson(resultSet);
             });
-        if (found_users.size() == 0) {
+        if (foundusers.size() == 0) {
             return null;
         } else {
-            return found_users.get(0);
+            return foundusers.get(0);
         }
 
     }
@@ -243,20 +244,31 @@ public class UserDaoImpl implements IUserDAO {
         return resultSet.getString("name");
     }
 
+    /**
+     * . Get Speakers that User is subscribed to
+     *
+     * @param id int, id of user
+     */
     @Override
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("user_id_param", id);
         ResultSet rs = null;
         List<User> subscriptedTo =
-            template
-                .query(findSubscriptionOfUserById, param, (resultSet, i) -> {
+            template.query(
+                findSubscriptionOfUserById, param, (resultSet, i) -> {
                     return toPerson(resultSet);
-                });
-
+                }
+            );
         return subscriptedTo;
     }
 
+    /**
+     * . get Users languages by his ID
+     *
+     * @param id int, id of user
+     * @return List<Language>
+     */
     @Override
     public List<Language> getUsersLanguages(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()

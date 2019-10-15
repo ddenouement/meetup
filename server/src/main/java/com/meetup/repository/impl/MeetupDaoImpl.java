@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-/**
+/**.
  * Meetup repository class.
  * Used to communicate with database, to perform operations with Meetups.
  */
@@ -27,19 +27,19 @@ import org.springframework.stereotype.Repository;
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class MeetupDaoImpl implements IMeetupDAO {
 
-    /**
+    /**.
      * JDBC template.
      */
     @Autowired
     private NamedParameterJdbcTemplate template;
 
-    /**
+    /**.
      * SQL reference script.
      * Retrieve all meetups.
      */
     @Value("${get_all_meetings}")
     private String getAllMeetups;
-    /**
+    /**.
      * SQL reference script.
      * Retrieve specific speaker meetups.
      */
@@ -57,44 +57,44 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${update_meetup}")
     private String updateMeetup;
-    /**
+    /**.
      * SQL reference script.
      * Retrieve topic by name.
      */
     @Value("${find_topic_id}")
     private String findTopicIdByName;
-    /**
+    /**.
      * SQL reference script.
      * Add topic to specific meetup.
      */
     @Value("${add_topic_to_meeting}")
     private String addTopicToMeetup;
-    /**
+    /**.
      * SQL reference script.
      * Get users joined to meetup.
      */
     @Value("${get_joined_meetups_of_user}")
     private String getUsersJoinedMeetups;
-    /**
+    /**.
      * SQL reference script.
      * Add user to meetup.
      */
     @Value("${add_user_to_meetup}")
     private String addUserToMeetup;
-    /**
+    /**.
      * SQL reference script.
      * Remove user from meetup.
      */
     @Value("${remove_user_from_meetup}")
     private String removeUserFromMeetup;
-    /**
+    /**.
      * SQL reference script.
      * Get all users on specific meetup.
      */
     @Value("${get_users_on_meetup}")
     private String getUsersOnMeetup;
 
-    /**
+    /**.
      * Get all meetups from DB.
      * @return
      * List of all meetups.
@@ -104,7 +104,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
         return this.template.query(getAllMeetups, new MeetupMapper());
     }
 
-    /**
+    /**.
      * Insert new meetup in DB.
      * @param meetup
      * Meetup to be added.
@@ -125,14 +125,14 @@ public class MeetupDaoImpl implements IMeetupDAO {
         if (holder.getKeys() != null) {
             meetup.setId(holder.getKey().intValue());
             //adding topics to DB
-            //TODO rewrite
+            //TODOo rewrite
             for (Topic topic : meetup.getTopics()) {
                 addTopicToMeetup(meetup, topic);
             }
         }
     }
 
-    /**
+    /**.
      * Update existing meetup in DB.
      * @param meetup
      * Meetup to be updated.
@@ -154,14 +154,14 @@ public class MeetupDaoImpl implements IMeetupDAO {
         if (holder.getKeys() != null) {
             meetup.setId(holder.getKey().intValue());
             //adding topics to DB
-            //TODO rewrite
+            //TODOo rewrite
             for (Topic topic : meetup.getTopics()) {
                 addTopicToMeetup(meetup, topic);
             }
         }
     }
 
-    /**
+    /**.
      * Add topic to meetup in DB.
      * @param meetup
      * Meetup object, that should have topic
@@ -182,7 +182,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(addTopicToMeetup, parametersForAddingTopic);
     }
 
-    /**
+    /**.
      * Get all meetups of specific speaker.
      * @param speakerID
      * Speaker ID
@@ -197,7 +197,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .query(getSpeakerMeetups, param, new MeetupMapper());
     }
 
-    /**
+    /**.
      * Get all meetups, that user have joined.
      * @param userID
      * User ID
@@ -212,7 +212,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 .query(getUsersJoinedMeetups, param, new MeetupMapper());
     }
 
-    /**
+    /**.
      * Add user to specific meetup.
      * @param meetup
      * Meetup, that user should register to.
@@ -227,7 +227,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(addUserToMeetup, param);
     }
 
-    /**
+    /**.
      * Remove user from specific meetup.
      * @param meetup
      * Meetup, that user should leave to.
@@ -242,7 +242,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(removeUserFromMeetup, param);
     }
 
-    /**
+    /**.
      * Get users, registered on meetup.
      * @param meetupId
      * Meetup ID

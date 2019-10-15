@@ -14,6 +14,7 @@ import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +151,22 @@ public class MeetupServiceImpl implements IMeetupService {
         }
     }
 
+    /**.
+     * return list of user hosted meetus (null if
+     * @param login login of user
+     * @return
+     */
+    @Override
+    public List<Meetup> getSpeakerMeetupsByLogin(final String login) {
+        User user = userDao.findUserByLogin(login);
+        if (isSpeaker(user)) {
+            return meetupDao.getSpeakerMeetups(user.getId());
+        } else {
+           return new ArrayList<Meetup>();
+        }
+
+    }
+
     /**
      * Register user for specified meetup.
      *
@@ -179,5 +196,15 @@ public class MeetupServiceImpl implements IMeetupService {
         String userLogin = loginValidatorService.extractLogin(token);
         User user = userDao.findUserByLogin(userLogin);
         meetupDao.removeUserFromMeetup(meetup, user);
+    }
+
+    /**.
+     * Meetups that user joined
+     * @param id id
+     * @return List of meetups
+     */
+    @Override
+    public List<Meetup> getUserJoinedMeetups(final int id) {
+      return  meetupDao.getUsersJoinedMeetups(id);
     }
 }

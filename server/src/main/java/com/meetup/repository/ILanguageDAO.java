@@ -3,6 +3,9 @@ package com.meetup.repository;
 import com.meetup.entities.Language;
 import java.util.List;
 
+/**.
+ * Interface for working with DB considering languages
+ */
 public interface ILanguageDAO {
 
     /**

@@ -10,16 +10,19 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+/**.
+ * Implemetation of ILanguageDAO
+ */
 @Repository
 @PropertySource("classpath:sql/language_queries.properties")
 public class LanguageDaoImpl implements ILanguageDAO {
 
-    /**
+    /**.
      * Provides JDBC operations with named parameters.
      **/
     private NamedParameterJdbcTemplate template;
 
-    /**
+    /**.
      * Initialize with the instance of NamedParameterJdbcTemplate.
      *
      * @param template template to use to perform JDBC operations.
@@ -29,16 +32,18 @@ public class LanguageDaoImpl implements ILanguageDAO {
         this.template = template;
     }
 
-    /** SQL script to select all rows in table languages. */
+    /**.
+     *  SQL script to select all rows in table languages. */
     @Value("${find_all_languages}")
     private String findAllScript;
 
-    /** SQL script to select all rows in table languages and sort them by names
+    /** .
+     * SQL script to select all rows in table languages and sort them by names
      * in ascending order. **/
     @Value("${find_all_languages_sorted}")
     private String findAllSortedScript;
 
-    /**
+    /**.
      * Retrieve all instances of a type.
      *
      * @return all instances of a type
@@ -48,7 +53,7 @@ public class LanguageDaoImpl implements ILanguageDAO {
         return this.template.query(findAllScript, new LanguageMapper());
     }
 
-    /**
+    /**.
      * Retrieve all instances of a type sorted by names in ascending order.
      *
      * @return all instances of a type
