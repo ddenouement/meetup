@@ -2,17 +2,19 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
 import com.meetup.entities.User;
+import com.meetup.entities.UserRegistrationDTO;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.repository.IUserDAO;
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -145,19 +147,20 @@ public class UserDaoImpl implements IUserDAO {
         template.update(addRoleToUser, namedParameters);
     }
 
+    private Array createSqlArray(final List<String> elements) {
+        return template.getJdbcOperations()
+            .execute((ConnectionCallback<Array>) con -> con
+                .createArrayOf("TEXT", elements.toArray()));
+    }
+
     /**
      * Insert a user and his connections to roles and languages in DB in one
      * request.
      *
      * @param user user to insert
-     * @param languages languages to insert
      */
     @Override
-    public void insertNewUser(final User user, final List<Language> languages) {
-        List<Integer> roleIds = user.getRoles().stream()
-            .map(this::getRoleId).collect(Collectors.toList());
-        List<Integer> languageIds = languages.stream()
-            .map(Language::getId).collect(Collectors.toList());
+    public void insertNewUser(final UserRegistrationDTO user) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("login", user.getLogin())
             .addValue("email", user.getEmail())
@@ -165,9 +168,10 @@ public class UserDaoImpl implements IUserDAO {
             .addValue("first_name", user.getFirstName())
             .addValue("last_name", user.getLastName())
             .addValue("about", user.getAbout())
-            .addValue("role_ids", roleIds)
-            .addValue("language_ids", languageIds);
-        template.update(insertNewUser, param);
+            .addValue("roles", createSqlArray(user.getRoles()))
+            .addValue("languages", createSqlArray(user.getLanguages()));
+//        template.update(insertFullUser, param);
+        template.execute(insertFullUser, param, ps -> ps.executeQuery());
     }
 
     /**

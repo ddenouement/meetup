@@ -1,24 +1,28 @@
 CREATE OR REPLACE FUNCTION insert_full_user(_login TEXT, _email TEXT, _password TEXT,
                            _first_name TEXT, _last_name TEXT, _about TEXT,
-                           _role_ids INTEGER[], _language_ids INTEGER[])
+                           _roles TEXT[], _languages TEXT[])
     RETURNS VOID AS
 $$
 DECLARE
     _id_user BIGINT;
+    _role TEXT;
+    _lang TEXT;
     _id_role INTEGER;
     _id_lang INTEGER;
 BEGIN
     INSERT INTO users (login, email, password, first_name, last_name, about)
     VALUES (_login, _email, _password, _first_name, _last_name, _about) RETURNING id INTO _id_user;
 
-    FOREACH _id_role IN ARRAY _role_ids
+    FOREACH _role IN ARRAY _roles
         LOOP
+            SELECT id FROM roles WHERE name = _role INTO _id_role;
             INSERT INTO users_roles (id_user, id_role)
             VALUES (_id_user, _id_role);
         END LOOP;
 
-    FOREACH _id_lang IN ARRAY _language_ids
+    FOREACH _lang IN ARRAY _languages
         LOOP
+            SELECT id FROM languages WHERE name = _lang INTO _id_lang;
             INSERT INTO users_languages (id_user, id_language)
             VALUES (_id_user, _id_lang);
         END LOOP;

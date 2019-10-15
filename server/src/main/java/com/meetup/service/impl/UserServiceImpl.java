@@ -1,12 +1,11 @@
 package com.meetup.service.impl;
 
-import com.meetup.entities.Language;
 import com.meetup.entities.User;
 import com.meetup.entities.UserDTO;
+import com.meetup.entities.UserRegistrationDTO;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +49,15 @@ public class UserServiceImpl implements IUserService {
      * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsListener(final User user) {
+    public ResponseEntity<String> registerAsListener(
+        final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao
             .isEmailUsed(user.getEmail())) {
             return new ResponseEntity<>("User already exists",
                 HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().add(LISTENER);
-            userDao.insertNewUser(user, new ArrayList<>());
+            userDao.insertNewUser(user);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
@@ -69,15 +69,15 @@ public class UserServiceImpl implements IUserService {
      * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsSpeaker(final User user,
-        final List<Language> languages) {
+    public ResponseEntity<String> registerAsSpeaker(
+        final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao
             .isEmailUsed(user.getEmail())) {
             return new ResponseEntity<>("User already exists",
                 HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().addAll(Arrays.asList(LISTENER, SPEAKER));
-            userDao.insertNewUser(user, languages);
+            userDao.insertNewUser(user);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }

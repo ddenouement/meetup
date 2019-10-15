@@ -4,10 +4,10 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
+import com.meetup.entities.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.Cookie;
@@ -106,8 +106,8 @@ public class AuthorizationController {
      * @return ResponseEntity
      */
     @PostMapping(value = "/api/v1/user/register/listener")
-    public ResponseEntity registerListener(final @RequestBody User user) {
-
+    public ResponseEntity registerListener(
+        final @RequestBody UserRegistrationDTO user) {
         return userService.registerAsListener(user);
     }
 
@@ -119,7 +119,7 @@ public class AuthorizationController {
      */
     @PostMapping(value = "/api/v1/user/register/speaker")
     public ResponseEntity<String> registerSpeaker(
-        final @RequestBody User user) {
-        return userService.registerAsSpeaker(user, new ArrayList<>());
+        final @RequestBody UserRegistrationDTO user) {
+        return userService.registerAsSpeaker(user);
     }
 }
