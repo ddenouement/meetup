@@ -126,6 +126,11 @@ public class UserDaoImpl implements IUserDAO {
         return person;
     }
 
+    /**
+     * Get role id by its name.
+     * @param roleName role's name in DB
+     * @return role's id in DB
+     */
     private Integer getRoleId(final String roleName) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(
             "text", roleName);
@@ -147,6 +152,11 @@ public class UserDaoImpl implements IUserDAO {
         template.update(addRoleToUser, namedParameters);
     }
 
+    /**
+     * Create sql Array type from a List of Strings.
+     * @param elements list of strings
+     * @return sql Array
+     */
     private Array createSqlArray(final List<String> elements) {
         return template.getJdbcOperations()
             .execute((ConnectionCallback<Array>) con -> con

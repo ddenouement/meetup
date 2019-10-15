@@ -32,6 +32,7 @@ public class UserRegistrationDTO {
     /** User's roles. */
     private List<String> roles;
 
+    /** Init with empty lists. */
     public UserRegistrationDTO() {
         this.languages = new ArrayList<>();
         this.roles = new ArrayList<>();
