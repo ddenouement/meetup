@@ -2,7 +2,6 @@ package com.meetup.service;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -73,7 +72,7 @@ public interface IMeetupService {
  * **/
     List<Meetup> getSpeakerMeetupsByLogin(String login);
 
-    /**
+    /**.
      * Register user for meetup.
      * @param meetup
      * Meetup, that will be used to register user to
@@ -82,7 +81,7 @@ public interface IMeetupService {
      */
     void joinMeetup(Meetup meetup, String token);
 
-    /**
+    /**.
      * Remove user for meetup.
      * @param meetup
      * Meetup, that will be used to remove user to
@@ -90,5 +89,11 @@ public interface IMeetupService {
      * JSON web token to extract user credentials
      */
     void leaveMeetup(Meetup meetup, String token);
+
+    /**.
+     * get Meetups that user joined
+     * @param id int
+     * @return List of Meetups
+     */
     List<Meetup> getUserJoinedMeetups(int id);
 }

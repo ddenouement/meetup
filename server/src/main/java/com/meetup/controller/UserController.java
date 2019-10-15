@@ -58,6 +58,10 @@ public class UserController {
 
     }
 
+    /**.
+     * return all speakers
+     * @return List of Users
+     */
     //TODOo implement
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @GetMapping(value = "/api/v1/user/availableSpeakers")

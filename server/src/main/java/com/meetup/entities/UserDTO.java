@@ -7,6 +7,10 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+/**.
+ * UserDTO to transfer data abt User
+ */
 @Getter
 @Setter
 @ToString
@@ -66,10 +70,7 @@ public class UserDTO {
         public UserDTO(final String[] mroles) {
             this.roles = Arrays.asList(mroles);
             this.languages = new ArrayList<Language>();
-  /*          this.filters = new ArrayList<Filter>();
-            this.joined = new ArrayList<Meetup>();
-            this.hosted = new ArrayList<Meetup>();
-            this.subscriptedToSpeakers = new ArrayList<User>();*/
+
         }
 
 
@@ -78,15 +79,11 @@ public class UserDTO {
          * @param memail String
          * @param mlogin String
          */
-        public UserDTO(final String memail, final String mlogin ) {
+        public UserDTO(final String memail, final String mlogin) {
             this.email = memail;
             this.login = mlogin;
             this.roles = new ArrayList<String>();
             this.languages = new ArrayList<Language>();
-   /*         this.filters = new ArrayList<Filter>();
-            this.joined = new ArrayList<Meetup>();
-            this.hosted = new ArrayList<Meetup>();
-            this.subscriptedToSpeakers = new ArrayList<User>();*/
         }
 
         /**.

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
+/**.
  * model class of User
  */
 @Getter
@@ -57,10 +57,10 @@ public class User {
 
     /**.
      * Constructor
-     * @param _roles String[]
+     * @param roles String[]
      */
-    public User(final String[] _roles) {
-        this.roles = Arrays.asList(_roles);
+    public User(final String[] roles) {
+        this.roles = Arrays.asList(roles);
     }
 
     /**.

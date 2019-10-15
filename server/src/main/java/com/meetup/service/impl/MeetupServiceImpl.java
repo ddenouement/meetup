@@ -162,7 +162,7 @@ public class MeetupServiceImpl implements IMeetupService {
         if (isSpeaker(user)) {
             return meetupDao.getSpeakerMeetups(user.getId());
         } else {
-           return new ArrayList<Meetup>() ;
+           return new ArrayList<Meetup>();
         }
 
     }
@@ -204,7 +204,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return List of meetups
      */
     @Override
-    public List<Meetup> getUserJoinedMeetups(int id){
+    public List<Meetup> getUserJoinedMeetups(final int id) {
       return  meetupDao.getUsersJoinedMeetups(id);
     }
 }

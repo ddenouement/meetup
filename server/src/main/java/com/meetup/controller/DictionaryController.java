@@ -12,21 +12,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**.
+ * Rest api for languages
+ */
 @RestController
 @Api(value = "meetup-application")
 public class DictionaryController {
 
-    /**
+    /**.
      * Dictionary operations.
      */
     private IDictionaryService dictionaryService;
 
+    /**.
+     * constructor
+     * @param dictionaryService custom DictionaryService
+     */
     public DictionaryController(final IDictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 
-    /**
+    /**.
      * Return a list of all languages.
      *
      * @param sorted if true, the languages will be sorted by names in ascending

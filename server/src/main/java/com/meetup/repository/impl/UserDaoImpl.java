@@ -3,13 +3,14 @@ package com.meetup.repository.impl;
 import com.meetup.entities.Language;
 import com.meetup.entities.User;
 import com.meetup.model.mapper.LanguageMapper;
-import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.repository.IUserDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -75,11 +76,13 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${find_subscriptions_by_user_id}")
     private String findSubscriptionOfUserById;
-
+    /**.
+     * sql for finding languages of a user
+     */
     @Value("${find_languages_by_user_id}")
     private String findUsersLanguages;
 
-    /**
+    /**.
      * .
      *
      * @param login String
@@ -155,7 +158,7 @@ public class UserDaoImpl implements IUserDAO {
      * @param a User
      */
     @Override
-    public void insertNewUser(User a) {
+    public void insertNewUser(final User a) {
         try {
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource param = new MapSqlParameterSource()
@@ -196,14 +199,14 @@ public class UserDaoImpl implements IUserDAO {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("login", log);
         ResultSet rs = null;
-        List<User> found_users =
+        List<User> foundusers =
                 template.query(findByLogin, param, (resultSet, i) -> {
                     return toPerson(resultSet);
                 });
-        if (found_users.size() == 0) {
+        if (foundusers.size() == 0) {
             return null;
         } else {
-            return found_users.get(0);
+            return foundusers.get(0);
         }
 
     }
@@ -258,19 +261,30 @@ public class UserDaoImpl implements IUserDAO {
         return resultSet.getString("name");
     }
 
+    /**.
+     * Get Speakers that User is subscribed to
+     * @param id int, id of user
+     * @return
+     */
     @Override
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("user_id_param", id);
         ResultSet rs = null;
         List<User> subscriptedTo =
-                template.query(findSubscriptionOfUserById, param, (resultSet, i) -> {
+                template.query
+                        (findSubscriptionOfUserById, param, (resultSet, i) -> {
                     return toPerson(resultSet);
                 });
 
         return subscriptedTo;
     }
 
+    /**.
+     * get Users languages by his ID
+     * @param id int, id of user
+     * @return List<Language>
+     */
     @Override
     public List<Language> getUsersLanguages(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()

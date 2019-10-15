@@ -36,7 +36,7 @@ public final class RoleProcessor {
     /**.
      *
      * @param user UserDTO
-     * @return
+     * @return boolean
      */
     public static boolean isSpeaker(final UserDTO user) {
         List<String> roles = user.getRoles();
