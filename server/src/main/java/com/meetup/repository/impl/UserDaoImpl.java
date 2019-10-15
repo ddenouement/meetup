@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -127,8 +126,7 @@ public class UserDaoImpl implements IUserDAO {
         for (String a : findUserRolesByLogin(l)) {
             person.addRole(a);
         }
-        //TODO: do we need to init languages, subscriptions etc here???????????
-        return person;
+         return person;
     }
 
     /**
@@ -274,9 +272,8 @@ public class UserDaoImpl implements IUserDAO {
         List<User> subscriptedTo =
                 template.query
                         (findSubscriptionOfUserById, param, (resultSet, i) -> {
-                    return toPerson(resultSet);
-                });
-
+                    return toPerson(resultSet); }
+                    );
         return subscriptedTo;
     }
 

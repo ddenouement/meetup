@@ -4,9 +4,6 @@ import com.meetup.entities.User;
 import com.meetup.entities.UserDTO;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
-import com.meetup.repository.impl.MeetupDaoImpl;
-import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.RoleProcessor;
 import com.meetup.service.IUserService;
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +63,7 @@ public class UserServiceImpl implements IUserService {
      * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsSpeaker(User user) {
+    public ResponseEntity<String> registerAsSpeaker(final User user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao
             .isEmailUsed(user.getEmail())) {
             return new ResponseEntity<>("User already exists",
@@ -84,7 +81,7 @@ public class UserServiceImpl implements IUserService {
      * @return User, but with new profile
      */
     @Override
-    public User updateProfile(User user) {
+    public User updateProfile(final User user) {
         //TODO implement
         return null;
     }
@@ -95,7 +92,7 @@ public class UserServiceImpl implements IUserService {
      * @return User with new password
      */
     @Override
-    public User changePassword(User user) {
+    public User changePassword(final User user) {
         //TODO implement
         return null;
     }
@@ -112,7 +109,12 @@ public class UserServiceImpl implements IUserService {
 
     }
 
-    private UserDTO convertToUserDTO(User us) {
+    /**.
+     * Convert a User exemplar to UserDTO exemplar (e.g. without password)
+     * @param us User
+     * @return UserDTO
+     */
+    private UserDTO convertToUserDTO(final User us) {
         UserDTO newUser = new UserDTO();
         newUser.setAbout(us.getAbout());
         newUser.setActive(us.isActive());
@@ -145,7 +147,7 @@ public class UserServiceImpl implements IUserService {
      * @return List of speakers, that user is subscripted to
      */
     @Override
-   public List<User>  getUsersSubscriptionsToSpeakers(int id){
+   public List<User>  getUsersSubscriptionsToSpeakers(final int id) {
         return userDao.getUsersSubscriptionsToSpeakers(id);
     }
 
