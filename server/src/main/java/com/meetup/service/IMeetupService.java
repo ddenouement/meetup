@@ -2,6 +2,8 @@ package com.meetup.service;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
@@ -63,6 +65,13 @@ public interface IMeetupService {
      */
     List<Meetup> getSpeakerMeetups(String login)
         throws IllegalAccessException;
+/**.
+    * Get all meetups of specified speaker.
+     * @param login login of user
+     * @return
+             * List of all meetups of specified speaker
+ * **/
+    List<Meetup> getSpeakerMeetupsByLogin(String login);
 
     /**
      * Register user for meetup.
@@ -81,4 +90,5 @@ public interface IMeetupService {
      * JSON web token to extract user credentials
      */
     void leaveMeetup(Meetup meetup, String token);
+    List<Meetup> getUserJoinedMeetups(int id);
 }

@@ -50,11 +50,14 @@ public class UserDTO {
          */
         private Float rate;
 
-private List<Meetup> hosted;
-private List<Meetup> joined;
-private  List<Language> languages;
-private List<User> subscriptedToSpeakers;
-private List<Filter> filters;
+//private List<Meetup> hosted;
+//private List<Meetup> joined;
+    /**.
+     * languages
+     */
+    private  List<Language> languages;
+//private List<User> subscriptedToSpeakers;
+//private List<Filter> filters;
 
         /**.
          * Constructor
@@ -63,10 +66,10 @@ private List<Filter> filters;
         public UserDTO(final String[] mroles) {
             this.roles = Arrays.asList(mroles);
             this.languages = new ArrayList<Language>();
-            this.filters = new ArrayList<Filter>();
+  /*          this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
-            this.subscriptedToSpeakers = new ArrayList<User>();
+            this.subscriptedToSpeakers = new ArrayList<User>();*/
         }
 
 
@@ -80,10 +83,10 @@ private List<Filter> filters;
             this.login = mlogin;
             this.roles = new ArrayList<String>();
             this.languages = new ArrayList<Language>();
-            this.filters = new ArrayList<Filter>();
+   /*         this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
-            this.subscriptedToSpeakers = new ArrayList<User>();
+            this.subscriptedToSpeakers = new ArrayList<User>();*/
         }
 
         /**.
@@ -92,10 +95,10 @@ private List<Filter> filters;
         public UserDTO() {
             this.roles = new ArrayList<String>();
             this.languages = new ArrayList<Language>();
-            this.filters = new ArrayList<Filter>();
+    /*        this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
-            this.subscriptedToSpeakers = new ArrayList<User>();
+            this.subscriptedToSpeakers = new ArrayList<User>();*/
         }
 
         /**.
@@ -115,10 +118,10 @@ private List<Filter> filters;
             this.lastName = mlastName;
             this.roles = mroles;
             this.languages = new ArrayList<Language>();
-            this.filters = new ArrayList<Filter>();
+        /*    this.filters = new ArrayList<Filter>();
             this.joined = new ArrayList<Meetup>();
             this.hosted = new ArrayList<Meetup>();
-            this.subscriptedToSpeakers = new ArrayList<User>();
+            this.subscriptedToSpeakers = new ArrayList<User>();*/
         }
 
         /**.
@@ -128,7 +131,7 @@ private List<Filter> filters;
         public void addRole(final String role) {
             this.roles.add(role);
         }
-        public void addSpeakerToSubscriptions(final User u) {
+  /*      public void addSpeakerToSubscriptions(final User u) {
             this.subscriptedToSpeakers.add(u);
         }
         public void addLanguage(final Language lan) {
@@ -140,6 +143,6 @@ private List<Filter> filters;
         public void hostMeeting(final Meetup a) {
             this.hosted.add(a);
         }
-        public void addFilter(final Filter f){this.filters.add(f);}
+        public void addFilter(final Filter f){this.filters.add(f);}*/
     }
 

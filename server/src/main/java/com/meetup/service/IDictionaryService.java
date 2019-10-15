@@ -3,9 +3,12 @@ package com.meetup.service;
 import com.meetup.entities.Language;
 import java.util.List;
 
+/**.
+ * interface to work with languages
+ */
 public interface IDictionaryService {
 
-    /**
+    /**.
      * Return all languages.
      *
      * @param sorted if true, the languages will be sorted by name in ascending

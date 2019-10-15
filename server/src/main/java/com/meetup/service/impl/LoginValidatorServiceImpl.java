@@ -8,23 +8,23 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
+/**.
  * Login validator service (implementation). Used to manage validity of user
  * login.
  */
 @Component
 public class LoginValidatorServiceImpl implements ILoginValidatorService {
 
-    /**
+    /**.
      * JSON web token provider.
      */
     private JwtTokenProvider jwtTokenProvider;
-    /**
+    /**.
      * User repository.
      */
     private IUserDAO userDao;
 
-    /**
+    /**.
      * Login validator service constructor.
      *
      * @param jwtTokenProvider JSON web token provider
@@ -37,7 +37,7 @@ public class LoginValidatorServiceImpl implements ILoginValidatorService {
         this.userDao = userDao;
     }
 
-    /**
+    /**.
      * Extracting login from JSON web token.
      *
      * @param token Token, that used to extract login from
@@ -55,7 +55,7 @@ public class LoginValidatorServiceImpl implements ILoginValidatorService {
         }
     }
 
-    /**
+    /**.
      * Check if user exists in database.
      *
      * @param login User login

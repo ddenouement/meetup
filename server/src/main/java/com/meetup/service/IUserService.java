@@ -51,5 +51,12 @@ public interface IUserService {
      * */
     List<User> getAllSpeakers();
 
+    /**.
+     *
+     * @param id id
+     * @return List<User> of Speakers
+     */
+    List<User>  getUsersSubscriptionsToSpeakers(int id);
+
 }
 

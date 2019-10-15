@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserServiceImpl implements IUserService {
 
-    //TODO enum
     /**.
      * role
      */
@@ -39,6 +38,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Autowired
     private IUserDAO userDao;
+    /**.
+     *
+     */
     @Autowired
     private IMeetupDAO meetupDao;
 
@@ -121,12 +123,7 @@ public class UserServiceImpl implements IUserService {
         newUser.setRoles(us.getRoles());
         newUser.setLogin(us.getLogin());
         newUser.setRate(us.getRate());
-        if(RoleProcessor.isSpeaker(us)) {
-            newUser.setHosted(meetupDao.getSpeakerMeetups(us.getId()));
-        }
-        newUser.setJoined(meetupDao.getUsersJoinedMeetups(us.getId()));
-        newUser.setSubscriptedToSpeakers(userDao.getUsersSubscriptionsToSpeakers(us.getId()));
-        newUser.setLanguages(userDao.getUsersLanguages(us.getId()));
+         newUser.setLanguages(userDao.getUsersLanguages(us.getId()));
 
         return newUser;
     }
@@ -138,8 +135,18 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public List<User> getAllSpeakers() {
-        //TODO implement
+        //TODOo implement
         return null;
+    }
+
+    /**.
+     *
+     * @param id id
+     * @return List of speakers, that user is subscripted to
+     */
+    @Override
+   public List<User>  getUsersSubscriptionsToSpeakers(int id){
+        return userDao.getUsersSubscriptionsToSpeakers(id);
     }
 
 

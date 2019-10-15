@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import org.springframework.jdbc.core.RowMapper;
 
-/**
+/**.
  * Class, used to map ResultSet from DB to Meetup model.
  */
 public final class MeetupMapper implements RowMapper<Meetup> {
 
-    /**
+    /**.
      * Callback method of RowMapper interface.
      * @param rs
      * A table of data representing a database result set.
@@ -40,7 +40,7 @@ public final class MeetupMapper implements RowMapper<Meetup> {
         return meetup;
     }
 
-    /**
+    /**.
      * Helper method to convert SQL Date to LocalDateTime.
      * @param dateToConvert
      * SQL Date value
