@@ -2,6 +2,7 @@ package com.meetup.repository;
 
 import com.meetup.entities.Language;
 import com.meetup.entities.User;
+import com.meetup.entities.UserDTO;
 import java.util.List;
 
 /**.
@@ -57,12 +58,12 @@ public interface IUserDAO {
     void addRoleToUser(User us, String r);
 
     /**
-     * .
-     * add user to DB
-     *
-     * @param a User
+     * Insert a user and his connections to roles and languages in DB in one
+     * request.
+     * @param user user to insert
+     * @param languages languages to insert
      */
-    void insertNewUser(User a);
+    void insertNewUser(User user, List<Language> languages);
 
     /**
      * .

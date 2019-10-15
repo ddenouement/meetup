@@ -13,15 +13,15 @@ DROP TABLE IF EXISTS meetups_users CASCADE;
 
 CREATE TABLE users
 (
-    id         BIGSERIAL    NOT NULL,
-    login      TEXT         NOT NULL UNIQUE,
-    email      TEXT         NOT NULL UNIQUE,
-    password   TEXT         NOT NULL,
-    first_name TEXT         NULL,
-    last_name  TEXT         NULL,
-    active     BOOLEAN      NULL,
-    about      TEXT         NULL,
-    rate       REAL         NULL
+    id         BIGSERIAL NOT NULL,
+    login      TEXT      NOT NULL UNIQUE,
+    email      TEXT      NOT NULL UNIQUE,
+    password   TEXT      NOT NULL,
+    first_name TEXT      NULL,
+    last_name  TEXT      NULL,
+    active     BOOLEAN   NOT NULL DEFAULT TRUE,
+    about      TEXT      NULL,
+    rate       REAL      NULL
         CONSTRAINT rate_range CHECK (rate >= 0 AND rate <= 5),
     PRIMARY KEY (id)
 );
@@ -67,16 +67,16 @@ CREATE TABLE meetup_states
 
 CREATE TABLE meetups
 (
-    id              BIGSERIAL   NOT NULL,
-    id_speaker      BIGINT      NOT NULL,
-    id_language     INTEGER     NOT NULL,
-    id_state        INTEGER     NOT NULL,
-    title           TEXT        NOT NULL,
-    start_time      TIMESTAMP   NOT NULL,
-    duration        INTERVAL    NOT NULL,
-    min_atendees    INTEGER     NOT NULL DEFAULT 1,
-    max_atendees    INTEGER     NOT NULL,
-    description     TEXT        NULL,
+    id           BIGSERIAL NOT NULL,
+    id_speaker   BIGINT    NOT NULL,
+    id_language  INTEGER   NOT NULL,
+    id_state     INTEGER   NOT NULL,
+    title        TEXT      NOT NULL,
+    start_time   TIMESTAMP NOT NULL,
+    duration     INTERVAL  NOT NULL,
+    min_atendees INTEGER   NOT NULL DEFAULT 1,
+    max_atendees INTEGER   NOT NULL,
+    description  TEXT      NULL,
     FOREIGN KEY (id_speaker) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_language) REFERENCES languages (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_state) REFERENCES meetup_states (id) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -85,8 +85,8 @@ CREATE TABLE meetups
 
 CREATE TABLE topics
 (
-    id   BIGSERIAL  NOT NULL,
-    name TEXT       NOT NULL UNIQUE,
+    id   BIGSERIAL NOT NULL,
+    name TEXT      NOT NULL UNIQUE,
     PRIMARY KEY (id)
 );
 
@@ -101,11 +101,11 @@ CREATE TABLE meetups_topics
 
 CREATE TABLE meetups_users
 (
-    id_meetup           BIGINT      NOT NULL,
-    id_user             BIGINT      NOT NULL,
-    speaker_rate        SMALLINT    NULL,
-    speaker_feedback    TEXT        NULL,
-    time_posted         TIMESTAMP   NULL,
+    id_meetup        BIGINT    NOT NULL,
+    id_user          BIGINT    NOT NULL,
+    speaker_rate     SMALLINT  NULL,
+    speaker_feedback TEXT      NULL,
+    time_posted      TIMESTAMP NULL,
     FOREIGN KEY (id_meetup) REFERENCES meetups (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id_meetup, id_user)
@@ -113,28 +113,28 @@ CREATE TABLE meetups_users
 
 CREATE TABLE subscriptions
 (
-    id_speaker  BIGINT NOT NULL,
-    id_user     BIGINT NOT NULL,
+    id_speaker BIGINT NOT NULL,
+    id_user    BIGINT NOT NULL,
     FOREIGN KEY (id_speaker) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_user) REFERENCES  users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id_speaker, id_user)
 );
 
 CREATE TABLE articles
 (
-    id          BIGSERIAL   NOT NULL,
-    id_author   BIGINT      NOT NULL,
-    id_title    TEXT        NOT NULL,
-    contents    TEXT        NOT NULL,
-    time_posted TIMESTAMP   NOT NULL,
+    id          BIGSERIAL NOT NULL,
+    id_author   BIGINT    NOT NULL,
+    id_title    TEXT      NOT NULL,
+    contents    TEXT      NOT NULL,
+    time_posted TIMESTAMP NOT NULL,
     FOREIGN KEY (id_author) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE articles_topics
 (
-    id_article  BIGINT NOT NULL,
-    id_topic    BIGINT NOT NULL,
+    id_article BIGINT NOT NULL,
+    id_topic   BIGINT NOT NULL,
     FOREIGN KEY (id_article) REFERENCES articles (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_topic) REFERENCES topics (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_article, id_topic)
@@ -142,11 +142,11 @@ CREATE TABLE articles_topics
 
 CREATE TABLE comments
 (
-    id          BIGSERIAL   NOT NULL,
-    id_author   BIGINT      NOT NULL,
-    id_article  BIGINT      NOT NULL,
-    contents    TEXT        NOT NULL,
-    time_posted TIMESTAMP   NOT NULL,
+    id          BIGSERIAL NOT NULL,
+    id_author   BIGINT    NOT NULL,
+    id_article  BIGINT    NOT NULL,
+    contents    TEXT      NOT NULL,
+    time_posted TIMESTAMP NOT NULL,
     FOREIGN KEY (id_author) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_article) REFERENCES articles (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id)
@@ -154,31 +154,31 @@ CREATE TABLE comments
 
 CREATE TABLE badges
 (
-    id      SERIAL  NOT NULL,
-    name    TEXT    NOT NULL,
-    script  TEXT    NOT NULL,
+    id     SERIAL NOT NULL,
+    name   TEXT   NOT NULL,
+    script TEXT   NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE filters
 (
-    id          BIGSERIAL       NOT NULL,
-    id_user     BIGINT          NOT NULL,
-    name        TEXT            NOT NULL,
-    id_language INTEGER         NULL,
-    rate_from   NUMERIC(1,1)    NULL,
-    rate_to     NUMERIC(1,1)    NULL,
-    time_from   TIMESTAMP       NULL,
-    time_to     TIMESTAMP       NULL,
+    id          BIGSERIAL     NOT NULL,
+    id_user     BIGINT        NOT NULL,
+    name        TEXT          NOT NULL,
+    id_language INTEGER       NULL,
+    rate_from   NUMERIC(1, 1) NULL,
+    rate_to     NUMERIC(1, 1) NULL,
+    time_from   TIMESTAMP     NULL,
+    time_to     TIMESTAMP     NULL,
     FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_language) REFERENCES languages(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (id_language) REFERENCES languages (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE filters_topics
 (
-    id_filter   BIGINT  NOT NULL,
-    id_topic    BIGINT  NOT NULL,
+    id_filter BIGINT NOT NULL,
+    id_topic  BIGINT NOT NULL,
     FOREIGN KEY (id_filter) REFERENCES filters (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_topic) REFERENCES topics (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_filter, id_topic)
@@ -186,18 +186,18 @@ CREATE TABLE filters_topics
 
 CREATE TABLE notification_types
 (
-    id      SERIAL  NOT NULL,
-    name    TEXT    NOT NULL,
+    id   SERIAL NOT NULL,
+    name TEXT   NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE notifications
 (
-    id      BIGSERIAL   NOT NULL,
-    message TEXT        NOT NULL,
-    id_user BIGINT      NOT NULL,
-    read    BOOLEAN     NOT NULL,
-    id_type INTEGER     NOT NULL,
+    id      BIGSERIAL NOT NULL,
+    message TEXT      NOT NULL,
+    id_user BIGINT    NOT NULL,
+    read    BOOLEAN   NOT NULL,
+    id_type INTEGER   NOT NULL,
     FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_type) REFERENCES notification_types (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id)
@@ -205,11 +205,11 @@ CREATE TABLE notifications
 
 CREATE TABLE complaints
 (
-    id              BIGSERIAL   NOT NULL,
-    reason          TEXT        NOT NULL,
-    time_posted     TIMESTAMP   NOT NULL,
-    id_source       BIGINT      NOT NULL,
-    id_destination  BIGINT      NOT NULL,
+    id             BIGSERIAL NOT NULL,
+    reason         TEXT      NOT NULL,
+    time_posted    TIMESTAMP NOT NULL,
+    id_source      BIGINT    NOT NULL,
+    id_destination BIGINT    NOT NULL,
     FOREIGN KEY (id_source) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_destination) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id)

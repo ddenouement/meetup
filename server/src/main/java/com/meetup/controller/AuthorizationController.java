@@ -7,6 +7,7 @@ import com.meetup.entities.User;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.Cookie;
@@ -119,6 +120,6 @@ public class AuthorizationController {
     @PostMapping(value = "/api/v1/user/register/speaker")
     public ResponseEntity<String> registerSpeaker(
         final @RequestBody User user) {
-        return userService.registerAsSpeaker(user);
+        return userService.registerAsSpeaker(user, new ArrayList<>());
     }
 }
