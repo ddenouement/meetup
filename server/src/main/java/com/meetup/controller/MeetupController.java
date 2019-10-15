@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,16 +81,40 @@ public class MeetupController {
      * @param meetup
      * Meetup, that user should join.
      * @return
-     * Response entity with meetup.
+     * Response entity
      */
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
-    @PutMapping("api/v1/meetups/join")
-    public ResponseEntity<Meetup> joinMeetup(
+    @PostMapping("api/v1/meetups/join")
+    public ResponseEntity joinMeetup(
         @CookieValue(value = "token", defaultValue = "")
         final String token, @RequestBody final Meetup meetup) {
         try {
-            return new ResponseEntity<>(
-                meetupService.joinMeetup(meetup, token), HttpStatus.OK);
+            meetupService.joinMeetup(meetup, token);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NullPointerException | NoSuchElementException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (IndexOutOfBoundsException ex) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    /**
+     * Remove user from meeetup.
+     * @param token
+     * JSON web token.
+     * @param meetup
+     * Meetup, that user should leave.
+     * @return
+     * Response entity
+     */
+    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PostMapping("api/v1/meetups/leave")
+    public ResponseEntity leaveMeetup(
+        @CookieValue(value = "token", defaultValue = "")
+        final String token, @RequestBody final Meetup meetup) {
+        try {
+            meetupService.leaveMeetup(meetup, token);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

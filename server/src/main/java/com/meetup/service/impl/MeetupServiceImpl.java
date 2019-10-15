@@ -152,16 +152,32 @@ public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * Register user for specified meetup.
-     * @param meetup
-     * Meetup, that will be used to register user to
-     * @param token
-     * JSON web token to extract user credentials
-     * @return
-     * Meetup
+     *
+     * @param meetup Meetup, that will be used to register user to
+     * @param token JSON web token to extract user credentials
      */
     @Override
-    public Meetup joinMeetup(final Meetup meetup, final String token) {
+    public void joinMeetup(final Meetup meetup, final String token) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        User user = userDao.findUserByLogin(userLogin);
+        List<User> usersOnMeetup = meetupDao.getUsersOnMeetup(meetup.getId());
+        if (usersOnMeetup.size() < meetup.getMaxAttendees()) {
+            meetupDao.addUserToMeetup(meetup, user);
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
+    }
 
-        return null;
+    /**
+     * Remove user from specified meetup.
+     *
+     * @param meetup Meetup, that will be used to remove user to
+     * @param token JSON web token to extract user credentials
+     */
+    @Override
+    public void leaveMeetup(final Meetup meetup, final String token) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        User user = userDao.findUserByLogin(userLogin);
+        meetupDao.removeUserFromMeetup(meetup, user);
     }
 }

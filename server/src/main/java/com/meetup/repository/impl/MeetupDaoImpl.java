@@ -2,7 +2,9 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
+import com.meetup.entities.User;
 import com.meetup.model.mapper.MeetupMapper;
+import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IMeetupDAO;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +75,24 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${get_joined_meetups_of_user}")
     private String getUsersJoinedMeetups;
+    /**
+     * SQL reference script.
+     * Add user to meetup.
+     */
+    @Value("${add_user_to_meetup}")
+    private String addUserToMeetup;
+    /**
+     * SQL reference script.
+     * Remove user from meetup.
+     */
+    @Value("${remove_user_from_meetup}")
+    private String removeUserFromMeetup;
+    /**
+     * SQL reference script.
+     * Get all users on specific meetup.
+     */
+    @Value("${get_users_on_meetup}")
+    private String getUsersOnMeetup;
 
     /**
      * Get all meetups from DB.
@@ -190,5 +210,49 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 .addValue("id_user", userID);
         return this.template
                 .query(getUsersJoinedMeetups, param, new MeetupMapper());
+    }
+
+    /**
+     * Add user to specific meetup.
+     * @param meetup
+     * Meetup, that user should register to.
+     * @param user
+     * User that takes part in meetup.
+     */
+    @Override
+    public void addUserToMeetup(final Meetup meetup, final User user) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id_meetup", meetup.getId())
+            .addValue("id_user", user.getId());
+        template.update(addUserToMeetup, param);
+    }
+
+    /**
+     * Remove user from specific meetup.
+     * @param meetup
+     * Meetup, that user should leave to.
+     * @param user
+     * User that leaves meetup.
+     */
+    @Override
+    public void removeUserFromMeetup(final Meetup meetup, final User user) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id_meetup", meetup.getId())
+            .addValue("id_user", user.getId());
+        template.update(removeUserFromMeetup, param);
+    }
+
+    /**
+     * Get users, registered on meetup.
+     * @param meetupId
+     * Meetup ID
+     * @return
+     * List of users.
+     */
+    @Override
+    public List<User> getUsersOnMeetup(final int meetupId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("meetup_id", meetupId);
+        return this.template.query(getUsersOnMeetup, param, new UserMapper());
     }
 }

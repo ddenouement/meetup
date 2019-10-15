@@ -70,8 +70,15 @@ public interface IMeetupService {
      * Meetup, that will be used to register user to
      * @param token
      * JSON web token to extract user credentials
-     * @return
-     * Meetup object
      */
-    Meetup joinMeetup(Meetup meetup, String token);
+    void joinMeetup(Meetup meetup, String token);
+
+    /**
+     * Remove user for meetup.
+     * @param meetup
+     * Meetup, that will be used to remove user to
+     * @param token
+     * JSON web token to extract user credentials
+     */
+    void leaveMeetup(Meetup meetup, String token);
 }
