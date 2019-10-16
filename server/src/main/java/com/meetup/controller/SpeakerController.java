@@ -44,7 +44,7 @@ public class SpeakerController {
      * @param meetup
      * Meetup object to be created.
      * @return
-     * Created Meetub.
+     * Created Meetup.
      */
     @PreAuthorize("hasRole('SPEAKER')")
     @PostMapping(value = "/api/v1/user/speaker/meetups")
