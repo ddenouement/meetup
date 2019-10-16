@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * ... Class that handles authorization and generates token for signup
  */
 @RestController
+@Slf4j
 @Api(value = "meetup-application")
 
 public class AuthorizationController {
@@ -60,7 +62,7 @@ public class AuthorizationController {
      * @return ResponseEntity
      **/
     @PostMapping("/api/v1/user/login")
-    public ResponseEntity signin(
+    public ResponseEntity signIn(
         final @RequestBody AuthentificationRequest data,
         final HttpServletResponse response) {
         try {
@@ -73,8 +75,9 @@ public class AuthorizationController {
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
-            System.out
-                .println("Succesfull Login: " + username + "\ntoken: " + token);
+            // log.debug()
+         // System.out
+        //    .println("Succesfull Login: " + username + "\ntoken: " + token);
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/"); // global cookie accessible everywhere
             response.addCookie(cookie);

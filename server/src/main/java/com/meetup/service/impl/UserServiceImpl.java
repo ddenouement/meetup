@@ -125,6 +125,7 @@ public class UserServiceImpl implements IUserService {
      * @param us User
      * @return UserDTO
      */
+    //TODO to utilities package
     private UserDTO convertToUserDTO(final User us) {
         UserDTO newUser = new UserDTO();
         newUser.setAbout(us.getAbout());

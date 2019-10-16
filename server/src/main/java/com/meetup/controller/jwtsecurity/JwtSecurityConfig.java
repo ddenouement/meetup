@@ -12,33 +12,36 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-/**.
- * set the security for rest api
+/**
+ * . set the security for rest api
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
-    /**.
-     *jwttokenprovide, custom class
+
+    /**
+     * . jwttokenprovide, custom class
      */
     @Autowired
- private   JwtTokenProvider jwtTokenProvider;
-    /**.
-     * UserDetails Service, custom class
+    private JwtTokenProvider jwtTokenProvider;
+    /**
+     * . UserDetails Service, custom class
      */
     @Autowired
     private AuthenticationService customUserDetailsService;
-/**.
- * get AuthenticationManager
- */
+
+    /**
+     * . get AuthenticationManager
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
-    /**.
-     *set the UserDetailsService
+    /**
+     * . set the UserDetailsService
+     *
      * @param auth AuthenticationManagerBuilder
      * @throws Exception exception
      */
@@ -48,31 +51,30 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(customUserDetailsService);
     }
 
-    /**.
-     * set explicitly security params and tokenprovider
+    /**
+     * . set explicitly security params and tokenprovider
+     *
      * @param http HttpSecurity
      * @throws Exception exception
      */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        //@formatter:off
+
         http
-                .headers()
-                .frameOptions()
-                .disable()//this one to enable /h2 console in browser
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-
-
-                .apply(new JwtConfigurer(jwtTokenProvider));
-        //@formatter:on
+            .headers()
+            .frameOptions()
+            .disable()//this one to enable /h2 console in browser
+            .httpBasic().disable()
+            .csrf().disable()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .apply(new JwtConfigurer(jwtTokenProvider));
     }
 
-    /**.
-     * set CustomAuthenticationFailureHandler
+    /**
+     * . set CustomAuthenticationFailureHandler
+     *
      * @return CustomAuthenticationFailureHandler
      */
     @Bean

@@ -98,6 +98,7 @@ public class JwtTokenProvider {
      */
     public String resolveToken(final HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
+        // TODO streams
         if (cookies != null) {
             for (Cookie c : cookies) {
                 if (c.getName().equals("token")) {

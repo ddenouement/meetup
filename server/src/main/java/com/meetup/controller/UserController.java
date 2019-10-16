@@ -1,5 +1,6 @@
 package com.meetup.controller;
 
+import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.service.IMeetupService;
@@ -48,12 +49,13 @@ public class UserController {
          Map<Object, Object> model = new HashMap<>();
          UserDTO user = userService.getProfileUserDTO(login);
         model.put("UserDTO", user);
-        model.put("hostedMeetups", meetupService.getSpeakerMeetupsByLogin(user.getLogin()));
+        //TODO to Constants;
+        List<Meetup> hostedMeetups =
+            meetupService.getSpeakerMeetupsByLogin(user.getLogin());
+        model.put("hostedMeetups", hostedMeetups);
         model.put("subscribedToSpeakers", userService.getUsersSubscriptionsToSpeakers(user.getId()));
        // model.put("filters", );
         model.put("joinedMeetups", meetupService.getUserJoinedMeetups(user.getId()));
-
-
         return ok(model);
 
     }

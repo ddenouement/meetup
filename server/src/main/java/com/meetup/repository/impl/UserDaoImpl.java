@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 @PropertySource("classpath:sql/user_queries.properties")
 public class UserDaoImpl implements IUserDAO {
 
+    //TODO Hikari pool
     /**
      * . NamedParameterJdbcTemplate
      */
@@ -111,8 +112,8 @@ public class UserDaoImpl implements IUserDAO {
     private User toPerson(final ResultSet resultSet) throws SQLException {
         User person = new User();
         person.setId(resultSet.getInt("id"));
-        String l = resultSet.getString("login");
-        person.setLogin(l);
+        String login = resultSet.getString("login");
+        person.setLogin(login);
         person.setFirstName(resultSet.getString("first_name"));
         person.setLastName(resultSet.getString("last_name"));
         person.setAbout(resultSet.getString("about"));
@@ -120,7 +121,7 @@ public class UserDaoImpl implements IUserDAO {
         person.setPassword(resultSet.getString("password"));
         person.setActive(resultSet.getBoolean("active"));
         person.setRate(resultSet.getFloat("rate"));
-        for (String a : findUserRolesByLogin(l)) {
+        for (String a : findUserRolesByLogin(login)) {
             person.addRole(a);
         }
         return person;

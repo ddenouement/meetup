@@ -107,6 +107,7 @@ public class MeetupController {
      * @return
      * Response entity
      */
+    //TODO exception controller
     @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
     @PostMapping("api/v1/meetups/leave")
     public ResponseEntity leaveMeetup(

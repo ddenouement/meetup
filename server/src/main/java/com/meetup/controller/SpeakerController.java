@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
 public class SpeakerController {
 
+    //TODO login exctractor in controller
     /**
      * Meetup service.
      */
