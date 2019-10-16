@@ -2,7 +2,7 @@ package com.meetup.repository;
 
 import com.meetup.entities.Language;
 import com.meetup.entities.User;
-import com.meetup.entities.UserRegistrationDTO;
+import com.meetup.entities.dto.UserRegistrationDTO;
 import java.util.List;
 
 /**.

@@ -49,7 +49,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
      * SQL reference script.
      * Add meetup to DB.
      */
-    @Value("${insert_new_meeting}")
+    @Value("${insert_new_meetup}")
     private String insertNewMeetup;
     /**
      * SQL reference script.
@@ -117,9 +117,9 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("id_language", meetup.getLanguageId())
             .addValue("title", meetup.getTitle())
             .addValue("start_time", meetup.getStartDate())
-//            .addValue("duration",meetup.getDuration())
-            .addValue("min_atendees", meetup.getMinAttendees())
-            .addValue("max_atendees", meetup.getMaxAttendees())
+            .addValue("duration_minutes", meetup.getDurationMinutes())
+            .addValue("min_attendees", meetup.getMinAttendees())
+            .addValue("max_attendees", meetup.getMaxAttendees())
             .addValue("description", meetup.getDescription());
         template.update(insertNewMeetup, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
@@ -146,9 +146,9 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("id_language", meetup.getLanguageId())
             .addValue("title", meetup.getTitle())
             .addValue("start_time", meetup.getStartDate())
-//            .addValue("duration", meetup.getDuration())
-            .addValue("min_atendees", meetup.getMinAttendees())
-            .addValue("max_atendees", meetup.getMaxAttendees())
+            .addValue("duration_minutes", meetup.getDurationMinutes())
+            .addValue("min_attendees", meetup.getMinAttendees())
+            .addValue("max_attendees", meetup.getMaxAttendees())
             .addValue("description", meetup.getDescription());
         template.update(updateMeetup, param, holder);
         if (holder.getKeys() != null) {

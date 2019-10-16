@@ -2,6 +2,7 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.meetup.entities.Language;
 import com.meetup.service.IDictionaryService;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -35,7 +36,7 @@ public class DictionaryController {
     }
 
     /**
-     * . Return a list of all languages.
+     * . Return a list of all languages as strings.
      *
      * @param sorted if true, the languages will be sorted by names in ascending
      * order
@@ -49,5 +50,19 @@ public class DictionaryController {
             dictionaryService.getAllLanguages(sorted.orElse(false)).stream()
                 .map(lang -> lang.getName()).collect(
                 Collectors.toList()));
+    }
+
+    /**
+     * . Return a list of all languages.
+     *
+     * @param sorted if true, the languages will be sorted by names in ascending
+     * order
+     * @return a ResponseEntity with a list of all languages
+     */
+    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @GetMapping(value = "/api/v2/languages")
+    public ResponseEntity<List<Language>> getLanguagesWithIds(
+        @RequestParam final Optional<Boolean> sorted) {
+        return ok(dictionaryService.getAllLanguages(sorted.orElse(false)));
     }
 }
