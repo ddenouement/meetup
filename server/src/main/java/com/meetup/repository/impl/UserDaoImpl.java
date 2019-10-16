@@ -128,6 +128,7 @@ public class UserDaoImpl implements IUserDAO {
 
     /**
      * Get role id by its name.
+     *
      * @param roleName role's name in DB
      * @return role's id in DB
      */
@@ -153,14 +154,18 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     /**
-     * Create sql Array type from a List of Strings.
-     * @param elements list of strings
+     * Create sql Array type from a List of type T.
+     *
+     * @param elements list of Ts
+     * @param typename sql typename for Array
+     * @param <T> type of elements in incoming list
      * @return sql Array
      */
-    private Array createSqlArray(final List<String> elements) {
+    private <T> Array createSqlArray(final List<T> elements,
+        final String typename) {
         return template.getJdbcOperations()
             .execute((ConnectionCallback<Array>) con -> con
-                .createArrayOf("TEXT", elements.toArray()));
+                .createArrayOf(typename, elements.toArray()));
     }
 
     /**
@@ -178,9 +183,9 @@ public class UserDaoImpl implements IUserDAO {
             .addValue("first_name", user.getFirstName())
             .addValue("last_name", user.getLastName())
             .addValue("about", user.getAbout())
-            .addValue("roles", createSqlArray(user.getRoles()))
-            .addValue("languages", createSqlArray(user.getLanguages()));
-//        template.update(insertFullUser, param);
+            .addValue("roles", createSqlArray(user.getRoles(), "TEXT"))
+            .addValue("language_ids",
+                createSqlArray(user.getLanguageIds(), "INTEGER"));
         template.execute(insertFullUser, param, ps -> ps.executeQuery());
     }
 

@@ -22,13 +22,13 @@ public class UserRegistrationDTO {
     /** About. */
     private String about;
     /** User's native languages. */
-    private List<String> languages;
+    private List<Integer> languageIds;
     /** User's roles. */
     private List<String> roles;
 
     /** Init with empty lists. */
     public UserRegistrationDTO() {
-        this.languages = new ArrayList<>();
+        this.languageIds = new ArrayList<>();
         this.roles = new ArrayList<>();
     }
 }
