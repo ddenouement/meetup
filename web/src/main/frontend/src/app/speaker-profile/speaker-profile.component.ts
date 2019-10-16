@@ -1,4 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {User} from "../models/user";
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
+import {ErrorStateMatcher} from "@angular/material/core";
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-speaker-profile',
@@ -7,54 +19,46 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SpeakerProfileComponent implements OnInit {
 
-  constructor() { }
+  changeForm: FormGroup;
+  public loading = false;
+  matcher = new MyErrorStateMatcher();
+  languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
+  public firstName: string;
+  public lastName: string;
+  public login: string;
+  public email: string;
+  public about: string;
+
+  constructor(
+    private httpClient: HttpClient,
+    private formBuilder: FormBuilder,
+  ) {
+  }
+
+  onSubmit() {
+    this.changeProfile();
+  }
+
+  private changeProfile() {
+    const user = <User>{
+      firstName: this.changeForm.get('firstName').value,
+      lastName: this.changeForm.get('lastName').value,
+      login: this.changeForm.get('login').value,
+      email: this.changeForm.get('email').value,
+      about: this.changeForm.get('about').value
+    };
+    this.loading = true;
+  }
 
   ngOnInit() {
-    //profile content swap
-    const personal = document.querySelector(".headline__personal");
-    const account = document.querySelector(".headline__account");
-    const user__personal = document.querySelector(".user__personal");
-    const user__account = document.querySelector(".user__account");
-    const underline__personal = document.querySelector(".underline__personal");
-    const underline__account = document.querySelector(".underline__account");
-// On click
-    personal.addEventListener("click", function () {
-      // Toggle class "is-active"
-      if(user__account.classList.contains("account-active")){
-        user__account.classList.remove("account-active");
-        user__personal.classList.add("personal-active");
-        if(!personal.classList.contains("headline__active")){
-          personal.classList.add("headline__active");
-          account.classList.add("headline__nonact");
-          underline__personal.classList.add("underline__active");
-          underline__account.classList.add("underline__nonact");
-
-          personal.classList.remove("headline__nonact");
-          account.classList.remove("headline__active");
-          underline__personal.classList.remove("underline__nonact");
-          underline__account.classList.remove("underline__active");
-        }
-      }
+    this.changeForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      login: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      about: [''],
+      languages: ['', Validators.required],
     });
-    account.addEventListener("click", function () {
-      // Toggle class "is-active"
-      if (user__personal.classList.contains("personal-active")) {
-        user__personal.classList.remove("personal-active");
-        user__account.classList.add("account-active");
-        if (!account.classList.contains("headline__active")) {
-          account.classList.add("headline__active");
-          personal.classList.add("headline__nonact");
-          underline__account.classList.add("underline__active");
-          underline__personal.classList.add("underline__nonact");
-
-          account.classList.remove("headline__nonact");
-          personal.classList.remove("headline__active");
-          underline__account.classList.remove("underline__nonact");
-          underline__personal.classList.remove("underline__active");
-        }
-      }
-    });
-
     const hamburger = document.querySelector(".hamburger");
     const bar = document.querySelector(".sidebar");
 // On click
@@ -65,5 +69,6 @@ export class SpeakerProfileComponent implements OnInit {
       // Do something else, like open/close menu
     });
   }
+
 
 }

@@ -5,12 +5,15 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
 import com.meetup.repository.impl.UserDaoImpl;
+import com.meetup.service.RoleProcessor;
 import com.meetup.service.UserService;
 import io.swagger.annotations.Api;
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,33 +57,36 @@ public class AuthorizationController {
     /**
      * ,. SignIn doesnt generate a token
      *
-     * @param data AuthentificationRequest
+     * @param data     AuthentificationRequest
      * @param response HttpServletResponse
      * @return ResponseEntity
      **/
     @PostMapping("/api/v1/user/login")
     public ResponseEntity signin(
-        final @RequestBody AuthentificationRequest data,
-        final HttpServletResponse response) {
+            final @RequestBody AuthentificationRequest data,
+            final HttpServletResponse response) {
         try {
             String username = data.getLogin();
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username,
-                    data.getPassword()));
+                    new UsernamePasswordAuthenticationToken(username,
+                            data.getPassword()));
+            User user = findByUsernameAmongAll(username);
+            String role = RoleProcessor.isSpeaker(user) ? "SPEAKER" : "LISTENER";
             String token = jwtTokenProvider.createToken(username,
-                findByUsernameAmongAll(username).getRoles());
+                    user.getRoles());
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
+            model.put("role", role);
             System.out
-                .println("Succesfull Login: " + username + "\ntoken: " + token);
+                    .println("Succesfull Login: " + username + "\ntoken: " + token + "\nrole: " + role);
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/"); // global cookie accessible everywhere
             response.addCookie(cookie);
             return ok(model);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>(
-                "Invalid username/password", HttpStatus.UNAUTHORIZED);
+                    "Invalid username/password", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -118,7 +124,7 @@ public class AuthorizationController {
      */
     @PostMapping(value = "/api/v1/user/register/speaker")
     public ResponseEntity<String> registerSpeaker(
-        final @RequestBody User user) {
+            final @RequestBody User user) {
         return userService.registerAsSpeaker(user);
     }
 }

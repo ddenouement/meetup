@@ -52,6 +52,7 @@ export class RegisterSpeakerComponent implements OnInit {
   ) {
   }
 
+
   get form() {
     return this.registerForm.controls;
   }
@@ -81,6 +82,7 @@ export class RegisterSpeakerComponent implements OnInit {
         this.error = error.error;
         this.loading = false;
       });
+
   }
 
   ngOnInit() {
@@ -96,6 +98,14 @@ export class RegisterSpeakerComponent implements OnInit {
     }, {
       validator: MustMatch('password', 'confirmPassword')
     });
+
+    // this.httpClient.get("api/v2/languages?sorted=true").subscribe(data => {
+    //
+    //   },
+    //   error => {
+    //     this.error = error.error;
+    //     this.loading = false;
+    //   });
   }
 }
 

@@ -36,6 +36,7 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { SpeakerProfileComponent } from './speaker-profile/speaker-profile.component';
 
 
 // @ts-ignore
@@ -46,7 +47,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    RegisterSpeakerComponent
+    RegisterSpeakerComponent,
+    SpeakerProfileComponent
   ],
   imports: [
     BrowserModule,
