@@ -1,4 +1,4 @@
-package com.meetup.entities;
+package com.meetup.entities.dto;
 
 import java.util.ArrayList;
 import java.util.List;

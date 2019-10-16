@@ -10,6 +10,16 @@ DROP TABLE IF EXISTS meetups CASCADE;
 DROP TABLE IF EXISTS topics CASCADE;
 DROP TABLE IF EXISTS meetups_topics CASCADE;
 DROP TABLE IF EXISTS meetups_users CASCADE;
+DROP TABLE IF EXISTS subscriptions CASCADE;
+DROP TABLE IF EXISTS articles CASCADE;
+DROP TABLE IF EXISTS articles_topics CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS badges CASCADE;
+DROP TABLE IF EXISTS filters CASCADE;
+DROP TABLE IF EXISTS filters_topics CASCADE;
+DROP TABLE IF EXISTS notification_types CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS complaints CASCADE;
 
 CREATE TABLE users
 (
@@ -67,16 +77,16 @@ CREATE TABLE meetup_states
 
 CREATE TABLE meetups
 (
-    id           BIGSERIAL NOT NULL,
-    id_speaker   BIGINT    NOT NULL,
-    id_language  INTEGER   NOT NULL,
-    id_state     INTEGER   NOT NULL,
-    title        TEXT      NOT NULL,
-    start_time   TIMESTAMP NOT NULL,
-    duration     INTERVAL  NOT NULL,
-    min_atendees INTEGER   NOT NULL DEFAULT 1,
-    max_atendees INTEGER   NOT NULL,
-    description  TEXT      NULL,
+    id                  BIGSERIAL NOT NULL,
+    id_speaker          BIGINT    NOT NULL,
+    id_language         INTEGER   NOT NULL,
+    id_state            INTEGER   NOT NULL DEFAULT 1,
+    title               TEXT      NOT NULL,
+    start_time          TIMESTAMP NOT NULL,
+    duration_minutes    SMALLINT  NOT NULL,
+    min_attendees       INTEGER   NOT NULL DEFAULT 1,
+    max_attendees       INTEGER   NOT NULL,
+    description         TEXT      NULL,
     FOREIGN KEY (id_speaker) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_language) REFERENCES languages (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_state) REFERENCES meetup_states (id) ON DELETE RESTRICT ON UPDATE CASCADE,

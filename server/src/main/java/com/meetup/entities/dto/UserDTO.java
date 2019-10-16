@@ -1,5 +1,6 @@
-package com.meetup.entities;
+package com.meetup.entities.dto;
 
+import com.meetup.entities.Language;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

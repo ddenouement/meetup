@@ -1,8 +1,8 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.User;
-import com.meetup.entities.UserDTO;
-import com.meetup.entities.UserRegistrationDTO;
+import com.meetup.entities.dto.UserDTO;
+import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;

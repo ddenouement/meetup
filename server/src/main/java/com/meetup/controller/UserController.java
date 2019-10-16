@@ -1,7 +1,7 @@
 package com.meetup.controller;
 
 import com.meetup.entities.User;
-import com.meetup.entities.UserDTO;
+import com.meetup.entities.dto.UserDTO;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;

@@ -1,7 +1,7 @@
 package com.meetup.service;
 
 import com.meetup.entities.User;
-import com.meetup.entities.UserDTO;
+import com.meetup.entities.dto.UserDTO;
 
 import java.util.List;
 

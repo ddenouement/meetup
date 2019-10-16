@@ -1,8 +1,8 @@
 package com.meetup.service;
 
 import com.meetup.entities.User;
-import com.meetup.entities.UserDTO;
-import com.meetup.entities.UserRegistrationDTO;
+import com.meetup.entities.dto.UserDTO;
+import com.meetup.entities.dto.UserRegistrationDTO;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 

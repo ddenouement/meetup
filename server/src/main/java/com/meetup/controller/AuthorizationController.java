@@ -4,7 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
-import com.meetup.entities.UserRegistrationDTO;
+import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;

@@ -56,6 +56,7 @@ public class SpeakerController {
                 meetupService.createMeetup(meetup, token),
                 HttpStatus.CREATED);
         } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
+
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }

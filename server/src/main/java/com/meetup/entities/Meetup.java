@@ -1,18 +1,17 @@
 package com.meetup.entities;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Model class of Meetup.
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
 public class Meetup {
@@ -40,11 +39,12 @@ public class Meetup {
     /**
      * Start date and time of meetup.
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startDate;
     /**
      * Duration of meetup.
      */
-    private Duration duration;
+    private Integer durationMinutes;
     /**
      * Minimum number of attendees of meetup.
      */
@@ -61,5 +61,9 @@ public class Meetup {
      * Topics of meetup.
      */
     private List<Topic> topics;
+
+    public Meetup() {
+        this.topics = new ArrayList<>();
+    }
 
 }
