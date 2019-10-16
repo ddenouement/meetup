@@ -41,7 +41,9 @@ public class MeetupController {
      * @param token String
      * @return ResponseEntity<List<Meetup>>
      */
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "api/v1/meetups")
     public ResponseEntity<List<Meetup>> getAllMeetups(
         @CookieValue(value = "token", defaultValue = "")
@@ -61,7 +63,9 @@ public class MeetupController {
      * @return
      * Response entity with list of all topics.
      */
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping("api/v1/meetups/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics(
         @CookieValue(value = "token", defaultValue = "")
@@ -83,7 +87,9 @@ public class MeetupController {
      * @return
      * Response entity
      */
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @PostMapping("api/v1/meetups/join")
     public ResponseEntity joinMeetup(
         @CookieValue(value = "token", defaultValue = "")
@@ -108,7 +114,9 @@ public class MeetupController {
      * Response entity
      */
     //TODO exception controller
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @PostMapping("api/v1/meetups/leave")
     public ResponseEntity leaveMeetup(
         @CookieValue(value = "token", defaultValue = "")

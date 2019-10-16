@@ -1,19 +1,20 @@
 package com.meetup.entities;
 
-/**.
- * represents a Role
+import org.springframework.security.core.GrantedAuthority;
+
+/**
+ * Represents a Role in the system.
  */
-public enum Role {
-    /**.
-     * Listener
-     */
+public enum Role implements GrantedAuthority {
+    /** Listener. */
     LISTENER,
-    /**.
-     * speaker
-     */
+    /** Speaker. */
     SPEAKER,
-    /**.
-     * admin
-     */
-    ADMIN
+    /** Admin.*/
+    ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

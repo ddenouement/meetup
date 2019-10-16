@@ -1,6 +1,7 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
+import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.model.mapper.LanguageMapper;
@@ -121,8 +122,8 @@ public class UserDaoImpl implements IUserDAO {
         person.setPassword(resultSet.getString("password"));
         person.setActive(resultSet.getBoolean("active"));
         person.setRate(resultSet.getFloat("rate"));
-        for (String a : findUserRolesByLogin(login)) {
-            person.addRole(a);
+        for (Role role : findUserRolesByLogin(login)) {
+            person.addRole(role);
         }
         return person;
     }
@@ -226,9 +227,8 @@ public class UserDaoImpl implements IUserDAO {
             .addValue("email", em);
         ResultSet rs = null;
         List<User> foundUsers =
-            template.query(findUserByEmail, param, (resultSet, i) -> {
-                return toPerson(resultSet);
-            });
+            template.query(findUserByEmail, param,
+                (resultSet, i) -> toPerson(resultSet));
         if (foundUsers.size() == 0) {
             return null;
         } else {
@@ -243,14 +243,13 @@ public class UserDaoImpl implements IUserDAO {
      * @return List <String>
      */
     @Override
-    public List<String> findUserRolesByLogin(final String login) {
+    public List<Role> findUserRolesByLogin(final String login) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("login", login);
         ResultSet rs = null;
         return
-            template.query(findUserRolesByLogin, param, (resultSet, i) -> {
-                return toRole(resultSet);
-            });
+            template.query(findUserRolesByLogin, param,
+                (resultSet, i) -> toRole(resultSet));
     }
 
     /**
@@ -260,8 +259,8 @@ public class UserDaoImpl implements IUserDAO {
      * @return String
      * @throws SQLException exc
      */
-    private String toRole(final ResultSet resultSet) throws SQLException {
-        return resultSet.getString("name");
+    private Role toRole(final ResultSet resultSet) throws SQLException {
+        return Role.valueOf(resultSet.getString("name"));
     }
 
     /**

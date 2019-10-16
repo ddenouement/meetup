@@ -1,5 +1,6 @@
 package com.meetup.service.impl;
 
+import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
@@ -19,18 +20,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserServiceImpl implements IUserService {
 
-    /**
-     * . role
-     */
-    private static final String LISTENER = "LISTENER";
-    /**
-     * . role
-     */
-    private static final String SPEAKER = "SPEAKER";
-    /**
-     * . role
-     */
-    private static final String ADMIN = "ADMIN";
     /**
      * . methods to DB considering users.
      */
@@ -56,7 +45,7 @@ public class UserServiceImpl implements IUserService {
             return new ResponseEntity<>("User already exists",
                 HttpStatus.FORBIDDEN);
         } else {
-            user.getRoles().add(LISTENER);
+            user.getRoles().add(Role.LISTENER);
             userDao.insertNewUser(user);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
@@ -76,7 +65,7 @@ public class UserServiceImpl implements IUserService {
             return new ResponseEntity<>("User already exists",
                 HttpStatus.FORBIDDEN);
         } else {
-            user.getRoles().addAll(Arrays.asList(LISTENER, SPEAKER));
+            user.getRoles().addAll(Arrays.asList(Role.LISTENER, Role.SPEAKER));
             userDao.insertNewUser(user);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         }

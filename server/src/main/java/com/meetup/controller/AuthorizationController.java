@@ -9,7 +9,9 @@ import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
  * ... Class that handles authorization and generates token for signup
  */
 @RestController
-@Slf4j
+// TODO @Slf4j
 @Api(value = "meetup-application")
-
 public class AuthorizationController {
 
     /**
@@ -70,14 +71,15 @@ public class AuthorizationController {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username,
                     data.getPassword()));
-            String token = jwtTokenProvider.createToken(username,
-                findByUsernameAmongAll(username).getRoles());
+            List<String> roles = findByUsernameAmongAll(username).getRoles()
+                .stream().map(Enum::name).collect(Collectors.toList());
+            String token = jwtTokenProvider.createToken(username, roles);
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
-            // log.debug()
-         // System.out
-        //    .println("Succesfull Login: " + username + "\ntoken: " + token);
+            // TODO log.debug()
+            // System.out
+            //    .println("Succesfull Login: " + username + "\ntoken: " + token);
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/"); // global cookie accessible everywhere
             response.addCookie(cookie);

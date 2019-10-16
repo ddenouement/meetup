@@ -1,5 +1,6 @@
 package com.meetup.service;
 
+import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 
@@ -24,9 +25,9 @@ public final class RoleProcessor {
      * @return boolean
      */
     public static boolean isSpeaker(final User user) {
-        List<String> roles = user.getRoles();
-        for (String s : roles) {
-            if (s.equals("SPEAKER")) {
+        List<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            if (role == Role.SPEAKER) {
                 return true;
             }
         }
@@ -39,9 +40,9 @@ public final class RoleProcessor {
      * @return boolean
      */
     public static boolean isSpeaker(final UserDTO user) {
-        List<String> roles = user.getRoles();
-        for (String s : roles) {
-            if (s.equals("SPEAKER")) {
+        List<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            if (role == Role.SPEAKER) {
                 return true;
             }
         }

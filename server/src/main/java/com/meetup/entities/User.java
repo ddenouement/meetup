@@ -13,7 +13,7 @@ public class User {
     /**.
      * roles of user
      */
-    private List<String> roles;
+    private List<Role> roles;
     /**.
      * id (from DB)
      */
@@ -55,7 +55,7 @@ public class User {
      * Constructor
      * @param roles String[]
      */
-    public User(final String[] roles) {
+    public User(final Role[] roles) {
         this.roles = Arrays.asList(roles);
     }
 
@@ -70,14 +70,14 @@ public class User {
         this.email = memail;
         this.login = mlogin;
         this.password = mpassword;
-        this.roles = new ArrayList<String>();
+        this.roles = new ArrayList<>();
     }
 
     /**.
      * constructor()
      */
     public User() {
-        this.roles = new ArrayList<String>();
+        this.roles = new ArrayList<>();
     }
 
     /**.
@@ -87,12 +87,12 @@ public class User {
      * @param mpassword String
      * @param mname String
      * @param mlastName String
-     * @param mroles List<String>
+     * @param mroles List<Role>
      */
     public User(final String memail, final String mlogin,
                 final String mpassword,
                 final String mname, final String mlastName,
-                final List<String> mroles) {
+                final List<Role> mroles) {
         this.email = memail;
         this.login = mlogin;
         this.firstName = mname;
@@ -105,7 +105,7 @@ public class User {
      *
      * @param role String
      */
-    public void addRole(final String role) {
+    public void addRole(final Role role) {
         this.roles.add(role);
     }
 

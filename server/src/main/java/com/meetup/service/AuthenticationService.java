@@ -1,5 +1,6 @@
 package com.meetup.service;
 
+import com.meetup.entities.Role;
 import com.meetup.repository.impl.UserDaoImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ public class AuthenticationService implements UserDetailsService {
         throws UsernameNotFoundException {
         com.meetup.entities.User userInfo = userDAO.findUserByLogin(userlogin);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String r : userInfo.getRoles()) {
-            GrantedAuthority a = new SimpleGrantedAuthority(r);
+        for (Role role : userInfo.getRoles()) {
+            GrantedAuthority a = new SimpleGrantedAuthority(role.name());
             authorities.add(a);
         }
 

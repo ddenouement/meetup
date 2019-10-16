@@ -43,7 +43,9 @@ public class UserController {
      * @param login login of current user
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity  getUserProfile(final @RequestParam String login) {
          Map<Object, Object> model = new HashMap<>();
@@ -65,7 +67,9 @@ public class UserController {
      * @return List of Users
      */
     //TODOo implement
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/availableSpeakers")
     public ResponseEntity<List<User>> getAllSpeakers() {
         return new ResponseEntity<>(userService.getAllSpeakers(),
