@@ -3,16 +3,13 @@ package com.meetup.entities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**.
  * model class of User
  */
-@Getter
-@Setter
-@ToString
+@Data
 public class User {
     /**.
      * roles of user

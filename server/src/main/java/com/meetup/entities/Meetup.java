@@ -5,22 +5,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Model class of Meetup.
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 public class Meetup {
 
     /**

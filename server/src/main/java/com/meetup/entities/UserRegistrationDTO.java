@@ -2,18 +2,12 @@ package com.meetup.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 /**
  * Class to transfer data about user on registration.
  */
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 public class UserRegistrationDTO {
     /** Login. */
     private String login;
