@@ -4,9 +4,10 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.RoleProcessor;
-import com.meetup.service.UserService;
+import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class AuthorizationController {
      * ,. UserService
      */
     @Autowired
-    private UserService userService;
+    private IUserService userService;
     /**
      * . userDao
      */
@@ -55,7 +56,7 @@ public class AuthorizationController {
     private JwtTokenProvider jwtTokenProvider;
 
     /**
-     * ,. SignIn doesnt generate a token
+     * ,. SignIn   generates a token
      *
      * @param data     AuthentificationRequest
      * @param response HttpServletResponse
@@ -111,8 +112,8 @@ public class AuthorizationController {
      * @return ResponseEntity
      */
     @PostMapping(value = "/api/v1/user/register/listener")
-    public ResponseEntity registerListener(final @RequestBody User user) {
-
+    public ResponseEntity registerListener(
+        final @RequestBody UserRegistrationDTO user) {
         return userService.registerAsListener(user);
     }
 
@@ -124,7 +125,7 @@ public class AuthorizationController {
      */
     @PostMapping(value = "/api/v1/user/register/speaker")
     public ResponseEntity<String> registerSpeaker(
-            final @RequestBody User user) {
+        final @RequestBody UserRegistrationDTO user) {
         return userService.registerAsSpeaker(user);
     }
 }

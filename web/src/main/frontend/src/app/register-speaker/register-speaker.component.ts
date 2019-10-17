@@ -1,9 +1,6 @@
-// @ts-ignore
 import {Component, OnInit, ViewChild} from '@angular/core';
-// @ts-ignore
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-// @ts-ignore
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
@@ -17,7 +14,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
-// @ts-ignore
 @Component({
   selector: 'app-register-speaker',
   templateUrl: './register-speaker.component.html',
@@ -33,7 +29,7 @@ export class RegisterSpeakerComponent implements OnInit {
   submitted = false;
   matcher = new MyErrorStateMatcher();
   //TODO create database of languages
-  languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
+  languagesList: string[];
 
   showDetails3: boolean;
   public loading = false;
@@ -76,13 +72,19 @@ export class RegisterSpeakerComponent implements OnInit {
     };
     this.loading = true;
     this.httpClient.post("/api/v1/user/register/speaker", user).subscribe(data => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/verify']);
       },
       error => {
         this.error = error.error;
         this.loading = false;
       });
 
+  }
+
+  getListOfLanguages() {
+    return this.httpClient.get('api/v1/languages').subscribe(data => {
+      return data;
+    });
   }
 
   ngOnInit() {
@@ -99,13 +101,12 @@ export class RegisterSpeakerComponent implements OnInit {
       validator: MustMatch('password', 'confirmPassword')
     });
 
-    // this.httpClient.get("api/v2/languages?sorted=true").subscribe(data => {
-    //
-    //   },
-    //   error => {
-    //     this.error = error.error;
-    //     this.loading = false;
-    //   });
+    this.httpClient.get("api/v1/languages").subscribe(data => {
+        let langId = data['id'];
+        console.log(langId);
+        let langName = data['name'];
+        console.log(langName);
+        });
   }
 }
 

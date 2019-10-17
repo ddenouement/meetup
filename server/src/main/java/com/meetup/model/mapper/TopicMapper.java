@@ -5,12 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
-/**
+/**.
  * Class, used to map ResultSet from DB to Topic model.
  */
 public final class TopicMapper implements RowMapper<Topic> {
 
-    /**
+    /**.
      * Callback method of RowMapper interface.
      * @param rs
      * A table of data representing a database result set.

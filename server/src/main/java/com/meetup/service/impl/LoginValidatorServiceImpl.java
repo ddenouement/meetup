@@ -1,29 +1,30 @@
 package com.meetup.service.impl;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.LoginValidatorService;
+import com.meetup.service.ILoginValidatorService;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
+/**.
  * Login validator service (implementation). Used to manage validity of user
  * login.
  */
 @Component
-public class LoginValidatorServiceImpl implements LoginValidatorService {
+public class LoginValidatorServiceImpl implements ILoginValidatorService {
 
-    /**
+    /**.
      * JSON web token provider.
      */
     private JwtTokenProvider jwtTokenProvider;
-    /**
+    /**.
      * User repository.
      */
-    private UserDaoImpl userDao;
+    private IUserDAO userDao;
 
-    /**
+    /**.
      * Login validator service constructor.
      *
      * @param jwtTokenProvider JSON web token provider
@@ -36,7 +37,7 @@ public class LoginValidatorServiceImpl implements LoginValidatorService {
         this.userDao = userDao;
     }
 
-    /**
+    /**.
      * Extracting login from JSON web token.
      *
      * @param token Token, that used to extract login from
@@ -54,7 +55,7 @@ public class LoginValidatorServiceImpl implements LoginValidatorService {
         }
     }
 
-    /**
+    /**.
      * Check if user exists in database.
      *
      * @param login User login

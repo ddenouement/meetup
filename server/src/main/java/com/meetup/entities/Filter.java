@@ -1,13 +1,16 @@
 package com.meetup.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@ToString
-
+/**.
+ * class representing filter
+ */
+@Data
+@NoArgsConstructor
 public class Filter {
+   /**.
+    * name given by user
+    */
    private String name;
 }

@@ -41,20 +41,12 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     this.httpClient.post("/api/v1/user/login", user)
-      //.pipe(map((res: Response) => res.json().then(function (data) {
-      // logResponse = {
-      //   login: data.login,
-      //   role: data.role,
-      //   token: data.token
-      // };
-      // if (data.role === "SPEAKER") {
-      //   this.router.navigate(['/speaker-profile']);
-      // } else {
-      //   this.router.navigate(['/']);
-      // }
-      //})))
       .subscribe(data => {
-          this.router.navigate(['/speaker-profile']);
+          if (data['role'] === "SPEAKER") {
+            this.router.navigate(['/speaker-profile']);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error => {
           this.error = error.error;

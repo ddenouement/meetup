@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import org.springframework.jdbc.core.RowMapper;
 
-/**
+/**.
  * Class, used to map ResultSet from DB to Meetup model.
  */
 public final class MeetupMapper implements RowMapper<Meetup> {
 
-    /**
+    /**.
      * Callback method of RowMapper interface.
      * @param rs
      * A table of data representing a database result set.
@@ -29,17 +29,18 @@ public final class MeetupMapper implements RowMapper<Meetup> {
         meetup.setId(rs.getInt("id"));
         meetup.setSpeakerId(rs.getInt("id_speaker"));
         meetup.setLanguageId(rs.getInt("id_language"));
-        meetup.setState(rs.getInt("id_state"));
+        meetup.setStateId(rs.getInt("id_state"));
         meetup.setTitle(rs.getString("title"));
-        meetup.setDate(
+//        meetup.setDuration(rs.getDate("duration"));
+        meetup.setStartDate(
             convertToLocalDateTimeViaSqlTimestamp(rs.getDate("start_time")));
-        meetup.setMinAttendees(rs.getInt("min_atendees"));
-        meetup.setMaxAttendees(rs.getInt("max_atendees"));
+        meetup.setMinAttendees(rs.getInt("min_attendees"));
+        meetup.setMaxAttendees(rs.getInt("max_attendees"));
         meetup.setDescription(rs.getString("description"));
         return meetup;
     }
 
-    /**
+    /**.
      * Helper method to convert SQL Date to LocalDateTime.
      * @param dateToConvert
      * SQL Date value

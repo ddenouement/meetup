@@ -6,12 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**.
  * runner class for MeetUp
  */
+@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 @SpringBootApplication
 public class MeetUpApplication {
     /**.
      * constructor, closed for calls
      */
-    public MeetUpApplication(){
+    public MeetUpApplication() {
         //not user
     }
     /**.

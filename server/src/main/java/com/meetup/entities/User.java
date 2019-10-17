@@ -3,16 +3,12 @@ package com.meetup.entities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-/**
+/**.
  * model class of User
  */
-@Getter
-@Setter
-@ToString
+@Data
 public class User {
     /**.
      * roles of user
@@ -57,10 +53,10 @@ public class User {
 
     /**.
      * Constructor
-     * @param _roles String[]
+     * @param roles String[]
      */
-    public User(final String[] _roles) {
-        this.roles = Arrays.asList(_roles);
+    public User(final String[] roles) {
+        this.roles = Arrays.asList(roles);
     }
 
     /**.
