@@ -41,9 +41,6 @@ public class DictionaryController {
      * order
      * @return a ResponseEntity with a list of all languages
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-                           + "T(com.meetup.entities.Role).SPEAKER, "
-                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/languages")
     public ResponseEntity<List<Language>> getLanguagesWithIds(
         @RequestParam final Optional<Boolean> sorted) {
