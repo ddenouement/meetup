@@ -70,9 +70,11 @@ public class AuthorizationController {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username,
                     data.getPassword()));
-            List<String> roles = findByUsernameAmongAll(username).getRoles()
-                .stream().map(Enum::name).collect(Collectors.toList());
-            String token = jwtTokenProvider.createToken(username, roles);
+            User user = findByUsernameAmongAll(username);
+            List<String> roles = user.getRoles().stream().map(Enum::name)
+                .collect(Collectors.toList());
+            String token = jwtTokenProvider
+                .createToken(username, roles, user.getId());
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
