@@ -1,7 +1,7 @@
 <div>
   <main>
     <div class="content">
-      <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+      <form *ngIf="!loading" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
         <p class="form__headline">Sign up as speaker</p>
         <div class="form__user">
           <mat-form-field class="form__input">

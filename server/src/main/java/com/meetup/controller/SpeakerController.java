@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
 public class SpeakerController {
 
+    //TODO login exctractor in controller
     /**
      * Meetup service.
      */
@@ -46,7 +47,7 @@ public class SpeakerController {
      * @return
      * Created Meetup.
      */
-    @PreAuthorize("hasRole('SPEAKER')")
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "/api/v1/user/speaker/meetups")
     public ResponseEntity<Meetup> createMeetup(
         @CookieValue(value = "token", defaultValue = "")
@@ -70,7 +71,7 @@ public class SpeakerController {
      * @return
      * Response entity with updated meetup.
      */
-    @PreAuthorize("hasRole('SPEAKER')")
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PutMapping(value = "/api/v1/user/speaker/meetups/{id}")
     public ResponseEntity<Meetup> updateMeetup(
         @CookieValue(value = "token", defaultValue = "")
@@ -91,7 +92,7 @@ public class SpeakerController {
      * @return
      * Response entity with list of meetups.
      */
-    @PreAuthorize("hasRole('SPEAKER')")
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @GetMapping(value = "/api/v1/user/speaker/meetups")
     public ResponseEntity<List<Meetup>> getMyMeetups(
         @CookieValue(value = "token", defaultValue = "")

@@ -13,14 +13,14 @@ spring:
     password: c2757e017c207706006d9a70475719a4404a5019f12d19ce9e728a1cf5619f4b
 
 #    for local Postgres db(julia)
-#     url: jdbc:postgresql://localhost:5432/postgres
+#    url: jdbc:postgresql://localhost:5432/postgres
 #    username: postgres
-#     password: user
+#    password: user
 
-    #for local Postgres db(polina)
-    # url: jdbc:postgresql://localhost:5432/meetup
-    # username: postgres
-    # password: root
+#    for local Postgres db(polina)
+#    url: jdbc:postgresql://localhost:5432/meetup
+#    username: postgres
+#    password: root
 
     #for H2 DB
     #datasource:

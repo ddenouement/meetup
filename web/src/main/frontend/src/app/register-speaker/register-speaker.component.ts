@@ -5,6 +5,9 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
+import {LanguagesList} from "../models/languagesList";
+import {RegisterService} from "../register-speaker/register.service";
+import {Observable} from "rxjs";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -26,11 +29,9 @@ export class RegisterSpeakerComponent implements OnInit {
   passwordComponentWithConfirmation: MatPasswordStrengthComponent;
 
   registerForm: FormGroup;
-  submitted = false;
   matcher = new MyErrorStateMatcher();
   //TODO create database of languages
-  languagesList: string[];
-
+  languagesLists: Observable<LanguagesList[]>;
   showDetails3: boolean;
   public loading = false;
   public error: '';
@@ -40,21 +41,20 @@ export class RegisterSpeakerComponent implements OnInit {
   public email: string;
   public about: string;
   public password: string;
-
+  response: any;
   constructor(
+    public registerService: RegisterService,
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private router: Router,
   ) {
   }
 
-
   get form() {
     return this.registerForm.controls;
   }
 
   onSubmit() {
-    //console.log(this.registerForm);
     this.register();
   }
 
@@ -78,35 +78,33 @@ export class RegisterSpeakerComponent implements OnInit {
         this.error = error.error;
         this.loading = false;
       });
-
-  }
-
-  getListOfLanguages() {
-    return this.httpClient.get('api/v1/languages').subscribe(data => {
-      return data;
-    });
   }
 
   ngOnInit() {
+    this.languagesLists = this.registerService.getLanguages();
+    console.log(this.languagesLists);
+
     this.registerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       about: [''],
-      languages: ['', Validators.required],
+      languages: [''],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
     }, {
       validator: MustMatch('password', 'confirmPassword')
     });
 
-    this.httpClient.get("api/v1/languages").subscribe(data => {
-        let langId = data['id'];
-        console.log(langId);
-        let langName = data['name'];
-        console.log(langName);
-        });
+    // this.httpClient.get<LanguagesList>("/api/v1/languages").subscribe((response) => {
+    //   this.response = response;
+    //   console.log(this.response);
+      // let langId = data['id'];
+      // console.log(langId);
+      // let langName = data['name'];
+      // console.log(langName);
+    // });
   }
 }
 

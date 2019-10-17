@@ -1,5 +1,6 @@
 package com.meetup.entities.dto;
 
+import com.meetup.entities.Role;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class UserRegistrationDTO {
     /** User's native languages. */
     private List<Integer> languageIds;
     /** User's roles. */
-    private List<String> roles;
+    private List<Role> roles;
 
     /** Init with empty lists. */
     public UserRegistrationDTO() {

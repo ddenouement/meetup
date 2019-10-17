@@ -1,5 +1,6 @@
 package com.meetup.controller;
 
+import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.service.IMeetupService;
@@ -42,18 +43,21 @@ public class UserController {
      * @param login login of current user
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity  getUserProfile(final @RequestParam String login) {
          Map<Object, Object> model = new HashMap<>();
          UserDTO user = userService.getProfileUserDTO(login);
         model.put("UserDTO", user);
-        model.put("hostedMeetups", meetupService.getSpeakerMeetupsByLogin(user.getLogin()));
+        //TODO to Constants;
+        List<Meetup> hostedMeetups =
+            meetupService.getSpeakerMeetupsByLogin(user.getLogin());
+        model.put("hostedMeetups", hostedMeetups);
         model.put("subscribedToSpeakers", userService.getUsersSubscriptionsToSpeakers(user.getId()));
        // model.put("filters", );
         model.put("joinedMeetups", meetupService.getUserJoinedMeetups(user.getId()));
-
-
         return ok(model);
 
     }
@@ -63,7 +67,9 @@ public class UserController {
      * @return List of Users
      */
     //TODOo implement
-    @PreAuthorize("hasAnyRole('ADMIN','SPEAKER','LISTENER')")
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+                           + "T(com.meetup.entities.Role).SPEAKER, "
+                           + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/availableSpeakers")
     public ResponseEntity<List<User>> getAllSpeakers() {
         return new ResponseEntity<>(userService.getAllSpeakers(),

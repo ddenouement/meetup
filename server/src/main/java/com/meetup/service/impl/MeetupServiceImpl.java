@@ -13,7 +13,6 @@ import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -151,10 +150,10 @@ public class MeetupServiceImpl implements IMeetupService {
         }
     }
 
-    /**.
-     * return list of user hosted meetus (null if
+    /**
+     * . return list of user hosted meetus (null if
+     *
      * @param login login of user
-     * @return
      */
     @Override
     public List<Meetup> getSpeakerMeetupsByLogin(final String login) {
@@ -162,7 +161,7 @@ public class MeetupServiceImpl implements IMeetupService {
         if (isSpeaker(user)) {
             return meetupDao.getSpeakerMeetups(user.getId());
         } else {
-           return new ArrayList<Meetup>();
+            return new ArrayList<Meetup>();
         }
 
     }
@@ -198,13 +197,14 @@ public class MeetupServiceImpl implements IMeetupService {
         meetupDao.removeUserFromMeetup(meetup, user);
     }
 
-    /**.
-     * Meetups that user joined
+    /**
+     * . Meetups that user joined
+     *
      * @param id id
      * @return List of meetups
      */
     @Override
     public List<Meetup> getUserJoinedMeetups(final int id) {
-      return  meetupDao.getUsersJoinedMeetups(id);
+        return meetupDao.getUsersJoinedMeetups(id);
     }
 }

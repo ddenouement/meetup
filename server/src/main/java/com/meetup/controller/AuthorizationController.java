@@ -11,10 +11,12 @@ import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
  * ... Class that handles authorization and generates token for signup
  */
 @RestController
+// TODO @Slf4j
 @Api(value = "meetup-application")
-
 public class AuthorizationController {
 
     /**
@@ -63,7 +65,7 @@ public class AuthorizationController {
      * @return ResponseEntity
      **/
     @PostMapping("/api/v1/user/login")
-    public ResponseEntity signin(
+    public ResponseEntity signIn(
             final @RequestBody AuthentificationRequest data,
             final HttpServletResponse response) {
         try {
@@ -74,13 +76,14 @@ public class AuthorizationController {
             User user = findByUsernameAmongAll(username);
             String role = RoleProcessor.isSpeaker(user) ? "SPEAKER" : "LISTENER";
             String token = jwtTokenProvider.createToken(username,
-                    user.getRoles());
+                    user.getRoles().stream().map(Enum::name).collect(Collectors.toList()));
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
             model.put("role", role);
-            System.out
-                    .println("Succesfull Login: " + username + "\ntoken: " + token + "\nrole: " + role);
+            // TODO log.debug()
+//            System.out
+//                    .println("Succesfull Login: " + username + "\ntoken: " + token + "\nrole: " + role);
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/"); // global cookie accessible everywhere
             response.addCookie(cookie);

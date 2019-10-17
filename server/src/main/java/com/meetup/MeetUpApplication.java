@@ -10,12 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MeetUpApplication {
     /**.
-     * constructor, closed for calls
-     */
-    public MeetUpApplication() {
-        //not user
-    }
-    /**.
      *main method
      * @param args String[]
      */

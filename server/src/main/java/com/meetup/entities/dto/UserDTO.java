@@ -1,6 +1,7 @@
 package com.meetup.entities.dto;
 
 import com.meetup.entities.Language;
+import com.meetup.entities.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +22,7 @@ public class UserDTO {
     /**
      * . roles of user
      */
-    private List<String> roles;
+    private List<Role> roles;
     /**
      * . id (from DB)
      */
@@ -64,7 +65,7 @@ public class UserDTO {
      *
      * @param mroles String[]
      */
-    public UserDTO(final String[] mroles) {
+    public UserDTO(final Role[] mroles) {
         this.roles = Arrays.asList(mroles);
         this.languages = new ArrayList<Language>();
 
@@ -80,7 +81,7 @@ public class UserDTO {
     public UserDTO(final String memail, final String mlogin) {
         this.email = memail;
         this.login = mlogin;
-        this.roles = new ArrayList<String>();
+        this.roles = new ArrayList<>();
         this.languages = new ArrayList<Language>();
     }
 
@@ -88,7 +89,7 @@ public class UserDTO {
      * . constructor()
      */
     public UserDTO() {
-        this.roles = new ArrayList<String>();
+        this.roles = new ArrayList<>();
         this.languages = new ArrayList<Language>();
     }
 
@@ -103,7 +104,7 @@ public class UserDTO {
      */
     public UserDTO(final String memail, final String mlogin,
         final String mname, final String mlastName,
-        final List<String> mroles) {
+        final List<Role> mroles) {
         this.email = memail;
         this.login = mlogin;
         this.firstName = mname;
@@ -117,7 +118,7 @@ public class UserDTO {
      *
      * @param role String
      */
-    public void addRole(final String role) {
+    public void addRole(final Role role) {
         this.roles.add(role);
     }
 }
