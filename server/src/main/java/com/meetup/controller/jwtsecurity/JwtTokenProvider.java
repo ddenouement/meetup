@@ -17,6 +17,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Component;
  * . gets token from cookie and authenticates user
  */
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     /**
@@ -82,7 +84,7 @@ public class JwtTokenProvider {
 
         UserDetails userDetails = this.userDetailsService
             .loadUserByUsername(getUsername(token));
-        System.out.println(
+        log.debug(
             "IN AUTH: " + userDetails.getUsername() + "\nroles: " + userDetails
                 .getAuthorities().size());
 
