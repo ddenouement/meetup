@@ -1,0 +1,76 @@
+<nav class="sidebar">
+  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/search_nonact.svg" alt="photo"/></a></li>
+  <li class="sidebar__icons sidebar__icons--active"><a href="#"><img src="../../assets/images/my_profile_act.svg" alt="photo"/></a></li>
+  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/messages_nonact.svg" alt="photo"/></a></li>
+  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/notification.svg" alt="photo"/></a></li>
+</nav>
+<main>
+  <div class="hamburger hamburger--squeeze">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+  </div>
+  <div class="content">
+    <form (ngSubmit)="onSubmit()" [formGroup]="changeForm">
+      <div class="user__personal personal-active">
+        <div class="user__img">
+          <img class="user__img--photo" src="../../assets/images/faruh.svg"/>
+          <div class="user__img--change">
+            <img class="change__photo" src="../../assets/images/pen2.svg"/>
+            <a class="change__text" href="#">Change photo</a>
+          </div>
+        </div>
+        <div class="user__change">
+          <div class="form__user">
+            <mat-form-field class="form__input">
+              <input matInput type="text" formControlName="firstName" value="Faruh" pattern="[A-Z]{1}[a-z]{2,20}"
+                     placeholder="First name"/>
+            </mat-form-field>
+            <mat-form-field class="form__input">
+              <input matInput type="text" formControlName="lastName" value="Ernandez" pattern="[A-Z]{1}[a-z]{2,20}"
+                     placeholder="Last name"/>
+            </mat-form-field>
+          </div>
+          <div class="form__user">
+            <mat-form-field class="form__input">
+              <input matInput formControlName="login" type="text" value="faru007" placeholder="Login">
+            </mat-form-field>
+            <mat-form-field class="form__input">
+              <input matInput placeholder="Email" formControlName="email" value="faru007@gmail.com"
+                     [errorStateMatcher]="matcher">
+              <mat-error
+                *ngIf="changeForm.get('email').hasError('email') && !changeForm.get('email').hasError('required')">
+                Please enter a valid email address
+              </mat-error>
+              <mat-error *ngIf="changeForm.get('email').hasError('required')">
+                Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field class="form__input area">
+            <textarea class="form__textarea" matInput placeholder="About"></textarea>
+          </mat-form-field>
+          <div class="form__user">
+            <mat-form-field class="form__input">
+              <mat-select placeholder="Languages" formControlName="languages" (select)="languagesList[0]" multiple>
+                <mat-select-trigger> {{changeForm.get('languages').value ? changeForm.get('languages').value[0] : ''}}
+                  <span *ngIf="changeForm.get('languages').value?.length > 1" class="example-additional-selection">
+              (+{{changeForm.get('languages').value.length - 1}} {{changeForm.get('languages').value?.length === 2 ? 'other' : 'others'}}
+                    )
+              </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let languages of languagesList" [value]="languages">{{languages}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="form__group">
+              <img *ngIf="loading" class="loading"
+                   src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+              <button [disabled]="!changeForm.valid" class="form__button" disabled type="submit">Change information
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
