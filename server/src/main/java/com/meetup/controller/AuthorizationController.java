@@ -3,11 +3,13 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.RoleProcessor;
 import com.meetup.service.IUserService;
+import com.meetup.service.RoleProcessor;
 import io.swagger.annotations.Api;
 
 import java.util.HashMap;
@@ -16,7 +18,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,13 +72,20 @@ public class AuthorizationController {
         try {
             String username = data.getLogin();
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username,
-                            data.getPassword()));
+                new UsernamePasswordAuthenticationToken(username,
+                    data.getPassword()));
             User user = findByUsernameAmongAll(username);
-            String role = RoleProcessor.isSpeaker(user) ? "SPEAKER" : "LISTENER";
-            String token = jwtTokenProvider.createToken(username,
-                    user.getRoles().stream().map(Enum::name).collect(Collectors.toList()));
+            List<String> roles = user.getRoles().stream().map(Enum::name)
+                .collect(Collectors.toList());
+            String token = jwtTokenProvider
+                .createToken(username, roles, user.getId());
             Map<Object, Object> model = new HashMap<>();
+            String role = "";
+            if (RoleProcessor.isSpeaker(user)) {
+                role = Role.SPEAKER.name();
+            } else {
+                role = Role.LISTENER.name();
+            }
             model.put("username", username);
             model.put("token", token);
             model.put("role", role);

@@ -16,38 +16,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**.
- * API Rest Controller for Meetups
+/**
+ * . API Rest Controller for Meetups
  */
 @RestController
 @Api(value = "meetup-application")
 public class MeetupController {
 
-    /**.
-     * Service, that manages meetup functionality
+    /**
+     * . Service, that manages meetup functionality
      */
     private MeetupServiceImpl meetupService;
 
-    /**.
-     * set the MeetupService
+    /**
+     * . set the MeetupService
+     *
      * @param meetupService MeetupService custom
      */
     MeetupController(@Autowired final MeetupServiceImpl meetupService) {
         this.meetupService = meetupService;
     }
 
-    /**.
+    /**
+     * .
      *
-     * @param token String
-     * @return ResponseEntity<List<Meetup>>
+     * @return ResponseEntity<List < Meetup>>
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-                           + "T(com.meetup.entities.Role).SPEAKER, "
-                           + "T(com.meetup.entities.Role).LISTENER)")
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "api/v1/meetups")
-    public ResponseEntity<List<Meetup>> getAllMeetups(
-        @CookieValue(value = "token", defaultValue = "")
-            final String token) {
+    public ResponseEntity<List<Meetup>> getAllMeetups() {
         try {
             return new ResponseEntity<>(meetupService.getAllMeetups(),
                 HttpStatus.OK);
@@ -58,18 +57,14 @@ public class MeetupController {
 
     /**
      * Get all topics mapping.
-     * @param token
-     * JSON web token.
-     * @return
-     * Response entity with list of all topics.
+     *
+     * @return Response entity with list of all topics.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-                           + "T(com.meetup.entities.Role).SPEAKER, "
-                           + "T(com.meetup.entities.Role).LISTENER)")
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping("api/v1/meetups/topics")
-    public ResponseEntity<List<Topic>> getAvailableTopics(
-        @CookieValue(value = "token", defaultValue = "")
-        final String token) {
+    public ResponseEntity<List<Topic>> getAvailableTopics() {
         try {
             return new ResponseEntity<>(meetupService.getAllTopics(),
                 HttpStatus.OK);
@@ -80,20 +75,18 @@ public class MeetupController {
 
     /**
      * Join user to meeetup.
-     * @param token
-     * JSON web token.
-     * @param meetup
-     * Meetup, that user should join.
-     * @return
-     * Response entity
+     *
+     * @param token JSON web token.
+     * @param meetup Meetup, that user should join.
+     * @return Response entity
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-                           + "T(com.meetup.entities.Role).SPEAKER, "
-                           + "T(com.meetup.entities.Role).LISTENER)")
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
     @PostMapping("api/v1/meetups/join")
     public ResponseEntity joinMeetup(
-        @CookieValue(value = "token", defaultValue = "")
-        final String token, @RequestBody final Meetup meetup) {
+        @CookieValue("token") final String token,
+        @RequestBody final Meetup meetup) {
         try {
             meetupService.joinMeetup(meetup, token);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -106,21 +99,19 @@ public class MeetupController {
 
     /**
      * Remove user from meeetup.
-     * @param token
-     * JSON web token.
-     * @param meetup
-     * Meetup, that user should leave.
-     * @return
-     * Response entity
+     *
+     * @param token JSON web token.
+     * @param meetup Meetup, that user should leave.
+     * @return Response entity
      */
     //TODO exception controller
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-                           + "T(com.meetup.entities.Role).SPEAKER, "
-                           + "T(com.meetup.entities.Role).LISTENER)")
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
     @PostMapping("api/v1/meetups/leave")
     public ResponseEntity leaveMeetup(
-        @CookieValue(value = "token", defaultValue = "")
-        final String token, @RequestBody final Meetup meetup) {
+        @CookieValue("token") final String token,
+        @RequestBody final Meetup meetup) {
         try {
             meetupService.leaveMeetup(meetup, token);
             return new ResponseEntity<>(HttpStatus.OK);

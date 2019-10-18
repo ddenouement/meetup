@@ -31,8 +31,8 @@ public class SpeakerController {
 
     /**
      * SpeakerController constructor.
-     * @param meetupService
-     * MeetupService param.
+     *
+     * @param meetupService MeetupService param.
      */
     SpeakerController(@Autowired final MeetupServiceImpl meetupService) {
         this.meetupService = meetupService;
@@ -40,18 +40,16 @@ public class SpeakerController {
 
     /**
      * Create meetup.
-     * @param token
-     * JSON web token.
-     * @param meetup
-     * Meetup object to be created.
-     * @return
-     * Created Meetup.
+     *
+     * @param token JSON web token.
+     * @param meetup Meetup object to be created.
+     * @return Created Meetup.
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "/api/v1/user/speaker/meetups")
     public ResponseEntity<Meetup> createMeetup(
-        @CookieValue(value = "token", defaultValue = "")
-            final String token, @RequestBody final Meetup meetup) {
+        @CookieValue("token") final String token,
+        @RequestBody final Meetup meetup) {
         try {
             return new ResponseEntity<>(
                 meetupService.createMeetup(meetup, token),
@@ -64,18 +62,16 @@ public class SpeakerController {
 
     /**
      * Update existing meetup.
-     * @param token
-     * JSON web token.
-     * @param meetup
-     * Meetup to be updated.
-     * @return
-     * Response entity with updated meetup.
+     *
+     * @param token JSON web token.
+     * @param meetup Meetup to be updated.
+     * @return Response entity with updated meetup.
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PutMapping(value = "/api/v1/user/speaker/meetups/{id}")
     public ResponseEntity<Meetup> updateMeetup(
-        @CookieValue(value = "token", defaultValue = "")
-        final String token, @RequestBody final Meetup meetup) {
+        @CookieValue("token") final String token,
+        @RequestBody final Meetup meetup) {
         try {
             return new ResponseEntity<>(
                 meetupService.updateMeetup(meetup, token),
@@ -87,16 +83,14 @@ public class SpeakerController {
 
     /**
      * Retrieve meetups of speaker.
-     * @param token
-     * JSON web token.
-     * @return
-     * Response entity with list of meetups.
+     *
+     * @param token JSON web token.
+     * @return Response entity with list of meetups.
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @GetMapping(value = "/api/v1/user/speaker/meetups")
     public ResponseEntity<List<Meetup>> getMyMeetups(
-        @CookieValue(value = "token", defaultValue = "")
-        final String token) {
+        @CookieValue("token") final String token) {
         try {
             return new ResponseEntity<>(
                 meetupService.getSpeakerMeetups(token), HttpStatus.OK);
