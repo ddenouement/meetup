@@ -3,10 +3,12 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IUserService;
+import com.meetup.service.RoleProcessor;
 import io.swagger.annotations.Api;
 import java.util.HashMap;
 import java.util.List;
@@ -76,8 +78,15 @@ public class AuthorizationController {
             String token = jwtTokenProvider
                 .createToken(username, roles, user.getId());
             Map<Object, Object> model = new HashMap<>();
+            String role = "";
+            if (RoleProcessor.isSpeaker(user)) {
+                role = Role.SPEAKER.name();
+            } else {
+                role = Role.LISTENER.name();
+            }
             model.put("username", username);
             model.put("token", token);
+            model.put("role", role);
             // TODO log.debug()
             // System.out
             //    .println("Succesfull Login: " + username + "\ntoken: " + token);
