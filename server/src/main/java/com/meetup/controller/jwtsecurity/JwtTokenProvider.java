@@ -9,9 +9,12 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -101,6 +104,7 @@ public class JwtTokenProvider {
 
     /**
      * Extracts user ID from token.
+     *
      * @param token token
      * @return user's id
      */
@@ -117,15 +121,12 @@ public class JwtTokenProvider {
      */
     public String resolveToken(final HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-        // TODO streams
-        if (cookies != null) {
-            for (Cookie c : cookies) {
-                if (c.getName().equals("token")) {
-                    return c.getValue();
-                }
-            }
+        if (cookies == null) {
+            return null;
         }
-        return null;
+        Optional<Cookie> cookie = Arrays.stream(cookies)
+            .filter(c -> c.getName().equals("token")).findAny();
+        return cookie.map(Cookie::getValue).orElse(null);
     }
 
     /**
