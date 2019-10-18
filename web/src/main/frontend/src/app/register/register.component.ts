@@ -59,12 +59,21 @@ export class RegisterComponent implements OnInit {
       password: this.passwordComponentWithConfirmation.password
     };
     this.loading = true;
+    this.registerForm.controls['login'].disable();
+    this.registerForm.controls['email'].disable();
+    this.registerForm.controls['password'].disable();
+    this.registerForm.controls['confirmPassword'].disable();
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe(data => {
         this.router.navigate(['/verify']);
       },
       error => {
         this.error = error.error;
+        console.log(error);
         this.loading = false;
+        this.registerForm.controls['login'].enable();
+        this.registerForm.controls['email'].enable();
+        this.registerForm.controls['password'].enable();
+        this.registerForm.controls['confirmPassword'].enable();
       });
   }
 

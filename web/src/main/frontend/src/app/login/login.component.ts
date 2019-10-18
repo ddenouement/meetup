@@ -33,13 +33,10 @@ export class LoginComponent implements OnInit {
       login: this.loginForm.get('login').value,
       password: this.loginForm.get('password').value
     };
-    let logResponse = <LoginResponse>{
-      login: this.loginForm.get('login').value,
-      role: '',
-      token: ''
-    };
 
     this.loading = true;
+    this.loginForm.controls['login'].disable();
+    this.loginForm.controls['password'].disable();
     this.httpClient.post("/api/v1/user/login", user)
       .subscribe(data => {
           if (data['role'] === "SPEAKER") {
@@ -50,7 +47,10 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.error = error.error;
+          console.log(error);
           this.loading = false;
+          this.loginForm.controls['login'].enable();
+          this.loginForm.controls['password'].enable();
         });
   }
 

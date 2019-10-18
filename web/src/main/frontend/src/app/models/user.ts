@@ -4,6 +4,6 @@ export class User {
   public login: string;
   public email: string;
   public about: string;
-  public languages: Object;
   public password: string;
+  public languageIds: number[];
 }
