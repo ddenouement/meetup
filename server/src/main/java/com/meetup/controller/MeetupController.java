@@ -2,6 +2,7 @@ package com.meetup.controller;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
+import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -27,14 +28,20 @@ public class MeetupController {
      * . Service, that manages meetup functionality
      */
     private MeetupServiceImpl meetupService;
+    /**
+     * Login validator service service.
+     */
+    private LoginValidatorServiceImpl loginValidatorService;
 
     /**
      * . set the MeetupService
      *
      * @param meetupService MeetupService custom
      */
-    MeetupController(@Autowired final MeetupServiceImpl meetupService) {
+    MeetupController(@Autowired final MeetupServiceImpl meetupService,
+        @Autowired final LoginValidatorServiceImpl loginValidatorService) {
         this.meetupService = meetupService;
+        this.loginValidatorService = loginValidatorService;
     }
 
     /**
@@ -88,7 +95,8 @@ public class MeetupController {
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
         try {
-            meetupService.joinMeetup(meetup, token);
+            String userLogin = loginValidatorService.extractLogin(token);
+            meetupService.joinMeetup(meetup, userLogin);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,7 +121,8 @@ public class MeetupController {
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
         try {
-            meetupService.leaveMeetup(meetup, token);
+            String userLogin = loginValidatorService.extractLogin(token);
+            meetupService.leaveMeetup(meetup, userLogin);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

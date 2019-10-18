@@ -95,13 +95,12 @@ public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * @param meetup Object, to be added to database.
-     * @param token Token with user login that creates a meetup
+     * @param userLogin Login of user that creates a meetup
      * @return Meetup that was just created
      */
     @Override
-    public Meetup createMeetup(final Meetup meetup, final String token)
+    public Meetup createMeetup(final Meetup meetup, final String userLogin)
         throws IllegalAccessException {
-        String userLogin = loginValidatorService.extractLogin(token);
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             meetup.setSpeakerId(user.getId());
@@ -114,13 +113,12 @@ public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * @param meetup Object, to be added to database.
-     * @param token Token with user login that creates a meetup
+     * @param userLogin Login of user that creates a meetup
      * @return Meetup that was just created
      */
     @Override
-    public Meetup updateMeetup(final Meetup meetup, final String token)
+    public Meetup updateMeetup(final Meetup meetup, final String userLogin)
         throws IllegalAccessException {
-        String userLogin = loginValidatorService.extractLogin(token);
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             meetup.setSpeakerId(user.getId());
@@ -139,9 +137,8 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return List of "Meetup" objects
      */
     @Override
-    public List<Meetup> getSpeakerMeetups(final String token)
+    public List<Meetup> getSpeakerMeetups(final String userLogin)
         throws IllegalAccessException {
-        String userLogin = loginValidatorService.extractLogin(token);
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             return meetupDao.getSpeakerMeetups(user.getId());
@@ -170,11 +167,10 @@ public class MeetupServiceImpl implements IMeetupService {
      * Register user for specified meetup.
      *
      * @param meetup Meetup, that will be used to register user to
-     * @param token JSON web token to extract user credentials
+     * @param userLogin User login
      */
     @Override
-    public void joinMeetup(final Meetup meetup, final String token) {
-        String userLogin = loginValidatorService.extractLogin(token);
+    public void joinMeetup(final Meetup meetup, final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
         List<User> usersOnMeetup = meetupDao.getUsersOnMeetup(meetup.getId());
         if (usersOnMeetup.size() < meetup.getMaxAttendees()) {
@@ -188,11 +184,10 @@ public class MeetupServiceImpl implements IMeetupService {
      * Remove user from specified meetup.
      *
      * @param meetup Meetup, that will be used to remove user to
-     * @param token JSON web token to extract user credentials
+     * @param userLogin User login
      */
     @Override
-    public void leaveMeetup(final Meetup meetup, final String token) {
-        String userLogin = loginValidatorService.extractLogin(token);
+    public void leaveMeetup(final Meetup meetup, final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
         meetupDao.removeUserFromMeetup(meetup, user);
     }
