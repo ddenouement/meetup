@@ -7,8 +7,11 @@ import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
+
 import java.util.Arrays;
 import java.util.List;
+
+import com.meetup.utils.UserDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +42,11 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ResponseEntity<String> registerAsListener(
-        final UserRegistrationDTO user) {
+            final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao
-            .isEmailUsed(user.getEmail())) {
+                .isEmailUsed(user.getEmail())) {
             return new ResponseEntity<>("User already exists",
-                HttpStatus.FORBIDDEN);
+                    HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().add(Role.LISTENER);
             userDao.insertNewUser(user);
@@ -59,11 +62,11 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ResponseEntity<String> registerAsSpeaker(
-        final UserRegistrationDTO user) {
+            final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin()) || userDao
-            .isEmailUsed(user.getEmail())) {
+                .isEmailUsed(user.getEmail())) {
             return new ResponseEntity<>("User already exists",
-                HttpStatus.FORBIDDEN);
+                    HttpStatus.FORBIDDEN);
         } else {
             user.getRoles().addAll(Arrays.asList(Role.LISTENER, Role.SPEAKER));
             userDao.insertNewUser(user);
@@ -104,31 +107,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO getProfileUserDTO(final String login) {
         User us = userDao.findUserByLogin(login);
-        return convertToUserDTO(us);
-
-    }
-
-    /**
-     * . Convert a User exemplar to UserDTO exemplar (e.g. without password)
-     *
-     * @param us User
-     * @return UserDTO
-     */
-    //TODO to utilities package
-    private UserDTO convertToUserDTO(final User us) {
-        UserDTO newUser = new UserDTO();
-        newUser.setAbout(us.getAbout());
-        newUser.setActive(us.isActive());
-        newUser.setEmail(us.getEmail());
-        newUser.setId(us.getId());
-        newUser.setFirstName(us.getFirstName());
-        newUser.setLastName(us.getLastName());
-        newUser.setRoles(us.getRoles());
-        newUser.setLogin(us.getLogin());
-        newUser.setRate(us.getRate());
-        newUser.setLanguages(userDao.getUsersLanguages(us.getId()));
-
-        return newUser;
+        UserDTOConverter converter = new UserDTOConverter();
+        UserDTO dtouser = converter.convertToUserDTO(us);
+        dtouser.setLanguages(userDao.getUsersLanguages(us.getId()));
+        return dtouser;
     }
 
 
@@ -153,18 +135,19 @@ public class UserServiceImpl implements IUserService {
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         return userDao.getUsersSubscriptionsToSpeakers(id);
     }
+
     /**
      * .     *
+     *
      * @param id user id
      * @return boolean whether successful operation or not
      */
     @Override
-    public boolean deactivateUser(final int id){
+    public boolean deactivateUser(final int id) {
 
-     return   userDao.deactivateUser(id);
+        return userDao.deactivateUser(id);
 
     }
-
 
 
 }

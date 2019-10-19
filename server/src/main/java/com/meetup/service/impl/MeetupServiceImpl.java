@@ -1,6 +1,6 @@
 package com.meetup.service.impl;
 
-import static com.meetup.service.RoleProcessor.isSpeaker;
+import static com.meetup.utils.RoleProcessor.isSpeaker;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
