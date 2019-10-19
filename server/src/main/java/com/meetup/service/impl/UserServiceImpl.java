@@ -153,6 +153,18 @@ public class UserServiceImpl implements IUserService {
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         return userDao.getUsersSubscriptionsToSpeakers(id);
     }
+    /**
+     * .     *
+     * @param id user id
+     * @return boolean whether successful operation or not
+     */
+    @Override
+    public boolean deactivateUser(final int id){
+
+     return   userDao.deactivateUser(id);
+
+    }
+
 
 
 }

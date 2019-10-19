@@ -80,6 +80,12 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${find_languages_by_user_id}")
     private String findUsersLanguages;
+    /**.
+     *
+     * sql quoey to deactivate user
+     */
+    @Value("${deactivate_by_user_id}")
+    private String deactivateUser;
 
     /**
      * . .
@@ -297,4 +303,20 @@ public class UserDaoImpl implements IUserDAO {
             template.query(findUsersLanguages, param, new LanguageMapper());
         return languages;
     }
+    /**
+     * .
+     * deactivate user in DB
+     *
+     * @param id int, id of user
+     * @return boolean , isSuccessful
+     */
+    @Override
+   public boolean deactivateUser(final int id){
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("user_id_param", id);
+        ResultSet rs = null;
+        template.update(deactivateUser,param);
+        return true;
+    }
 }
+

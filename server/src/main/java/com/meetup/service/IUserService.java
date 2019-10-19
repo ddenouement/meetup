@@ -64,6 +64,12 @@ public interface IUserService {
      * @return List<User> of Speakers
      */
     List<User>  getUsersSubscriptionsToSpeakers(int id);
+    /**
+     * .
+     * @param id user id
+     * @return boolean whether successful operation or not
+     */
+    boolean deactivateUser(int id);
 
 }
 
