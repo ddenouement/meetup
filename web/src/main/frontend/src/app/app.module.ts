@@ -1,6 +1,4 @@
-// @ts-ignore
 import {BrowserModule} from '@angular/platform-browser';
-// @ts-ignore
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 
 
@@ -16,29 +14,23 @@ import {
   MatInputModule,
   MatMenuModule,
   MatToolbarModule
-}
-// @ts-ignore
-  from "@angular/material";
+} from "@angular/material";
 
-// @ts-ignore
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {HomeComponent} from './home/home.component';
 import {RegisterSpeakerComponent} from './register-speaker/register-speaker.component';
-// @ts-ignore
 import {HttpClientModule} from "@angular/common/http";
-// @ts-ignore
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-// @ts-ignore
 import {MatOptionModule} from "@angular/material/core";
-// @ts-ignore
 import {MatSelectModule} from "@angular/material/select";
 import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { SpeakerProfileComponent } from './speaker-profile/speaker-profile.component';
+import { VerificationComponent } from './verification/verification.component';
+import {RatingModule} from "ng-starrating";
 
-
-// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +38,9 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    RegisterSpeakerComponent
+    RegisterSpeakerComponent,
+    SpeakerProfileComponent,
+    VerificationComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +59,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     MatSelectModule,
     MatPasswordStrengthModule,
     MatSlideToggleModule,
+    RatingModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],

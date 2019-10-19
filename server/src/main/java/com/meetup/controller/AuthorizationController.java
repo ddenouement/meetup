@@ -7,9 +7,10 @@ import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.IUserService;
 import com.meetup.service.RoleProcessor;
+import com.meetup.service.IUserService;
 import io.swagger.annotations.Api;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,32 +67,32 @@ public class AuthorizationController {
     public ResponseEntity signIn(
         final @RequestBody AuthentificationRequest data,
         final HttpServletResponse response) {
-            String username = data.getLogin();
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username,
-                    data.getPassword()));
-            User user = findByUsernameAmongAll(username);
-            List<String> roles = user.getRoles().stream().map(Enum::name)
-                .collect(Collectors.toList());
-            String token = jwtTokenProvider
-                .createToken(username, roles, user.getId());
-            Map<Object, Object> model = new HashMap<>();
-            String role = "";
-            if (RoleProcessor.isSpeaker(user)) {
-                role = Role.SPEAKER.name();
-            } else {
-                role = Role.LISTENER.name();
-            }
-            model.put("username", username);
-            model.put("token", token);
-            model.put("role", role);
-            // TODO log.debug()
-            // System.out
-            //    .println("Succesfull Login: " + username + "\ntoken: " + token);
-            Cookie cookie = new Cookie("token", token);
-            cookie.setPath("/"); // global cookie accessible everywhere
-            response.addCookie(cookie);
-            return ok(model);
+        String username = data.getLogin();
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(username,
+                data.getPassword()));
+        User user = findByUsernameAmongAll(username);
+        List<String> roles = user.getRoles().stream().map(Enum::name)
+            .collect(Collectors.toList());
+        String token = jwtTokenProvider
+            .createToken(username, roles, user.getId());
+        Map<Object, Object> model = new HashMap<>();
+        String role = "";
+        if (RoleProcessor.isSpeaker(user)) {
+            role = Role.SPEAKER.name();
+        } else {
+            role = Role.LISTENER.name();
+        }
+        model.put("username", username);
+        model.put("token", token);
+        model.put("role", role);
+        // TODO log.debug()
+//            System.out
+//                    .println("Succesfull Login: " + username + "\ntoken: " + token + "\nrole: " + role);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setPath("/"); // global cookie accessible everywhere
+        response.addCookie(cookie);
+        return ok(model);
     }
 
     /**
