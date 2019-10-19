@@ -59,13 +59,13 @@ public class MeetupDaoImpl implements IMeetupDAO {
     private String updateMeetup;
     /**.
      * SQL reference script.
-     * Retrieve topic by name.
+     * Retrieve topic.ts by name.
      */
     @Value("${find_topic_id}")
     private String findTopicIdByName;
     /**.
      * SQL reference script.
-     * Add topic to specific meetup.
+     * Add topic.ts to specific meetup.
      */
     @Value("${add_topic_to_meeting}")
     private String addTopicToMeetup;
@@ -162,9 +162,9 @@ public class MeetupDaoImpl implements IMeetupDAO {
     }
 
     /**.
-     * Add topic to meetup in DB.
+     * Add topic.ts to meetup in DB.
      * @param meetup
-     * Meetup object, that should have topic
+     * Meetup object, that should have topic.ts
      * @param topic
      * Topic to be added to meetup.
      */

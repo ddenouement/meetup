@@ -48,9 +48,9 @@ public interface IMeetupDAO {
     List<Meetup> getUsersJoinedMeetups(int userID);
 
     /**
-     * Add specific topic to database for meetup.
+     * Add specific topic.ts to database for meetup.
      *
-     * @param meetup Meetup object, that should have topic
+     * @param meetup Meetup object, that should have topic.ts
      * @param topic Topic object that will be added to meetup
      */
     void addTopicToMeetup(Meetup meetup, Topic topic);

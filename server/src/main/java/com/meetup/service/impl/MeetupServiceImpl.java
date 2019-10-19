@@ -64,7 +64,7 @@ public class MeetupServiceImpl implements IMeetupService {
     }
 
     /**
-     * Method used to get topics list from database, using topic repository
+     * Method used to get topics list from database, using topic.ts repository
      * (TopicDao).
      *
      * @return List of "Topic" objects

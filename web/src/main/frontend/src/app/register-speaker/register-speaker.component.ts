@@ -1,7 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  NgForm,
+  Validators
+} from "@angular/forms";
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
@@ -61,7 +68,7 @@ export class RegisterSpeakerComponent implements OnInit {
 
   public register(): void {
     let langList: number[] = [];
-    for(let i in this.registerForm.get('languages').value){
+    for (let i in this.registerForm.get('languages').value) {
       langList[i] = this.registerForm.get('languages').value[i].id;
     }
     const user = <User>{
@@ -115,13 +122,13 @@ export class RegisterSpeakerComponent implements OnInit {
     });
 
     this.registerService.getLanguages()
-      .subscribe(
-        languages => {
-          this.languages = languages;
-        },
-        err => {
-          console.log(err);
-        });
+    .subscribe(
+      languages => {
+        this.languages = languages;
+      },
+      err => {
+        console.log(err);
+      });
   }
 }
 
