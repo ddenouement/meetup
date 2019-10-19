@@ -1,7 +1,7 @@
 <nav class="sidebar">
-  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/search_nonact.svg" alt="photo"/></a></li>
-  <li class="sidebar__icons sidebar__icons--active"><a href="#"><img src="../../assets/images/my_profile_act.svg" alt="photo"/></a></li>
-  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/messages_nonact.svg" alt="photo"/></a></li>
+  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/searchNoActive.svg" alt="photo"/></a></li>
+  <li class="sidebar__icons sidebar__icons--active"><a href="#"><img src="../../assets/images/myProfileActive.svg" alt="photo"/></a></li>
+  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/messagesNoActive.svg" alt="photo"/></a></li>
   <li class="sidebar__icons"><a href="#"><img src="../../assets/images/notification.svg" alt="photo"/></a></li>
 </nav>
 <main>
@@ -19,7 +19,7 @@
             <img class="change__photo" src="../../assets/images/pen2.svg"/>
             <a class="change__text" href="#">Change photo</a>
           </div>
-          <star-rating class="user__img--change" value="4.43" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px" readonly="true" (rate)="onRate($event)"></star-rating>
+          <star-rating class="user__img--change" value="4.43" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px" readonly="false" (rate)="onRate($event)"></star-rating>
         </div>
         <div class="user__change">
           <div class="form__user">
