@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 public class Topic {
 
     /**
-     * Id of topic.
+     * Id of topic.ts.
      */
     private int id;
     /**
-     * Name of topic.
+     * Name of topic.ts.
      */
     private String name;
 }

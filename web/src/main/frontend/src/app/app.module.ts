@@ -30,6 +30,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { SpeakerProfileComponent } from './speaker-profile/speaker-profile.component';
 import { VerificationComponent } from './verification/verification.component';
 import {RatingModule} from "ng-starrating";
+import { CreateArticleComponent } from './create-article/create-article.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {RatingModule} from "ng-starrating";
     HomeComponent,
     RegisterSpeakerComponent,
     SpeakerProfileComponent,
-    VerificationComponent
+    VerificationComponent,
+    CreateArticleComponent
   ],
   imports: [
     BrowserModule,
