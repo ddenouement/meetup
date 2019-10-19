@@ -31,7 +31,7 @@
         </mat-form-field>
         <mat-form-field class="form__input">
           <mat-select placeholder="Languages" formControlName="languages" multiple>
-            <mat-select-trigger>{{registerForm.get('languages').value ? registerForm.get('languages').value[0].name : ''}}
+            <mat-select-trigger>{{registerForm.get('languages').value ? (registerForm.get('languages').value[0] ? registerForm.get('languages').value[0].name : '') : ''}}
               <span *ngIf="registerForm.get('languages').value?.length > 1" class="example-additional-selection">
               (+{{registerForm.get('languages').value.length - 1}} {{registerForm.get('languages').value?.length === 2 ? 'other' : 'others'}}
                 )
