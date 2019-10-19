@@ -3,6 +3,7 @@ import {User} from "../models/user";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ErrorStateMatcher} from "@angular/material/core";
+import {StarRatingComponent} from "ng-starrating";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -15,7 +16,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-speaker-profile',
   templateUrl: './speaker-profile.component.html',
-  styleUrls: ['./speaker-profile.component.css']
+  styleUrls: ['./speaker-profile.component.scss']
 })
 export class SpeakerProfileComponent implements OnInit {
 
@@ -68,6 +69,13 @@ export class SpeakerProfileComponent implements OnInit {
       hamburger.classList.toggle("is-active");
       // Do something else, like open/close menu
     });
+  }
+
+  onRate($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
+    alert(`Old Value:${$event.oldValue}, 
+      New Value: ${$event.newValue}, 
+      Checked Color: ${$event.starRating.checkedcolor}, 
+      Unchecked Color: ${$event.starRating.uncheckedcolor}`);
   }
 
 

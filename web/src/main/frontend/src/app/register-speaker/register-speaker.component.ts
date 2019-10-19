@@ -19,7 +19,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-register-speaker',
   templateUrl: './register-speaker.component.html',
-  styleUrls: ['./register-speaker.component.css']
+  styleUrls: ['./register-speaker.component.scss']
 })
 
 export class RegisterSpeakerComponent implements OnInit {

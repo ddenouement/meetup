@@ -29,6 +29,7 @@ import { MatPasswordStrengthModule } from '@angular-material-extensions/password
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { SpeakerProfileComponent } from './speaker-profile/speaker-profile.component';
 import { VerificationComponent } from './verification/verification.component';
+import {RatingModule} from "ng-starrating";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { VerificationComponent } from './verification/verification.component';
     MatSelectModule,
     MatPasswordStrengthModule,
     MatSlideToggleModule,
+    RatingModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],
