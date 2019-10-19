@@ -6,7 +6,6 @@ import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +36,7 @@ public class MeetupController {
      * . set the MeetupService
      *
      * @param meetupService MeetupService custom
+     * @param loginValidatorService LoginValidatorService.
      */
     MeetupController(@Autowired final MeetupServiceImpl meetupService,
         @Autowired final LoginValidatorServiceImpl loginValidatorService) {
@@ -47,19 +47,15 @@ public class MeetupController {
     /**
      * .
      *
-     * @return ResponseEntity<List < Meetup>>
+     * @return ResponseEntity<List       <       Meetup>>
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "api/v1/meetups")
     public ResponseEntity<List<Meetup>> getAllMeetups() {
-        try {
-            return new ResponseEntity<>(meetupService.getAllMeetups(),
-                HttpStatus.OK);
-        } catch (NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(meetupService.getAllMeetups(),
+            HttpStatus.OK);
     }
 
     /**
@@ -72,12 +68,8 @@ public class MeetupController {
         + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping("api/v1/meetups/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics() {
-        try {
-            return new ResponseEntity<>(meetupService.getAllTopics(),
-                HttpStatus.OK);
-        } catch (NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(meetupService.getAllTopics(),
+            HttpStatus.OK);
     }
 
     /**
@@ -94,15 +86,9 @@ public class MeetupController {
     public ResponseEntity joinMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
-        try {
             String userLogin = loginValidatorService.extractLogin(token);
             meetupService.joinMeetup(meetup, userLogin);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (IndexOutOfBoundsException ex) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+            return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
@@ -112,7 +98,6 @@ public class MeetupController {
      * @param meetup Meetup, that user should leave.
      * @return Response entity
      */
-    //TODO exception controller
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
@@ -120,12 +105,8 @@ public class MeetupController {
     public ResponseEntity leaveMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
-        try {
             String userLogin = loginValidatorService.extractLogin(token);
             meetupService.leaveMeetup(meetup, userLogin);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 }

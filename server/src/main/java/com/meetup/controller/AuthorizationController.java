@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,7 +66,6 @@ public class AuthorizationController {
     public ResponseEntity signIn(
         final @RequestBody AuthentificationRequest data,
         final HttpServletResponse response) {
-        try {
             String username = data.getLogin();
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username,
@@ -94,10 +92,6 @@ public class AuthorizationController {
             cookie.setPath("/"); // global cookie accessible everywhere
             response.addCookie(cookie);
             return ok(model);
-        } catch (AuthenticationException e) {
-            return new ResponseEntity<>(
-                "Invalid username/password", HttpStatus.UNAUTHORIZED);
-        }
     }
 
     /**
@@ -123,7 +117,8 @@ public class AuthorizationController {
     @PostMapping(value = "/api/v1/user/register/listener")
     public ResponseEntity registerListener(
         final @RequestBody UserRegistrationDTO user) {
-        return userService.registerAsListener(user);
+        userService.registerAsListener(user);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /**
@@ -133,8 +128,9 @@ public class AuthorizationController {
      * @return ResponseEntity
      */
     @PostMapping(value = "/api/v1/user/register/speaker")
-    public ResponseEntity<String> registerSpeaker(
+    public ResponseEntity registerSpeaker(
         final @RequestBody UserRegistrationDTO user) {
-        return userService.registerAsSpeaker(user);
+        userService.registerAsSpeaker(user);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

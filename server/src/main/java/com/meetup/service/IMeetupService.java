@@ -17,12 +17,10 @@ public interface IMeetupService {
      * Meetup to be created
      * @param login
      * User login (that creates the meetup)
-     * @return
-     * Created meetup
      * @throws IllegalAccessException
      * If meetup is created not by speaker, IllegalAccessException is thrown.
      */
-    Meetup createMeetup(Meetup meetup, String login)
+    void createMeetup(Meetup meetup, String login)
         throws IllegalAccessException;
 
     /**
@@ -31,12 +29,10 @@ public interface IMeetupService {
      * Meetup to be updated
      * @param login
      * User login (that updates the meetup)
-     * @return
-     * Updated meetup
      * @throws IllegalAccessException
      * If meetup is updated not by speaker, IllegalAccessException is thrown.
      */
-    Meetup updateMeetup(Meetup meetup, String login)
+    void updateMeetup(Meetup meetup, String login)
         throws IllegalAccessException;
 
     /**

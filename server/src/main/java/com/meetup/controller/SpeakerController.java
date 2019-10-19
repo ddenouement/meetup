@@ -5,7 +5,6 @@ import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +37,7 @@ public class SpeakerController {
      * SpeakerController constructor.
      *
      * @param meetupService MeetupService param.
+     * @param loginValidatorService LoginValidatorService.
      */
     SpeakerController(@Autowired final MeetupServiceImpl meetupService,
         @Autowired final LoginValidatorServiceImpl loginValidatorService) {
@@ -54,18 +54,12 @@ public class SpeakerController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "/api/v1/user/speaker/meetups")
-    public ResponseEntity<Meetup> createMeetup(
+    public ResponseEntity createMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
-        try {
-            String userLogin = loginValidatorService.extractLogin(token);
-            return new ResponseEntity<>(
-                meetupService.createMeetup(meetup, userLogin),
-                HttpStatus.CREATED);
-        } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
-
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        String userLogin = loginValidatorService.extractLogin(token);
+        meetupService.createMeetup(meetup, userLogin);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /**
@@ -80,14 +74,9 @@ public class SpeakerController {
     public ResponseEntity<Meetup> updateMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
-        try {
-            String userLogin = loginValidatorService.extractLogin(token);
-            return new ResponseEntity<>(
-                meetupService.updateMeetup(meetup, userLogin),
-                HttpStatus.OK);
-        } catch (IllegalAccessException | NullPointerException | NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        String userLogin = loginValidatorService.extractLogin(token);
+        meetupService.updateMeetup(meetup, userLogin);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -100,14 +89,8 @@ public class SpeakerController {
     @GetMapping(value = "/api/v1/user/speaker/meetups")
     public ResponseEntity<List<Meetup>> getMyMeetups(
         @CookieValue("token") final String token) {
-        try {
-            String userLogin = loginValidatorService.extractLogin(token);
-            return new ResponseEntity<>(
-                meetupService.getSpeakerMeetups(userLogin), HttpStatus.OK);
-        } catch (IllegalAccessException | NullPointerException ex) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        String userLogin = loginValidatorService.extractLogin(token);
+        return new ResponseEntity<>(
+            meetupService.getSpeakerMeetups(userLogin), HttpStatus.OK);
     }
 }

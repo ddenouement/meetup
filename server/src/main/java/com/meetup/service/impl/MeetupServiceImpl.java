@@ -5,6 +5,10 @@ import static com.meetup.service.RoleProcessor.isSpeaker;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import com.meetup.error.MeetupNotFoundException;
+import com.meetup.error.OutOfSlotsException;
+import com.meetup.error.SpeakerOperationNotAllowedException;
+import com.meetup.error.TopicNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.ITopicDAO;
 import com.meetup.repository.IUserDAO;
@@ -15,7 +19,6 @@ import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -70,7 +73,7 @@ public class MeetupServiceImpl implements IMeetupService {
     public List<Topic> getAllTopics() {
         List<Topic> allTopics = topicDao.getAllTopics();
         if (allTopics.isEmpty()) {
-            throw new NoSuchElementException();
+            throw new TopicNotFoundException();
         }
         return allTopics;
     }
@@ -87,7 +90,7 @@ public class MeetupServiceImpl implements IMeetupService {
     public List<Meetup> getAllMeetups() {
         List<Meetup> allMeetups = meetupDao.getAllMeetups();
         if (allMeetups.isEmpty()) {
-            throw new NoSuchElementException();
+            throw new MeetupNotFoundException();
         }
         return allMeetups;
 
@@ -96,37 +99,30 @@ public class MeetupServiceImpl implements IMeetupService {
     /**
      * @param meetup Object, to be added to database.
      * @param userLogin Login of user that creates a meetup
-     * @return Meetup that was just created
      */
     @Override
-    public Meetup createMeetup(final Meetup meetup, final String userLogin)
-        throws IllegalAccessException {
+    public void createMeetup(final Meetup meetup, final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             meetup.setSpeakerId(user.getId());
             meetupDao.insertNewMeetup(meetup);
-            return meetup;
         } else {
-            throw new IllegalAccessException();
+            throw new SpeakerOperationNotAllowedException();
         }
     }
 
     /**
      * @param meetup Object, to be added to database.
      * @param userLogin Login of user that creates a meetup
-     * @return Meetup that was just created
      */
     @Override
-    public Meetup updateMeetup(final Meetup meetup, final String userLogin)
-        throws IllegalAccessException {
+    public void updateMeetup(final Meetup meetup, final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             meetup.setSpeakerId(user.getId());
             meetupDao.updateMeetup(meetup);
-            //TODO return new meetup
-            return meetup;
         } else {
-            throw new IllegalAccessException();
+            throw new SpeakerOperationNotAllowedException();
         }
     }
 
@@ -137,13 +133,12 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return List of "Meetup" objects
      */
     @Override
-    public List<Meetup> getSpeakerMeetups(final String userLogin)
-        throws IllegalAccessException {
+    public List<Meetup> getSpeakerMeetups(final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
         if (isSpeaker(user)) {
             return meetupDao.getSpeakerMeetups(user.getId());
         } else {
-            throw new IllegalAccessException();
+            throw new SpeakerOperationNotAllowedException();
         }
     }
 
@@ -176,7 +171,7 @@ public class MeetupServiceImpl implements IMeetupService {
         if (usersOnMeetup.size() < meetup.getMaxAttendees()) {
             meetupDao.addUserToMeetup(meetup, user);
         } else {
-            throw new IndexOutOfBoundsException();
+            throw new OutOfSlotsException();
         }
     }
 

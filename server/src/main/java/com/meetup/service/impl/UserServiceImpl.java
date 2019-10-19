@@ -4,14 +4,14 @@ import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.error.EmailIsUsedException;
+import com.meetup.error.LoginIsUsedException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,19 +35,17 @@ public class UserServiceImpl implements IUserService {
      * .
      *
      * @param user User (that has role of listener) to register
-     * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsListener(
+    public void registerAsListener(
         final UserRegistrationDTO user) {
-        if (userDao.isLoginUsed(user.getLogin()) || userDao
-            .isEmailUsed(user.getEmail())) {
-            return new ResponseEntity<>("User already exists",
-                HttpStatus.FORBIDDEN);
+        if (userDao.isLoginUsed(user.getLogin())) {
+            throw new LoginIsUsedException();
+        } else if (userDao.isEmailUsed(user.getEmail())) {
+            throw new EmailIsUsedException();
         } else {
             user.getRoles().add(Role.LISTENER);
             userDao.insertNewUser(user);
-            return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
 
@@ -55,19 +53,17 @@ public class UserServiceImpl implements IUserService {
      * .
      *
      * @param user User (that has role of speaker) to register
-     * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsSpeaker(
+    public void registerAsSpeaker(
         final UserRegistrationDTO user) {
-        if (userDao.isLoginUsed(user.getLogin()) || userDao
-            .isEmailUsed(user.getEmail())) {
-            return new ResponseEntity<>("User already exists",
-                HttpStatus.FORBIDDEN);
+        if (userDao.isLoginUsed(user.getLogin())) {
+            throw new LoginIsUsedException();
+        } else if (userDao.isEmailUsed(user.getEmail())) {
+            throw new EmailIsUsedException();
         } else {
             user.getRoles().addAll(Arrays.asList(Role.LISTENER, Role.SPEAKER));
             userDao.insertNewUser(user);
-            return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
 
