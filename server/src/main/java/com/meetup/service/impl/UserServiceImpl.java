@@ -104,6 +104,7 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+
     /**
      * . Convert a User exemplar to UserDTO exemplar (e.g. without password)
      *

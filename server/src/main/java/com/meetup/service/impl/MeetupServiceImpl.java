@@ -17,8 +17,12 @@ import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,15 +52,15 @@ public class MeetupServiceImpl implements IMeetupService {
     /**
      * Meetup service constructor.
      *
-     * @param topicDao Topic repository
-     * @param meetupDao Meetup repository
-     * @param userDao User repository
+     * @param topicDao              Topic repository
+     * @param meetupDao             Meetup repository
+     * @param userDao               User repository
      * @param loginValidatorService Login validation service
      */
     MeetupServiceImpl(@Autowired final TopicDaoImpl topicDao,
-        @Autowired final MeetupDaoImpl meetupDao,
-        @Autowired final UserDaoImpl userDao,
-        @Autowired final LoginValidatorServiceImpl loginValidatorService) {
+                      @Autowired final MeetupDaoImpl meetupDao,
+                      @Autowired final UserDaoImpl userDao,
+                      @Autowired final LoginValidatorServiceImpl loginValidatorService) {
         this.topicDao = topicDao;
         this.meetupDao = meetupDao;
         this.userDao = userDao;
@@ -97,7 +101,7 @@ public class MeetupServiceImpl implements IMeetupService {
     }
 
     /**
-     * @param meetup Object, to be added to database.
+     * @param meetup    Object, to be added to database.
      * @param userLogin Login of user that creates a meetup
      */
     @Override
@@ -112,7 +116,7 @@ public class MeetupServiceImpl implements IMeetupService {
     }
 
     /**
-     * @param meetup Object, to be added to database.
+     * @param meetup    Object, to be added to database.
      * @param userLogin Login of user that creates a meetup
      */
     @Override
@@ -143,25 +147,38 @@ public class MeetupServiceImpl implements IMeetupService {
     }
 
     /**
-     * . return list of user hosted meetus (null if
+     * . Pair<past; future> of meetups hosted by speaker
      *
      * @param login login of user
+     * @return pair of lists of user hosted meetus (null if not a speaker)
      */
     @Override
-    public List<Meetup> getSpeakerMeetupsByLogin(final String login) {
+    public Pair<List<Meetup>, List<Meetup>> getSpeakerMeetupsByLogin(
+            final String login) {
         User user = userDao.findUserByLogin(login);
         if (isSpeaker(user)) {
-            return meetupDao.getSpeakerMeetups(user.getId());
+            List<Meetup> allTogetherMeetups =
+                    meetupDao.getSpeakerMeetups(user.getId());
+            List<Meetup> past = new ArrayList<>();
+            List<Meetup> future = new ArrayList<>();
+            for (Meetup a : allTogetherMeetups) {
+                if (a.getStartDate().isBefore(LocalDateTime.now())) {
+                    past.add(a);
+                } else {
+                    future.add(a);
+                }
+            }
+            return new Pair<>(past, future);
         } else {
-            return new ArrayList<Meetup>();
+            return new Pair<>(new ArrayList<>(), new ArrayList<>());
         }
-
     }
+
 
     /**
      * Register user for specified meetup.
      *
-     * @param meetup Meetup, that will be used to register user to
+     * @param meetup    Meetup, that will be used to register user to
      * @param userLogin User login
      */
     @Override
@@ -178,7 +195,7 @@ public class MeetupServiceImpl implements IMeetupService {
     /**
      * Remove user from specified meetup.
      *
-     * @param meetup Meetup, that will be used to remove user to
+     * @param meetup    Meetup, that will be used to remove user to
      * @param userLogin User login
      */
     @Override
@@ -194,7 +211,17 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return List of meetups
      */
     @Override
-    public List<Meetup> getUserJoinedMeetups(final int id) {
-        return meetupDao.getUsersJoinedMeetups(id);
+    public Pair<List<Meetup>, List<Meetup>> getUserJoinedMeetups(final int id) {
+        List<Meetup> allTogetherMeetups = meetupDao.getUsersJoinedMeetups(id);
+        List<Meetup> past = new ArrayList<>();
+        List<Meetup> future = new ArrayList<>();
+        for (Meetup a : allTogetherMeetups) {
+            if (a.getStartDate().isBefore(LocalDateTime.now())) {
+                past.add(a);
+            } else {
+                future.add(a);
+            }
+        }
+        return new Pair<>(past, future);
     }
 }
