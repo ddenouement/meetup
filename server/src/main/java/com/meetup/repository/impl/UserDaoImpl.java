@@ -207,7 +207,7 @@ public class UserDaoImpl implements IUserDAO {
     public User findUserByLogin(final String log) {
 
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("login", log);
+            .addValue("login_param", log);
         ResultSet rs = null;
         List<User> foundusers =
             template.query(findByLogin, param, (resultSet, i) -> {
@@ -316,6 +316,8 @@ public class UserDaoImpl implements IUserDAO {
                 .addValue("user_id_param", id);
         ResultSet rs = null;
         template.update(deactivateUser,param);
+
+
         return true;
     }
 }

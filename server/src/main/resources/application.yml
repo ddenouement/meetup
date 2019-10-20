@@ -7,12 +7,12 @@ spring:
   application:
     name: MeetUp
   datasource:
-    #for Heroku DB
+     #for Heroku DB
     url: jdbc:postgresql://ec2-54-197-238-238.compute-1.amazonaws.com:5432/dc72m1l1vrrhs0
     username: hwfgkkvlxomhnc
     password: c2757e017c207706006d9a70475719a4404a5019f12d19ce9e728a1cf5619f4b
     hikari:
-      maximumPoolSize: 2
+      maximumPoolSize: 5
 
 #    for local Postgres db(julia)
 #    url: jdbc:postgresql://localhost:5432/postgres

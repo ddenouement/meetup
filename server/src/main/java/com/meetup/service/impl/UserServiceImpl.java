@@ -1,5 +1,6 @@
 package com.meetup.service.impl;
 
+import com.meetup.entities.Meetup;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
@@ -11,6 +12,7 @@ import com.meetup.service.IUserService;
 import java.util.Arrays;
 import java.util.List;
 
+import com.meetup.utils.RoleProcessor;
 import com.meetup.utils.UserDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -138,15 +140,23 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * .     *
+     * remove users from hosted meetups & remove this user from all meetups he is subscribed to
      *
      * @param id user id
      * @return boolean whether successful operation or not
      */
     @Override
     public boolean deactivateUser(final int id) {
-
-        return userDao.deactivateUser(id);
-
+        for (Meetup a : meetupDao.getUsersJoinedMeetups(id)) {
+            meetupDao.removeUserFromMeetup(a, id);
+        }
+        for (Meetup a : meetupDao.getSpeakerMeetups(id)) {
+            for (User user : meetupDao.getUsersOnMeetup(a.getId())) {
+                meetupDao.removeUserFromMeetup(a, user);
+            }
+        }
+        userDao.deactivateUser(id);
+        return true;
     }
 
 

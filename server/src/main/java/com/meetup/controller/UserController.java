@@ -16,11 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * . Operations used to manage user functionality
@@ -101,7 +97,7 @@ public class UserController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @PostMapping(value = "/api/v1/user/deactivateUser")
-    public ResponseEntity deactivateUser(final @RequestBody int id) {
+    public ResponseEntity deactivateUser(final @RequestParam int id) {
       userService.deactivateUser(id);
       return new ResponseEntity<>(
                 "Done", HttpStatus.OK);

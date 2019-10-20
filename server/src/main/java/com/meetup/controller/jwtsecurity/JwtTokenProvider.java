@@ -81,7 +81,7 @@ public class JwtTokenProvider {
      * @return Authentication
      */
     public Authentication getAuthentication(final String token) {
-
+log.debug(getUsername(token));
         UserDetails userDetails = this.userDetailsService
             .loadUserByUsername(getUsername(token));
         log.debug(
