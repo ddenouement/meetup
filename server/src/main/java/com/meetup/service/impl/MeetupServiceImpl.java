@@ -15,7 +15,6 @@ import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +39,6 @@ public class MeetupServiceImpl implements IMeetupService {
      * User repository.
      */
     private IUserDAO userDao;
-    /**
-     * Login validation service.
-     */
-    private ILoginValidatorService loginValidatorService;
 
     /**
      * Meetup service constructor.
@@ -51,16 +46,13 @@ public class MeetupServiceImpl implements IMeetupService {
      * @param topicDao Topic repository
      * @param meetupDao Meetup repository
      * @param userDao User repository
-     * @param loginValidatorService Login validation service
      */
     MeetupServiceImpl(@Autowired final TopicDaoImpl topicDao,
         @Autowired final MeetupDaoImpl meetupDao,
-        @Autowired final UserDaoImpl userDao,
-        @Autowired final LoginValidatorServiceImpl loginValidatorService) {
+        @Autowired final UserDaoImpl userDao) {
         this.topicDao = topicDao;
         this.meetupDao = meetupDao;
         this.userDao = userDao;
-        this.loginValidatorService = loginValidatorService;
     }
 
     /**

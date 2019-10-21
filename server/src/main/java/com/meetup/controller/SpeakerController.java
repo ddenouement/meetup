@@ -1,6 +1,8 @@
 package com.meetup.controller;
 
 import com.meetup.entities.Meetup;
+import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.service.impl.ArticleServiceImlp;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
@@ -29,6 +31,11 @@ public class SpeakerController {
     private MeetupServiceImpl meetupService;
 
     /**
+     * Article service.
+     */
+    private ArticleServiceImlp articleService;
+
+    /**
      * Login validator service service.
      */
     private LoginValidatorServiceImpl loginValidatorService;
@@ -38,11 +45,14 @@ public class SpeakerController {
      *
      * @param meetupService MeetupService param.
      * @param loginValidatorService LoginValidatorService.
+     * @param articleService ArticleService.
      */
     SpeakerController(@Autowired final MeetupServiceImpl meetupService,
-        @Autowired final LoginValidatorServiceImpl loginValidatorService) {
+        @Autowired final LoginValidatorServiceImpl loginValidatorService,
+        @Autowired final ArticleServiceImlp articleService) {
         this.meetupService = meetupService;
         this.loginValidatorService = loginValidatorService;
+        this.articleService = articleService;
     }
 
     /**
@@ -50,7 +60,7 @@ public class SpeakerController {
      *
      * @param token JSON web token.
      * @param meetup Meetup object to be created.
-     * @return Created Meetup.
+     * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "/api/v1/user/speaker/meetups")
@@ -92,5 +102,25 @@ public class SpeakerController {
         String userLogin = loginValidatorService.extractLogin(token);
         return new ResponseEntity<>(
             meetupService.getSpeakerMeetups(userLogin), HttpStatus.OK);
+    }
+
+    /**
+     * Create and post new Article from speaker.
+     *
+     * @param token JSON web token.
+     * @param articleCreationDTO ArticleDTO that should be created
+     * @return ResponseEntity with status code.
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
+    @PostMapping(value = "api/v1/user/speaker/articles")
+    public ResponseEntity postArticle(
+        @CookieValue("token") final String token,
+        @RequestBody final ArticleCreationDTO articleCreationDTO) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        System.out.println("TITLE: "+articleCreationDTO.getTitle());
+        System.out.println("CONTENTS: "+articleCreationDTO.getContents());
+        System.out.println("TOPICS IDS: "+articleCreationDTO.getTopicIds());
+        articleService.postArticle(articleCreationDTO, userLogin);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }
