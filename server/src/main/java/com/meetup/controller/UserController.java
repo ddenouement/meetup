@@ -76,18 +76,18 @@ public class UserController {
         UserDTO user = userService
                 .getProfileUserDTO(loginValidatorService.extractLogin(token));
         model.put(USERDTO, user);
-        model.put(SUBSCRIPTIONS,userService.getUsersSubscriptionsToSpeakers(
+        model.put(SUBSCRIPTIONS, userService.getUsersSubscriptionsToSpeakers(
                 user.getId()));
         Pair<List<Meetup>, List<Meetup>> hosted =
                 meetupService.getSpeakerMeetupsByLogin(user.getLogin());
-        List<Meetup> hostedMeetupsPast =hosted.getKey();
-        List<Meetup> hostedMeetupsFuture =hosted.getValue();
+        List<Meetup> hostedMeetupsPast = hosted.getKey();
+        List<Meetup> hostedMeetupsFuture = hosted.getValue();
         model.put(HOSTED_MEETUPS_FUTURE, hostedMeetupsFuture);
         model.put(HOSTED_MEETUPS_PAST, hostedMeetupsPast);
         Pair<List<Meetup>, List<Meetup>> joined =
                 meetupService.getUserJoinedMeetups(user.getId());
-        List<Meetup> userJoinedMeetupsPast =joined.getKey();
-        List<Meetup> userJoinedMeetupsFuture =joined.getValue();
+        List<Meetup> userJoinedMeetupsPast = joined.getKey();
+        List<Meetup> userJoinedMeetupsFuture = joined.getValue();
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
         model.put(JOINED_MEETUPS_FUTURE, userJoinedMeetupsFuture);
         return ok(model);
@@ -123,18 +123,18 @@ public class UserController {
         Map<Object, Object> model = new HashMap<>();
         UserDTO user = userService.getProfileUserDTO(login);
         model.put(USERDTO, user);
-        model.put(SUBSCRIPTIONS,userService.getUsersSubscriptionsToSpeakers(
+        model.put(SUBSCRIPTIONS, userService.getUsersSubscriptionsToSpeakers(
                 user.getId()));
         Pair<List<Meetup>, List<Meetup>> hosted =
                 meetupService.getSpeakerMeetupsByLogin(user.getLogin());
-        List<Meetup> hostedMeetupsPast =hosted.getKey();
-        List<Meetup> hostedMeetupsFuture =hosted.getValue();
+        List<Meetup> hostedMeetupsPast = hosted.getKey();
+        List<Meetup> hostedMeetupsFuture = hosted.getValue();
         model.put(HOSTED_MEETUPS_FUTURE, hostedMeetupsFuture);
         model.put(HOSTED_MEETUPS_PAST, hostedMeetupsPast);
         //we don`t send future joined, as part of privacy
         Pair<List<Meetup>, List<Meetup>> joined =
                 meetupService.getUserJoinedMeetups(user.getId());
-        List<Meetup> userJoinedMeetupsPast =joined.getKey();
+        List<Meetup> userJoinedMeetupsPast = joined.getKey();
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
         return ok(model);
 
