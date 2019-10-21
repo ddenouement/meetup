@@ -8,8 +8,9 @@
         </mat-form-field>
         <mat-form-field class="form__input">
           <mat-select placeholder="Topics" formControlName="articleTopics" multiple>
-            <mat-select-trigger> {{createArticleForm.get('articleTopics').value ? createArticleForm.get('articleTopics').value[0].name : ''}}
-              <span *ngIf="createArticleForm.get('articleTopics').value?.length > 1" class="example-additional-selection">
+            <mat-select-trigger> {{createArticleForm.get('articleTopics').value ? (createArticleForm.get('articleTopics').value[0] ? createArticleForm.get('articleTopics').value[0] : '') : ''}}
+              <span *ngIf="createArticleForm.get('articleTopics').value?.length > 1"
+                    class="example-additional-selection">
               (+{{createArticleForm.get('articleTopics').value.length - 1}} {{createArticleForm.get('articleTopics').value?.length === 2 ? 'other' : 'others'}}
                 )
               </span>
