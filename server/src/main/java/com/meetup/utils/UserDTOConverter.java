@@ -2,9 +2,6 @@ package com.meetup.utils;
 
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
-import com.meetup.repository.IUserDAO;
-import com.meetup.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**.
  * Class to convert a User exemplar to UserDTO exemplar
@@ -28,7 +25,7 @@ public class UserDTOConverter {
         newUser.setRoles(us.getRoles());
         newUser.setLogin(us.getLogin());
         newUser.setRate(us.getRate());
-
+        newUser.setNumRates(us.getNumRates());
         return newUser;
     }
 

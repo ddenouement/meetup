@@ -33,6 +33,7 @@ CREATE TABLE users
     about      TEXT      NULL,
     rate       REAL      NULL
         CONSTRAINT rate_range CHECK (rate >= 0 AND rate <= 5),
+    num_rates INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 

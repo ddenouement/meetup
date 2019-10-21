@@ -8,12 +8,9 @@ import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
-
+import com.meetup.utils.UserDTOConverter;
 import java.util.Arrays;
 import java.util.List;
-
-import com.meetup.utils.RoleProcessor;
-import com.meetup.utils.UserDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -154,6 +151,7 @@ public class UserServiceImpl implements IUserService {
             for (User user : meetupDao.getUsersOnMeetup(a.getId())) {
                 meetupDao.removeUserFromMeetup(a, user);
             }
+            //TODO cancel Meetup a
         }
         userDao.deactivateUser(id);
         return true;
