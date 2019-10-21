@@ -46,6 +46,10 @@ public class User {
      * rate of user
      */
     private Float rate;
+    /**
+     * Number of individual ratings.
+     */
+    private Integer numRates;
     /**.
      * password
      */

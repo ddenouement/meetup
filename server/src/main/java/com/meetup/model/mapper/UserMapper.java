@@ -34,6 +34,7 @@ public final class UserMapper implements RowMapper<User> {
         user.setActive(rs.getBoolean("active"));
         user.setAbout(rs.getString("about"));
         user.setRate(rs.getFloat("rate"));
+        user.setNumRates(rs.getInt("num_rates"));
         return user;
     }
 }

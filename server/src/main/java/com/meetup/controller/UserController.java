@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -79,7 +81,7 @@ public class UserController {
     }
 
     /**
-     * . return all speakers
+     * . return all active speakers
      *
      * @return List of Users
      */
@@ -91,6 +93,20 @@ public class UserController {
     public ResponseEntity<List<User>> getAllSpeakers() {
         return new ResponseEntity<>(userService.getAllSpeakers(),
             HttpStatus.OK);
+    }
+
+    /**.
+     * Admin can deactivate user by his Id
+     * @param id user's id
+     * @return ResponseEntity
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/user/deactivateUser")
+    public ResponseEntity deactivateUser(final @RequestParam int id) {
+      userService.deactivateUser(id);
+      return new ResponseEntity<>(
+                "Done", HttpStatus.OK);
+
     }
 
 }

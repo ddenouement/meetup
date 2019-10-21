@@ -70,6 +70,13 @@ public interface IMeetupDAO {
      * @param user User that leaves meetup.
      */
     void removeUserFromMeetup(Meetup meetup, User user);
+    /**
+     * Remove user from specific meetup.
+     *
+     * @param meetup Meetup, that user should leave to.
+     * @param userId User Id that leaves meetup.
+     */
+    void removeUserFromMeetup(Meetup meetup, int userId);
 
     /**
      * Get users on meetup.

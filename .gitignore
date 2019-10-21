@@ -25,3 +25,6 @@ nbdist/
 
 ### Modules ###
 node_modules
+
+### Logging ###
+log

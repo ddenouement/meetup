@@ -241,7 +241,20 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("id_user", user.getId());
         template.update(removeUserFromMeetup, param);
     }
-
+    /**.
+     * Remove user from specific meetup.
+     * @param meetup
+     * Meetup, that user should leave to.
+     * @param userId
+     * User id that leaves meetup.
+     */
+    @Override
+    public void removeUserFromMeetup(final Meetup meetup, final int userId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_meetup", meetup.getId())
+                .addValue("id_user", userId);
+        template.update(removeUserFromMeetup, param);
+    }
     /**.
      * Get users, registered on meetup.
      * @param meetupId
