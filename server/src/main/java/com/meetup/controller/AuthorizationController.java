@@ -7,7 +7,6 @@ import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.RoleProcessor;
 import com.meetup.service.IUserService;
 import com.meetup.utils.RoleProcessor;
 import io.swagger.annotations.Api;
