@@ -29,7 +29,13 @@ public class ArticleServiceImlp implements ArticleService {
      */
     private IArticleDAO articleDao;
 
-
+    /**
+     * Constructor.
+     * @param userDao
+     * User repository.
+     * @param articleDao
+     * Article repository.
+     */
     ArticleServiceImlp(@Autowired final UserDaoImpl userDao,
         @Autowired final ArticleDaoImpl articleDao) {
         this.userDao = userDao;

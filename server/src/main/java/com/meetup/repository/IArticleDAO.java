@@ -11,6 +11,8 @@ public interface IArticleDAO {
      * Insert new Article into DB.
      * @param articleCreationDTO
      * Article, that should be inserted.
+     * @param authorId
+     * Author id, that creates an article.
      */
     void insertNewArticle(ArticleCreationDTO articleCreationDTO,
         int authorId);
@@ -22,6 +24,6 @@ public interface IArticleDAO {
      * @param topicID
      * Topic to be added to article.
      */
-    void addTopicToArticle(final int articleID, final int topicID);
+    void addTopicToArticle(int articleID, int topicID);
 
 }

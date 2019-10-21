@@ -12,6 +12,9 @@ public interface ArticleService {
      * Create, and post article.
      * @param articleCreationDTO
      * Article, that should be posted
+     * @param userLogin
+     * User login, that posts an article.
+     *
      */
     void postArticle(ArticleCreationDTO articleCreationDTO,
         String userLogin);

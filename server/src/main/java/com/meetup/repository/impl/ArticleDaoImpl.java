@@ -56,7 +56,7 @@ public class ArticleDaoImpl implements IArticleDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_author", authorId)
             .addValue("id_title", articleCreationDTO.getTitle())
-            .addValue("contents", articleCreationDTO.getContents())
+            .addValue("contents", articleCreationDTO.getContent())
             .addValue("time_posted", getCurrentTimestamp());
         template.update(insertNewArticle, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {

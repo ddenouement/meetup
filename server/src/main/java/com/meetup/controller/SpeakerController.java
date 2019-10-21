@@ -117,9 +117,6 @@ public class SpeakerController {
         @CookieValue("token") final String token,
         @RequestBody final ArticleCreationDTO articleCreationDTO) {
         String userLogin = loginValidatorService.extractLogin(token);
-        System.out.println("TITLE: "+articleCreationDTO.getTitle());
-        System.out.println("CONTENTS: "+articleCreationDTO.getContents());
-        System.out.println("TOPICS IDS: "+articleCreationDTO.getTopicIds());
         articleService.postArticle(articleCreationDTO, userLogin);
         return new ResponseEntity(HttpStatus.CREATED);
     }

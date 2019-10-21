@@ -17,7 +17,7 @@ public class ArticleCreationDTO {
     /**
      * Content of article.
      */
-    private String contents;
+    private String content;
     /**
      * ID's of topics of this article.
      */
