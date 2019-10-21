@@ -7,9 +7,11 @@ import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
+import com.meetup.service.RoleProcessor;
 import com.meetup.service.IUserService;
 import com.meetup.utils.RoleProcessor;
 import io.swagger.annotations.Api;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,14 +62,14 @@ public class AuthorizationController {
     /**
      * ,. SignIn   generates a token
      *
-     * @param data AuthentificationRequest
+     * @param data     AuthentificationRequest
      * @param response HttpServletResponse
      * @return ResponseEntity
      **/
     @PostMapping("/api/v1/user/login")
     public ResponseEntity signIn(
-        final @RequestBody AuthentificationRequest data,
-        final HttpServletResponse response) {
+            final @RequestBody AuthentificationRequest data,
+            final HttpServletResponse response) {
         try {
             String username = data.getLogin();
             authenticationManager.authenticate(
@@ -95,7 +97,7 @@ public class AuthorizationController {
             return ok(model);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>(
-                "Invalid username/password", HttpStatus.UNAUTHORIZED);
+                    "Invalid username/password", HttpStatus.UNAUTHORIZED);
         }
     }
 

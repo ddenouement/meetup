@@ -5,4 +5,5 @@ export class User {
   public email: string;
   public about: string;
   public password: string;
+  public languageIds: number[];
 }

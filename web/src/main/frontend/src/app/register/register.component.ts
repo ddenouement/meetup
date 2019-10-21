@@ -1,14 +1,10 @@
-// @ts-ignore
 import {Component, OnInit, ViewChild} from '@angular/core';
-// @ts-ignore
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
-// @ts-ignore
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from "@angular/material/core";
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
-import {delay} from "rxjs/operators";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -18,7 +14,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
-// @ts-ignore
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -64,12 +59,21 @@ export class RegisterComponent implements OnInit {
       password: this.passwordComponentWithConfirmation.password
     };
     this.loading = true;
+    this.registerForm.controls['login'].disable();
+    this.registerForm.controls['email'].disable();
+    this.registerForm.controls['password'].disable();
+    this.registerForm.controls['confirmPassword'].disable();
     this.httpClient.post("/api/v1/user/register/listener", user).subscribe(data => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/verify']);
       },
       error => {
         this.error = error.error;
+        console.log(error);
         this.loading = false;
+        this.registerForm.controls['login'].enable();
+        this.registerForm.controls['email'].enable();
+        this.registerForm.controls['password'].enable();
+        this.registerForm.controls['confirmPassword'].enable();
       });
   }
 
@@ -83,7 +87,6 @@ export class RegisterComponent implements OnInit {
       validator: MustMatch('password', 'confirmPassword')
     });
   }
-
 }
 
 export function MustMatch(controlName: string, matchingControlName: string) {

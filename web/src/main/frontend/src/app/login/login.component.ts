@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Authentificationrequest} from "../models/authentificationrequest";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {map} from "rxjs/operators";
+import {LoginResponse} from "../models/loginResponse";
 import {Router} from "@angular/router";
 
 @Component({
@@ -33,15 +33,25 @@ export class LoginComponent implements OnInit {
       login: this.loginForm.get('login').value,
       password: this.loginForm.get('password').value
     };
+
     this.loading = true;
+    this.loginForm.controls['login'].disable();
+    this.loginForm.controls['password'].disable();
     this.httpClient.post("/api/v1/user/login", user)
-    .subscribe(data => {
-        this.router.navigate(['/']);
-    },
-    error => {
-      this.error = error.error;
-      this.loading = false;
-    });
+      .subscribe(data => {
+          if (data['role'] === "SPEAKER") {
+            this.router.navigate(['/speaker-profile']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error => {
+          this.error = error.error;
+          console.log(error);
+          this.loading = false;
+          this.loginForm.controls['login'].enable();
+          this.loginForm.controls['password'].enable();
+        });
   }
 
   ngOnInit() {
