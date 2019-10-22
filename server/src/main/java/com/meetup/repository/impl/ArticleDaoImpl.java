@@ -1,6 +1,8 @@
 package com.meetup.repository.impl;
 
+import com.meetup.entities.Article;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.repository.IArticleDAO;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -41,6 +43,18 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${add_topic_to_article}")
     private String addTopicToArticle;
+    /**
+     * SQL reference script.
+     * Get article by ID.
+     */
+    @Value("${find_article_by_id}")
+    private String findArticleByID;
+    /**
+     * SQL reference script.
+     * Get article by ID.
+     */
+    @Value("${remove_article}")
+    private String removeArticle;
 
     /**
      * Insert new Article into DB.
@@ -82,6 +96,27 @@ public class ArticleDaoImpl implements IArticleDAO {
         parametersForAddingTopic.put("id_article", articleID);
         parametersForAddingTopic.put("id_topic", topicID);
         template.update(addTopicToArticle, parametersForAddingTopic);
+    }
+
+
+    @Override
+    public Article findArticleByID(int articleID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", articleID);
+        return this.template
+            .queryForObject(findArticleByID, param, new ArticleMapper());
+    }
+
+    /**
+     * Remove article by ID.
+     * @param articleID
+     * Article ID.
+     */
+    @Override
+    public void removeArticle(int articleID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", articleID);
+        template.update(removeArticle, param);
     }
 
     /**

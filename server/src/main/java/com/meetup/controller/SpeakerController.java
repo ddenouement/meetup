@@ -2,7 +2,7 @@ package com.meetup.controller;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.ArticleCreationDTO;
-import com.meetup.service.impl.ArticleServiceImlp;
+import com.meetup.service.impl.ArticleServiceImpl;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
@@ -33,7 +33,7 @@ public class SpeakerController {
     /**
      * Article service.
      */
-    private ArticleServiceImlp articleService;
+    private ArticleServiceImpl articleService;
 
     /**
      * Login validator service service.
@@ -49,7 +49,7 @@ public class SpeakerController {
      */
     SpeakerController(@Autowired final MeetupServiceImpl meetupService,
         @Autowired final LoginValidatorServiceImpl loginValidatorService,
-        @Autowired final ArticleServiceImlp articleService) {
+        @Autowired final ArticleServiceImpl articleService) {
         this.meetupService = meetupService;
         this.loginValidatorService = loginValidatorService;
         this.articleService = articleService;
@@ -123,5 +123,22 @@ public class SpeakerController {
         String userLogin = loginValidatorService.extractLogin(token);
         articleService.postArticle(articleCreationDTO, userLogin);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    /**
+     * Remove article by speaker.
+     *
+     * @param token JSON web token.
+     * @param articleID Article ID that should be removed.
+     * @return ResponseEntity with status code.
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
+    @DeleteMapping(value = "api/v1/user/speaker/articles/{id}")
+    public ResponseEntity removeArticle(
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int articleID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        articleService.removeArticle(articleID, userLogin);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

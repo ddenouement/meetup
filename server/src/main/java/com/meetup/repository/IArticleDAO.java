@@ -1,5 +1,6 @@
 package com.meetup.repository;
 
+import com.meetup.entities.Article;
 import com.meetup.entities.dto.ArticleCreationDTO;
 
 /**
@@ -25,5 +26,22 @@ public interface IArticleDAO {
      * Topic to be added to article.
      */
     void addTopicToArticle(int articleID, int topicID);
+
+
+    /**
+     * Find article by ID.
+     * @param articleID
+     * Article ID.
+     * @return
+     * Article object.
+     */
+    Article findArticleByID(int articleID);
+
+    /**
+     * Remove article by ID.
+     * @param articleID
+     * Article ID.
+     */
+    void removeArticle(int articleID);
 
 }

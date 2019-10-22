@@ -6,7 +6,7 @@ import com.meetup.entities.dto.ArticleCreationDTO;
  * Article service interface.
  * Used to manage article functionality.
  */
-public interface ArticleService {
+public interface IArticleService {
 
     /**
      * Create, and post article.
@@ -18,4 +18,13 @@ public interface ArticleService {
      */
     void postArticle(ArticleCreationDTO articleCreationDTO,
         String userLogin);
+
+    /**
+     * Remove article by speaker.
+     * @param articleID Article ID, that should be removed
+     * @param userLogin
+     * User login, that removes an article.
+     *
+     */
+    void removeArticle(int articleID, String userLogin);
 }
