@@ -12,7 +12,7 @@ spring:
     username: hwfgkkvlxomhnc
     password: c2757e017c207706006d9a70475719a4404a5019f12d19ce9e728a1cf5619f4b
     hikari:
-      maximumPoolSize: 10
+      maximumPoolSize: 2
 
 #    for local Postgres db(julia)
 #    url: jdbc:postgresql://localhost:5432/postgres
