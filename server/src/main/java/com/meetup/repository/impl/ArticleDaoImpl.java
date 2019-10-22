@@ -98,9 +98,15 @@ public class ArticleDaoImpl implements IArticleDAO {
         template.update(addTopicToArticle, parametersForAddingTopic);
     }
 
-
+    /**
+     * Find article by ID
+     * @param articleID
+     * Article ID.
+     * @return
+     * Article.
+     */
     @Override
-    public Article findArticleByID(int articleID) {
+    public Article findArticleByID(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", articleID);
         return this.template
@@ -113,7 +119,7 @@ public class ArticleDaoImpl implements IArticleDAO {
      * Article ID.
      */
     @Override
-    public void removeArticle(int articleID) {
+    public void removeArticle(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", articleID);
         template.update(removeArticle, param);

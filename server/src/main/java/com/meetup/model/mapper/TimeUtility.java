@@ -8,6 +8,12 @@ import java.time.LocalDateTime;
  */
 public final class TimeUtility {
 
+    /**
+     * Private utility class constructor.
+     */
+    private TimeUtility(){
+
+    }
     /**.
      * Helper method to convert SQL Date to LocalDateTime.
      * @param dateToConvert
