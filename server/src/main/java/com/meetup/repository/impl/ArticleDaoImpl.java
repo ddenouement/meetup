@@ -99,7 +99,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     /**
-     * Find article by ID
+     * Find article by ID.
      * @param articleID
      * Article ID.
      * @return

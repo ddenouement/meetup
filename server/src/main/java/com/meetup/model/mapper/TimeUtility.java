@@ -11,7 +11,7 @@ public final class TimeUtility {
     /**
      * Private utility class constructor.
      */
-    private TimeUtility(){
+    private TimeUtility() {
 
     }
     /**.
