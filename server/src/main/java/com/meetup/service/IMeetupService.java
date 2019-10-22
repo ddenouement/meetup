@@ -2,7 +2,7 @@ package com.meetup.service;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import javafx.util.Pair;
+import com.meetup.entities.Pair;
 
 import java.util.List;
 

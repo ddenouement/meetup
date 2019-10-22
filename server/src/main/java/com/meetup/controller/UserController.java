@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javafx.util.Pair;
+import com.meetup.entities.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,14 +92,14 @@ public class UserController {
                 user.getId()));
         Pair<List<Meetup>, List<Meetup>> hosted =
                 meetupService.getSpeakerMeetupsByLogin(user.getLogin());
-        List<Meetup> hostedMeetupsPast = hosted.getKey();
-        List<Meetup> hostedMeetupsFuture = hosted.getValue();
+        List<Meetup> hostedMeetupsPast = hosted.getFirst();
+        List<Meetup> hostedMeetupsFuture = hosted.getSecond();
         model.put(HOSTED_MEETUPS_FUTURE, hostedMeetupsFuture);
         model.put(HOSTED_MEETUPS_PAST, hostedMeetupsPast);
         Pair<List<Meetup>, List<Meetup>> joined =
                 meetupService.getUserJoinedMeetups(user.getId());
-        List<Meetup> userJoinedMeetupsPast = joined.getKey();
-        List<Meetup> userJoinedMeetupsFuture = joined.getValue();
+        List<Meetup> userJoinedMeetupsPast = joined.getFirst();
+        List<Meetup> userJoinedMeetupsFuture = joined.getSecond();
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
         model.put(JOINED_MEETUPS_FUTURE, userJoinedMeetupsFuture);
         return ok(model);
@@ -139,14 +139,14 @@ public class UserController {
                 user.getId()));
         Pair<List<Meetup>, List<Meetup>> hosted =
                 meetupService.getSpeakerMeetupsByLogin(user.getLogin());
-        List<Meetup> hostedMeetupsPast = hosted.getKey();
-        List<Meetup> hostedMeetupsFuture = hosted.getValue();
+        List<Meetup> hostedMeetupsPast = hosted.getFirst();
+        List<Meetup> hostedMeetupsFuture = hosted.getSecond();
         model.put(HOSTED_MEETUPS_FUTURE, hostedMeetupsFuture);
         model.put(HOSTED_MEETUPS_PAST, hostedMeetupsPast);
         //we don`t send future joined, as part of privacy
         Pair<List<Meetup>, List<Meetup>> joined =
                 meetupService.getUserJoinedMeetups(user.getId());
-        List<Meetup> userJoinedMeetupsPast = joined.getKey();
+        List<Meetup> userJoinedMeetupsPast = joined.getFirst();
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
         return ok(model);
 
