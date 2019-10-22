@@ -6,13 +6,13 @@ import com.meetup.service.impl.ArticleServiceImlp;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,32 +76,36 @@ public class SpeakerController {
      * Update existing meetup.
      *
      * @param token JSON web token.
-     * @param meetup Meetup to be updated.
-     * @return Response entity with updated meetup.
+     * @param updatedMeetup Meetup to be updated.
+     * @param meetupID Meetup ID to be canceled.
+     * @return Response entity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PutMapping(value = "/api/v1/user/speaker/meetups/{id}")
-    public ResponseEntity<Meetup> updateMeetup(
+    public ResponseEntity updateMeetup(
         @CookieValue("token") final String token,
-        @RequestBody final Meetup meetup) {
+        @RequestBody final Meetup updatedMeetup,
+        @PathVariable("id") final int meetupID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        meetupService.updateMeetup(meetup, userLogin);
+        meetupService.updateMeetup(meetupID, updatedMeetup, userLogin);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * Retrieve meetups of speaker.
+     * Cancel existing meetup.
      *
      * @param token JSON web token.
-     * @return Response entity with list of meetups.
+     * @param meetupID Meetup to be canceled.
+     * @return Response entity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
-    @GetMapping(value = "/api/v1/user/speaker/meetups")
-    public ResponseEntity<List<Meetup>> getMyMeetups(
-        @CookieValue("token") final String token) {
+    @DeleteMapping(value = "/api/v1/user/speaker/meetups/{id}")
+    public ResponseEntity cancelMeetup(
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        return new ResponseEntity<>(
-            meetupService.getSpeakerMeetups(userLogin), HttpStatus.OK);
+        meetupService.cancelMeetup(meetupID, userLogin);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

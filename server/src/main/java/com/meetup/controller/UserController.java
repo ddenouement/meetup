@@ -20,7 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +54,15 @@ public class UserController {
      */
     private ILoginValidatorService loginValidatorService;
 
+    /**
+     * Constructor.
+     * @param meetupService
+     * MeetupService.
+     * @param userService
+     * UserService.
+     * @param loginValidatorService
+     * LoginValidatorService
+     */
     @Autowired
     public UserController(final IMeetupService meetupService,
                           final IUserService userService,
@@ -138,6 +150,43 @@ public class UserController {
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
         return ok(model);
 
+    }
+
+    /**
+     * Join user to meeetup.
+     * @param meetupID Meetup, that user should join.
+     * @param token JSON web token.
+     * @return Response entity
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @PostMapping("api/v1/user/meetups/{id}")
+    public ResponseEntity joinMeetup(
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        meetupService.joinMeetup(meetupID, userLogin);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * Remove user from meeetup.
+     *
+     * @param token JSON web token.
+     * @param meetupID Meetup, that user should leave.
+     * @return Response entity
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @DeleteMapping("api/v1/user/meetups/{id}")
+    public ResponseEntity leaveMeetup(
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        meetupService.leaveMeetup(meetupID, userLogin);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

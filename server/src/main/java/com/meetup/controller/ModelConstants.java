@@ -1,6 +1,13 @@
 package com.meetup.controller;
 
+/**
+ * Utility (constants) class.
+ */
 public final class ModelConstants {
+
+    /**
+     * Private utility class constructor.
+     */
     private ModelConstants() {
         // closed empty constructor
     }

@@ -17,20 +17,31 @@ public interface IMeetupService {
      *
      * @param meetup Meetup to be created
      * @param login  User login (that creates the meetup)
-     * @throws IllegalAccessException If meetup is created not by speaker, IllegalAccessException is thrown.
      */
-    void createMeetup(Meetup meetup, String login)
-            throws IllegalAccessException;
+    void createMeetup(Meetup meetup, String login);
 
     /**
      * Updates an existing meetup.
      *
-     * @param meetup Meetup to be updated
+     * @param editedMeetup Edited meetup.
+     * @param meetupID Meetup to be updated
      * @param login  User login (that updates the meetup)
-     * @throws IllegalAccessException If meetup is updated not by speaker, IllegalAccessException is thrown.
      */
-    void updateMeetup(Meetup meetup, String login)
-            throws IllegalAccessException;
+    void updateMeetup(int meetupID, Meetup editedMeetup, String login);
+
+    /**
+     * Cancel existing meetup.
+     * @param meetupID Meetup ID to be canceled
+     * @param login User login (that removes the meetup)
+     */
+    void cancelMeetup(int meetupID, String login);
+    /**
+     * Updates an existing meetup.
+     *
+     * @param meetupID Meetup id, that should be returned.
+     * @return Meetup object.
+     */
+    Meetup getMeetup(int meetupID);
 
     /**
      * Retrieve all available topics.
@@ -49,12 +60,10 @@ public interface IMeetupService {
     /**
      * Get all meetups of specified speaker.
      *
-     * @param login Speaker login
+     * @param speakerID Speaker ID
      * @return List of all meetups of specified speaker
-     * @throws IllegalAccessException If meetups retrieved not by speaker, IllegalAccessException is thrown.
      */
-    List<Meetup> getSpeakerMeetups(String login)
-            throws IllegalAccessException;
+    List<Meetup> getSpeakerMeetups(int speakerID);
 
     /**
      * .
@@ -70,19 +79,19 @@ public interface IMeetupService {
      * .
      * Register user for meetup.
      *
-     * @param meetup Meetup, that will be used to register user to
+     * @param meetupID Meetup, that will be used to register user to
      * @param token  JSON web token to extract user credentials
      */
-    void joinMeetup(Meetup meetup, String token);
+    void joinMeetup(int meetupID, String token);
 
     /**
      * .
      * Remove user for meetup.
      *
-     * @param meetup Meetup, that will be used to remove user to
+     * @param meetupID Meetup, that will be used to remove user to
      * @param token  JSON web token to extract user credentials
      */
-    void leaveMeetup(Meetup meetup, String token);
+    void leaveMeetup(int meetupID, String token);
 
     /**
      * .
