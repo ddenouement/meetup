@@ -62,6 +62,9 @@ public class Meetup {
      */
     private List<Topic> topics;
 
+    /**
+     * Constructor.
+     */
     public Meetup() {
         this.topics = new ArrayList<>();
     }

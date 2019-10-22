@@ -81,7 +81,7 @@ CREATE TABLE meetups
     id                  BIGSERIAL NOT NULL,
     id_speaker          BIGINT    NOT NULL,
     id_language         INTEGER   NOT NULL,
-    id_state            INTEGER   NOT NULL DEFAULT 1,
+    id_state            INTEGER   NOT NULL DEFAULT 2,
     title               TEXT      NOT NULL,
     start_time          TIMESTAMP NOT NULL,
     duration_minutes    SMALLINT  NOT NULL,

@@ -4,7 +4,6 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import java.util.List;
-import org.springframework.http.ResponseEntity;
 
 /**
  * . UserService interface. Working with abstract User
@@ -15,17 +14,15 @@ public interface IUserService {
      * .
      *
      * @param user User
-     * @return ResponseEntity<String>
      */
-    ResponseEntity<String> registerAsListener(UserRegistrationDTO user);
+    void registerAsListener(UserRegistrationDTO user);
 
     /**
      * Save user and his/her languages in storage.
      *
      * @param user User
-     * @return ResponseEntity<String>
      */
-    ResponseEntity<String> registerAsSpeaker(UserRegistrationDTO user);
+    void registerAsSpeaker(UserRegistrationDTO user);
 
     /**
      * .

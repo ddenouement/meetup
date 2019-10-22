@@ -4,7 +4,7 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-register-speaker',
   templateUrl: './register-speaker.component.html',
-  styleUrls: ['./register-speaker.component.css']
+  styleUrls: [register-speaker.component.scss]
 })
 export class RegisterSpeakerComponent implements OnInit {
 

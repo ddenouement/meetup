@@ -27,9 +27,19 @@ public interface IMeetupDAO {
     /**
      * Update existing meetup.
      *
-     * @param meetup Meetup object to be updated
+     * @param currentMeetup Meetup object (edited)
+     * @param meetupID meetup ID to be updated
      */
-    void updateMeetup(Meetup meetup);
+    void updateMeetup(Meetup currentMeetup, int meetupID);
+
+    /**
+     * Find meetup by id.
+     * @param meetupID
+     * Meetup id.
+     * @return
+     * Existing meetup.
+     */
+    Meetup findMeetupByID(int meetupID);
 
     /**
      * Retrieve meetups of specified speaker.
@@ -48,9 +58,9 @@ public interface IMeetupDAO {
     List<Meetup> getUsersJoinedMeetups(int userID);
 
     /**
-     * Add specific topic to database for meetup.
+     * Add specific topic.ts to database for meetup.
      *
-     * @param meetup Meetup object, that should have topic
+     * @param meetup Meetup object, that should have topic.ts
      * @param topic Topic object that will be added to meetup
      */
     void addTopicToMeetup(Meetup meetup, Topic topic);
@@ -58,25 +68,25 @@ public interface IMeetupDAO {
     /**
      * Add user to specific meetup.
      *
-     * @param meetup Meetup, that user should register to.
-     * @param user User that takes part in meetup.
+     * @param meetupID Meetup, that user should register to.
+     * @param userID User that takes part in meetup.
      */
-    void addUserToMeetup(Meetup meetup, User user);
+    void addUserToMeetup(int meetupID, int userID);
 
     /**
      * Remove user from specific meetup.
      *
-     * @param meetup Meetup, that user should leave to.
-     * @param user User that leaves meetup.
+     * @param meetupID Meetup, that user should leave to.
+     * @param userID User that leaves meetup.
      */
-    void removeUserFromMeetup(Meetup meetup, User user);
+    void removeUserFromMeetup(int meetupID, int userID);
+
     /**
-     * Remove user from specific meetup.
+     * Remove all users from specific meetup.
      *
-     * @param meetup Meetup, that user should leave to.
-     * @param userId User Id that leaves meetup.
+     * @param meetupID Meetup, that user should leave to.
      */
-    void removeUserFromMeetup(Meetup meetup, int userId);
+    void removeAllUsersFromMeetup(int meetupID);
 
     /**
      * Get users on meetup.

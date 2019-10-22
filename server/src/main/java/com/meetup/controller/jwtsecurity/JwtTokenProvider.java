@@ -142,8 +142,7 @@ log.debug(getUsername(token));
                 .parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new BadJwtAuthenticationException(
-                "Expired or invalid JWT token");
+            return false;
         }
     }
 }

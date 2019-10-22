@@ -5,6 +5,8 @@ import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.error.EmailIsUsedException;
+import com.meetup.error.LoginIsUsedException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
@@ -12,8 +14,6 @@ import com.meetup.utils.UserDTOConverter;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,19 +37,17 @@ public class UserServiceImpl implements IUserService {
      * .
      *
      * @param user User (that has role of listener) to register
-     * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsListener(
-            final UserRegistrationDTO user) {
-        if (userDao.isLoginUsed(user.getLogin()) || userDao
-                .isEmailUsed(user.getEmail())) {
-            return new ResponseEntity<>("User already exists",
-                    HttpStatus.FORBIDDEN);
+    public void registerAsListener(
+        final UserRegistrationDTO user) {
+        if (userDao.isLoginUsed(user.getLogin())) {
+            throw new LoginIsUsedException();
+        } else if (userDao.isEmailUsed(user.getEmail())) {
+            throw new EmailIsUsedException();
         } else {
             user.getRoles().add(Role.LISTENER);
             userDao.insertNewUser(user);
-            return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
 
@@ -57,19 +55,17 @@ public class UserServiceImpl implements IUserService {
      * .
      *
      * @param user User (that has role of speaker) to register
-     * @return Entity, representing information about register status
      */
     @Override
-    public ResponseEntity<String> registerAsSpeaker(
-            final UserRegistrationDTO user) {
-        if (userDao.isLoginUsed(user.getLogin()) || userDao
-                .isEmailUsed(user.getEmail())) {
-            return new ResponseEntity<>("User already exists",
-                    HttpStatus.FORBIDDEN);
+    public void registerAsSpeaker(
+        final UserRegistrationDTO user) {
+        if (userDao.isLoginUsed(user.getLogin())) {
+            throw new LoginIsUsedException();
+        } else if (userDao.isEmailUsed(user.getEmail())) {
+            throw new EmailIsUsedException();
         } else {
             user.getRoles().addAll(Arrays.asList(Role.LISTENER, Role.SPEAKER));
             userDao.insertNewUser(user);
-            return new ResponseEntity<>(null, HttpStatus.CREATED);
         }
     }
 
@@ -145,11 +141,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean deactivateUser(final int id) {
         for (Meetup a : meetupDao.getUsersJoinedMeetups(id)) {
-            meetupDao.removeUserFromMeetup(a, id);
+            meetupDao.removeUserFromMeetup(a.getId(), id);
         }
         for (Meetup a : meetupDao.getSpeakerMeetups(id)) {
             for (User user : meetupDao.getUsersOnMeetup(a.getId())) {
-                meetupDao.removeUserFromMeetup(a, user);
+                meetupDao.removeUserFromMeetup(a.getId(), user.getId());
             }
             //TODO cancel Meetup a
         }

@@ -21,11 +21,12 @@
     </svg>
   </a>
   <span class="filler"></span>
-  <button mat-button routerLink="/login">Log in</button>
-  <button [matMenuTriggerFor]="signUp" mat-button>Sign up</button>
+  <button *ngIf="!_authService.logInUser()" mat-button routerLink="/login">Log in</button>
+  <button *ngIf="!_authService.logInUser()" [matMenuTriggerFor]="signUp" mat-button>Sign up</button>
   <mat-menu #signUp="matMenu">
     <button mat-menu-item routerLink="/register-speaker">As speaker</button>
     <button mat-menu-item routerLink="/register">As listener</button>
   </mat-menu>
+  <button *ngIf="_authService.logInUser()" (click)="_authService.logoutUser()" mat-button routerLink="/">Log out</button>
 </mat-toolbar>
 
