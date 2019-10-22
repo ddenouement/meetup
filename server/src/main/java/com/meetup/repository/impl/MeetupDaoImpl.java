@@ -92,7 +92,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
      * SQL reference script.
      * Remove all users from meetup.
      */
-    @Value("${remove_user_from_meetup}")
+    @Value("${remove_all_users_from_meetup}")
     private String removeAllUsersFromMeetup;
     /**.
      * SQL reference script.
@@ -166,7 +166,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("min_attendees", editedMeetup.getMinAttendees())
             .addValue("max_attendees", editedMeetup.getMaxAttendees())
             .addValue("description", editedMeetup.getDescription());
-        template.update(updateMeetup, param, holder);
+        template.update(updateMeetup, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             editedMeetup.setId(holder.getKey().intValue());
             //adding topics to DB
