@@ -63,5 +63,9 @@ Create article (speaker only)
 Type: POST
 RequestBody: Article article
 api/v1/user/speaker/articles
+
+Remove article (speaker only)
+Type: DELETE
+api/v1/user/speaker/articles/{id}
 ____________________________________
 
