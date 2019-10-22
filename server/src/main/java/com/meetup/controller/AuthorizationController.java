@@ -2,15 +2,15 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.meetup.controller.jwtsecurity.JwtSecurityConstants;
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
-import com.meetup.service.RoleProcessor;
 import com.meetup.service.IUserService;
+import com.meetup.service.RoleProcessor;
 import io.swagger.annotations.Api;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,13 +88,22 @@ public class AuthorizationController {
         model.put("username", username);
         model.put("token", token);
         model.put("role", role);
-        // TODO log.debug()
-//            System.out
-//                    .println("Succesfull Login: " + username + "\ntoken: " + token + "\nrole: " + role);
-        Cookie cookie = new Cookie("token", token);
-        cookie.setPath("/"); // global cookie accessible everywhere
-        response.addCookie(cookie);
+        saveToken(response, token);
         return ok(model);
+    }
+
+    /**
+     * Delete token from cookies.
+     * @param response HttpServletResponse
+     * @return status of operation
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "api/v1/user/logout")
+    public ResponseEntity logout(final HttpServletResponse response) {
+        deleteToken(response);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
@@ -133,5 +144,41 @@ public class AuthorizationController {
         final @RequestBody UserRegistrationDTO user) {
         userService.registerAsSpeaker(user);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    /**
+     * Create a cookie and add it to response.
+     *
+     * @param response where to add cookie
+     * @param name cookie's name
+     * @param value cookie's value
+     * @param maxAge cookie's max age in seconds
+     */
+    private void setCookie(final HttpServletResponse response,
+        final String name, final String value, final int maxAge) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/"); // global cookie accessible everywhere
+        cookie.setMaxAge(maxAge);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+    }
+
+    /**
+     * Save a token to cookie and add it to response.
+     * @param response where to add cookie
+     * @param token token to save
+     */
+    private void saveToken(final HttpServletResponse response,
+        final String token) {
+        setCookie(response, "token", token,
+            JwtSecurityConstants.COOKIE_VALIDITY_IN_SECONDS);
+    }
+
+    /**
+     * Delete a token from cookie through response.
+     * @param response where to overwrite cookie
+     */
+    private void deleteToken(final HttpServletResponse response) {
+        setCookie(response, "token", null, 0);
     }
 }

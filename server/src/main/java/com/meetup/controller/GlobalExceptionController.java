@@ -96,7 +96,7 @@ public class GlobalExceptionController {
      * @return
      * Response entity with status code.
      */
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<Object> authenticationException() {
         return new ResponseEntity<>(
             "Invalid username/password",

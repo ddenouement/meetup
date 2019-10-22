@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -59,6 +57,20 @@ public class MeetupController {
     }
 
     /**
+     * Get existing meetup.
+     * @param meetupID Meetup ID.
+     * @return Response entity with meetup.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/meetups/{id}")
+    public ResponseEntity<Meetup> getMeetup(
+        @PathVariable("id") final int meetupID) {
+        return new ResponseEntity<>(meetupService.getMeetup(meetupID), HttpStatus.OK);
+    }
+
+    /**
      * Get all topics mapping.
      *
      * @return Response entity with list of all topics.
@@ -73,40 +85,17 @@ public class MeetupController {
     }
 
     /**
-     * Join user to meeetup.
-     *
-     * @param token JSON web token.
-     * @param meetup Meetup, that user should join.
-     * @return Response entity
+     * Retrieve meetups of speaker.
+     * @param speakerID Speaker ID.
+     * @return Response entity with list of meetups.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
-    @PostMapping("api/v1/meetups/join")
-    public ResponseEntity joinMeetup(
-        @CookieValue("token") final String token,
-        @RequestBody final Meetup meetup) {
-            String userLogin = loginValidatorService.extractLogin(token);
-            meetupService.joinMeetup(meetup, userLogin);
-            return new ResponseEntity(HttpStatus.OK);
-    }
-
-    /**
-     * Remove user from meeetup.
-     *
-     * @param token JSON web token.
-     * @param meetup Meetup, that user should leave.
-     * @return Response entity
-     */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
-    @PostMapping("api/v1/meetups/leave")
-    public ResponseEntity leaveMeetup(
-        @CookieValue("token") final String token,
-        @RequestBody final Meetup meetup) {
-            String userLogin = loginValidatorService.extractLogin(token);
-            meetupService.leaveMeetup(meetup, userLogin);
-            return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping(value = "/api/v1/meetups/speaker/{id}")
+    public ResponseEntity<List<Meetup>> getSpeakerMeetups(
+        @PathVariable("id") final int speakerID) {
+        return new ResponseEntity<>(
+            meetupService.getSpeakerMeetups(speakerID), HttpStatus.OK);
     }
 }
