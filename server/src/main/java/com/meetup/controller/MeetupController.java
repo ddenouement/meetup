@@ -45,7 +45,7 @@ public class MeetupController {
     /**
      * .
      *
-     * @return ResponseEntity<List       <       Meetup>>
+     * @return ResponseEntity<List               <               Meetup>>
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
         + "T(com.meetup.entities.Role).SPEAKER, "
@@ -58,6 +58,7 @@ public class MeetupController {
 
     /**
      * Get existing meetup.
+     *
      * @param meetupID Meetup ID.
      * @return Response entity with meetup.
      */
@@ -67,7 +68,8 @@ public class MeetupController {
     @GetMapping(value = "/api/v1/meetups/{id}")
     public ResponseEntity<Meetup> getMeetup(
         @PathVariable("id") final int meetupID) {
-        return new ResponseEntity<>(meetupService.getMeetup(meetupID), HttpStatus.OK);
+        return new ResponseEntity<>(meetupService.getMeetup(meetupID),
+            HttpStatus.OK);
     }
 
     /**
@@ -86,6 +88,7 @@ public class MeetupController {
 
     /**
      * Retrieve meetups of speaker.
+     *
      * @param speakerID Speaker ID.
      * @return Response entity with list of meetups.
      */
