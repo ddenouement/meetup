@@ -9,7 +9,7 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IUserService;
-import com.meetup.service.RoleProcessor;
+import com.meetup.utils.RoleProcessor;
 import io.swagger.annotations.Api;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  * ... Class that handles authorization and generates token for signup
  */
 @RestController
-// TODO @Slf4j
+@Slf4j
 @Api(value = "meetup-application")
 public class AuthorizationController {
 
@@ -88,6 +89,7 @@ public class AuthorizationController {
         model.put("username", username);
         model.put("token", token);
         model.put("role", role);
+        log.debug("Succesfull Login: " + username + "\ntoken: " + token);
         saveToken(response, token);
         return ok(model);
     }

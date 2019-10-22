@@ -82,4 +82,12 @@ public interface IUserDAO {
      * @return list of Languages
      */
     List<Language> getUsersLanguages(int id);
+    /**
+     * .
+     * deactivate user in DB
+     *
+     * @param id int, id of user
+     * @return boolean , isSuccessful
+     */
+    boolean deactivateUser(int id);
 }

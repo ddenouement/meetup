@@ -1,5 +1,6 @@
 package com.meetup.service.impl;
 
+import com.meetup.entities.Meetup;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
@@ -9,6 +10,7 @@ import com.meetup.error.LoginIsUsedException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IUserService;
+import com.meetup.utils.UserDTOConverter;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,32 +102,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO getProfileUserDTO(final String login) {
         User us = userDao.findUserByLogin(login);
-        return convertToUserDTO(us);
-
-    }
-
-
-    /**
-     * . Convert a User exemplar to UserDTO exemplar (e.g. without password)
-     *
-     * @param us User
-     * @return UserDTO
-     */
-    //TODO to utilities package
-    private UserDTO convertToUserDTO(final User us) {
-        UserDTO newUser = new UserDTO();
-        newUser.setAbout(us.getAbout());
-        newUser.setActive(us.isActive());
-        newUser.setEmail(us.getEmail());
-        newUser.setId(us.getId());
-        newUser.setFirstName(us.getFirstName());
-        newUser.setLastName(us.getLastName());
-        newUser.setRoles(us.getRoles());
-        newUser.setLogin(us.getLogin());
-        newUser.setRate(us.getRate());
-        newUser.setLanguages(userDao.getUsersLanguages(us.getId()));
-
-        return newUser;
+        UserDTOConverter converter = new UserDTOConverter();
+        UserDTO dtouser = converter.convertToUserDTO(us);
+        dtouser.setLanguages(userDao.getUsersLanguages(us.getId()));
+        return dtouser;
     }
 
 
@@ -149,6 +129,28 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         return userDao.getUsersSubscriptionsToSpeakers(id);
+    }
+
+    /**
+     * .     *
+     * remove users from hosted meetups & remove this user from all meetups he is subscribed to
+     *
+     * @param id user id
+     * @return boolean whether successful operation or not
+     */
+    @Override
+    public boolean deactivateUser(final int id) {
+        for (Meetup a : meetupDao.getUsersJoinedMeetups(id)) {
+            meetupDao.removeUserFromMeetup(a, id);
+        }
+        for (Meetup a : meetupDao.getSpeakerMeetups(id)) {
+            for (User user : meetupDao.getUsersOnMeetup(a.getId())) {
+                meetupDao.removeUserFromMeetup(a, user);
+            }
+            //TODO cancel Meetup a
+        }
+        userDao.deactivateUser(id);
+        return true;
     }
 
 

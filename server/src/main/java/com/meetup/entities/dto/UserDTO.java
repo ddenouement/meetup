@@ -56,6 +56,10 @@ public class UserDTO {
      */
     private Float rate;
     /**
+     * Number of individual ratings.
+     */
+    private Integer numRates;
+    /**
      * . languages
      */
     private List<Language> languages;

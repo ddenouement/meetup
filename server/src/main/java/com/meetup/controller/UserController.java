@@ -107,7 +107,7 @@ public class UserController {
     }
 
     /**
-     * . return all speakers
+     * . return all active speakers
      *
      * @return List of Users
      */
@@ -187,6 +187,20 @@ public class UserController {
         String userLogin = loginValidatorService.extractLogin(token);
         meetupService.leaveMeetup(meetupID, userLogin);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**.
+     * Admin can deactivate user by his Id
+     * @param id user's id
+     * @return ResponseEntity
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/user/deactivateUser")
+    public ResponseEntity deactivateUser(final @RequestParam int id) {
+      userService.deactivateUser(id);
+      return new ResponseEntity<>(
+                "Done", HttpStatus.OK);
+
     }
 
 }
