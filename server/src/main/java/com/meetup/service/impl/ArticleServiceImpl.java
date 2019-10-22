@@ -1,7 +1,4 @@
 package com.meetup.service.impl;
-
-import static com.meetup.service.RoleProcessor.isSpeaker;
-
 import com.meetup.entities.Article;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
@@ -11,6 +8,7 @@ import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.ArticleDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IArticleService;
+import com.meetup.utils.RoleProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +48,7 @@ public class ArticleServiceImpl implements IArticleService {
     public void postArticle(final ArticleCreationDTO articleCreationDTO,
         final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
-        if (isSpeaker(user)) {
+        if (RoleProcessor.isSpeaker(user)) {
             articleDao.insertNewArticle(articleCreationDTO, user.getId());
         } else {
             throw new SpeakerOperationNotAllowedException();
@@ -68,7 +66,7 @@ public class ArticleServiceImpl implements IArticleService {
         final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
         Article currentArticle = articleDao.findArticleByID(articleID);
-        if (isSpeaker(user)) {
+        if (RoleProcessor.isSpeaker(user)) {
             if (user.getId() == currentArticle.getAuthorID()) {
                 articleDao.removeArticle(articleID);
             } else {

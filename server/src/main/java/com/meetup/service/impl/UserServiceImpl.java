@@ -141,11 +141,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean deactivateUser(final int id) {
         for (Meetup a : meetupDao.getUsersJoinedMeetups(id)) {
-            meetupDao.removeUserFromMeetup(a, id);
+            meetupDao.removeUserFromMeetup(a.getId(), id);
         }
         for (Meetup a : meetupDao.getSpeakerMeetups(id)) {
             for (User user : meetupDao.getUsersOnMeetup(a.getId())) {
-                meetupDao.removeUserFromMeetup(a, user);
+                meetupDao.removeUserFromMeetup(a.getId(), user.getId());
             }
             //TODO cancel Meetup a
         }

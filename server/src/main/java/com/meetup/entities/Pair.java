@@ -1,26 +1,21 @@
 package com.meetup.entities;
 
+import lombok.Data;
+
+@Data
 public class Pair<F, S> {
+    /** First element in pair. */
     private F first;
+    /** Second element in pair. */
     private S second;
-    public Pair(F first, S second) {
+
+    /**
+     * Construct pair.
+     * @param first first element
+     * @param second second element
+     */
+    public Pair(final F first, final S second) {
         this.first = first;
         this.second = second;
-    }
-
-    public void setFirst(F first) {
-        this.first = first;
-    }
-
-    public void setSecond(S second) {
-        this.second = second;
-    }
-
-    public F getFirst() {
-        return first;
-    }
-
-    public S getSecond() {
-        return second;
     }
 }
