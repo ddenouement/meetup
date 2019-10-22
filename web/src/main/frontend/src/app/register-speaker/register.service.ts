@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 // @ts-ignore
-import {HttpClient,Response} from "@angular/common/http";
+import {HttpClient, Response} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
@@ -19,5 +19,4 @@ export class RegisterService {
   getLanguages(): Observable<LanguagesList[]>{
     return this.http.get<LanguagesList[]>(this.languagesURL).pipe(map((response:Response)=>response));
   }
-
 }

@@ -125,7 +125,7 @@ export class RegisterSpeakerComponent implements OnInit {
     .subscribe(
       languages => {
         this.languages = languages;
-      },
+  },
       err => {
         console.log(err);
       });
