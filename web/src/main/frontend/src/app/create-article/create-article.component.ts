@@ -58,8 +58,14 @@ export class CreateArticleComponent implements OnInit {
       content: this.createArticleForm.get('content').value,
       topicIds: topicListIds
     };
+    this.createArticleForm.controls['title'].disable();
+    this.createArticleForm.controls['content'].disable();
+    this.createArticleForm.controls['articleTopics'].disable();
     this.httpClient.post("/api/v1/user/speaker/articles", article).subscribe(data => {
+
+      this.router.navigate(['/speaker-profile']);
     });
+
   }
 
 
