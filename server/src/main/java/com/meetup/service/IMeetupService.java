@@ -2,7 +2,7 @@ package com.meetup.service;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
-import com.meetup.entities.Pair;
+import com.meetup.utils.Pair;
 
 import java.util.List;
 
