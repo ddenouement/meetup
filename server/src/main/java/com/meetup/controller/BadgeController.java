@@ -3,6 +3,7 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Badge;
+import com.meetup.entities.User;
 import com.meetup.service.IBadgeService;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -131,13 +132,8 @@ public class BadgeController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @PostMapping("/api/v1/badge/check")
-    public ResponseEntity checkBadgeScript(
+    public ResponseEntity<List<User>> checkBadgeScript(
         @RequestBody final String script) {
-        try {
-            return ok(badgeService.getUsersWithBadge(script));
-        } catch (Exception e) {
-            return new ResponseEntity<>("SQL script is incorrect",
-                HttpStatus.BAD_REQUEST);
-        }
+        return ok(badgeService.getUsersWithBadge(script));
     }
 }

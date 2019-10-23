@@ -7,5 +7,5 @@ import java.util.Map;
  */
 public interface IProfileService {
 
-      Map<Object, Object> getOtherUserProfile(final String login);
+      Map<Object, Object> getOtherUserProfile(String login);
 }

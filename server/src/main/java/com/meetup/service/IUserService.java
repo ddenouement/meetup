@@ -43,10 +43,10 @@ public interface IUserService {
     User changePassword(User user);
 
     /**
-     * .
-     *
-     * @param login String
-     * @return User
+     * Get user's profile info.
+     * @param login login of user to get
+     * @return UserDTO with info
+     * @throws UserNotFoundException throws if user does not exist
      */
     UserDTO getProfileUserDTO(String login) throws UserNotFoundException;
 

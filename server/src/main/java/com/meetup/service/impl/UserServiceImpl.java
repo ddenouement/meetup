@@ -110,7 +110,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO getProfileUserDTO(final String login) {
         User us = userDao.findUserByLogin(login);
-        if(us==null){
+        if (us == null) {
             throw  new UserNotFoundException();
         }
         UserDTOConverter converter = new UserDTOConverter();
@@ -161,7 +161,7 @@ public class UserServiceImpl implements IUserService {
             }
             // cancel Meetup a
             meetup.setStateId(MeetupStateConstants.CANCELED);
-            meetupDao.updateMeetup(meetup,meetup.getId());
+            meetupDao.updateMeetup(meetup, meetup.getId());
         }
         userDao.deactivateUser(id);
         return true;
