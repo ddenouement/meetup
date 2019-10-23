@@ -1,101 +1,101 @@
 # nc-autumn-2019
 
-##Rest api:
+## Rest api:
 
-###MEETUP CONTROLLER
+### MEETUP CONTROLLER
 ____________________________________
-#####Get all meetups
+##### Get all meetups
 - Type: GET
 - api/v1/meetups
 
-#####Get meetup
+##### Get meetup
 - Type: GET
 - /api/v1/meetups/{id}
 
-#####Get all topics
+##### Get all topics
 - Type: GET
 - api/v1/meetups/topics
 
-#####Get meetups of speaker
+##### Get meetups of speaker
 - Type: GET
 - /api/v1/meetups/speaker/{id}
 
 
-###USER CONTROLLER
+### USER CONTROLLER
 ____________________________________
-#####Get user profile
+##### Get user profile
 - Type: GET
 - /api/v1/user/profile
 
-#####Get other user profile
+##### Get other user profile
 - Type: GET
 - RequestParam: String login
 - /api/v1/user/people/profile
 
-#####Join meetup
+##### Join meetup
 - Type: POST
 - /api/v1/user/meetups/{id}
 
-#####Leave meetup
+##### Leave meetup
 - Type: DELETE
 - /api/v1/user/meetups/{id}
 
 
-###SPEAKER CONTROLLER
+### SPEAKER CONTROLLER
 ____________________________________
-#####Create meetup (speaker only)
+##### Create meetup (speaker only)
 - Type: POST
 - RequestBody: Meetup meetup
 - /api/v1/user/speaker/meetups
 
-#####Update meetup (speaker only)
+##### Update meetup (speaker only)
 - Type: PUT
 - RequestBody: Meetup editedMeetup
 - /api/v1/user/speaker/meetups/{id}
 
-#####Cancel meetup (speaker only)
+##### Cancel meetup (speaker only)
 - Type: DELETE
 - /api/v1/user/speaker/meetups/{id}
 
-#####Create article (speaker only)
+##### Create article (speaker only)
 - Type: POST
 - RequestBody: Article article
 - api/v1/user/speaker/articles
 
-#####Remove article (speaker only)
+##### Remove article (speaker only)
 - Type: DELETE
 - api/v1/user/speaker/articles/{id}
 
 
-###BADGE CONTROLLER
+### BADGE CONTROLLER
 ____________________________________
-#####Get all badges (admin only)
+##### Get all badges (admin only)
 - Type: GET
 - /api/v1/badges
 
-#####Get badge by id (admin only)
+##### Get badge by id (admin only)
 - Type: GET
 - /api/v1/badge/{id}
 
-#####Create badge (admin only)
+##### Create badge (admin only)
 - Type: POST
 - RequestBody: Badge badge
 - /api/v1/badge
 
-#####Update badge (admin only)
+##### Update badge (admin only)
 - Type: PUT
 - RequestBody: Badge badge
 - /api/v1/badge/{id}
 
-#####Delete badge (admin only)
+##### Delete badge (admin only)
 - Type: DELETE
 - /api/v1/badge/{id}
 
-#####Get badges for user with id
+##### Get badges for user with id
 - Type: GET
 - /api/v1/user/{id}/badges
 
-#####Check badge script (admin only)
+##### Check badge script (admin only)
 - Type: POST
 - RequestBody: String script
 - /api/v1/badge/check
