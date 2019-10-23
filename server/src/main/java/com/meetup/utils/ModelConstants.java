@@ -1,4 +1,4 @@
-package com.meetup.controller;
+package com.meetup.utils;
 
 /**
  * Utility (constants) class.

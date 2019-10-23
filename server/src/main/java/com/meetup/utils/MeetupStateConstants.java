@@ -1,4 +1,4 @@
-package com.meetup.service.impl;
+package com.meetup.utils;
 
 /**
  * Utility (constants) class.
