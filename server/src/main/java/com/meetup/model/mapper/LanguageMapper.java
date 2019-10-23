@@ -24,7 +24,6 @@ public final class LanguageMapper implements RowMapper<Language> {
         Language language = new Language();
         language.setId(rs.getInt("id"));
         language.setName(rs.getString("name"));
-        System.out.println("+");
         return language;
     }
 }
