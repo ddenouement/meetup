@@ -1,5 +1,6 @@
 package com.meetup.controller;
 
+import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.MeetupNotFoundException;
@@ -101,6 +102,18 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(
             "Invalid username/password",
             HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * AuthenticationException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({BadgeScriptIsIncorrectException.class})
+    public ResponseEntity<Object> badgeScriptIsIncorrectException() {
+        return new ResponseEntity<>(
+            "SQL script is incorrect.",
+            HttpStatus.BAD_REQUEST);
     }
 
 }

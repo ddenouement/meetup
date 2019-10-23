@@ -2,6 +2,7 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.Badge;
 import com.meetup.entities.User;
+import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.repository.IBadgeDAO;
 import com.meetup.service.IBadgeService;
 import java.util.List;
@@ -49,6 +50,7 @@ public class BadgeServiceImpl implements IBadgeService {
      */
     @Override
     public void update(final Badge badge, final Integer id) {
+        checkScript(badge.getScript());
         badgeDAO.update(badge, id);
     }
 
@@ -58,6 +60,7 @@ public class BadgeServiceImpl implements IBadgeService {
      */
     @Override
     public void insert(final Badge badge) {
+        checkScript(badge.getScript());
         badgeDAO.insert(badge);
     }
 
@@ -87,6 +90,18 @@ public class BadgeServiceImpl implements IBadgeService {
      */
     @Override
     public List<User> getUsersWithBadge(final String script) {
-        return badgeDAO.getUsersWithBadge(script);
+        try {
+            return badgeDAO.getUsersWithBadge(script);
+        } catch (Exception e) {
+            throw new BadgeScriptIsIncorrectException();
+        }
+    }
+
+    /**
+     * Throws BadgeScriptIsIncorrectException if script is incorrect.
+     * @param script script to check
+     */
+    private void checkScript(final String script) {
+        getUsersWithBadge(script);
     }
 }
