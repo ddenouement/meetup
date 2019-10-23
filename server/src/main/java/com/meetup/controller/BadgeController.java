@@ -3,7 +3,6 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Badge;
-import com.meetup.entities.User;
 import com.meetup.service.IBadgeService;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -58,11 +57,11 @@ public class BadgeController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @GetMapping("/api/v1/badge/{id}")
-    public ResponseEntity getBadgeById(
+    public ResponseEntity<Badge> getBadgeById(
         @PathVariable("id") final Integer id) {
         Badge badge = badgeService.getById(id);
         if (badge == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ok(badge);
     }
@@ -77,7 +76,7 @@ public class BadgeController {
     @PostMapping("/api/v1/badge")
     public ResponseEntity updateBadge(@RequestBody final Badge badge) {
         badgeService.insert(badge);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /**
@@ -124,16 +123,21 @@ public class BadgeController {
     }
 
     /**
-     * Get users that would receive a badge with specified script.
-     * If script is incorrect, return an error.
+     * Get users that would receive a badge with specified script. If script is
+     * incorrect, return an error.
      *
      * @param script script for badge
      * @return a list of badges for user
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @PostMapping("/api/v1/badge/check")
-    public ResponseEntity<List<User>> checkBadgeScript(
+    public ResponseEntity checkBadgeScript(
         @RequestBody final String script) {
-        return ok(badgeService.getUsersWithBadge(script));
+        try {
+            return ok(badgeService.getUsersWithBadge(script));
+        } catch (Exception e) {
+            return new ResponseEntity<>("SQL script is incorrect",
+                HttpStatus.BAD_REQUEST);
+        }
     }
 }

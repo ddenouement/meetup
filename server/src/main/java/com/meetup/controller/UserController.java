@@ -65,6 +65,7 @@ public class UserController {
      * UserService.
      * @param loginValidatorService
      * LoginValidatorService
+     * @param badgeService badge operations
      */
     @Autowired
     public UserController(final IMeetupService meetupService,
