@@ -21,7 +21,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.meetup.entities.Pair;
+import com.meetup.utils.MeetupStateConstants;
+import com.meetup.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

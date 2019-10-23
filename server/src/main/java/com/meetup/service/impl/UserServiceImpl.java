@@ -7,9 +7,12 @@ import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
+import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
+import com.meetup.service.IMeetupService;
 import com.meetup.service.IUserService;
+import com.meetup.utils.MeetupStateConstants;
 import com.meetup.utils.UserDTOConverter;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +35,11 @@ public class UserServiceImpl implements IUserService {
      */
     @Autowired
     private IMeetupDAO meetupDao;
+    /**.
+     *
+     */
+    @Autowired
+    private IMeetupService meetupService;
 
     /**
      * .
@@ -102,6 +110,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO getProfileUserDTO(final String login) {
         User us = userDao.findUserByLogin(login);
+        if (us == null) {
+            throw  new UserNotFoundException();
+        }
         UserDTOConverter converter = new UserDTOConverter();
         UserDTO dtouser = converter.convertToUserDTO(us);
         dtouser.setLanguages(userDao.getUsersLanguages(us.getId()));
@@ -140,14 +151,17 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean deactivateUser(final int id) {
-        for (Meetup a : meetupDao.getUsersJoinedMeetups(id)) {
-            meetupDao.removeUserFromMeetup(a.getId(), id);
+        //unsubscribe from future meetups
+        for (Meetup meet : meetupService.getUserJoinedMeetups(id).getSecond()) {
+            meetupDao.removeUserFromMeetup(meet.getId(), id);
         }
-        for (Meetup a : meetupDao.getSpeakerMeetups(id)) {
-            for (User user : meetupDao.getUsersOnMeetup(a.getId())) {
-                meetupDao.removeUserFromMeetup(a.getId(), user.getId());
+        for (Meetup meetup : meetupDao.getSpeakerMeetups(id)) {
+            for (User user : meetupDao.getUsersOnMeetup(meetup.getId())) {
+                meetupDao.removeUserFromMeetup(meetup.getId(), user.getId());
             }
-            //TODO cancel Meetup a
+            // cancel Meetup a
+            meetup.setStateId(MeetupStateConstants.CANCELED);
+            meetupDao.updateMeetup(meetup, meetup.getId());
         }
         userDao.deactivateUser(id);
         return true;

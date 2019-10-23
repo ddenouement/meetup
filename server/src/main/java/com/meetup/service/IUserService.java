@@ -3,6 +3,8 @@ package com.meetup.service;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.error.UserNotFoundException;
+
 import java.util.List;
 
 /**
@@ -41,12 +43,12 @@ public interface IUserService {
     User changePassword(User user);
 
     /**
-     * .
-     *
-     * @param login String
-     * @return User
+     * Get user's profile info.
+     * @param login login of user to get
+     * @return UserDTO with info
+     * @throws UserNotFoundException throws if user does not exist
      */
-    UserDTO getProfileUserDTO(String login);
+    UserDTO getProfileUserDTO(String login) throws UserNotFoundException;
 
     /**
      * .
