@@ -8,12 +8,12 @@
         </mat-form-field>
         <mat-form-field class="form__input">
           <mat-select placeholder="Topics" formControlName="articleTopics" multiple>
-            <mat-select-trigger> {{createArticleForm.get('articleTopics').value ? (createArticleForm.get('articleTopics').value[0] ? createArticleForm.get('articleTopics').value[0] : '') : ''}}
+            <mat-select-trigger> {{createArticleForm.get('articleTopics').value ? (createArticleForm.get('articleTopics').value[0] ? createArticleForm.get('articleTopics').value[0].name : '') : ''}}
               <span *ngIf="createArticleForm.get('articleTopics').value?.length > 1"
                     class="example-additional-selection">
-              (+{{createArticleForm.get('articleTopics').value.length - 1}} {{createArticleForm.get('articleTopics').value?.length === 2 ? 'other' : 'others'}}
+      (+{{createArticleForm.get('articleTopics').value.length - 1}} {{createArticleForm.get('articleTopics').value?.length === 2 ? 'other' : 'others'}}
                 )
-              </span>
+      </span>
             </mat-select-trigger>
             <mat-option *ngFor="let item of articleTopics; let i = index" [value]="item">{{item.name}}</mat-option>
           </mat-select>

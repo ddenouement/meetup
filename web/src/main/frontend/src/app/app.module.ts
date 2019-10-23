@@ -32,6 +32,7 @@ import { VerificationComponent } from './verification/verification.component';
 import {RatingModule} from "ng-starrating";
 import { CreateArticleComponent } from './create-article/create-article.component';
 import { ListenerProfileComponent } from './listener-profile/listener-profile.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ListenerProfileComponent } from './listener-profile/listener-profile.co
     SpeakerProfileComponent,
     VerificationComponent,
     CreateArticleComponent,
-    ListenerProfileComponent
+    ListenerProfileComponent,
+    FeedbackComponent
   ],
   imports: [
     BrowserModule,
