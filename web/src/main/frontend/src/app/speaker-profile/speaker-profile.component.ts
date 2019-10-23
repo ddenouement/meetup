@@ -4,6 +4,8 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {HttpClient} from "@angular/common/http";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {StarRatingComponent} from "ng-starrating";
+import {RegisterService} from "../register-speaker/register.service";
+import {LanguagesList} from "../models/languagesList";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -23,16 +25,19 @@ export class SpeakerProfileComponent implements OnInit {
   changeForm: FormGroup;
   public loading = false;
   matcher = new MyErrorStateMatcher();
-  languagesList: string[] = ['Ukrainian', 'English', 'Polish', 'German', 'Spanish', 'Turkish'];
+  languages: LanguagesList [];
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
   public about: string;
+  private userURL = '/api/v1/user/profile';
+
 
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
+    private registerService: RegisterService,
   ) {
   }
 
@@ -52,14 +57,39 @@ export class SpeakerProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.changeForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      login: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      about: [''],
-      languages: ['', Validators.required],
+    this.changeForm = new FormGroup({
+      firstName: new FormControl(),
+      lastName: new FormControl(),
+      login: new FormControl(),
+      email: new FormControl(),
+      about: new FormControl(),
+      languages: new FormControl()
     });
+    let langList: string[] = [];
+    this.httpClient.get(this.userURL).subscribe(res => {
+      for (let i in res['UserDTO'].languages) {
+        langList[i] = res['UserDTO'].languages[i].name;
+      }
+      this.changeForm = this.formBuilder.group({
+        firstName: [res['UserDTO'].firstName, Validators.required],
+        lastName: [res['UserDTO'].lastName, Validators.required],
+        login: [res['UserDTO'].login, Validators.required],
+        email: [res['UserDTO'].email, [Validators.required, Validators.email]],
+        about: [res['UserDTO'].about],
+        //rate: [res['UserDTO'].rate],
+        languages: [langList, Validators.required]
+      });
+    });
+
+    this.registerService.getLanguages()
+      .subscribe(
+        languages => {
+          this.languages = languages;
+        },
+        err => {
+          console.log(err);
+        });
+
     const hamburger = document.querySelector(".hamburger");
     const bar = document.querySelector(".sidebar");
 // On click
@@ -71,7 +101,7 @@ export class SpeakerProfileComponent implements OnInit {
     });
   }
 
-  onRate($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
+  onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
     alert(`Old Value:${$event.oldValue}, 
       New Value: ${$event.newValue}, 
       Checked Color: ${$event.starRating.checkedcolor}, 
