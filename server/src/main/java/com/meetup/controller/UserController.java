@@ -1,18 +1,18 @@
 package com.meetup.controller;
 
-import static com.meetup.utils.ModelConstants.BADGES;
 import static org.springframework.http.ResponseEntity.ok;
-
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
-import com.meetup.service.*;
+import com.meetup.service.IBadgeService;
+import com.meetup.service.ILoginValidatorService;
+import com.meetup.service.IMeetupService;
+import com.meetup.service.IProfileService;
+import com.meetup.service.IUserService;
+import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.meetup.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import static com.meetup.utils.ModelConstants.JOINED_MEETUPS_PAST;
-import static com.meetup.utils.ModelConstants.JOINED_MEETUPS_FUTURE;
-import static com.meetup.utils.ModelConstants.HOSTED_MEETUPS_FUTURE;
-import static com.meetup.utils.ModelConstants.HOSTED_MEETUPS_PAST;
-import static com.meetup.utils.ModelConstants.USERDTO;
-import static com.meetup.utils.ModelConstants.SUBSCRIPTIONS;
 
 /**
  * . Operations used to manage user functionality
@@ -67,6 +61,7 @@ public class UserController {
      * @param loginValidatorService
      * LoginValidatorService
      * @param badgeService badge operations
+     * @param profileService profile operations
      */
     @Autowired
     public UserController(final IMeetupService meetupService,
@@ -97,15 +92,14 @@ public class UserController {
                 .getProfileUserDTO(loginValidatorService.extractLogin(token));
         Map<Object, Object> model =
                 profileService.getOtherUserProfile(user.getLogin());
-        if (model.isEmpty()){
-            return new ResponseEntity<>(
-                    HttpStatus.FORBIDDEN);
+        if (model.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         //user can see his own future joined meetups
         Pair<List<Meetup>, List<Meetup>> joined =
                 meetupService.getUserJoinedMeetups(user.getId());
         List<Meetup> userJoinedMeetupsFuture = joined.getSecond();
-        model.put(JOINED_MEETUPS_FUTURE, userJoinedMeetupsFuture);
+        model.put(ModelConstants.JOINED_MEETUPS_FUTURE, userJoinedMeetupsFuture);
 
         return ok(model);
 
@@ -139,9 +133,8 @@ public class UserController {
             final @RequestParam String login) {
 
         Map<Object, Object> model = profileService.getOtherUserProfile(login);
-        if(model.isEmpty()){
-            return new ResponseEntity<>(
-                    HttpStatus.FORBIDDEN);
+        if (model.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         return ok(model);
 
@@ -193,8 +186,7 @@ public class UserController {
     @PostMapping(value = "/api/v1/user/deactivateUser")
     public ResponseEntity deactivateUser(final @RequestParam int id) {
       userService.deactivateUser(id);
-      return new ResponseEntity<>(
-                "Done", HttpStatus.OK);
+      return new ResponseEntity<>("Done", HttpStatus.OK);
 
     }
 
