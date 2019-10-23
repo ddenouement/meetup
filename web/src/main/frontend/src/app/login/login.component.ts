@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
         error => {
           this.error = error.error;
           console.log(error);
-          this.loading = false;
+          //this.loading = false;
           this.loginForm.controls['login'].enable();
           this.loginForm.controls['password'].enable();
         });

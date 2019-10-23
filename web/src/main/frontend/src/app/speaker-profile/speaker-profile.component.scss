@@ -11,6 +11,71 @@ $background_color_4: transparent;
 $background_color_5: #b3b4b6;
 $background_color_6: #fff;
 
+
+.badges--header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.header--img {
+  width: 40px;
+  margin-bottom: 3px;
+}
+
+.header--text {
+  font-family: $font_family_1;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 14px;
+  letter-spacing: 0.28px;
+  color: $background_color_5;
+}
+
+.user__badges {
+  width: 30%;
+  border-radius: 5px;
+  box-shadow: 0px 0px 11px 10px rgba(153, 163, 174, 0.09);
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.badge--img {
+  width: 30px;
+  margin-right: 5px;
+}
+
+.badges--text {
+  display: flex;
+  justify-content: center;
+  color: dodgerblue;
+}
+
+.badges {
+  max-height: 200px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: #ffe46b;
+    mix-blend-mode: normal;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ffc50b;
+    border-radius: 2px;
+  }
+}
+
 /*----------------------------------------header----------------------------------------*/
 .content {
   background: #FFFFFF;
@@ -22,7 +87,7 @@ $background_color_6: #fff;
 
 form {
   margin-left: 5%;
-  margin-right: 25%;
+  margin-right: 5%;
   padding-top: 10px;
 }
 
@@ -74,7 +139,8 @@ form {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   flex-direction: column;
-  width: 75%;
+  width: 55%;
+  margin-right: 3.5%;
 }
 
 .form__user {
