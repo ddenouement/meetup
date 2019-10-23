@@ -1,10 +1,12 @@
 package com.meetup.controller;
 
+import static com.meetup.controller.ModelConstants.BADGES;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
+import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IUserService;
@@ -26,7 +28,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import static com.meetup.controller.ModelConstants.JOINED_MEETUPS_PAST;
 import static com.meetup.controller.ModelConstants.JOINED_MEETUPS_FUTURE;
 import static com.meetup.controller.ModelConstants.HOSTED_MEETUPS_FUTURE;
@@ -53,6 +54,8 @@ public class UserController {
      * Login validation service.
      */
     private ILoginValidatorService loginValidatorService;
+    /** Operations with badges. */
+    private IBadgeService badgeService;
 
     /**
      * Constructor.
@@ -66,10 +69,12 @@ public class UserController {
     @Autowired
     public UserController(final IMeetupService meetupService,
                           final IUserService userService,
-                          final ILoginValidatorService loginValidatorService) {
+                          final ILoginValidatorService loginValidatorService,
+                          final IBadgeService badgeService) {
         this.meetupService = meetupService;
         this.userService = userService;
         this.loginValidatorService = loginValidatorService;
+        this.badgeService = badgeService;
     }
 
     /**
@@ -102,6 +107,8 @@ public class UserController {
         List<Meetup> userJoinedMeetupsFuture = joined.getSecond();
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
         model.put(JOINED_MEETUPS_FUTURE, userJoinedMeetupsFuture);
+        List<String> badges = badgeService.getUserBadges(user.getId());
+        model.put(BADGES, badges);
         return ok(model);
 
     }
@@ -148,6 +155,8 @@ public class UserController {
                 meetupService.getUserJoinedMeetups(user.getId());
         List<Meetup> userJoinedMeetupsPast = joined.getFirst();
         model.put(JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
+        List<String> badges = badgeService.getUserBadges(user.getId());
+        model.put(BADGES, badges);
         return ok(model);
 
     }

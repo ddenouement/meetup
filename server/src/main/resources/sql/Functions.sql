@@ -26,3 +26,13 @@ BEGIN
         END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION has_badge(_script TEXT, _user_id BIGINT) RETURNS BOOLEAN AS
+$$
+DECLARE
+    _result BOOLEAN;
+BEGIN
+    EXECUTE _script INTO _result USING _user_id;
+    RETURN _result;
+END;
+$$ LANGUAGE plpgsql;

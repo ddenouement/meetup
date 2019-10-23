@@ -18,6 +18,24 @@ public final class RoleProcessor {
 
     }
 
+    /**
+     * Get a string representing user's role.
+     * @param user user to get role for
+     * @return a string for role
+     */
+    public static String getRoleString(final User user) {
+        List<Role> roles = user.getRoles();
+        if (roles.contains(Role.ADMIN)) {
+            return Role.ADMIN.name();
+        } else if (roles.contains(Role.SPEAKER)) {
+            return Role.SPEAKER.name();
+        } else if (roles.contains(Role.LISTENER)) {
+            return Role.LISTENER.name();
+        } else {
+            return "UNKNOWN";
+        }
+    }
+
     /**.
      * Returns true, if user is speaker.
      *
