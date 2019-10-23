@@ -1,7 +1,12 @@
-package com.meetup.entities;
+package com.meetup.utils;
 
 import lombok.Data;
 
+/**.
+ * Custom   Pair class
+ * @param <F>
+ * @param <S>
+ */
 @Data
 public class Pair<F, S> {
     /** First element in pair. */

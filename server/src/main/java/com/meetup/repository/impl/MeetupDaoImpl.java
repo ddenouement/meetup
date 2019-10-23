@@ -6,7 +6,7 @@ import com.meetup.entities.User;
 import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IMeetupDAO;
-import com.meetup.service.impl.MeetupStateConstants;
+import com.meetup.utils.MeetupStateConstants;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

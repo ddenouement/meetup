@@ -7,6 +7,7 @@ import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.repository.IUserDAO;
 import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -191,7 +192,7 @@ public class UserDaoImpl implements IUserDAO {
             .addValue("roles", createSqlArray(user.getRoles(), "TEXT"))
             .addValue("language_ids",
                 createSqlArray(user.getLanguageIds(), "INTEGER"));
-        template.execute(insertFullUser, param, ps -> ps.executeQuery());
+        template.execute(insertFullUser, param, PreparedStatement::executeQuery);
     }
 
     /**

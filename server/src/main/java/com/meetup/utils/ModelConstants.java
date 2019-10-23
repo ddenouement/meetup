@@ -1,4 +1,4 @@
-package com.meetup.controller;
+package com.meetup.utils;
 
 /**
  * Utility (constants) class.
@@ -24,4 +24,6 @@ public final class ModelConstants {
     public static final String USERDTO = "UserDTO";
     /** Key for a list of user's subscriptions. */
     public static final String SUBSCRIPTIONS = "subscribedTo";
+    /** Key for a list of user's badges. */
+    public static final String BADGES = "badges";
 }

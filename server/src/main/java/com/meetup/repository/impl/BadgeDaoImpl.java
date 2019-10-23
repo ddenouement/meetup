@@ -1,0 +1,177 @@
+package com.meetup.repository.impl;
+
+import com.meetup.entities.Badge;
+import com.meetup.entities.User;
+import com.meetup.model.mapper.BadgeMapper;
+import com.meetup.model.mapper.StringMapper;
+import com.meetup.model.mapper.UserMapper;
+import com.meetup.repository.IBadgeDAO;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Implemetation of IBadgeDAO.
+ */
+@Repository
+@PropertySource("classpath:sql/badge_queries.properties")
+public class BadgeDaoImpl implements IBadgeDAO {
+
+    /**
+     * Provides JDBC operations with named parameters.
+     **/
+    private NamedParameterJdbcTemplate template;
+
+    /**
+     * Initialize with the instance of NamedParameterJdbcTemplate.
+     *
+     * @param template template to use to perform JDBC operations
+     */
+    @Autowired
+    public BadgeDaoImpl(final NamedParameterJdbcTemplate template) {
+        this.template = template;
+    }
+
+    /**
+     * SQL script to select all rows in table badges.
+     */
+    @Value("${find_all_badges}")
+    private String findAllBadges;
+
+    /**
+     * SQL script to select a row with specific id in table badges.
+     */
+    @Value("${find_badge_by_id}")
+    private String findBadgeById;
+
+    /**
+     * SQL script to insert a row in table badges.
+     */
+    @Value("${insert_badge}")
+    private String insertBadge;
+
+    /**
+     * SQL script to update a row in table badges.
+     */
+    @Value("${update_badge}")
+    private String updateBadge;
+
+    /**
+     * SQL script to delete a rows with specified id in table badges.
+     */
+    @Value("${delete_badge}")
+    private String deleteBadge;
+
+    /**
+     * SQL script to select all badges that a specified user would get.
+     */
+    @Value("${get_user_badges}")
+    private String getUserBadges;
+
+    /**
+     * SQL script to select all users that would get a specified badge.
+     */
+    @Value("${get_users_with_badge}")
+    private String getUsersWithBadge;
+
+    /**
+     * Return all badges in database.
+     *
+     * @return a list of all badges
+     */
+    @Override
+    public List<Badge> findAll() {
+        return template.query(findAllBadges, new BadgeMapper());
+    }
+
+    /**
+     * Return a badge with specified ID in the database.
+     *
+     * @param id ID of badge to return
+     * @return a badge with specified ID
+     */
+    @Override
+    public Badge findById(final Integer id) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", id);
+        List<Badge> badges = template
+            .query(findBadgeById, param, new BadgeMapper());
+        if (badges.isEmpty()) {
+            return null;
+        } else {
+            return badges.get(0);
+        }
+    }
+
+    /**
+     * Update a badge to a new one.
+     *
+     * @param badge new field values for badge
+     * @param id id of badge to update
+     */
+    @Override
+    public void update(final Badge badge, final Integer id) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", id)
+            .addValue("name", badge.getName())
+            .addValue("script", badge.getScript());
+        template.update(updateBadge, param);
+    }
+
+    /**
+     * Insert a badge in the database.
+     *
+     * @param badge badge to insert
+     */
+    @Override
+    public void insert(final Badge badge) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("name", badge.getName())
+            .addValue("script", badge.getScript());
+        template.update(insertBadge, param);
+    }
+
+    /**
+     * Delete a badge with specified ID from the database.
+     *
+     * @param id ID of badge to delete
+     */
+    @Override
+    public void delete(final Integer id) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", id);
+        template.update(deleteBadge, param);
+    }
+
+    /**
+     * Compute user's badges.
+     *
+     * @param userId the id of user to compute badges for
+     * @return strings with names of user's badges
+     */
+    @Override
+    public List<String> getUserBadges(final Integer userId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("user_id", userId);
+        return template.query(getUserBadges, param, new StringMapper());
+    }
+
+    /**
+     * Get a list of all users who would receive a badge with specified script.
+     *
+     * @param script a script to compute the badge
+     * @return list of users to receive a badge with specified script
+     */
+    @Override
+    public List<User> getUsersWithBadge(final String script) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("script", script);
+        return template.query(getUsersWithBadge, param, new UserMapper());
+    }
+
+}
