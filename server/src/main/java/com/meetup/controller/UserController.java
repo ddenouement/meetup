@@ -3,6 +3,7 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
@@ -18,13 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * . Operations used to manage user functionality
@@ -189,5 +184,30 @@ public class UserController {
       return new ResponseEntity<>("Done", HttpStatus.OK);
 
     }
-
+    /**.
+    * Every user can post a complaint on other
+     * @param compl complaint entity
+     * @return ResponseEntity
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+            + "T(com.meetup.entities.Role).SPEAKER, "
+            + "T(com.meetup.entities.Role).LISTENER)")
+    @PostMapping(value = "/api/v1/user/complaint")
+    public ResponseEntity postComplaintOnUser(
+            @CookieValue("token") final String token,
+            final @RequestBody ComplaintDTO compl) {
+        String login = loginValidatorService.extractLogin(token);
+        userService.postComplaintOn(compl, login);
+        return new ResponseEntity<>("Done", HttpStatus.OK);
+    }
+    /**.
+     * Admin can see all complaints
+     * @return ResponseEntity with list
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @GetMapping(value = "/api/v1/user/complaints")
+    public ResponseEntity getAllComplaints() {
+        return new ResponseEntity<>(
+                userService.getAllComplaints(), HttpStatus.OK);
+    }
 }

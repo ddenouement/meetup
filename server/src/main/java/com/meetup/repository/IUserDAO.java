@@ -3,7 +3,10 @@ package com.meetup.repository;
 import com.meetup.entities.Language;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.error.UserNotFoundException;
+
 import java.util.List;
 
 /**.
@@ -90,4 +93,16 @@ public interface IUserDAO {
      * @return boolean , isSuccessful
      */
     boolean deactivateUser(int id);
+    /**
+     * .
+     * @return List of all complaints
+     */
+    List <ComplaintDTO>  getAllComplaints( );
+    /**
+     * .
+     * @param compl ComplaintDTO
+     *
+     */
+    ComplaintDTO postComplaintOn(ComplaintDTO compl);
+
 }
