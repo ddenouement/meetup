@@ -105,4 +105,11 @@ public interface IUserDAO {
      */
     ComplaintDTO postComplaintOn(ComplaintDTO compl);
 
+    /**
+     * for admin to mark complaint as read.
+     * @param id id of complaint
+     * @return bool whether  was successfull
+     */
+    boolean markAsReadComplaint(int id);
+
 }

@@ -210,4 +210,16 @@ public class UserController {
         return new ResponseEntity<>(
                 userService.getAllComplaints(), HttpStatus.OK);
     }
+    /**.
+     * Admin can mark complaint as read
+     * @return ResponseEntity
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/user/complaints/read/{id}")
+    public ResponseEntity markAsReadComplaint(
+            @PathVariable("id") final int complaintID) {
+        return new ResponseEntity<>(
+                userService.markAsReadComplaint(complaintID), HttpStatus.OK);
+    }
+
 }

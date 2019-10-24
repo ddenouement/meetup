@@ -195,4 +195,15 @@ public class UserServiceImpl implements IUserService {
         userDao.postComplaintOn(complaintDTO);
     }
 
+    /**
+     *
+     * @param id Complaint id.
+     * @return boolean whether is successfull
+     */
+    @Override
+    public boolean markAsReadComplaint(final int id) {
+       return  userDao.markAsReadComplaint(id);
+
+    }
+
 }

@@ -100,6 +100,13 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${post_complaint}")
     private String postComplaint;
+    /**
+     * .
+     * <p>
+     * sql query to mark complain as read
+     */
+    @Value("${mark_as_read}")
+    private String markComplaint;
 
     /**
      * . .
@@ -343,7 +350,7 @@ public class UserDaoImpl implements IUserDAO {
      * @return ComplaintDTO with id from DB
      */
     @Override
-    public ComplaintDTO postComplaintOn(ComplaintDTO compl) {
+    public ComplaintDTO postComplaintOn(final ComplaintDTO compl) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("reason", compl.getContent())
@@ -356,6 +363,20 @@ public class UserDaoImpl implements IUserDAO {
             compl.setId(holder.getKey().intValue());
         }
         return compl;
+    }
+
+    /**
+     *mark complaint as read by its id
+     * @param id id of complaint
+     * @return true
+     */
+    @Override
+    public boolean markAsReadComplaint(final int id) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id", id);
+        template.update(markComplaint, param);
+
+        return true;
     }
 }
 

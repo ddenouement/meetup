@@ -79,9 +79,13 @@ public interface IUserService {
     /**
      * .
      * @param compl ComplaintDTO
-     *
      */
     void postComplaintOn(ComplaintDTO compl, String login) throws UserNotFoundException;
+    /**
+     * mark complain as read.
+     * @param id Complaint id
+     */
+    boolean markAsReadComplaint(int id);
 
 }
 
