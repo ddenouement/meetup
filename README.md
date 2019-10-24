@@ -40,6 +40,14 @@ ____________________________________
 - Type: DELETE
 - /api/v1/user/meetups/{id}
 
+##### Post a complaint
+- Type: POST
+- /api/v1/user/complaint
+
+##### Get all complaints (admin only)
+- Type: GET
+- /api/v1/user/complaints
+
 
 ### SPEAKER CONTROLLER
 ____________________________________
