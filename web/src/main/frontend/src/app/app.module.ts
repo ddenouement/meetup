@@ -33,6 +33,9 @@ import {RatingModule} from "ng-starrating";
 import { CreateArticleComponent } from './create-article/create-article.component';
 import { ListenerProfileComponent } from './listener-profile/listener-profile.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { AdminComponent } from './admin/admin.component';
+import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,10 @@ import { FeedbackComponent } from './feedback/feedback.component';
     VerificationComponent,
     CreateArticleComponent,
     ListenerProfileComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    AdminComponent,
+    SpeakerProfileToUsersComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

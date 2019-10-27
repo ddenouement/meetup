@@ -1,29 +1,8 @@
-<nav class="sidebar">
-  <li class="sidebar__icons"><a><img src="../../assets/images/searchNoActive.svg" routerLink="/create-article"
-                                     alt="photo"/></a></li>
-  <li class="sidebar__icons sidebar__icons--active"><a href="#"><img src="../../assets/images/myProfileActive.svg"
-                                                                     alt="photo"/></a></li>
-  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/messagesNoActive.svg" alt="photo"/></a></li>
-  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/notification.svg" alt="photo"/></a></li>
-</nav>
+<app-sidebar></app-sidebar>
 <main>
-  <div class="hamburger hamburger--squeeze">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
-    </div>
-  </div>
   <div class="content">
     <form (ngSubmit)="onSubmit()" [formGroup]="changeForm">
       <div class="user__personal personal-active">
-        <div class="user__img">
-          <img class="user__img--photo" src="../../assets/images/faruh.svg"/>
-          <div class="user__img--change">
-            <img class="change__photo" src="../../assets/images/pen2.svg"/>
-            <a class="change__text" href="#">Change photo</a>
-          </div>
-          <star-rating class="user__img--change" value="3.3" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
-                       readonly="true" (rate)="onRate($event)"></star-rating>
-        </div>
         <div class="user__change">
           <div class="form__user">
             <mat-form-field class="form__input">
@@ -75,47 +54,17 @@
           </div>
         </div>
         <div class="user__badges">
+          <star-rating class="user__img--change" value="3.3" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
+                       readonly="true" (rate)="onRate($event)"></star-rating>
           <div class="badges--header">
             <img class="header--img" src="../../assets/images/crown.svg">
             <span class="header--text">BADGES</span>
           </div>
           <div class="badges">
-            <span *ngIf="true" class="badges--text">participate in meetups and get achievements</span>
-            <div class="badge">
+            <span *ngIf="badgeList.length<1" class="badges--text">participate in meetups and get achievements</span>
+            <div class="badge" *ngFor="let badge of badgeList">
               <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralсм чамвааививаиваиваalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
+              <span class="badges--text">{{badge}}</span>
             </div>
           </div>
         </div>

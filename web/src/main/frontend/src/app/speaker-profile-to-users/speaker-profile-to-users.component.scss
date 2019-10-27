@@ -60,7 +60,7 @@ $background_color_6: #fff;
 }
 
 .badges {
-  height: 160px;
+  max-height: 200px;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
