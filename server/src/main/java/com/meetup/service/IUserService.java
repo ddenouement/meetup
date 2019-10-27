@@ -1,6 +1,7 @@
 package com.meetup.service;
 
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.error.UserNotFoundException;
@@ -69,6 +70,22 @@ public interface IUserService {
      * @return boolean whether successful operation or not
      */
     boolean deactivateUser(int id);
+
+    /**
+     * .
+     * @return List of all complaints
+     */
+    List <ComplaintDTO>  getAllComplaints( );
+    /**
+     * .
+     * @param compl ComplaintDTO
+     */
+    void postComplaintOn(ComplaintDTO compl, String login) throws UserNotFoundException;
+    /**
+     * mark complain as read.
+     * @param id Complaint id
+     */
+    boolean markAsReadComplaint(int id);
 
 }
 

@@ -2,10 +2,14 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
 import com.meetup.entities.Role;
+import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.model.mapper.ComplaintMapper;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.repository.IUserDAO;
+
 import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +17,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -20,6 +25,8 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -78,11 +85,28 @@ public class UserDaoImpl implements IUserDAO {
     private String findUsersLanguages;
     /**
      * .
-     *
-     * sql quoey to deactivate user
+     * <p>
+     * sql query to deactivate user
      */
     @Value("${deactivate_by_user_id}")
     private String deactivateUser;
+    /**
+     * sql for finding all complaints from DB.
+     */
+    @Value("${get_all_complaints}")
+    private String getAllComplaints;
+    /**
+     * sql query to post new complaint.
+     */
+    @Value("${post_complaint}")
+    private String postComplaint;
+    /**
+     * .
+     * <p>
+     * sql query to mark complain as read
+     */
+    @Value("${mark_as_read}")
+    private String markComplaint;
 
     /**
      * . .
@@ -140,16 +164,16 @@ public class UserDaoImpl implements IUserDAO {
      */
     private Integer getRoleId(final String roleName) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(
-            "text", roleName);
+                "text", roleName);
         return template.queryForObject(findRoleIdByName, namedParameters,
-            Integer.class);
+                Integer.class);
     }
 
     /**
      * .
      *
      * @param us User
-     * @param r String
+     * @param r  String
      */
     @Override
     public void addRoleToUser(final User us, final String r) {
@@ -164,14 +188,14 @@ public class UserDaoImpl implements IUserDAO {
      *
      * @param elements list of Ts
      * @param typename sql typename for Array
-     * @param <T> type of elements in incoming list
+     * @param <T>      type of elements in incoming list
      * @return sql Array
      */
     private <T> Array createSqlArray(final List<T> elements,
-        final String typename) {
+                                     final String typename) {
         return template.getJdbcOperations()
-            .execute((ConnectionCallback<Array>) con -> con
-                .createArrayOf(typename, elements.toArray()));
+                .execute((ConnectionCallback<Array>) con -> con
+                        .createArrayOf(typename, elements.toArray()));
     }
 
     /**
@@ -183,15 +207,15 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void insertNewUser(final UserRegistrationDTO user) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("login", user.getLogin())
-            .addValue("email", user.getEmail())
-            .addValue("password", user.getPassword())
-            .addValue("first_name", user.getFirstName())
-            .addValue("last_name", user.getLastName())
-            .addValue("about", user.getAbout())
-            .addValue("roles", createSqlArray(user.getRoles(), "TEXT"))
-            .addValue("language_ids",
-                createSqlArray(user.getLanguageIds(), "INTEGER"));
+                .addValue("login", user.getLogin())
+                .addValue("email", user.getEmail())
+                .addValue("password", user.getPassword())
+                .addValue("first_name", user.getFirstName())
+                .addValue("last_name", user.getLastName())
+                .addValue("about", user.getAbout())
+                .addValue("roles", createSqlArray(user.getRoles(), "TEXT"))
+                .addValue("language_ids",
+                        createSqlArray(user.getLanguageIds(), "INTEGER"));
         template.execute(insertFullUser, param, PreparedStatement::executeQuery);
     }
 
@@ -205,10 +229,10 @@ public class UserDaoImpl implements IUserDAO {
     public User findUserByLogin(final String log) {
 
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("login_param", log);
+                .addValue("login_param", log);
         List<User> foundusers =
-            template.query(findByLogin, param,
-                (resultSet, i) -> toPerson(resultSet));
+                template.query(findByLogin, param,
+                        (resultSet, i) -> toPerson(resultSet));
         if (foundusers.size() == 0) {
             return null;
         } else {
@@ -226,10 +250,10 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public User findUserByEmail(final String em) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("email", em);
+                .addValue("email", em);
         List<User> foundUsers =
-            template.query(findUserByEmail, param,
-                (resultSet, i) -> toPerson(resultSet));
+                template.query(findUserByEmail, param,
+                        (resultSet, i) -> toPerson(resultSet));
         if (foundUsers.size() == 0) {
             return null;
         } else {
@@ -246,11 +270,11 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<Role> findUserRolesByLogin(final String login) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("login", login);
+                .addValue("login", login);
         ResultSet rs = null;
         return
-            template.query(findUserRolesByLogin, param,
-                (resultSet, i) -> toRole(resultSet));
+                template.query(findUserRolesByLogin, param,
+                        (resultSet, i) -> toRole(resultSet));
     }
 
     /**
@@ -272,12 +296,12 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("user_id_param", id);
+                .addValue("user_id_param", id);
         List<User> subscriptedTo =
-            template.query(
-                findSubscriptionOfUserById, param,
-                (resultSet, i) -> toPerson(resultSet)
-            );
+                template.query(
+                        findSubscriptionOfUserById, param,
+                        (resultSet, i) -> toPerson(resultSet)
+                );
         return subscriptedTo;
     }
 
@@ -290,10 +314,10 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<Language> getUsersLanguages(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("user_id_param", id);
+                .addValue("user_id_param", id);
         ResultSet rs = null;
         List<Language> languages =
-            template.query(findUsersLanguages, param, new LanguageMapper());
+                template.query(findUsersLanguages, param, new LanguageMapper());
         return languages;
     }
 
@@ -306,9 +330,51 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public boolean deactivateUser(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("user_id_param", id);
+                .addValue("user_id_param", id);
         ResultSet rs = null;
         template.update(deactivateUser, param);
+
+        return true;
+    }
+
+    /**
+     * @return List<ComplaintDTO> list of all complaints in DB
+     */
+    @Override
+    public List<ComplaintDTO> getAllComplaints() {
+        return template.query(getAllComplaints, new ComplaintMapper());
+    }
+
+    /**
+     * @param compl ComplaintDTO from frontend that we want to insert to DB
+     * @return ComplaintDTO with id from DB
+     */
+    @Override
+    public ComplaintDTO postComplaintOn(final ComplaintDTO compl) {
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("reason", compl.getContent())
+                .addValue("id_destination", compl.getId_user_to())
+                .addValue("time_posted", compl.getPostedDate())
+                .addValue("id_source", compl.getId_user_from());
+        ResultSet rs = null;
+        template.update(postComplaint, param, holder, new String[]{"id"});
+        if (holder.getKeys() != null) {
+            compl.setId(holder.getKey().intValue());
+        }
+        return compl;
+    }
+
+    /**
+     *mark complaint as read by its id
+     * @param id id of complaint
+     * @return true
+     */
+    @Override
+    public boolean markAsReadComplaint(final int id) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id", id);
+        template.update(markComplaint, param);
 
         return true;
     }
