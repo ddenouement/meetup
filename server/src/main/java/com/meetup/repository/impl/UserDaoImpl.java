@@ -10,6 +10,7 @@ import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.model.mapper.ComplaintMapper;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.model.mapper.SimpleUserDTOMapper;
+import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IUserDAO;
 
 import java.sql.Array;
@@ -134,6 +135,19 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${simple_subscribers_of_speaker_by_his_id}")
     private String simpleSubscribersOfSpeaker;
+    /**
+     * SQL reference script.
+     * Get all speakers.
+     */
+    @Value("${find_all_speakers}")
+    private String findAllSpeakers;
+    /**
+     * SQL reference script.
+     * Get all users.
+     */
+    @Value("${find_all_users}")
+    private String findAllUsers;
+
 
     /**
      * . .
@@ -465,6 +479,26 @@ public class UserDaoImpl implements IUserDAO {
                 .addValue("speaker_id_param", speakerId);
         return
                 template.query(simpleSubscribersOfSpeaker, param,new SimpleUserDTOMapper());
+    }
+
+    /**
+     * Get all users with role: Speaker.
+     * @return
+     * List of speakers.
+     */
+    @Override
+    public List<User> getAllSpeakers() {
+        return template.query(findAllSpeakers, new UserMapper());
+    }
+
+    /**
+     * Get all users.
+     * @return
+     * List of users.
+     */
+    @Override
+    public List<User> getAllUsers() {
+        return template.query(findAllUsers, new UserMapper());
     }
 }
 

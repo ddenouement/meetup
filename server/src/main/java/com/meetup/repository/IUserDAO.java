@@ -155,5 +155,19 @@ public interface IUserDAO {
      * @return List of SimpleUserDTOs
      */
     List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId);
+
+    /**
+     * Get all users with role: Speaker.
+     * @return
+     * List of speakers.
+     */
+    List<User> getAllSpeakers();
+
+    /**
+     * Get all users.
+     * @return
+     * List of users.
+     */
+    List<User> getAllUsers();
 }
 

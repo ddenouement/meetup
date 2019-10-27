@@ -53,11 +53,18 @@ public interface IUserService {
     UserDTO getProfileUserDTO(String login) throws UserNotFoundException;
 
     /**
-     * .
      *
+     * Get all active speakers.
      * @return List<User> of speakers
      */
     List<User> getAllSpeakers();
+
+    /**
+     *
+     * Get all active users.
+     * @return List<User> of users.
+     */
+    List<User> getAllUsers();
 
     /**.
      *
@@ -113,6 +120,5 @@ public interface IUserService {
      * @return users (subscribers)
      */
     List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId);
-
 }
 

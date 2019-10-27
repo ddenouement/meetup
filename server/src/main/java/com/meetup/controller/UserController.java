@@ -102,17 +102,29 @@ public class UserController {
     }
 
     /**
-     * return all active speakers.
+     * Return all active speakers.
      * @return List of Users
      */
-    //TODOo implement
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
             + "T(com.meetup.entities.Role).SPEAKER, "
             + "T(com.meetup.entities.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/user/availableSpeakers")
+    @GetMapping(value = "/api/v1/user/speakers")
     public ResponseEntity<List<User>> getAllSpeakers() {
         return new ResponseEntity<>(userService.getAllSpeakers(),
                 HttpStatus.OK);
+    }
+
+    /**
+     * Return all active users.
+     * @return List of Users
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/user/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(),
+            HttpStatus.OK);
     }
 
     /**

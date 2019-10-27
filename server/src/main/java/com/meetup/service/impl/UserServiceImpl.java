@@ -125,14 +125,23 @@ public class UserServiceImpl implements IUserService {
 
 
     /**
-     * .
      *
-     * @return List<User> of speakers
+     * Get all active speakers.
+     * @return List<User> of speakers.
      */
     @Override
     public List<User> getAllSpeakers() {
-        //TODOo implement
-        return null;
+        return userDao.getAllSpeakers();
+    }
+
+    /**
+     * Get all active users.
+     * @return
+     * List<User> of users.
+     */
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     /**

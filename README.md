@@ -40,6 +40,10 @@ ____________________________________
 - Type: DELETE
 - /api/v1/user/meetups/{id}
 
+#### Get all speakers
+- Type: GET
+- /api/v1/user/speakers
+
 
 ### SPEAKER CONTROLLER
 ____________________________________
