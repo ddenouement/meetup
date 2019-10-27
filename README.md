@@ -40,9 +40,13 @@ ____________________________________
 - Type: DELETE
 - /api/v1/user/meetups/{id}
 
-#### Get all speakers
+#### Get all active speakers
 - Type: GET
 - /api/v1/user/speakers
+
+#### Get all active listeners
+- Type: GET
+- /api/v1/user/users
 
 
 ### SPEAKER CONTROLLER
@@ -61,14 +65,22 @@ ____________________________________
 - Type: DELETE
 - /api/v1/user/speaker/meetups/{id}
 
+##### Start meetup (speaker only)
+- Type: POST
+- /api/v1/user/speaker/meetups/{id}/start
+
+##### Terminate meetup (speaker only)
+- Type: POST
+- /api/v1/user/speaker/meetups/{id}/terminate
+
 ##### Create article (speaker only)
 - Type: POST
 - RequestBody: Article article
-- api/v1/user/speaker/articles
+- /api/v1/user/speaker/articles
 
 ##### Remove article (speaker only)
 - Type: DELETE
-- api/v1/user/speaker/articles/{id}
+- /api/v1/user/speaker/articles/{id}
 
 
 ### BADGE CONTROLLER
