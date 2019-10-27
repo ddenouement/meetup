@@ -1,12 +1,13 @@
 package com.meetup.controller;
 
+import com.meetup.error.MeetupNotFoundException;
+import com.meetup.error.UserNotFoundException;
 import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
-import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.OutOfSlotsException;
-import com.meetup.error.SpeakerOperationNotAllowedException;
 import com.meetup.error.TopicNotFoundException;
+import com.meetup.error.SpeakerOperationNotAllowedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -114,6 +115,17 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(
             "SQL script is incorrect.",
             HttpStatus.BAD_REQUEST);
+    }
+    /**
+     * AuthenticationException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({UserNotFoundException.class})
+    public ResponseEntity<Object> userNotFoundException() {
+        return new ResponseEntity<>(
+                "No user found",
+                HttpStatus.FORBIDDEN);
     }
 
 }
