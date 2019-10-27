@@ -2,6 +2,7 @@ package com.meetup.controller;
 
 import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.error.EmailIsUsedException;
+import com.meetup.error.IllegalMeetupStateException;
 import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.OutOfSlotsException;
@@ -113,6 +114,18 @@ public class GlobalExceptionController {
     public ResponseEntity<Object> badgeScriptIsIncorrectException() {
         return new ResponseEntity<>(
             "SQL script is incorrect.",
+            HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * IllegalMeetupStateException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({IllegalMeetupStateException.class})
+    public ResponseEntity<Object> illegalMeetupStateException() {
+        return new ResponseEntity<>(
+            "Such meetup operation with this state is prohibited!",
             HttpStatus.BAD_REQUEST);
     }
 

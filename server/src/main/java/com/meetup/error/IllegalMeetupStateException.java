@@ -1,5 +1,16 @@
 package com.meetup.error;
 
-public class IllegalMeetupStateException {
+/**
+ * IllegalMeetupStateException class.
+ * Thrown in case if user tries to perform operation with
+ * meetup, which state is illegal.
+ */
+public class IllegalMeetupStateException extends RuntimeException {
 
+    /**
+     * Constructor.
+     */
+    public IllegalMeetupStateException(){
+        super();
+    }
 }
