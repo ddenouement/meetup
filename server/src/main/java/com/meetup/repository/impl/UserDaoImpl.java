@@ -5,9 +5,11 @@ import com.meetup.entities.Role;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.model.mapper.ComplaintMapper;
 import com.meetup.model.mapper.LanguageMapper;
+import com.meetup.model.mapper.SimpleUserDTOMapper;
 import com.meetup.repository.IUserDAO;
 
 import java.sql.Array;
@@ -58,6 +60,11 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${find_user_with_login}")
     private String findByLogin;
     /**
+     * sql query to find user by his ID
+     */
+    @Value("${find_user_with_id}")
+    private  String findById;
+    /**
      * . sql query find user by email
      */
     @Value("${find_user_with_email}")
@@ -91,10 +98,10 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${deactivate_by_user_id}")
     private String deactivateUser;
     /**
-     * sql for finding all complaints from DB.
+     * sql for finding all not read complaints from DB.
      */
-    @Value("${get_all_complaints}")
-    private String getAllComplaints;
+    @Value("${get_all_complaints_not_read}")
+    private String getAllNotReadComplaints;
     /**
      * sql query to post new complaint.
      */
@@ -107,6 +114,26 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${mark_as_read}")
     private String markComplaint;
+    /**
+     *sql query to subscribe to speaker.
+     */
+    @Value("${subscribe_to_speaker}")
+    private  String subscribeToSpeaker;
+    /**
+     *sql query to unsubscribe from speaker.
+     */
+    @Value("${unsubscribe_from_speaker}")
+    private  String unsubscribeFromSpeaker;
+    /**
+     *sql query to find users-subscribers of speaker by his ID.
+     */
+    @Value("${find_subscribers_of_speaker_by_his_id}")
+    private String findSubscribersOfSpeaker;
+    /**
+     *sql query to find simplified users-subscribers of speaker by his ID.
+     */
+    @Value("${simple_subscribers_of_speaker_by_his_id}")
+    private String simpleSubscribersOfSpeaker;
 
     /**
      * . .
@@ -261,9 +288,7 @@ public class UserDaoImpl implements IUserDAO {
         }
     }
 
-    /**
-     * .
-     *
+    /** Find users roles.
      * @param login String
      * @return List <String>
      */
@@ -278,8 +303,7 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     /**
-     * .
-     *
+     * mapper to Role entity.
      * @param resultSet ResultSet
      * @return String
      * @throws SQLException exc
@@ -333,7 +357,6 @@ public class UserDaoImpl implements IUserDAO {
                 .addValue("user_id_param", id);
         ResultSet rs = null;
         template.update(deactivateUser, param);
-
         return true;
     }
 
@@ -341,8 +364,8 @@ public class UserDaoImpl implements IUserDAO {
      * @return List<ComplaintDTO> list of all complaints in DB
      */
     @Override
-    public List<ComplaintDTO> getAllComplaints() {
-        return template.query(getAllComplaints, new ComplaintMapper());
+    public List<ComplaintDTO> getAllNotReadComplaints() {
+        return template.query(getAllNotReadComplaints, new ComplaintMapper());
     }
 
     /**
@@ -366,7 +389,7 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     /**
-     *mark complaint as read by its id
+     * Mark complaint as read by its id.
      * @param id id of complaint
      * @return true
      */
@@ -375,8 +398,73 @@ public class UserDaoImpl implements IUserDAO {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id", id);
         template.update(markComplaint, param);
-
         return true;
+    }
+
+    /**
+     * User can subscribe tp speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+    @Override
+    public void subscribeToSpeaker(int userId, int speakerId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_user", userId)
+              .addValue("id_speak", speakerId);
+        template.update(subscribeToSpeaker, param);
+    }
+
+    /**
+     * User can unsubscribe from speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user was subscribed
+     */
+    @Override
+    public void unSubscribeFromSpeaker(int userId, int speakerId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_user", userId)
+                .addValue("id_speak", speakerId);
+        template.update(unsubscribeFromSpeaker, param);
+    }
+
+    /**
+     * Find all subscribers of a given speaker (by his ID).
+     * @param speakerId int, id of speaker
+     * @return List of users-subscribers
+     */
+    @Override
+    public List<User> getSubscribersOfSpeaker(int speakerId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("speaker_id_param", speakerId);
+        return
+                template.query(findById, param,
+                        (resultSet, i) -> toPerson(resultSet));
+    }
+
+    @Override
+    public User findUserById(int userId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_param", userId);
+        List<User> foundUsers =
+                template.query(findById, param,
+                        (resultSet, i) -> toPerson(resultSet));
+        if (foundUsers.size() == 0) {
+            return null;
+        } else {
+            return foundUsers.get(0);
+        }
+    }
+    /**
+     * Get list of simplified users, subscribed on given speaker.
+     * @param speakerId id of speaker
+     * @return List<SimpleUserDTO>
+     */
+    @Override
+    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("speaker_id_param", speakerId);
+        return
+                template.query(simpleSubscribersOfSpeaker, param,new SimpleUserDTOMapper());
     }
 }
 

@@ -4,6 +4,7 @@ import com.meetup.entities.Language;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.error.UserNotFoundException;
 
@@ -64,6 +65,7 @@ public interface IUserDAO {
     /**
      * Insert a user and his connections to roles and languages in DB in one
      * request.
+     *
      * @param user user to insert
      */
     void insertNewUser(UserRegistrationDTO user);
@@ -73,7 +75,7 @@ public interface IUserDAO {
      * get from DB users subscriptions (speakers)
      *
      * @param id int, id of user
-     * @return  List of users
+     * @return List of users
      */
     List<User> getUsersSubscriptionsToSpeakers(int id);
 
@@ -85,6 +87,7 @@ public interface IUserDAO {
      * @return list of Languages
      */
     List<Language> getUsersLanguages(int id);
+
     /**
      * .
      * deactivate user in DB
@@ -93,23 +96,64 @@ public interface IUserDAO {
      * @return boolean , isSuccessful
      */
     boolean deactivateUser(int id);
+
     /**
      * .
-     * @return List of all complaints
-     */
-    List <ComplaintDTO>  getAllComplaints( );
-    /**
-     * .
-     * @param compl ComplaintDTO
      *
+     * @return List of all not read complaints
+     */
+    List<ComplaintDTO> getAllNotReadComplaints();
+
+    /**
+     * .
+     *
+     * @param compl ComplaintDTO
      */
     ComplaintDTO postComplaintOn(ComplaintDTO compl);
 
     /**
      * for admin to mark complaint as read.
+     *
      * @param id id of complaint
      * @return bool whether  was successfull
      */
     boolean markAsReadComplaint(int id);
 
+    /**
+     * for users to subscribe on speakers.
+     *
+     * @param userId    who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+    void subscribeToSpeaker(int userId, int speakerId);
+
+    /**
+     * users can unsubscribe from speakers.
+     *
+     * @param userId    who is subscriber
+     * @param speakerId on whom user was subscribed
+     */
+    void unSubscribeFromSpeaker(int userId, int speakerId);
+
+    /**
+     * get users-subscribers on a speaker (by his id).
+     *
+     * @param spekerId int, id of speaker
+     * @return List of users
+     */
+    List<User> getSubscribersOfSpeaker(int spekerId);
+
+    /**
+     * @param userId id of user e want to find.
+     * @return User found
+     */
+    User findUserById(int userId);
+
+    /**
+     * Get list of simplified users, subscribed on given speaker.
+     * @param speakerId id of speaker
+     * @return List of SimpleUserDTOs
+     */
+    List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId);
 }
+
