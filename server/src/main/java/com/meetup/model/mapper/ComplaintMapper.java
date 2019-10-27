@@ -27,6 +27,7 @@ public ComplaintDTO mapRow(final ResultSet rs, final int rowNum)
     c.setId_user_from(rs.getInt("id_source"));
     c.setId_user_to(rs.getInt("id_destination"));
     c.setPostedDate(rs.getDate("time_posted"));
+    c.setRead(rs.getBoolean("read"));
         return c;
         }
 }

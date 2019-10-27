@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <a href="#" routerLink="/" style="display: flex; flex-direction: row; align-items: center; outline:none;">
+  <a href="#" onClick="landingPage()" style="display: flex; flex-direction: row; align-items: center; outline:none;">
     <svg cc="http://creativecommons.org/ns#" data-color="1" dc="http://purl.org/dc/elements/1.1/"
          fill="#322b6b"
          height="56" inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -29,4 +29,3 @@
   </mat-menu>
   <button *ngIf="_authService.logInUser()" (click)="_authService.logoutUser()" mat-button routerLink="/">Log out</button>
 </mat-toolbar>
-

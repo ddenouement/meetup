@@ -13,5 +13,12 @@ public interface ILoginValidatorService {
      * User login in String representation
      */
     String extractLogin(String token);
-
+    /**
+     * Method, used to extract user id from JWT.
+     * @param token
+     * JSON web token in String representation
+     * @return
+     * User id
+     */
+    int extractId(  String token);
 }

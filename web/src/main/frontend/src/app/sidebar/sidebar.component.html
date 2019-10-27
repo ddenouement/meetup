@@ -1,0 +1,22 @@
+<div class="hamburger hamburger--squeeze">
+  <div class="hamburger-box">
+    <div class="hamburger-inner"></div>
+  </div>
+</div>
+<nav class="sidebar">
+  <li *ngIf="admin" class="sidebar__icons sidebar__icons--active">
+      <img src="../../assets/images/teamActive.svg" routerLink="/create-article" alt="photo"/>
+  </li>
+  <li *ngIf="speaker" class="sidebar__icons">
+      <img src="../../assets/images/searchNoActive.svg" routerLink="/create-article" alt="photo"/>
+  </li>
+  <li *ngIf="speaker" class="sidebar__icons sidebar__icons--active">
+      <img src="../../assets/images/myProfileActive.svg" routerLink="/speaker-profile" alt="photo"/>
+  </li>
+  <li *ngIf="speaker" class="sidebar__icons">
+      <img src="../../assets/images/messagesNoActive.svg" alt="photo"/>
+  </li>
+  <li *ngIf="speaker" class="sidebar__icons">
+      <img src="../../assets/images/notification.svg" alt="photo"/>
+  </li>
+</nav>
