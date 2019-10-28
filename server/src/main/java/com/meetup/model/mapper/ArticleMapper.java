@@ -25,7 +25,7 @@ public final class ArticleMapper implements RowMapper<Article> {
         article.setAuthorID(rs.getInt("id_author"));
         article.setTitle(rs.getString("id_title"));
         article.setContent(rs.getString("contents"));
-        article.setPostDate(
+        article.setPostDateTime(
             TimeUtility.convertToLocalDateTime(rs.getTimestamp("time_posted")));
         return article;
     }

@@ -2,6 +2,7 @@ package com.meetup.service;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
+import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.utils.Pair;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public interface IMeetupService {
      * @param meetupID Meetup id, that should be returned.
      * @return Meetup object.
      */
-    Meetup getMeetup(int meetupID);
+    MeetupDisplayDTO getMeetup(int meetupID);
 
     /**
      * Start meetup for fixed duration.
@@ -73,7 +74,7 @@ public interface IMeetupService {
      *
      * @return List of all meetups
      */
-    List<Meetup> getAllMeetups();
+    List<MeetupDisplayDTO> getAllMeetups();
 
     /**
      * Get all meetups of specified speaker.
@@ -81,7 +82,7 @@ public interface IMeetupService {
      * @param speakerID Speaker ID
      * @return List of all meetups of specified speaker
      */
-    List<Meetup> getSpeakerMeetups(int speakerID);
+    List<MeetupDisplayDTO> getSpeakerMeetups(int speakerID);
 
     /**
      * .

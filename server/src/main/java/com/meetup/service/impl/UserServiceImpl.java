@@ -1,6 +1,7 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.Meetup;
+import com.meetup.entities.MeetupState;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
@@ -14,7 +15,6 @@ import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.MeetupStateConstants;
 import com.meetup.utils.UserDTOConverter;
 
 import java.util.Arrays;
@@ -173,7 +173,7 @@ public class UserServiceImpl implements IUserService {
                 meetupDao.removeUserFromMeetup(meetup.getId(), user.getId());
             }
             // cancel Meetup a
-            meetup.setStateId(MeetupStateConstants.CANCELED);
+            meetup.setStateId(MeetupState.CANCELED.getCode());
             meetupDao.updateMeetup(meetup, meetup.getId());
         }
         userDao.deactivateUser(id);

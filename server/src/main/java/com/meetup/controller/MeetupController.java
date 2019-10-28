@@ -1,7 +1,7 @@
 package com.meetup.controller;
 
-import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
+import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import io.swagger.annotations.Api;
@@ -51,7 +51,7 @@ public class MeetupController {
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "api/v1/meetups")
-    public ResponseEntity<List<Meetup>> getAllMeetups() {
+    public ResponseEntity<List<MeetupDisplayDTO>> getAllMeetups() {
         return new ResponseEntity<>(meetupService.getAllMeetups(),
             HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class MeetupController {
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/meetups/{id}")
-    public ResponseEntity<Meetup> getMeetup(
+    public ResponseEntity<MeetupDisplayDTO> getMeetup(
         @PathVariable("id") final int meetupID) {
         return new ResponseEntity<>(meetupService.getMeetup(meetupID),
             HttpStatus.OK);
@@ -97,7 +97,7 @@ public class MeetupController {
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/meetups/speaker/{id}")
-    public ResponseEntity<List<Meetup>> getSpeakerMeetups(
+    public ResponseEntity<List<MeetupDisplayDTO>> getSpeakerMeetups(
         @PathVariable("id") final int speakerID) {
         return new ResponseEntity<>(
             meetupService.getSpeakerMeetups(speakerID), HttpStatus.OK);

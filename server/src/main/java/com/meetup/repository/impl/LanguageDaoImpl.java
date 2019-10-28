@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 /**.
@@ -43,6 +45,12 @@ public class LanguageDaoImpl implements ILanguageDAO {
     @Value("${find_all_languages_sorted}")
     private String findAllSortedScript;
 
+    /**
+     * SQL script to select language by ID.
+     */
+    @Value("${find_language_by_id}")
+    private String findLanguageByID;
+
     /**.
      * Retrieve all instances of a type.
      *
@@ -61,6 +69,21 @@ public class LanguageDaoImpl implements ILanguageDAO {
     @Override
     public List<Language> findAllSorted() {
         return this.template.query(findAllSortedScript, new LanguageMapper());
+    }
+
+    /**
+     * Get language by ID.
+     * @param languageID
+     * Language ID.
+     * @return
+     * Language object.
+     */
+    @Override
+    public Language findLanguageByID(final int languageID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", languageID);
+        return this.template
+            .queryForObject(findLanguageByID, param, new LanguageMapper());
     }
 
 }

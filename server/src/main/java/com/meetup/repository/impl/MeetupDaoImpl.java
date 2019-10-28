@@ -1,12 +1,13 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Meetup;
+import com.meetup.entities.MeetupState;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.model.mapper.MeetupMapper;
+import com.meetup.model.mapper.TopicMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IMeetupDAO;
-import com.meetup.utils.MeetupStateConstants;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,12 @@ public class MeetupDaoImpl implements IMeetupDAO {
     private String addTopicToMeetup;
     /**.
      * SQL reference script.
+     * Add topic.ts to specific meetup.
+     */
+    @Value("${get_meetup_topics}")
+    private String findMeetupTopics;
+    /**.
+     * SQL reference script.
      * Get users joined to meetup.
      */
     @Value("${get_joined_meetups_of_user}")
@@ -114,7 +121,12 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Override
     public List<Meetup> getAllMeetups() {
-        return this.template.query(getAllMeetups, new MeetupMapper());
+        List<Meetup> meetups = this.template.query(
+            getAllMeetups, new MeetupMapper());
+        for (Meetup m: meetups) {
+            m.setTopics(getMeetupTopics(m.getId()));
+        }
+        return meetups;
     }
 
     /**.
@@ -128,7 +140,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_speaker", meetup.getSpeakerId())
             .addValue("id_language", meetup.getLanguageId())
-            .addValue("id_state", MeetupStateConstants.SCHEDULED)
+            .addValue("id_state", MeetupState.SCHEDULED.getCode())
             .addValue("title", meetup.getTitle())
             .addValue("start_time", meetup.getStartDate())
             .addValue("duration_minutes", meetup.getDurationMinutes())
@@ -211,6 +223,20 @@ public class MeetupDaoImpl implements IMeetupDAO {
         parametersForAddingTopic.put("id_meetup", meetup.getId());
         parametersForAddingTopic.put("id_topic", topicId);
         template.update(addTopicToMeetup, parametersForAddingTopic);
+    }
+
+    /**
+     * Get topics of meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @return
+     * List of topics.
+     */
+    @Override
+    public List<Topic> getMeetupTopics(final int meetupID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id_meetup", meetupID);
+        return template.query(findMeetupTopics, param, new TopicMapper());
     }
 
     /**.
