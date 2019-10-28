@@ -45,6 +45,26 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Value("${get_speaker_meetings}")
     private String getSpeakerMeetups;
     /**
+     * . SQL reference script. Retrieve specific speaker meetups from past.
+     */
+    @Value("${past_hosted_meetings_of_user}")
+    private String getHostedMeetupsPast;
+    /**
+     * . SQL reference script. Retrieve specific speaker meetups from future.
+     */
+    @Value("${future_hosted_meetings_of_user}")
+    private String getHostedMeetupsFuture;
+    /**
+     * . SQL reference script. Retrieve specific joined  meetups from past.
+     */
+    @Value("${past_joined_meetups_of_user}")
+    private String getJoinedMeetupsPast;
+    /**
+     * . SQL reference script. Retrieve specific joined meetups from future.
+     */
+    @Value("${future_joined_meetups_of_user}")
+    private String getJoinedMeetupsFuture;
+    /**
      * SQL reference script. Add meetup to DB.
      */
     @Value("${insert_new_meetup}")
@@ -202,33 +222,63 @@ public class MeetupDaoImpl implements IMeetupDAO {
         parametersForAddingTopic.put("id_topic", topicId);
         template.update(addTopicToMeetup, parametersForAddingTopic);
     }
-
     /**
-     * . Get all meetups of specific speaker.
+     * . Get all meetups of specific speaker (past).
      *
      * @param speakerID Speaker ID
      * @return List of meetups of specific speaker.
      */
     @Override
-    public List<Meetup> getSpeakerMeetups(final int speakerID) {
+    public List<Meetup> getSpeakerMeetupsPast(final int speakerID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_speaker", speakerID);
+        return this.template
+                .query(getHostedMeetupsPast, param, new MeetupMapper());
+    }
+    /**
+     * . Get all meetups of specific speaker (future).
+     *
+     * @param speakerID Speaker ID
+     * @return List of meetups of specific speaker.
+     */
+    @Override
+    public List<Meetup> getSpeakerMeetupsFuture(final int speakerID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_speaker", speakerID);
         return this.template
-            .query(getSpeakerMeetups, param, new MeetupMapper());
+            .query(getHostedMeetupsFuture, param, new MeetupMapper());
     }
-
+    @Override
+    public List<Meetup> getSpeakerMeetupsAllHosted(final int speakerID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_speaker", speakerID);
+        return this.template
+                .query(getSpeakerMeetups, param, new MeetupMapper());
+    }
     /**
-     * . Get all meetups, that user have joined.
+     * . Get all meetups, that user will attend.
      *
      * @param userID User ID
      * @return List of meetups.
      */
     @Override
-    public List<Meetup> getUsersJoinedMeetups(final int userID) {
+    public List<Meetup> getUsersJoinedMeetupsFuture(final int userID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_user", userID);
+        return this.template
+                .query(getJoinedMeetupsFuture, param, new MeetupMapper());
+    }
+    /**
+     * . Get all meetups, that user have joined and attended.
+     * @param userID User ID
+     * @return List of meetups.
+     */
+    @Override
+    public List<Meetup> getUsersJoinedMeetupsPast(final int userID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_user", userID);
         return this.template
-            .query(getUsersJoinedMeetups, param, new MeetupMapper());
+            .query(getJoinedMeetupsPast, param, new MeetupMapper());
     }
 
     /**

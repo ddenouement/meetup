@@ -83,13 +83,6 @@ public interface IMeetupService {
      */
     List<Meetup> getSpeakerMeetups(int speakerID);
 
-    /**
-     * . Get all meetups of specified speaker. <Past; Future >
-     *
-     * @param login login of user
-     * @return List of all meetups of specified speaker
-     **/
-    Pair<List<Meetup>, List<Meetup>> getSpeakerMeetupsByLogin(String login);
 
     /**
      * . Register user for meetup.
@@ -108,10 +101,27 @@ public interface IMeetupService {
     void leaveMeetup(int meetupID, String token);
 
     /**
-     * . get Meetups that user joined <Past; Future>
-     *
+     * . get Meetups that userhave attended in past.
      * @param id int
      * @return List of Meetups
      */
-    Pair<List<Meetup>, List<Meetup>> getUserJoinedMeetups(int id);
+    List<Meetup> getJoinedMeetupsPast(int id);
+    /**
+     * . get Meetups that will attend  in future.
+     * @param id int
+     * @return List of Meetups
+     */
+    List<Meetup>  getJoinedMeetupsFuture(final int id);
+    /**
+     * . get Meetups that user have hosted in past.
+     * @param id int
+     * @return List of Meetups
+     */
+    List<Meetup>  getHostedMeetupsPast( int id);
+    /**
+     * . get Meetups thatuser will host
+     * @param id int
+     * @return List of Meetups
+     */
+    List<Meetup>  getHostedMeetupsFuture( int id);
 }

@@ -245,37 +245,27 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public List<Meetup> getSpeakerMeetups(final int speakerID) {
-        return meetupDao.getSpeakerMeetups(speakerID);
+        return meetupDao.getSpeakerMeetupsAllHosted(speakerID);
     }
 
     /**
-     * . Pair<past; future> of meetups hosted by speaker
-     *
-     * @param login login of user
-     * @return pair of lists of user hosted meetus (null if not a speaker)
+     * . List of meetups hosted by speaker in past
+     * @param id id of user
+     * @return   list  of user hosted meetups
      */
     @Override
-    public Pair<List<Meetup>, List<Meetup>> getSpeakerMeetupsByLogin(
-        final String login) {
-        User user = userDao.findUserByLogin(login);
-        if (isSpeaker(user)) {
-            List<Meetup> allTogetherMeetups =
-                meetupDao.getSpeakerMeetups(user.getId());
-            List<Meetup> past = new ArrayList<>();
-            List<Meetup> future = new ArrayList<>();
-            for (Meetup a : allTogetherMeetups) {
-                if (a.getStartDate().isBefore(LocalDateTime.now())) {
-                    past.add(a);
-                } else {
-                    future.add(a);
-                }
-            }
-            return new Pair<>(past, future);
-        } else {
-            return new Pair<>(new ArrayList<>(), new ArrayList<>());
-        }
+    public  List<Meetup>  getHostedMeetupsPast(final int id){
+            return    meetupDao.getSpeakerMeetupsPast(id);
     }
-
+    /**
+     * . List of meetups that will be hosted by this speaker
+     * @param id id of user
+     * @return  list of user hosted meetups
+     */
+    @Override
+    public  List<Meetup>  getHostedMeetupsFuture(final int id){
+        return    meetupDao.getSpeakerMeetupsFuture(id);
+    }
 
     /**
      * Register user for specified meetup.
@@ -315,23 +305,23 @@ public class MeetupServiceImpl implements IMeetupService {
     }
 
     /**
-     * . Meetups that user joined
+     * . Meetups that user attended in past
      *
      * @param id id
      * @return List of meetups
      */
     @Override
-    public Pair<List<Meetup>, List<Meetup>> getUserJoinedMeetups(final int id) {
-        List<Meetup> allTogetherMeetups = meetupDao.getUsersJoinedMeetups(id);
-        List<Meetup> past = new ArrayList<>();
-        List<Meetup> future = new ArrayList<>();
-        for (Meetup a : allTogetherMeetups) {
-            if (a.getStartDate().isBefore(LocalDateTime.now())) {
-                past.add(a);
-            } else {
-                future.add(a);
-            }
-        }
-        return new Pair<>(past, future);
+    public List<Meetup>  getJoinedMeetupsPast(final int id) {
+       return meetupDao.getUsersJoinedMeetupsPast(id);
+    }
+    /**
+     * . Meetups that user will attend in  future
+     *
+     * @param id id
+     * @return List of meetups
+     */
+    @Override
+    public List<Meetup>  getJoinedMeetupsFuture(final int id) {
+        return meetupDao.getUsersJoinedMeetupsFuture(id);
     }
 }

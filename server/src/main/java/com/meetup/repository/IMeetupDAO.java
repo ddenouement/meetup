@@ -43,20 +43,33 @@ public interface IMeetupDAO {
     Meetup findMeetupByID(int meetupID);
 
     /**
-     * Retrieve meetups of specified speaker.
+     * Retrieve future hosted meetups of specified speaker.
      *
      * @param speakerID Speaker ID
      * @return List of meetups of specified speaker
      */
-    List<Meetup> getSpeakerMeetups(int speakerID);
-
+    List<Meetup> getSpeakerMeetupsPast(int speakerID);
     /**
-     * Retrieve meetups of specified user.
+     * Retrieve past hosted meetups of specified speaker.
+     *
+     * @param speakerID Speaker ID
+     * @return List of meetups of specified speaker
+     */
+    List<Meetup> getSpeakerMeetupsFuture(int speakerID);
+    /**
+     * Retrieve past attended meetups of specified user.
      *
      * @param userID User ID
      * @return List of meetups of specified user
      */
-    List<Meetup> getUsersJoinedMeetups(int userID);
+    List<Meetup> getUsersJoinedMeetupsPast(int userID);
+    /**
+     * Retrieve future attended meetups of specified user.
+     *
+     * @param userID User ID
+     * @return List of meetups of specified user
+     */
+    List<Meetup> getUsersJoinedMeetupsFuture(int userID);
 
     /**
      * Add specific topic.ts to database for meetup.
@@ -96,5 +109,6 @@ public interface IMeetupDAO {
      * @return List of users
      */
     List<User> getUsersOnMeetup(int meetupId);
+    List<Meetup> getSpeakerMeetupsAllHosted(  int speakerID) ;
 
 }
