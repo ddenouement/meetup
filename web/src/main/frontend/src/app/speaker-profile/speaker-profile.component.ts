@@ -58,6 +58,7 @@ export class SpeakerProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.changeForm.controls['languages'].setValue('English');
     this.changeForm = new FormGroup({
       firstName: new FormControl(),
       lastName: new FormControl(),
@@ -109,6 +110,5 @@ export class SpeakerProfileComponent implements OnInit {
       Checked Color: ${$event.starRating.checkedcolor}, 
       Unchecked Color: ${$event.starRating.uncheckedcolor}`);
   }
-
 
 }

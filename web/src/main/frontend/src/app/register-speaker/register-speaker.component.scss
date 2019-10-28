@@ -27,7 +27,19 @@ main {
   border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
+  &::-webkit-scrollbar {
+    width: 6px;
+    background:  #fdfeff;
+    mix-blend-mode: normal;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d7dce9;
+    border-radius: 2px;
+  }
 }
+
 
 form {
   width: 65%;

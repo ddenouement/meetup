@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
   templateUrl: './toolbar-menu.component.html',
   styleUrls: ['./toolbar-menu.component.scss']
 })
+
 export class ToolbarMenuComponent implements OnInit {
   private _authService: LoginService;
   private userURL = '/api/v1/user/profile';

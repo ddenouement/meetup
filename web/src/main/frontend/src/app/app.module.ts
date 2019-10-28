@@ -36,6 +36,8 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     MatPasswordStrengthModule,
     MatSlideToggleModule,
     RatingModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],

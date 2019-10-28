@@ -24,6 +24,7 @@ export class SpeakerProfileToUsersComponent implements OnInit {
       // Do something else, like open/close menu
     });
   }
+
   onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
     alert(`Old Value:${$event.oldValue}, 
       New Value: ${$event.newValue}, 
