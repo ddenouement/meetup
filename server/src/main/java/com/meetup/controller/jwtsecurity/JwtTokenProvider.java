@@ -122,7 +122,7 @@ log.debug(getUsername(token));
      */
     public String resolveToken(final HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-        if (Optional.ofNullable(cookies).isPresent()) {
+        if (cookies == null) {
             return null;
         }
         // TODO null in filter?
