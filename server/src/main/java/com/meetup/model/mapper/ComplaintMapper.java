@@ -23,6 +23,7 @@ public class ComplaintMapper implements RowMapper<ComplaintDTO> {
         c.setContent(rs.getString("reason"));
         c.setId_user_from(rs.getInt("id_source"));
         c.setId_user_to(rs.getInt("id_destination"));
+        // TODO: do we need to get timestamp there?
         c.setPostedDate(rs.getDate("time_posted"));
         c.setRead(rs.getBoolean("read"));
         return c;

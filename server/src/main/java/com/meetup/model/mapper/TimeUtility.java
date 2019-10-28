@@ -1,8 +1,8 @@
 package com.meetup.model.mapper;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Time convertion utility class.
@@ -15,16 +15,17 @@ public final class TimeUtility {
     private TimeUtility() {
 
     }
-    /**.
-     * Helper method to convert SQL Date to LocalDateTime.
-     * @param dateToConvert
-     * SQL Date value
-     * @return
-     * LocalDateTime object
+
+    /**
+     * Helper method to convert SQL Timestamp to LocalDateTime.
+     *
+     * @param ts timestamp to convert
+     * @return corresponding LocalDateTime object
      */
-    public static LocalDateTime convertToLocalDateTimeViaSqlTimestamp(
-        final Date dateToConvert) {
-        return new java.sql.Timestamp(
-            dateToConvert.getTime()).toLocalDateTime();
+    public static LocalDateTime convertToLocalDateTime(final Timestamp ts) {
+        if (ts != null) {
+            return ts.toLocalDateTime();
+        }
+        return null;
     }
 }
