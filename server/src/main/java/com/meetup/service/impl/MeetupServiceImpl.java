@@ -21,11 +21,8 @@ import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IMeetupService;
 
 import com.meetup.utils.MeetupDTOConverter;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.meetup.utils.Pair;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -152,7 +149,8 @@ public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * Cancel existing meetup.
-     *  @param meetupID Meetup ID to be canceled
+     *
+     * @param meetupID Meetup ID to be canceled
      * @param login User login (that removes the meetup)
      * @return cancelled meetup
      */
@@ -176,12 +174,14 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public MeetupDisplayDTO getMeetup(final int meetupID) {
-        return meetupDTOConverter.convertToMeetupDTO(meetupDao.findMeetupByID(meetupID));
+        return meetupDTOConverter
+            .convertToMeetupDTO(meetupDao.findMeetupByID(meetupID));
     }
 
     /**
      * Start meetup for fixed duration.
-     *  @param meetupID Meetup ID.
+     *
+     * @param meetupID Meetup ID.
      * @param userLogin User login.
      * @return started meetup
      */
@@ -201,6 +201,7 @@ public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * Terminate meetup.
+     *
      * @param meetupID Meetup ID.
      * @param userLogin User login.
      * @return terminated meetup
@@ -257,26 +258,34 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public List<MeetupDisplayDTO> getSpeakerMeetups(final int speakerID) {
-        return meetupDao.getSpeakerMeetupsAllHosted(speakerID);
+        List<Meetup> speakerMeetups = meetupDao
+            .getSpeakerMeetupsAllHosted(speakerID);
+        if (speakerMeetups.isEmpty()) {
+            throw new MeetupNotFoundException();
+        }
+        return meetupDTOConverter.convertToMeetupDTO(speakerMeetups);
     }
 
     /**
      * . List of meetups hosted by speaker in past
+     *
      * @param id id of user
-     * @return   list  of user hosted meetups
+     * @return list  of user hosted meetups
      */
     @Override
-    public  List<Meetup>  getHostedMeetupsPast(final int id){
-            return    meetupDao.getSpeakerMeetupsPast(id);
+    public List<Meetup> getHostedMeetupsPast(final int id) {
+        return meetupDao.getSpeakerMeetupsPast(id);
     }
+
     /**
      * . List of meetups that will be hosted by this speaker
+     *
      * @param id id of user
-     * @return  list of user hosted meetups
+     * @return list of user hosted meetups
      */
     @Override
-    public  List<Meetup>  getHostedMeetupsFuture(final int id){
-        return    meetupDao.getSpeakerMeetupsFuture(id);
+    public List<Meetup> getHostedMeetupsFuture(final int id) {
+        return meetupDao.getSpeakerMeetupsFuture(id);
     }
 
     /**
@@ -323,9 +332,10 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return List of meetups
      */
     @Override
-    public List<Meetup>  getJoinedMeetupsPast(final int id) {
-       return meetupDao.getUsersJoinedMeetupsPast(id);
+    public List<Meetup> getJoinedMeetupsPast(final int id) {
+        return meetupDao.getUsersJoinedMeetupsPast(id);
     }
+
     /**
      * . Meetups that user will attend in  future
      *
@@ -333,7 +343,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return List of meetups
      */
     @Override
-    public List<Meetup>  getJoinedMeetupsFuture(final int id) {
+    public List<Meetup> getJoinedMeetupsFuture(final int id) {
         return meetupDao.getUsersJoinedMeetupsFuture(id);
     }
 }
