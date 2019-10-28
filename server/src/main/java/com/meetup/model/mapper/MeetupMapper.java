@@ -27,8 +27,7 @@ public final class MeetupMapper implements RowMapper<Meetup> {
         meetup.setStateId(rs.getInt("id_state"));
         meetup.setTitle(rs.getString("title"));
         meetup.setStartDate(
-            TimeUtility.convertToLocalDateTimeViaSqlTimestamp(
-                rs.getDate("start_time")));
+            TimeUtility.convertToLocalDateTime(rs.getTimestamp("start_time")));
         meetup.setDurationMinutes(rs.getInt("duration_minutes"));
         meetup.setMinAttendees(rs.getInt("min_attendees"));
         meetup.setMaxAttendees(rs.getInt("max_attendees"));

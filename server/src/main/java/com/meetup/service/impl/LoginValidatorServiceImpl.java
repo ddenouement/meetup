@@ -1,6 +1,7 @@
 package com.meetup.service.impl;
 
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;
@@ -54,7 +55,20 @@ public class LoginValidatorServiceImpl implements ILoginValidatorService {
             throw new NoSuchElementException();
         }
     }
-
+    /**.
+     * Extracting id from JSON web token.
+     *
+     * @param token Token, that used to extract id from
+     * @return Int representation of user id
+     */
+    @Override
+    public int extractId(final String token) {
+       Integer userId = jwtTokenProvider.getUserId(token);
+        if (userId == null) {
+            throw new NullPointerException();
+        }
+        return userId;
+    }
     /**.
      * Check if user exists in database.
      *

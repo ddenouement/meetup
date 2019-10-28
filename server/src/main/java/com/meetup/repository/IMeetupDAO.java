@@ -21,41 +21,55 @@ public interface IMeetupDAO {
      * Add meetup to database.
      *
      * @param meetup Meetup object to be added
+     * @return added Meetup.
      */
-    void insertNewMeetup(Meetup meetup);
+    Meetup insertNewMeetup(Meetup meetup);
 
     /**
      * Update existing meetup.
      *
      * @param currentMeetup Meetup object (edited)
      * @param meetupID meetup ID to be updated
+     * @return updated meetup
      */
-    void updateMeetup(Meetup currentMeetup, int meetupID);
+    Meetup updateMeetup(Meetup currentMeetup, int meetupID);
 
     /**
      * Find meetup by id.
-     * @param meetupID
-     * Meetup id.
-     * @return
-     * Existing meetup.
+     *
+     * @param meetupID Meetup id.
+     * @return Existing meetup.
      */
     Meetup findMeetupByID(int meetupID);
 
     /**
-     * Retrieve meetups of specified speaker.
+     * Retrieve future hosted meetups of specified speaker.
      *
      * @param speakerID Speaker ID
      * @return List of meetups of specified speaker
      */
-    List<Meetup> getSpeakerMeetups(int speakerID);
-
+    List<Meetup> getSpeakerMeetupsPast(int speakerID);
     /**
-     * Retrieve meetups of specified user.
+     * Retrieve past hosted meetups of specified speaker.
+     *
+     * @param speakerID Speaker ID
+     * @return List of meetups of specified speaker
+     */
+    List<Meetup> getSpeakerMeetupsFuture(int speakerID);
+    /**
+     * Retrieve past attended meetups of specified user.
      *
      * @param userID User ID
      * @return List of meetups of specified user
      */
-    List<Meetup> getUsersJoinedMeetups(int userID);
+    List<Meetup> getUsersJoinedMeetupsPast(int userID);
+    /**
+     * Retrieve future attended meetups of specified user.
+     *
+     * @param userID User ID
+     * @return List of meetups of specified user
+     */
+    List<Meetup> getUsersJoinedMeetupsFuture(int userID);
 
     /**
      * Add specific topic.ts to database for meetup.
@@ -64,6 +78,15 @@ public interface IMeetupDAO {
      * @param topic Topic object that will be added to meetup
      */
     void addTopicToMeetup(Meetup meetup, Topic topic);
+
+    /**
+     * Get topics of meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @return
+     * List of topics.
+     */
+    List<Topic> getMeetupTopics(int meetupID);
 
     /**
      * Add user to specific meetup.
@@ -90,11 +113,11 @@ public interface IMeetupDAO {
 
     /**
      * Get users on meetup.
-     * @param meetupId
-     * Meetup ID
-     * @return
-     * List of users
+     *
+     * @param meetupId Meetup ID
+     * @return List of users
      */
     List<User> getUsersOnMeetup(int meetupId);
+    List<Meetup> getSpeakerMeetupsAllHosted(  int speakerID) ;
 
 }

@@ -21,4 +21,13 @@ public interface ILanguageDAO {
      * @return all instances of a type
      */
     List<Language> findAllSorted();
+
+    /**
+     * Find language by ID.
+     * @param languageID
+     * Language ID.
+     * @return
+     * Language object.
+     */
+    Language findLanguageByID(int languageID);
 }

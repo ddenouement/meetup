@@ -7,12 +7,15 @@ import com.meetup.model.mapper.StringMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IBadgeDAO;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -110,30 +113,37 @@ public class BadgeDaoImpl implements IBadgeDAO {
 
     /**
      * Update a badge to a new one.
-     *
-     * @param badge new field values for badge
+     *  @param badge new field values for badge
      * @param id id of badge to update
+     * @return updated badge
      */
     @Override
-    public void update(final Badge badge, final Integer id) {
+    public Badge update(final Badge badge, final Integer id) {
+        KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", id)
             .addValue("name", badge.getName())
             .addValue("script", badge.getScript());
-        template.update(updateBadge, param);
+        template.update(updateBadge, param, holder, new String[]{"id"});
+        badge.setId(Objects.requireNonNull(holder.getKey()).intValue());
+        return badge;
     }
 
     /**
      * Insert a badge in the database.
      *
      * @param badge badge to insert
+     * @return inserted badge
      */
     @Override
-    public void insert(final Badge badge) {
+    public Badge insert(final Badge badge) {
+        KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("name", badge.getName())
             .addValue("script", badge.getScript());
-        template.update(insertBadge, param);
+        template.update(insertBadge, param, holder, new String[]{"id"});
+        badge.setId(Objects.requireNonNull(holder.getKey()).intValue());
+        return badge;
     }
 
     /**

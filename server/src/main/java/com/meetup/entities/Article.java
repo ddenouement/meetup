@@ -32,7 +32,7 @@ public class Article {
      * Date of posting of article.
      */
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime postDate;
+    private LocalDateTime postDateTime;
     /**
      * ID's of topics of this article.
      */

@@ -1,0 +1,34 @@
+
+<h1>All topics</h1>
+<p>Add new language</p>
+<input type="button" value="Add" class="addbtn btn_my" (click)="addTopic()" />
+<table>
+  <tbody>
+  <tr *ngFor="let topic of topics">
+    <ng-template [ngTemplateOutlet]="loadTemplateT(topic)"
+                 [ngTemplateOutletContext]="{ $implicit: topic}">
+    </ng-template>
+  </tr>
+  </tbody>
+</table>
+<div>{{statusMessageT}}</div>
+<ng-template #readOnlyTemplate let-topic>
+  <td>{{topic.name}}</td>
+  <td>
+    <input type="button" value="Edit" class="btnedit btn_my" (click)="editTopic(topic)" />
+  </td>
+  <td>
+    <input type="button" value="Delete" (click)="deleteTopic(topic)" class="btn_my btn_delete" />
+  </td>
+</ng-template>
+<ng-template #editTemplate>
+  <td>
+    <input type="text" [(ngModel)]="editedTopic.name" class="form-control" />
+  </td>
+  <td>
+    <input type="button" value="Save" (click)="saveTopic()" class="btn_my btn_good" />
+  </td>
+  <td>
+    <input type="button" value="Cancel changes" (click)="cancelT()" class="btn_my btn_warning" />
+  </td>
+</ng-template>

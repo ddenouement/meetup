@@ -125,9 +125,12 @@ log.debug(getUsername(token));
         if (cookies == null) {
             return null;
         }
-        Optional<Cookie> cookie = Arrays.stream(cookies)
-            .filter(c -> c.getName().equals("token")).findAny();
-        return cookie.map(Cookie::getValue).orElse(null);
+        // TODO null in filter?
+        return Arrays.stream(cookies)
+            .filter(c -> c.getName().equals("token"))
+            .findAny()
+            .map(Cookie::getValue)
+            .orElse(null);
     }
 
     /**

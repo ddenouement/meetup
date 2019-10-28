@@ -1,29 +1,25 @@
 package com.meetup.utils;
 
+import lombok.Data;
+
 /**
  * Utility (constants) class.
  */
-public final class ModelConstants {
-
-    /**
-     * Private utility class constructor.
-     */
-    private ModelConstants() {
-        // closed empty constructor
-    }
-
+public enum ModelConstants {
     /** Key for joined meetups of user which happen in the future. */
-    public static final String JOINED_MEETUPS_FUTURE = "joinedMeetupsFuture";
+   joinedMeetupsFuture,
     /** Key for joined meetups of user which have already passed. */
-    public static final String JOINED_MEETUPS_PAST = "joinedMeetupsPast";
+    joinedMeetupsPast,
     /** Key for hosted meetups of user which happen in the future. */
-    public static final String HOSTED_MEETUPS_FUTURE = "hostedMeetupsFuture";
+    hostedMeetupsFuture,
     /** Key for hosted meetups of user which have already passed. */
-    public static final String HOSTED_MEETUPS_PAST = "hostedMeetupsPast";
+     hostedMeetupsPast ,
     /** Key for UserDTO. */
-    public static final String USERDTO = "UserDTO";
+    userDTO,
     /** Key for a list of user's subscriptions. */
-    public static final String SUBSCRIPTIONS = "subscribedTo";
+     subscribedTo,
     /** Key for a list of user's badges. */
-    public static final String BADGES = "badges";
+    badges;
+
+
 }

@@ -1,9 +1,11 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.Meetup;
+import com.meetup.entities.MeetupState;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.error.EmailIsUsedException;
@@ -13,7 +15,6 @@ import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.MeetupStateConstants;
 import com.meetup.utils.UserDTOConverter;
 
 import java.util.Arrays;
@@ -124,14 +125,23 @@ public class UserServiceImpl implements IUserService {
 
 
     /**
-     * .
      *
-     * @return List<User> of speakers
+     * Get all active speakers.
+     * @return List<User> of speakers.
      */
     @Override
     public List<User> getAllSpeakers() {
-        //TODOo implement
-        return null;
+        return userDao.getAllSpeakers();
+    }
+
+    /**
+     * Get all active users.
+     * @return
+     * List<User> of users.
+     */
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     /**
@@ -155,15 +165,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean deactivateUser(final int id) {
         //unsubscribe from future meetups
-        for (Meetup meet : meetupService.getUserJoinedMeetups(id).getSecond()) {
+        for (Meetup meet : meetupService.getJoinedMeetupsFuture(id)) {
             meetupDao.removeUserFromMeetup(meet.getId(), id);
         }
-        for (Meetup meetup : meetupDao.getSpeakerMeetups(id)) {
+        for (Meetup meetup : meetupDao.getSpeakerMeetupsFuture(id)) {
             for (User user : meetupDao.getUsersOnMeetup(meetup.getId())) {
                 meetupDao.removeUserFromMeetup(meetup.getId(), user.getId());
             }
             // cancel Meetup a
-            meetup.setStateId(MeetupStateConstants.CANCELED);
+            meetup.setStateId(MeetupState.CANCELED.getCode());
             meetupDao.updateMeetup(meetup, meetup.getId());
         }
         userDao.deactivateUser(id);
@@ -175,8 +185,8 @@ public class UserServiceImpl implements IUserService {
      * @return List of complaints from DB.
      */
     @Override
-    public List<ComplaintDTO> getAllComplaints() {
-        return userDao.getAllComplaints();
+    public List<ComplaintDTO> getAllNotReadComplaints() {
+        return userDao.getAllNotReadComplaints();
     }
 
     /**
@@ -202,8 +212,54 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean markAsReadComplaint(final int id) {
-       return  userDao.markAsReadComplaint(id);
-
+        return userDao.markAsReadComplaint(id);
     }
+    /**
+     * User can subscribe on speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+     @Override
+    public void subscribeToSpeaker(final int userId, final int speakerId) {
+         User u = userDao.findUserById(userId);
+        if (u == null) {
+             throw new UserNotFoundException();
+         }
+      userDao.subscribeToSpeaker(userId, speakerId);
+    }
+    /**
+     * User can unsubscribe from speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+    @Override
+    public void unSubscribeFromSpeaker(int userId, int speakerId) {
+        User u = userDao.findUserById(userId);
+        if (u == null) {
+            throw new UserNotFoundException();
+        }
+        userDao.unSubscribeFromSpeaker(userId, speakerId);
+    }
+
+    /**
+     * Get list of subscribers of a given speaker (by his ID).
+     * @param speakerId speaker
+     * @return list of subscribers
+     */
+    @Override
+    public List<User> getSubscribersOfSpeaker(int speakerId) {
+        return userDao.getSubscribersOfSpeaker(speakerId);
+    }
+
+    /**
+     * Get basic info about users ho are subscribed on speaker.
+     * @param speakerId speaker
+     * @return List of SimpleUserDTO
+     */
+    @Override
+    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
+        return userDao.getSimpleSubscribersOfSpeaker(speakerId);
+    }
+
 
 }
