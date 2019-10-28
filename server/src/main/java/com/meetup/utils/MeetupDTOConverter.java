@@ -52,6 +52,7 @@ public class MeetupDTOConverter {
         UserDTOConverter userDTOConverter = new UserDTOConverter();
         User speaker = userDao.findUserById(meetup.getSpeakerId());
         UserDTO speakerDTO = userDTOConverter.convertToUserDTO(speaker);
+        speakerDTO.setLanguages(userDao.getUsersLanguages(speakerDTO.getId()));
         MeetupDisplayDTO newMeetup = new MeetupDisplayDTO();
 
         newMeetup.setId(meetup.getId());
