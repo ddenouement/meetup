@@ -47,21 +47,23 @@ public class BadgeServiceImpl implements IBadgeService {
      * Update a badge to a new one.
      * @param badge new field values for badge
      * @param id id of badge to update
+     * @return updated badge
      */
     @Override
-    public void update(final Badge badge, final Integer id) {
+    public Badge update(final Badge badge, final Integer id) {
         checkScript(badge.getScript());
-        badgeDAO.update(badge, id);
+        return badgeDAO.update(badge, id);
     }
 
     /**
      * Insert a badge.
      * @param badge badge to insert
+     * @return inserted badge
      */
     @Override
-    public void insert(final Badge badge) {
+    public Badge insert(final Badge badge) {
         checkScript(badge.getScript());
-        badgeDAO.insert(badge);
+        return badgeDAO.insert(badge);
     }
 
     /**

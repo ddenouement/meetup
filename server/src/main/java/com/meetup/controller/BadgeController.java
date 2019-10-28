@@ -54,7 +54,7 @@ public class BadgeController {
      * Return a badge with specified id.
      *
      * @param id id of badge to return
-     * @return a list of badges
+     * @return a badge
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @GetMapping("/api/v1/badge/{id}")
@@ -70,14 +70,14 @@ public class BadgeController {
     /**
      * Insert a badge.
      *
-     * @param badge updated badge
-     * @return a list of badges
+     * @param badge badge to insert
+     * @return inserted badge
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @PostMapping("/api/v1/badge")
-    public ResponseEntity updateBadge(@RequestBody final Badge badge) {
-        badgeService.insert(badge);
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity<Badge> insertBadge(@RequestBody final Badge badge) {
+        return new ResponseEntity<>(badgeService.insert(badge),
+            HttpStatus.CREATED);
     }
 
     /**
@@ -85,21 +85,22 @@ public class BadgeController {
      *
      * @param id id of badge to update
      * @param badge updated badge
-     * @return a list of badges
+     * @return updated badge
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @PutMapping("/api/v1/badge/{id}")
-    public ResponseEntity updateBadge(@PathVariable("id") final Integer id,
+    public ResponseEntity<Badge> updateBadge(
+        @PathVariable("id") final Integer id,
         @RequestBody final Badge badge) {
-        badgeService.update(badge, id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(badgeService.update(badge, id),
+            HttpStatus.OK);
     }
 
     /**
      * Delete a badge with specified id.
      *
-     * @param id id of badge to update
-     * @return a list of badges
+     * @param id id of badge to delete
+     * @return status
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
     @DeleteMapping("/api/v1/badge/{id}")
