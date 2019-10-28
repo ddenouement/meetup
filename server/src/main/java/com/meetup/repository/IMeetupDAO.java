@@ -80,6 +80,15 @@ public interface IMeetupDAO {
     void addTopicToMeetup(Meetup meetup, Topic topic);
 
     /**
+     * Get topics of meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @return
+     * List of topics.
+     */
+    List<Topic> getMeetupTopics(int meetupID);
+
+    /**
      * Add user to specific meetup.
      *
      * @param meetupID Meetup, that user should register to.
