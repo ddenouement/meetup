@@ -21,23 +21,24 @@ public interface IMeetupDAO {
      * Add meetup to database.
      *
      * @param meetup Meetup object to be added
+     * @return added Meetup.
      */
-    void insertNewMeetup(Meetup meetup);
+    Meetup insertNewMeetup(Meetup meetup);
 
     /**
      * Update existing meetup.
      *
      * @param currentMeetup Meetup object (edited)
      * @param meetupID meetup ID to be updated
+     * @return updated meetup
      */
-    void updateMeetup(Meetup currentMeetup, int meetupID);
+    Meetup updateMeetup(Meetup currentMeetup, int meetupID);
 
     /**
      * Find meetup by id.
-     * @param meetupID
-     * Meetup id.
-     * @return
-     * Existing meetup.
+     *
+     * @param meetupID Meetup id.
+     * @return Existing meetup.
      */
     Meetup findMeetupByID(int meetupID);
 
@@ -90,10 +91,9 @@ public interface IMeetupDAO {
 
     /**
      * Get users on meetup.
-     * @param meetupId
-     * Meetup ID
-     * @return
-     * List of users
+     *
+     * @param meetupId Meetup ID
+     * @return List of users
      */
     List<User> getUsersOnMeetup(int meetupId);
 

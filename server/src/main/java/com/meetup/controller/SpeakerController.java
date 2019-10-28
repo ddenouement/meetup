@@ -64,12 +64,12 @@ public class SpeakerController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "/api/v1/user/speaker/meetups")
-    public ResponseEntity createMeetup(
+    public ResponseEntity<Meetup> createMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
         String userLogin = loginValidatorService.extractLogin(token);
-        meetupService.createMeetup(meetup, userLogin);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(
+            meetupService.createMeetup(meetup, userLogin), HttpStatus.CREATED);
     }
 
     /**
@@ -82,13 +82,14 @@ public class SpeakerController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PutMapping(value = "/api/v1/user/speaker/meetups/{id}")
-    public ResponseEntity updateMeetup(
+    public ResponseEntity<Meetup> updateMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup updatedMeetup,
         @PathVariable("id") final int meetupID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        meetupService.updateMeetup(meetupID, updatedMeetup, userLogin);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(
+            meetupService.updateMeetup(meetupID, updatedMeetup, userLogin),
+            HttpStatus.OK);
     }
 
     /**
@@ -100,12 +101,12 @@ public class SpeakerController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @DeleteMapping(value = "/api/v1/user/speaker/meetups/{id}")
-    public ResponseEntity cancelMeetup(
+    public ResponseEntity<Meetup> cancelMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        meetupService.cancelMeetup(meetupID, userLogin);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(
+            meetupService.cancelMeetup(meetupID, userLogin), HttpStatus.OK);
     }
 
     /**
@@ -117,12 +118,12 @@ public class SpeakerController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "api/v1/user/speaker/meetups/{id}/start")
-    public ResponseEntity startMeetup(
+    public ResponseEntity<Meetup> startMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        meetupService.startMeetup(meetupID, userLogin);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(
+            meetupService.startMeetup(meetupID, userLogin), HttpStatus.OK);
     }
 
     /**
@@ -134,12 +135,12 @@ public class SpeakerController {
      */
     @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
     @PostMapping(value = "api/v1/user/speaker/meetups/{id}/terminate")
-    public ResponseEntity terminateMeetup(
+    public ResponseEntity<Meetup> terminateMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        meetupService.terminateMeetup(meetupID, userLogin);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(
+            meetupService.terminateMeetup(meetupID, userLogin), HttpStatus.OK);
     }
 
     /**
