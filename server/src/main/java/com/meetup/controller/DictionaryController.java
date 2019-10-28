@@ -5,12 +5,14 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.entities.Language;
 import com.meetup.service.IDictionaryService;
 import io.swagger.annotations.Api;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * . Rest api for languages
@@ -45,4 +47,29 @@ public class DictionaryController {
         @RequestParam final Optional<Boolean> sorted) {
         return ok(dictionaryService.getAllLanguages(sorted.orElse(false)));
     }
+    @PostMapping(value = "/api/v1/languages")
+    public ResponseEntity postNewLang(
+            @RequestBody Language language){
+        language.setId(new Random().nextInt());
+        HashMap model  = new HashMap();
+        model.put("language", language);
+        return ok(model);
+    }
+    @DeleteMapping(value = "/api/v1/languages/{id}")
+    public ResponseEntity delLang(
+            @PathVariable int id ){
+        HashMap model  = new HashMap();
+        model.put("id", id);
+        //   throw new UserNotFoundException();
+        return   ok(model);
+    }
+    @PutMapping(value = "/api/v1/languages")
+    public ResponseEntity editLang(
+            @RequestBody Language l){
+        HashMap model  = new HashMap();
+
+        model.put("language", l);
+        return ok( model);
+    }
+
 }

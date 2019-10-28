@@ -165,10 +165,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean deactivateUser(final int id) {
         //unsubscribe from future meetups
-        for (Meetup meet : meetupService.getUserJoinedMeetups(id).getSecond()) {
+        for (Meetup meet : meetupService.getJoinedMeetupsFuture(id)) {
             meetupDao.removeUserFromMeetup(meet.getId(), id);
         }
-        for (Meetup meetup : meetupDao.getSpeakerMeetups(id)) {
+        for (Meetup meetup : meetupDao.getSpeakerMeetupsFuture(id)) {
             for (User user : meetupDao.getUsersOnMeetup(meetup.getId())) {
                 meetupDao.removeUserFromMeetup(meetup.getId(), user.getId());
             }

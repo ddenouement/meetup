@@ -94,10 +94,9 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         //user can see his own future joined meetups
-        Pair<List<Meetup>, List<Meetup>> joined =
-                meetupService.getUserJoinedMeetups(user.getId());
-        List<Meetup> userJoinedMeetupsFuture = joined.getSecond();
-        model.put(ModelConstants.JOINED_MEETUPS_FUTURE, userJoinedMeetupsFuture);
+        List<Meetup> userJoinedMeetupsFuture =
+                meetupService.getJoinedMeetupsFuture(user.getId());
+        model.put(ModelConstants.joinedMeetupsFuture, userJoinedMeetupsFuture);
         return ok(model);
     }
 

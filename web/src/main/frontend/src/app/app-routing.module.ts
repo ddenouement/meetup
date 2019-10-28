@@ -22,6 +22,7 @@ const routes: Routes = [
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'speaker-profile/{{id}}', component: SpeakerProfileToUsersComponent},
+
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
 ];

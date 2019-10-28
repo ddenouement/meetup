@@ -52,23 +52,22 @@ public class ProfileService implements IProfileService {
         } catch (UserNotFoundException a) {
             return model;
         }
-        model.put(ModelConstants.USERDTO, user);
-        model.put(ModelConstants.SUBSCRIPTIONS,
+        model.put(ModelConstants.userDTO, user);
+        model.put(ModelConstants.subscribedTo,
             userService.getUsersSubscriptionsToSpeakers(
                 user.getId()));
-        Pair<List<Meetup>, List<Meetup>> hosted =
-            meetupService.getSpeakerMeetupsByLogin(user.getLogin());
-        List<Meetup> hostedMeetupsPast = hosted.getFirst();
-        List<Meetup> hostedMeetupsFuture = hosted.getSecond();
-        model.put(ModelConstants.HOSTED_MEETUPS_FUTURE, hostedMeetupsFuture);
-        model.put(ModelConstants.HOSTED_MEETUPS_PAST, hostedMeetupsPast);
+        List<Meetup> hostedMeetupsPast =
+                meetupService.getHostedMeetupsPast(user.getId());
+        List<Meetup> hostedMeetupsFuture =
+                meetupService.getHostedMeetupsFuture(user.getId());
+        model.put(ModelConstants.hostedMeetupsFuture, hostedMeetupsFuture);
+        model.put(ModelConstants.hostedMeetupsPast,hostedMeetupsPast);
         //we don`t send future joined, as part of privacy
-        Pair<List<Meetup>, List<Meetup>> joined =
-            meetupService.getUserJoinedMeetups(user.getId());
-        List<Meetup> userJoinedMeetupsPast = joined.getFirst();
-        model.put(ModelConstants.JOINED_MEETUPS_PAST, userJoinedMeetupsPast);
+        List<Meetup> userJoinedMeetupsPast =
+                meetupService.getJoinedMeetupsPast(user.getId());
+        model.put(ModelConstants.joinedMeetupsPast, userJoinedMeetupsPast);
         List<String> badges = badgeService.getUserBadges(user.getId());
-        model.put(ModelConstants.BADGES, badges);
+        model.put(ModelConstants.badges , badges);
         return model;
     }
 
