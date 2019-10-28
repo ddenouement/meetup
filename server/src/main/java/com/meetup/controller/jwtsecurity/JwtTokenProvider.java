@@ -122,12 +122,15 @@ log.debug(getUsername(token));
      */
     public String resolveToken(final HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-        if (cookies == null) {
+        if (Optional.ofNullable(cookies).isPresent()) {
             return null;
         }
-        Optional<Cookie> cookie = Arrays.stream(cookies)
-            .filter(c -> c.getName().equals("token")).findAny();
-        return cookie.map(Cookie::getValue).orElse(null);
+        // TODO null in filter?
+        return Arrays.stream(cookies)
+            .filter(c -> c.getName().equals("token"))
+            .findAny()
+            .map(Cookie::getValue)
+            .orElse(null);
     }
 
     /**

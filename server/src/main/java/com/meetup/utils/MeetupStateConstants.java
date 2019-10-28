@@ -3,6 +3,8 @@ package com.meetup.utils;
 /**
  * Utility (constants) class.
  */
+
+//TODO ENUM
 public final class MeetupStateConstants {
 
     /**

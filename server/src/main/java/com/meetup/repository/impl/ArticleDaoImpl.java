@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @PropertySource("classpath:sql/article_queries.properties")
 public class ArticleDaoImpl implements IArticleDAO {
-
+//TODO generic dao
     /**
      * JDBC template.
      */

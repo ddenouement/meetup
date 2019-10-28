@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * Exception controller class.
  * Returns ResponseEntity object with status code.
  */
+
+//TODO constants, logger
 @ControllerAdvice
 public class GlobalExceptionController {
 
