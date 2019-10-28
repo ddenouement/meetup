@@ -20,110 +20,99 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-/**.
- * Meetup repository class.
- * Used to communicate with database, to perform operations with Meetups.
+/**
+ * . Meetup repository class. Used to communicate with database, to perform
+ * operations with Meetups.
  */
 @Repository
 @PropertySource("classpath:sql/meetup_queries.properties")
 public class MeetupDaoImpl implements IMeetupDAO {
 
-    /**.
-     * JDBC template.
+    /**
+     * . JDBC template.
      */
     @Autowired
     private NamedParameterJdbcTemplate template;
 
-    /**.
-     * SQL reference script.
-     * Retrieve all meetups.
+    /**
+     * . SQL reference script. Retrieve all meetups.
      */
     @Value("${get_all_meetings}")
     private String getAllMeetups;
-    /**.
-     * SQL reference script.
-     * Retrieve specific speaker meetups.
+    /**
+     * . SQL reference script. Retrieve specific speaker meetups.
      */
     @Value("${get_speaker_meetings}")
     private String getSpeakerMeetups;
     /**
-     * SQL reference script.
-     * Add meetup to DB.
+     * SQL reference script. Add meetup to DB.
      */
     @Value("${insert_new_meetup}")
     private String insertNewMeetup;
     /**
-     * SQL reference script.
-     * Update existing meetup in DB.
+     * SQL reference script. Update existing meetup in DB.
      */
     @Value("${update_meetup}")
     private String updateMeetup;
-    /**.
-     * SQL reference script.
-     * Retrieve topic.ts by name.
+    /**
+     * . SQL reference script. Retrieve topic.ts by name.
      */
     @Value("${find_topic_id}")
     private String findTopicIdByName;
-    /**.
-     * SQL reference script.
-     * Add topic.ts to specific meetup.
+    /**
+     * . SQL reference script. Add topic.ts to specific meetup.
      */
     @Value("${add_topic_to_meeting}")
     private String addTopicToMeetup;
-    /**.
-     * SQL reference script.
-     * Get users joined to meetup.
+    /**
+     * . SQL reference script. Get users joined to meetup.
      */
     @Value("${get_joined_meetups_of_user}")
     private String getUsersJoinedMeetups;
-    /**.
-     * SQL reference script.
-     * Add user to meetup.
+    /**
+     * . SQL reference script. Add user to meetup.
      */
     @Value("${add_user_to_meetup}")
     private String addUserToMeetup;
-    /**.
-     * SQL reference script.
-     * Remove user from meetup.
+    /**
+     * . SQL reference script. Remove user from meetup.
      */
     @Value("${remove_user_from_meetup}")
     private String removeUserFromMeetup;
-    /**.
-     * SQL reference script.
-     * Remove all users from meetup.
+    /**
+     * . SQL reference script. Remove all users from meetup.
      */
     @Value("${remove_all_users_from_meetup}")
     private String removeAllUsersFromMeetup;
-    /**.
-     * SQL reference script.
-     * Get all users on specific meetup.
+    /**
+     * . SQL reference script. Get all users on specific meetup.
      */
     @Value("${get_users_on_meetup}")
     private String getUsersOnMeetup;
-    /**.
-     * SQL reference script.
-     * Get meetup by ID.
+    /**
+     * . SQL reference script. Get meetup by ID.
      */
     @Value("${find_meetup_by_id}")
     private String getMeetupByID;
 
-    /**.
-     * Get all meetups from DB.
-     * @return
-     * List of all meetups.
+    /**
+     * . Get all meetups from DB.
+     *
+     * @return List of all meetups.
      */
     @Override
     public List<Meetup> getAllMeetups() {
         return this.template.query(getAllMeetups, new MeetupMapper());
     }
 
-    /**.
+    /**
      * Insert new meetup in DB.
-     * @param meetup
-     * Meetup to be added.
+     *
+     * @param meetup Meetup to be added.
+     * @return added Meetup
      */
     @Override
-    public void insertNewMeetup(final Meetup meetup) {
+    public Meetup insertNewMeetup(final Meetup meetup) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_speaker", meetup.getSpeakerId())
@@ -144,16 +133,18 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 addTopicToMeetup(meetup, topic);
             }
         }
+        return meetup;
     }
 
-    /**.
-     * Update existing meetup in DB.
-     * @param meetupID
-     * Meetup to be updated.
+    /**
+     * . Update existing meetup in DB.
+     *
      * @param editedMeetup Edited meetup.
+     * @param meetupID Meetup to be updated.
+     * @return edited meetup
      */
     @Override
-    public void updateMeetup(final Meetup editedMeetup, final int meetupID) {
+    public Meetup updateMeetup(final Meetup editedMeetup, final int meetupID) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", meetupID)
@@ -175,14 +166,14 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 addTopicToMeetup(editedMeetup, topic);
             }
         }
+        return editedMeetup;
     }
 
     /**
      * Get meetup from DB by ID.
-     * @param meetupID
-     * Meetup id.
-     * @return
-     * Meetup object.
+     *
+     * @param meetupID Meetup id.
+     * @return Meetup object.
      */
     @Override
     public Meetup findMeetupByID(final int meetupID) {
@@ -192,12 +183,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .queryForObject(getMeetupByID, param, new MeetupMapper());
     }
 
-    /**.
-     * Add topic.ts to meetup in DB.
-     * @param meetup
-     * Meetup object, that should have topic.ts
-     * @param topic
-     * Topic to be added to meetup.
+    /**
+     * . Add topic.ts to meetup in DB.
+     *
+     * @param meetup Meetup object, that should have topic.ts
+     * @param topic Topic to be added to meetup.
      */
     @Override
     public void addTopicToMeetup(final Meetup meetup, final Topic topic) {
@@ -213,12 +203,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(addTopicToMeetup, parametersForAddingTopic);
     }
 
-    /**.
-     * Get all meetups of specific speaker.
-     * @param speakerID
-     * Speaker ID
-     * @return
-     * List of meetups of specific speaker.
+    /**
+     * . Get all meetups of specific speaker.
+     *
+     * @param speakerID Speaker ID
+     * @return List of meetups of specific speaker.
      */
     @Override
     public List<Meetup> getSpeakerMeetups(final int speakerID) {
@@ -228,27 +217,25 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .query(getSpeakerMeetups, param, new MeetupMapper());
     }
 
-    /**.
-     * Get all meetups, that user have joined.
-     * @param userID
-     * User ID
-     * @return
-     * List of meetups.
+    /**
+     * . Get all meetups, that user have joined.
+     *
+     * @param userID User ID
+     * @return List of meetups.
      */
     @Override
     public List<Meetup> getUsersJoinedMeetups(final int userID) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", userID);
+            .addValue("id_user", userID);
         return this.template
-                .query(getUsersJoinedMeetups, param, new MeetupMapper());
+            .query(getUsersJoinedMeetups, param, new MeetupMapper());
     }
 
-    /**.
-     * Add user to specific meetup.
-     * @param meetupID
-     * Meetup, that user should register to.
-     * @param userID
-     * User that takes part in meetup.
+    /**
+     * . Add user to specific meetup.
+     *
+     * @param meetupID Meetup, that user should register to.
+     * @param userID User that takes part in meetup.
      */
     @Override
     public void addUserToMeetup(final int meetupID, final int userID) {
@@ -258,12 +245,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(addUserToMeetup, param);
     }
 
-    /**.
-     * Remove user from specific meetup.
-     * @param meetupID
-     * Meetup, that user should leave to.
-     * @param userID
-     * User that leaves meetup.
+    /**
+     * . Remove user from specific meetup.
+     *
+     * @param meetupID Meetup, that user should leave to.
+     * @param userID User that leaves meetup.
      */
     @Override
     public void removeUserFromMeetup(final int meetupID, final int userID) {
@@ -275,6 +261,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
 
     /**
      * Remove all users from meetup.
+     *
      * @param meetupID Meetup, that user should leave to.
      */
     @Override
@@ -284,12 +271,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(removeAllUsersFromMeetup, param);
     }
 
-    /**.
-     * Get users, registered on meetup.
-     * @param meetupId
-     * Meetup ID
-     * @return
-     * List of users.
+    /**
+     * . Get users, registered on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return List of users.
      */
     @Override
     public List<User> getUsersOnMeetup(final int meetupId) {
