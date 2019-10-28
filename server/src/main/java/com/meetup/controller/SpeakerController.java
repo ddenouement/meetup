@@ -109,6 +109,40 @@ public class SpeakerController {
     }
 
     /**
+     * Start meetup by speaker.
+     *
+     * @param token JSON web token.
+     * @param meetupID Meetup ID that should be started.
+     * @return ResponseEntity with status code.
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
+    @PostMapping(value = "api/v1/user/speaker/meetups/{id}/start")
+    public ResponseEntity startMeetup(
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        meetupService.startMeetup(meetupID, userLogin);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * Terminate meetup by speaker.
+     *
+     * @param token JSON web token.
+     * @param meetupID Meetup ID that should be terminated.
+     * @return ResponseEntity with status code.
+     */
+    @PreAuthorize("hasRole(T(com.meetup.entities.Role).SPEAKER)")
+    @PostMapping(value = "api/v1/user/speaker/meetups/{id}/terminate")
+    public ResponseEntity terminateMeetup(
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        meetupService.terminateMeetup(meetupID, userLogin);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
      * Create and post new Article from speaker.
      *
      * @param token JSON web token.

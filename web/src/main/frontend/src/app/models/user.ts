@@ -1,4 +1,5 @@
 export class User {
+  public role: string;
   public firstName: string;
   public lastName: string;
   public login: string;
@@ -6,4 +7,5 @@ export class User {
   public about: string;
   public password: string;
   public languageIds: number[];
+  public badges: string[];
 }

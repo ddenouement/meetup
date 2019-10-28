@@ -1,26 +1,8 @@
-<nav class="sidebar">
-  <li class="sidebar__icons"><a><img src="../../assets/images/searchNoActive.svg" routerLink="/create-article" alt="photo"/></a></li>
-  <li class="sidebar__icons sidebar__icons--active"><a href="#"><img src="../../assets/images/myProfileActive.svg" alt="photo"/></a></li>
-  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/messagesNoActive.svg" alt="photo"/></a></li>
-  <li class="sidebar__icons"><a href="#"><img src="../../assets/images/notification.svg" alt="photo"/></a></li>
-</nav>
+<app-sidebar></app-sidebar>
 <main>
-  <div class="hamburger hamburger--squeeze">
-    <div class="hamburger-box">
-      <div class="hamburger-inner"></div>
-    </div>
-  </div>
   <div class="content">
     <form (ngSubmit)="onSubmit()" [formGroup]="changeForm">
       <div class="user__personal personal-active">
-        <div class="user__img">
-          <img class="user__img--photo" src="../../assets/images/faruh.svg"/>
-          <div class="user__img--change">
-            <img class="change__photo" src="../../assets/images/pen2.svg"/>
-            <a class="change__text" href="#">Change photo</a>
-          </div>
-          <star-rating class="user__img--change" value="3.3" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px" readonly="true" (rate)="onRate($event)"></star-rating>
-        </div>
         <div class="user__change">
           <div class="form__user">
             <mat-form-field class="form__input">
@@ -28,7 +10,7 @@
                      placeholder="First name"/>
             </mat-form-field>
             <mat-form-field class="form__input">
-              <input matInput type="text" formControlName="lastName"  pattern="[A-Z]{1}[a-z]{2,20}"
+              <input matInput type="text" formControlName="lastName" pattern="[A-Z]{1}[a-z]{2,20}"
                      placeholder="Last name"/>
             </mat-form-field>
           </div>
@@ -68,6 +50,21 @@
                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
               <button [disabled]="!changeForm.valid" class="form__button" disabled type="submit">Change information
               </button>
+            </div>
+          </div>
+        </div>
+        <div class="user__badges">
+          <star-rating class="user__img--change" value="3.3" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
+                       readonly="true" (rate)="onRate($event)"></star-rating>
+          <div class="badges--header">
+            <img class="header--img" src="../../assets/images/crown.svg">
+            <span class="header--text">BADGES</span>
+          </div>
+          <div class="badges">
+            <span *ngIf="badgeList.length<1" class="badges--text">participate in meetups and get achievements</span>
+            <div class="badge" *ngFor="let badge of badgeList">
+              <img class="badge--img" src="../../assets/images/medal.svg">
+              <span class="badges--text">{{badge}}</span>
             </div>
           </div>
         </div>

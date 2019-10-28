@@ -26,6 +26,7 @@ export class SpeakerProfileComponent implements OnInit {
   public loading = false;
   matcher = new MyErrorStateMatcher();
   languages: LanguagesList [];
+  public badgeList: string[] = [];
   public firstName: string;
   public lastName: string;
   public login: string;
@@ -70,6 +71,7 @@ export class SpeakerProfileComponent implements OnInit {
       for (let i in res['UserDTO'].languages) {
         langList[i] = res['UserDTO'].languages[i].name;
       }
+      this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
         firstName: [res['UserDTO'].firstName, Validators.required],
         lastName: [res['UserDTO'].lastName, Validators.required],
@@ -77,7 +79,7 @@ export class SpeakerProfileComponent implements OnInit {
         email: [res['UserDTO'].email, [Validators.required, Validators.email]],
         about: [res['UserDTO'].about],
         //rate: [res['UserDTO'].rate],
-        languages: [langList, Validators.required]
+        languages: [langList, Validators.required],
       });
     });
 

@@ -1,6 +1,8 @@
 package com.meetup.service;
 
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.error.UserNotFoundException;
@@ -51,11 +53,18 @@ public interface IUserService {
     UserDTO getProfileUserDTO(String login) throws UserNotFoundException;
 
     /**
-     * .
      *
+     * Get all active speakers.
      * @return List<User> of speakers
      */
     List<User> getAllSpeakers();
+
+    /**
+     *
+     * Get all active users.
+     * @return List<User> of users.
+     */
+    List<User> getAllUsers();
 
     /**.
      *
@@ -70,5 +79,46 @@ public interface IUserService {
      */
     boolean deactivateUser(int id);
 
+    /**
+     * .
+     * @return List of all complaints
+     */
+    List <ComplaintDTO>  getAllNotReadComplaints( );
+    /**
+     * .
+     * @param compl ComplaintDTO
+     */
+    void postComplaintOn(ComplaintDTO compl, String login) throws UserNotFoundException;
+    /**
+     * mark complain as read.
+     * @param id Complaint id
+     */
+    boolean markAsReadComplaint(int id);
+    /**
+     * for user to subscribe on speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+    void subscribeToSpeaker(int userId, int speakerId);
+    /**
+     * unsubscribe from speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user was subscribed
+     */
+    void unSubscribeFromSpeaker(int userId, int speakerId);
+
+    /**
+     * Get users who are subscribed on speaker.
+     * @param speakerId speaker
+     * @return users (subscribers)
+     */
+    List<User> getSubscribersOfSpeaker(int speakerId);
+
+    /**
+     * Get basic info about users who are subscribed on speaker.
+     * @param speakerId speaker
+     * @return users (subscribers)
+     */
+    List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId);
 }
 

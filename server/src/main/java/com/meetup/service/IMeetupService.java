@@ -44,6 +44,24 @@ public interface IMeetupService {
     Meetup getMeetup(int meetupID);
 
     /**
+     * Start meetup for fixed duration.
+     * @param meetupID
+     * Meetup ID.
+     * @param userLogin
+     * User login.
+     */
+    void startMeetup(int meetupID, String userLogin);
+
+    /**
+     * Terminate meetup .
+     * @param meetupID
+     * Meetup ID.
+     * @param userLogin
+     * User login.
+     */
+    void terminateMeetup(int meetupID, String userLogin);
+
+    /**
      * Retrieve all available topics.
      *
      * @return List of all topics
@@ -102,5 +120,4 @@ public interface IMeetupService {
      * @return List of Meetups
      */
     Pair<List<Meetup>, List<Meetup>> getUserJoinedMeetups(int id);
-
 }

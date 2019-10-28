@@ -1,0 +1,57 @@
+<app-sidebar></app-sidebar>
+<main>
+  <div class="content">
+    <form>
+      <div class="user__personal personal-active">
+        <div class="user__change">
+          <div class="form__user">
+            <mat-form-field class="form__input">
+              <input matInput type="text"
+                     placeholder="First name"/>
+            </mat-form-field>
+            <mat-form-field class="form__input">
+              <input matInput type="text"
+                     placeholder="Last name"/>
+            </mat-form-field>
+          </div>
+          <div class="form__user">
+            <mat-form-field class="form__input">
+              <input matInput formControlName="login" type="text" placeholder="Login">
+            </mat-form-field>
+            <mat-form-field class="form__input">
+              <input matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+          </div>
+          <mat-form-field class="form__input area">
+            <textarea class="form__textarea" formControlName="about" matInput placeholder="About"></textarea>
+          </mat-form-field>
+          <div class="form__user">
+            <mat-form-field class="form__input">
+              <mat-select placeholder="Languages" formControlName="languages" multiple>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="user__badges">
+          <star-rating class="user__img--change" value="3.3" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
+                       readonly="false" (rate)="onRate($event)"></star-rating>
+          <div class="badges--header">
+            <img class="header--img" src="../../assets/images/crown.svg">
+            <span class="header--text">BADGES</span>
+          </div>
+          <div class="badges">
+            <span *ngIf="true" class="badges--text">This speaker haven`t badges</span>
+            <div class="badge">
+              <img class="badge--img" src="../../assets/images/medal.svg">
+              <span class="badges--text">lalalala tralсм чамвааививаиваиваalala</span>
+            </div>
+            <div class="badge">
+              <img class="badge--img" src="../../assets/images/medal.svg">
+              <span class="badges--text">lalalala tralalala</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>

@@ -1,6 +1,7 @@
 package com.meetup.utils;
 
 import com.meetup.entities.User;
+import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 
 /**.
@@ -23,6 +24,21 @@ public class UserDTOConverter {
         newUser.setFirstName(us.getFirstName());
         newUser.setLastName(us.getLastName());
         newUser.setRoles(us.getRoles());
+        newUser.setLogin(us.getLogin());
+        newUser.setRate(us.getRate());
+        newUser.setNumRates(us.getNumRates());
+        return newUser;
+    }
+    /**
+     * . Convert a User exemplar to SimpleUserDTO exemplar     *
+     * @param us User
+     * @return UserDTO
+     */
+    public SimpleUserDTO convertToSimpleUserDTO(final User us) {
+        SimpleUserDTO newUser = new SimpleUserDTO();
+        newUser.setId(us.getId());
+        newUser.setLastName(us.getLastName());
+        newUser.setFirstName(us.getFirstName());
         newUser.setLogin(us.getLogin());
         newUser.setRate(us.getRate());
         newUser.setNumRates(us.getNumRates());

@@ -3,6 +3,8 @@ package com.meetup.service.impl;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Role;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.error.EmailIsUsedException;
@@ -14,8 +16,10 @@ import com.meetup.service.IMeetupService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.MeetupStateConstants;
 import com.meetup.utils.UserDTOConverter;
+
 import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +39,8 @@ public class UserServiceImpl implements IUserService {
      */
     @Autowired
     private IMeetupDAO meetupDao;
-    /**.
-     *
+    /**
+     * .
      */
     @Autowired
     private IMeetupService meetupService;
@@ -48,7 +52,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsListener(
-        final UserRegistrationDTO user) {
+            final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -66,7 +70,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsSpeaker(
-        final UserRegistrationDTO user) {
+            final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -108,10 +112,10 @@ public class UserServiceImpl implements IUserService {
      * @return UserDTO
      */
     @Override
-    public UserDTO getProfileUserDTO(final String login) {
+    public UserDTO getProfileUserDTO(final String login)  {
         User us = userDao.findUserByLogin(login);
         if (us == null) {
-            throw  new UserNotFoundException();
+            throw new UserNotFoundException();
         }
         UserDTOConverter converter = new UserDTOConverter();
         UserDTO dtouser = converter.convertToUserDTO(us);
@@ -121,14 +125,23 @@ public class UserServiceImpl implements IUserService {
 
 
     /**
-     * .
      *
-     * @return List<User> of speakers
+     * Get all active speakers.
+     * @return List<User> of speakers.
      */
     @Override
     public List<User> getAllSpeakers() {
-        //TODOo implement
-        return null;
+        return userDao.getAllSpeakers();
+    }
+
+    /**
+     * Get all active users.
+     * @return
+     * List<User> of users.
+     */
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     /**
@@ -165,6 +178,87 @@ public class UserServiceImpl implements IUserService {
         }
         userDao.deactivateUser(id);
         return true;
+    }
+
+    /**
+     *
+     * @return List of complaints from DB.
+     */
+    @Override
+    public List<ComplaintDTO> getAllNotReadComplaints() {
+        return userDao.getAllNotReadComplaints();
+    }
+
+    /**
+     * @throws UserNotFoundException if no user with this login
+     * @param complaintDTO complaint without source
+     * @param login login of source
+     */
+    @Override
+    public void postComplaintOn(final ComplaintDTO complaintDTO, final String login) throws UserNotFoundException{
+        User u = userDao.findUserByLogin(login);
+        if (u == null) {
+            throw new UserNotFoundException();
+        }
+        int id_source = u.getId();
+        complaintDTO.setId_user_from(id_source);
+        userDao.postComplaintOn(complaintDTO);
+    }
+
+    /**
+     *
+     * @param id Complaint id.
+     * @return boolean whether is successfull
+     */
+    @Override
+    public boolean markAsReadComplaint(final int id) {
+        return userDao.markAsReadComplaint(id);
+    }
+    /**
+     * User can subscribe on speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+     @Override
+    public void subscribeToSpeaker(final int userId, final int speakerId) {
+         User u = userDao.findUserById(userId);
+        if (u == null) {
+             throw new UserNotFoundException();
+         }
+      userDao.subscribeToSpeaker(userId, speakerId);
+    }
+    /**
+     * User can unsubscribe from speaker.
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+    @Override
+    public void unSubscribeFromSpeaker(int userId, int speakerId) {
+        User u = userDao.findUserById(userId);
+        if (u == null) {
+            throw new UserNotFoundException();
+        }
+        userDao.unSubscribeFromSpeaker(userId, speakerId);
+    }
+
+    /**
+     * Get list of subscribers of a given speaker (by his ID).
+     * @param speakerId speaker
+     * @return list of subscribers
+     */
+    @Override
+    public List<User> getSubscribersOfSpeaker(int speakerId) {
+        return userDao.getSubscribersOfSpeaker(speakerId);
+    }
+
+    /**
+     * Get basic info about users ho are subscribed on speaker.
+     * @param speakerId speaker
+     * @return List of SimpleUserDTO
+     */
+    @Override
+    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
+        return userDao.getSimpleSubscribersOfSpeaker(speakerId);
     }
 
 
