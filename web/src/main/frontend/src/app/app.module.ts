@@ -33,14 +33,16 @@ import {RatingModule} from "ng-starrating";
 import { CreateArticleComponent } from './create-article/create-article.component';
 import { ListenerProfileComponent } from './listener-profile/listener-profile.component';
 import { FeedbackComponent } from './feedback/feedback.component';
-import { AdminComponent } from './admin/admin.component';
 import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
-import { SidebarComponent } from './sidebar/sidebar.component';/*
+import { SidebarComponent } from './sidebar/sidebar.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";/*
 import { DictionariesComponent } from './dictionaries/dictionaries.component';
 import { LanguagesCrudComponent } from './languages-crud/languages-crud.component';
 import { TopicsCrudComponent } from './topics-crud/topics-crud.component';*/
 import {MatTabsModule} from "@angular/material/tabs";
 import { ArticleViewComponent } from './article-view/article-view.component';
+import { AdminTableComponent } from './admin-table/admin-table.component';
 
 @NgModule({
   declarations: [
@@ -55,11 +57,10 @@ import { ArticleViewComponent } from './article-view/article-view.component';
     CreateArticleComponent,
     ListenerProfileComponent,
     FeedbackComponent,
-    AdminComponent,
     SpeakerProfileToUsersComponent,
     SidebarComponent,
-    ArticleViewComponent
-
+    ArticleViewComponent,
+    AdminTableComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +81,9 @@ import { ArticleViewComponent } from './article-view/article-view.component';
     MatSlideToggleModule,
     RatingModule,
     MatTabsModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],

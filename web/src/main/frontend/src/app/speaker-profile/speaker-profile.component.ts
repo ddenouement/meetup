@@ -68,17 +68,17 @@ export class SpeakerProfileComponent implements OnInit {
     });
     let langList: string[] = [];
     this.httpClient.get(this.userURL).subscribe(res => {
-      for (let i in res['UserDTO'].languages) {
-        langList[i] = res['UserDTO'].languages[i].name;
+      for (let i in res['userDTO'].languages) {
+        langList[i] = res['userDTO'].languages[i].name;
       }
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
-        firstName: [res['UserDTO'].firstName, Validators.required],
-        lastName: [res['UserDTO'].lastName, Validators.required],
-        login: [res['UserDTO'].login, Validators.required],
-        email: [res['UserDTO'].email, [Validators.required, Validators.email]],
-        about: [res['UserDTO'].about],
-        //rate: [res['UserDTO'].rate],
+        firstName: [res['userDTO'].firstName, Validators.required],
+        lastName: [res['userDTO'].lastName, Validators.required],
+        login: [res['userDTO'].login, Validators.required],
+        email: [res['userDTO'].email, [Validators.required, Validators.email]],
+        about: [res['userDTO'].about],
+        //rate: [res['userDTO'].rate],
         languages: [langList, Validators.required],
       });
     });
@@ -91,16 +91,6 @@ export class SpeakerProfileComponent implements OnInit {
         err => {
           console.log(err);
         });
-
-    const hamburger = document.querySelector(".hamburger");
-    const bar = document.querySelector(".sidebar");
-// On click
-    hamburger.addEventListener("click", function () {
-      // Toggle class "is-active"
-      bar.classList.toggle("active");
-      hamburger.classList.toggle("is-active");
-      // Do something else, like open/close menu
-    });
   }
 
   onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
@@ -109,6 +99,5 @@ export class SpeakerProfileComponent implements OnInit {
       Checked Color: ${$event.starRating.checkedcolor}, 
       Unchecked Color: ${$event.starRating.uncheckedcolor}`);
   }
-
 
 }

@@ -13,17 +13,17 @@ spring:
     password: 5a687df146eae7b0b542f05365922b15134492c2468a85686c3bba2ce7a00584
 
     hikari:
-      maximumPoolSize: 5
+      maximumPoolSize: 7
 
-#    for local Postgres db(julia)
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: user
+    #    for local Postgres db(julia)
+    #    url: jdbc:postgresql://localhost:5432/postgres
+    #    username: postgres
+    #    password: user
 
-#    for local Postgres db(polina)
-#    url: jdbc:postgresql://localhost:5432/meetup
-#    username: postgres
-#    password: root
+    #    for local Postgres db(polina)
+    #    url: jdbc:postgresql://localhost:5432/meetup
+    #    username: postgres
+    #    password: root
 
     #for H2 DB
     #datasource:

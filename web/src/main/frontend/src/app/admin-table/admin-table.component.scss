@@ -30,3 +30,9 @@ $background_color_5: #b3b4b6;
     margin-right: 4px;
   }
 }
+table {
+  width: 100%;
+}
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding-top: 20px!important;
+}
