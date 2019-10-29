@@ -9,7 +9,7 @@ import {ToolbarMenuComponent} from './toolbar-menu/toolbar-menu.component';
 
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatChip, MatChipsModule,
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
@@ -40,6 +40,7 @@ import { DictionariesComponent } from './dictionaries/dictionaries.component';
 import { LanguagesCrudComponent } from './languages-crud/languages-crud.component';
 import { TopicsCrudComponent } from './topics-crud/topics-crud.component';*/
 import {MatTabsModule} from "@angular/material/tabs";
+import { ArticleViewComponent } from './article-view/article-view.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     FeedbackComponent,
     AdminComponent,
     SpeakerProfileToUsersComponent,
-    SidebarComponent
+    SidebarComponent,
+    ArticleViewComponent
 
   ],
   imports: [
@@ -78,6 +80,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatSlideToggleModule,
     RatingModule,
     MatTabsModule,
+    MatChipsModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],

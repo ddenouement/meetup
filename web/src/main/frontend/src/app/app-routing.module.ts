@@ -10,6 +10,7 @@ import {CreateArticleComponent} from "./create-article/create-article.component"
 import {FeedbackComponent} from "./feedback/feedback.component";
 import {AdminComponent} from "./admin/admin.component";
 import {SpeakerProfileToUsersComponent} from "./speaker-profile-to-users/speaker-profile-to-users.component";
+import {ArticleViewComponent} from "./article-view/article-view.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -22,7 +23,9 @@ const routes: Routes = [
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'speaker-profile/{{id}}', component: SpeakerProfileToUsersComponent},
+  {path: 'article-view/:id', component: ArticleViewComponent},
 
+  //this.http.get
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
 ];
