@@ -8,8 +8,8 @@ import {SpeakerProfileComponent} from "./speaker-profile/speaker-profile.compone
 import {VerificationComponent} from "./verification/verification.component";
 import {CreateArticleComponent} from "./create-article/create-article.component";
 import {FeedbackComponent} from "./feedback/feedback.component";
-import {AdminComponent} from "./admin/admin.component";
 import {SpeakerProfileToUsersComponent} from "./speaker-profile-to-users/speaker-profile-to-users.component";
+import {AdminTableComponent} from "./admin-table/admin-table.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -20,7 +20,7 @@ const routes: Routes = [
   {path: 'verify', component: VerificationComponent},
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
-  {path: 'admin', component: AdminComponent},
+  {path: 'admin', component: AdminTableComponent},
   {path: 'speaker-profile/{{id}}', component: SpeakerProfileToUsersComponent},
 
   // otherwise redirect to home

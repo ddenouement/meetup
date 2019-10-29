@@ -26,12 +26,12 @@ export class ToolbarMenuComponent implements OnInit {
   ngOnInit() {
     this.httpClient.get(this.userURL).subscribe(res => {
         this.user = <User>{
-          role: res['UserDTO'].role,
+          role: res['userDTO'].role,
         };
         this.logined = true;
       },
       error => {
-        console.warn(error);
+        console.warn("error in toolbar (get): "+error);
         this.logined = false;
       });
   }
