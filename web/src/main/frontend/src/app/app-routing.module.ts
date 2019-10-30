@@ -9,6 +9,7 @@ import {VerificationComponent} from "./verification/verification.component";
 import {CreateArticleComponent} from "./create-article/create-article.component";
 import {FeedbackComponent} from "./feedback/feedback.component";
 import {SpeakerProfileToUsersComponent} from "./speaker-profile-to-users/speaker-profile-to-users.component";
+import {ArticleViewComponent} from "./article-view/article-view.component";
 import {AdminTableComponent} from "./admin-table/admin-table.component";
 import {ApproveToSpeakerComponent} from "./approve-to-speaker/approve-to-speaker.component";
 import {ListenerProfileComponent} from "./listener-profile/listener-profile.component";
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: 'listener-profile/:id', component: ListenerProfileToUsersComponent},
   {path: 'approve-to-speaker', component: ApproveToSpeakerComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'article-view/:id', component: ArticleViewComponent},
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
 ];

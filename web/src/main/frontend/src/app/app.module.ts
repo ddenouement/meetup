@@ -9,7 +9,7 @@ import {ToolbarMenuComponent} from './toolbar-menu/toolbar-menu.component';
 
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatChip, MatChipsModule,
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
@@ -37,6 +37,8 @@ import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speak
 import { SidebarComponent } from './sidebar/sidebar.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTabsModule} from "@angular/material/tabs";
+import { ArticleViewComponent } from './article-view/article-view.component';
 import { AdminTableComponent } from './admin-table/admin-table.component';
 import { ApproveToSpeakerComponent } from './approve-to-speaker/approve-to-speaker.component';
 import { ListenerProfileToUsersComponent } from './listener-profile-to-users/listener-profile-to-users.component';
@@ -60,7 +62,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     AdminTableComponent,
     ApproveToSpeakerComponent,
     ListenerProfileToUsersComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ArticleViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     MatPasswordStrengthModule,
     MatSlideToggleModule,
     RatingModule,
+    MatTabsModule,
+    MatChipsModule,
     MatTableModule,
     MatPaginatorModule,
   ],
