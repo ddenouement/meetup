@@ -1,0 +1,80 @@
+<app-sidebar></app-sidebar>
+<mat-card>
+  <form [formGroup]="form" (submit)="onSaveMeetup()">
+    <mat-form-field>
+      <input matInput
+             type="text"
+             [ngModel]="meetup?.title"
+             formControlName="title"
+             placeholder="Meetup Title">
+      <mat-error *ngIf="form.get('title').invalid">Please enter a meetup title.</mat-error>
+    </mat-form-field>
+<!--    <div-->
+<!--      fxLayout="row wrap"-->
+<!--      fxLayout.lt-sm="column"-->
+<!--      fxLayoutGap="32px"-->
+<!--      fxLayoutAlign="flex-start">-->
+<!--      <input  fxFlex="0 1 calc(33.3% - 32px)"-->
+<!--              fxFlex.lt-md="0 1 calc(50% - 32px)"-->
+<!--              fxFlex.lt-sm="100%"-->
+<!--              matInput-->
+<!--              [matDatepicker]="picker1" placeholder="Date">-->
+<!--&lt;!&ndash;              [formControl]="date"&ndash;&gt;-->
+
+<!--      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>-->
+<!--      <mat-datepicker #picker1></mat-datepicker>-->
+<!--      <input-->
+<!--        fxFlex="0 1 calc(33.3% - 32px)"-->
+<!--        fxFlex.lt-md="0 1 calc(30% - 32px)"-->
+<!--        fxFlex.lt-sm="100%"-->
+<!--        [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">-->
+<!--      <owl-date-time stepMinute="15" [pickerType]="'timer'" #dt4></owl-date-time>-->
+<!--    </div>-->
+    <mat-form-field>
+    <input matInput
+           [ngModel]="meetup?.startDate"
+           type="datetime-local"
+           formControlName="startDate"
+           placeholder="Datetime"/>
+    </mat-form-field>
+
+    <mat-label>Duration</mat-label>
+      <mat-select
+        formControlName="durationMinutes"
+        required >
+        <mat-option
+                    *ngFor="let duration of durations"
+                    [value]="duration">
+          {{duration.title}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>
+    <div
+      fxLayout="row wrap"
+      fxLayout.lt-sm="column"
+      fxLayoutGap="32px"
+      fxLayoutAlign="flex-start">
+    <input matInput
+           [ngModel]="meetup?.minAttendees"
+           fxFlex="0 1 calc(33.3% - 32px)"
+           fxFlex.lt-md="0 1 calc(50% - 32px)"
+           fxFlex.lt-sm="100%"
+           type="number" formControlName="minAttendees" placeholder="Min attendees"/>
+    <input matInput
+           [ngModel]="meetup?.maxAttendees"
+           fxFlex="0 1 calc(33.3% - 32px)"
+           fxFlex.lt-md="0 1 calc(50% - 32px)"
+           fxFlex.lt-sm="100%"
+           type="number" formControlName="maxAttendees" placeholder="Max attendees"/>
+    </div>
+    <mat-form-field>
+      <textarea matInput
+                [ngModel]="meetup?.description"
+                rows="4"
+                formControlName="description"
+                placeholder="Meetup Description"></textarea>
+      <mat-error *ngIf="form.get('description').invalid">Please enter a meetup description.</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+</mat-card>

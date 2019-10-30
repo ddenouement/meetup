@@ -9,16 +9,17 @@ import {VerificationComponent} from "./verification/verification.component";
 import {CreateArticleComponent} from "./create-article/create-article.component";
 import {FeedbackComponent} from "./feedback/feedback.component";
 import {SpeakerProfileToUsersComponent} from "./speaker-profile-to-users/speaker-profile-to-users.component";
-import {ArticleViewComponent} from "./article-view/article-view.component";
 import {AdminTableComponent} from "./admin-table/admin-table.component";
-
-import {CommentSectionComponent} from "./comment-section/comment-section.component";
 import {DictionariesComponent} from "./dictionaries/dictionaries.component";
-
-import {ApproveToSpeakerComponent} from "./approve-to-speaker/approve-to-speaker.component";
+import {CommentSectionComponent} from "./comment-section/comment-section.component";
+import {ArticleViewComponent} from "./article-view/article-view.component";
 import {ListenerProfileComponent} from "./listener-profile/listener-profile.component";
 import {ListenerProfileToUsersComponent} from "./listener-profile-to-users/listener-profile-to-users.component";
+import {ApproveToSpeakerComponent} from "./approve-to-speaker/approve-to-speaker.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
+import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
+import {MeetupListComponent} from "./meetup-list/meetup-list.component";
+import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -39,6 +40,13 @@ const routes: Routes = [
   {path: 'listener-profile/:id', component: ListenerProfileToUsersComponent},
   {path: 'approve-to-speaker', component: ApproveToSpeakerComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'speaker-profile/:id', component: SpeakerProfileToUsersComponent},
+
+  {path: 'meetup-create', component: MeetupCreateComponent},
+  {path: 'meetup-edit/:meetupId', component: MeetupCreateComponent},
+  {path: 'meetup-list', component: MeetupListComponent},
+  {path: 'meetup-profile/:meetupId', component: MeetupProfileComponent},
+
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
 ];

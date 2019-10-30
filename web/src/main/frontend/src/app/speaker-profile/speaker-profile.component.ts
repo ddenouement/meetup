@@ -7,6 +7,9 @@ import {StarRatingComponent} from "ng-starrating";
 import {RegisterService} from "../register-speaker/register.service";
 import {LanguagesList} from "../models/languagesList";
 import {MustMatch} from "../register-speaker/register-speaker.component";
+import {Meetup} from "../models/meetup.model";
+import {Subscription} from "rxjs";
+import {MeetupsService} from "../services/meetups.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -27,17 +30,20 @@ export class SpeakerProfileComponent implements OnInit {
   public loading = false;
   matcher = new MyErrorStateMatcher();
   languages: LanguagesList [];
+  public speakerId : number;
   public badgeList: string[] = [];
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
   public about: string;
-  private userURL = '/api/v1/user/profile';
-
+  private userURL = 'http://localhost:9990/api/v1/user/profile';
+  speakerMeetups : Meetup[] = [];
+  private meetingsSub: Subscription;
 
   constructor(
     private httpClient: HttpClient,
+    public meetupsService: MeetupsService,
     private formBuilder: FormBuilder,
     private registerService: RegisterService,
   ) {
@@ -72,6 +78,8 @@ export class SpeakerProfileComponent implements OnInit {
       for (let i in res['userDTO'].languages) {
         langList[i] = res['userDTO'].languages[i].name;
       }
+      this.speakerId = res['userDTO'].id;
+      // console.log("SPEAKER ID" + this.speakerId);
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
         firstName: [res['userDTO'].firstName, Validators.required],
@@ -90,6 +98,14 @@ export class SpeakerProfileComponent implements OnInit {
         err => {
           console.log(err);
         });
+
+    // this.meetupsService.getSpeakerMeetups(this.speakerId);
+    // //set up listener to subject
+    // this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
+    //   .subscribe((meetupData: { meetups: Meetup[] })=>{
+    //     this.speakerMeetups = meetupData.meetups;
+    //   });
+
   }
 
   onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
