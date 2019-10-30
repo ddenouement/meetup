@@ -2,14 +2,12 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Languagesservice} from "./languagessservice";
 import {Language} from '../models/language';
 
-/*
 @Component({
   selector: 'app-languages-crud',
   templateUrl: './languages-crud.component.html',
   styleUrls: ['./languages-crud.component.scss'],
   providers: [Languagesservice]
-})*/
-/*
+})
 export class LanguagesCrudComponent  implements OnInit {
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
   @ViewChild('editTemplate', {static: false}) editTemplate: TemplateRef<any>;
@@ -73,7 +71,7 @@ export class LanguagesCrudComponent  implements OnInit {
         this.editedLanguage = null;
     }
     else {
-      var index = this.languages.findIndex(x => x.id == this.editedLanguage.id);
+      const index = this.languages.findIndex(x => x.id == this.editedLanguage.id);
       const nl = <Language>{id: this.editedLanguage.id, name:this.editedLanguage.name };
       this.serv.updateLanguage(nl).subscribe(data => {
           this.statusMessageL = 'Edited',
@@ -105,4 +103,4 @@ export class LanguagesCrudComponent  implements OnInit {
       });
   }
 
-}*/
+}

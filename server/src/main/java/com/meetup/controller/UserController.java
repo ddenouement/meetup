@@ -195,13 +195,14 @@ public class UserController {
     }
     /**
     * Every user can post a complaint on other.
+     *Convert login -> id, convert date in long format -> Date exemplar and pass it to DAO
      * @param compl complaint entity
      * @return ResponseEntity
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
             + "T(com.meetup.entities.Role).SPEAKER, "
             + "T(com.meetup.entities.Role).LISTENER)")
-    @PostMapping(value = "/api/v1/user/complaint")
+    @PostMapping(value = "/api/v1/user/complain")
     public ResponseEntity postComplaintOnUser(
             @CookieValue("token") final String token,
             final @RequestBody ComplaintDTO compl) {

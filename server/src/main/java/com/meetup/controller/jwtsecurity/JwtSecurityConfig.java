@@ -67,7 +67,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
             .httpBasic().disable()
             .csrf().disable()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .apply(new JwtConfigurer(jwtTokenProvider));
     }

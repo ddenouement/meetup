@@ -40,9 +40,9 @@ public class AuthenticationService implements UserDetailsService {
             authorities.add(a);
         }
 
-        //System.out.println("fb"+builder.r().size());
-        UserDetails userDetails = new User(userInfo.getLogin(),
-            userInfo.getPassword(), authorities);
+    /*    UserDetails userDetails = new User(userInfo.getLogin(),
+            userInfo.getPassword(), authorities);*/
+    //todo maybe we don`t need userInfo.getPassword() here
         return new User(userInfo.getLogin(),
             userInfo.getPassword(), authorities);
 

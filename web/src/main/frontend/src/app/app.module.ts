@@ -36,13 +36,20 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import {MatTableModule} from "@angular/material/table";
-import {MatPaginatorModule} from "@angular/material/paginator";/*
-import { DictionariesComponent } from './dictionaries/dictionaries.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 import { LanguagesCrudComponent } from './languages-crud/languages-crud.component';
-import { TopicsCrudComponent } from './topics-crud/topics-crud.component';*/
+import { TopicsCrudComponent } from './topics-crud/topics-crud.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import { ArticleViewComponent } from './article-view/article-view.component';
 import { AdminTableComponent } from './admin-table/admin-table.component';
+import {IconsModule} from "./icons/icons.module";
+import {CommentSectionComponent} from "./comment-section/comment-section.component";
+import {FromNowPipe} from "./pipes/from_now_pipe";
+import {ComplaintComponent} from "./complaint/complaint.component";
+import {MatListModule} from "@angular/material/list";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {DictionariesComponent} from "./dictionaries/dictionaries.component";
+import {PickerModule} from '@ctrl/ngx-emoji-mart';
 
 @NgModule({
   declarations: [
@@ -60,9 +67,22 @@ import { AdminTableComponent } from './admin-table/admin-table.component';
     SpeakerProfileToUsersComponent,
     SidebarComponent,
     ArticleViewComponent,
-    AdminTableComponent
+    AdminTableComponent,
+    DictionariesComponent,
+    LanguagesCrudComponent,
+    TopicsCrudComponent,
+    ComplaintComponent,
+    CommentSectionComponent,
+    FromNowPipe
   ],
   imports: [
+    //for smiles
+    IconsModule,
+    PickerModule,
+
+    MatTabsModule,
+    MatExpansionModule,
+    MatListModule,
     BrowserModule,
     MatInputModule,
     AppRoutingModule,
@@ -83,7 +103,7 @@ import { AdminTableComponent } from './admin-table/admin-table.component';
     MatTabsModule,
     MatChipsModule,
     MatTableModule,
-    MatPaginatorModule,
+    MatPaginatorModule
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],

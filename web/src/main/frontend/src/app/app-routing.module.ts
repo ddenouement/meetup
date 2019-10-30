@@ -11,6 +11,8 @@ import {FeedbackComponent} from "./feedback/feedback.component";
 import {SpeakerProfileToUsersComponent} from "./speaker-profile-to-users/speaker-profile-to-users.component";
 import {ArticleViewComponent} from "./article-view/article-view.component";
 import {AdminTableComponent} from "./admin-table/admin-table.component";
+import {CommentSectionComponent} from "./comment-section/comment-section.component";
+import {DictionariesComponent} from "./dictionaries/dictionaries.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -22,7 +24,9 @@ const routes: Routes = [
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminTableComponent},
-  {path: 'speaker-profile/{{id}}', component: SpeakerProfileToUsersComponent},
+  {path: 'speaker-profile/:id', component: SpeakerProfileToUsersComponent},
+  {path: 'dictionaries', component:DictionariesComponent},
+  {path: 'comment-section', component:CommentSectionComponent},
   {path: 'article-view/:id', component: ArticleViewComponent},
 
   //this.http.get
