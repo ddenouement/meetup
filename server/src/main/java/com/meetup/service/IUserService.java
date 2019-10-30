@@ -120,5 +120,12 @@ public interface IUserService {
      * @return users (subscribers)
      */
     List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId);
+
+    /**
+     * Change user's password.
+     * @param userId id of user to change password for
+     * @param newPassword the password to change to
+     */
+    void changePassword(Integer userId, String newPassword);
 }
 

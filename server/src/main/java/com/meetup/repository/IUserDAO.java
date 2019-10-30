@@ -169,5 +169,12 @@ public interface IUserDAO {
      * List of users.
      */
     List<User> getAllUsers();
+
+    /**
+     * Change user's password.
+     * @param userId id of user to change password for
+     * @param newPassword the password to change to
+     */
+    void changePassword(Integer userId, String newPassword);
 }
 
