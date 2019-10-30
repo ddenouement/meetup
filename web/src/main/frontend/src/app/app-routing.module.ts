@@ -10,6 +10,10 @@ import {CreateArticleComponent} from "./create-article/create-article.component"
 import {FeedbackComponent} from "./feedback/feedback.component";
 import {SpeakerProfileToUsersComponent} from "./speaker-profile-to-users/speaker-profile-to-users.component";
 import {AdminTableComponent} from "./admin-table/admin-table.component";
+import {ApproveToSpeakerComponent} from "./approve-to-speaker/approve-to-speaker.component";
+import {ListenerProfileComponent} from "./listener-profile/listener-profile.component";
+import {ListenerProfileToUsersComponent} from "./listener-profile-to-users/listener-profile-to-users.component";
+import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -21,8 +25,11 @@ const routes: Routes = [
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminTableComponent},
-  {path: 'speaker-profile/{{id}}', component: SpeakerProfileToUsersComponent},
-
+  {path: 'speaker-profile/:id', component: SpeakerProfileToUsersComponent},
+  {path: 'listener-profile', component: ListenerProfileComponent},
+  {path: 'listener-profile/:id', component: ListenerProfileToUsersComponent},
+  {path: 'approve-to-speaker', component: ApproveToSpeakerComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
 ];

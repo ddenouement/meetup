@@ -36,12 +36,11 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import {MatTableModule} from "@angular/material/table";
-import {MatPaginatorModule} from "@angular/material/paginator";/*
-import { DictionariesComponent } from './dictionaries/dictionaries.component';
-import { LanguagesCrudComponent } from './languages-crud/languages-crud.component';
-import { TopicsCrudComponent } from './topics-crud/topics-crud.component';*/
-import {MatTabsModule} from "@angular/material/tabs";
+import {MatPaginatorModule} from "@angular/material/paginator";
 import { AdminTableComponent } from './admin-table/admin-table.component';
+import { ApproveToSpeakerComponent } from './approve-to-speaker/approve-to-speaker.component';
+import { ListenerProfileToUsersComponent } from './listener-profile-to-users/listener-profile-to-users.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +57,10 @@ import { AdminTableComponent } from './admin-table/admin-table.component';
     FeedbackComponent,
     SpeakerProfileToUsersComponent,
     SidebarComponent,
-    AdminTableComponent
+    AdminTableComponent,
+    ApproveToSpeakerComponent,
+    ListenerProfileToUsersComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
