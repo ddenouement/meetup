@@ -1,5 +1,6 @@
 package com.meetup.entities.dto;
 
+import com.meetup.entities.Topic;
 import lombok.Data;
 
 /**
@@ -7,5 +8,11 @@ import lombok.Data;
  */
 @Data
 public class ArticleDisplayDTO {
+
+    private String title;
+    private String content;
+    private Topic[] topics;
+    private String dateTimePosted;
+    private UserDTO author;
 
 }

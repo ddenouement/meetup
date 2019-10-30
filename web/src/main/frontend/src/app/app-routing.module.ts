@@ -23,7 +23,8 @@ const routes: Routes = [
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminTableComponent},
   {path: 'speaker-profile/{{id}}', component: SpeakerProfileToUsersComponent},
-  {path: 'article-view/:id', component: ArticleViewComponent},
+  //TODO id
+  {path: 'article-view', component: ArticleViewComponent},
 
   //this.http.get
   // otherwise redirect to home
