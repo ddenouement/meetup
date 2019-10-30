@@ -41,7 +41,7 @@ import { LanguagesCrudComponent } from './languages-crud/languages-crud.componen
 import { TopicsCrudComponent } from './topics-crud/topics-crud.component';
 import {IconsModule} from "./icons/icons.module";
 import {CommentSectionComponent} from "./comment-section/comment-section.component";
-import {FromNowPipe} from "./pipes/from_now_pipe";
+//import {FromNowPipe} from "./pipes/from_now_pipe";
 import {ComplaintComponent} from "./complaint/complaint.component";
 import {MatListModule} from "@angular/material/list";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -79,8 +79,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     LanguagesCrudComponent,
     TopicsCrudComponent,
     ComplaintComponent,
-    CommentSectionComponent,
-    FromNowPipe
+    CommentSectionComponent
+  //  ,    FromNowPipe
   ],
   imports: [
     //for smiles
