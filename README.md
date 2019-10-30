@@ -48,6 +48,11 @@ ____________________________________
 - Type: GET
 - /api/v1/user/users
 
+#### Change user's password
+- Type: PUT
+- RequestBody: String password
+- /api/v1/users/password
+
 
 ### SPEAKER CONTROLLER
 ____________________________________

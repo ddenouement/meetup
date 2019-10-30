@@ -11,7 +11,7 @@ import {ArticleDTO} from "../models/article-dto";
 })
 
 export class ArticleViewService {
-  private articleURL = '/api/v1/articles/{id}';
+  private articleURL = '/api/v1/articles/random';
 
   constructor(private http: HttpClient, private router: Router) {
   }

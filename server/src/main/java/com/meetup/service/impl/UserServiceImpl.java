@@ -263,5 +263,15 @@ public class UserServiceImpl implements IUserService {
         return userDao.getSimpleSubscribersOfSpeaker(speakerId);
     }
 
+    /**
+     * Change user's password.
+     * @param userId id of user to change password for
+     * @param newPassword the password to change to
+     */
+    @Override
+    public void changePassword(final Integer userId, final String newPassword) {
+        userDao.changePassword(userId, newPassword);
+    }
+
 
 }

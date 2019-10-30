@@ -27,9 +27,10 @@ main {
   border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
+  max-height: 75vh;
   overflow-y: auto;
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
     background:  #fdfeff;
     mix-blend-mode: normal;
     border-radius: 2px;
@@ -41,21 +42,9 @@ main {
   }
 }
 
-.content::-webkit-scrollbar {
-  width: 6px;
-  background:  #fdfeff;
-  mix-blend-mode: normal;
-  border-radius: 2px;
-}
-
-.content::-webkit-scrollbar-thumb {
-  background-color: #d7dce9;
-  border-radius: 2px;
-}
-
-
 form {
   width: 65%;
+  max-height: 75vh;
   display: flex;
   flex-direction: column;
 }
@@ -105,6 +94,7 @@ form {
   display: flex;
   align-self: flex-end;
   width: 60%;
+  margin-bottom: 20px;
   justify-content: flex-end;
 }
 

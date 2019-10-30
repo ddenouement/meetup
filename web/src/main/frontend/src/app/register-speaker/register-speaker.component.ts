@@ -122,13 +122,13 @@ export class RegisterSpeakerComponent implements OnInit {
     });
 
     this.registerService.getLanguages()
-    .subscribe(
-      languages => {
-        this.languages = languages;
-  },
-      err => {
-        console.log(err);
-      });
+      .subscribe(
+        languages => {
+          this.languages = languages;
+        },
+        err => {
+          console.log(err);
+        });
   }
 }
 
