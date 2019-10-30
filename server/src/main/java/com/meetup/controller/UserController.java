@@ -2,8 +2,6 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.meetup.controller.jwtsecurity.JwtTokenFilter;
-import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleDisplayDTO;
@@ -20,12 +18,19 @@ import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.Map;
-import com.meetup.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * . Operations used to manage user functionality
@@ -307,5 +312,24 @@ public class UserController {
             HttpStatus.OK);
     }
 
+
+    /**
+     * Change user's password.
+     *
+     * @param password new password
+     * @param token cookie with JWT
+     * @return status
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @PutMapping(value = "/api/v1/users/password")
+    public ResponseEntity changePassword(
+        @RequestBody final String password,
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        userService.changePassword(userId, password);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

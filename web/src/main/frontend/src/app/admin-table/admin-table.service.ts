@@ -6,7 +6,7 @@ import {HttpClient} from "@angular/common/http";
 })
 
 export class AdminTableService {
-  private usersURL = '/api/v1/user/speakers';
+  private usersURL = '/api/v1/user/users';
 
   constructor(private http: HttpClient) {
   }

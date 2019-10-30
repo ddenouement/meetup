@@ -148,6 +148,13 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${find_all_users}")
     private String findAllUsers;
 
+    /**
+     * SQL reference script.
+     * Change password for specific user.
+     * */
+    @Value("${change_password}")
+    private String changePassword;
+
 
     /**
      * . .
@@ -499,6 +506,19 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<User> getAllUsers() {
         return template.query(findAllUsers, new UserMapper());
+    }
+
+    /**
+     * Change user's password.
+     * @param userId id of user to change password for
+     * @param newPassword the password to change to
+     */
+    @Override
+    public void changePassword(final Integer userId, final String newPassword) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("password", newPassword)
+            .addValue("id", userId);
+        template.update(changePassword, param);
     }
 }
 

@@ -6,6 +6,7 @@ import {ErrorStateMatcher} from "@angular/material/core";
 import {StarRatingComponent} from "ng-starrating";
 import {RegisterService} from "../register-speaker/register.service";
 import {LanguagesList} from "../models/languagesList";
+import {MustMatch} from "../register-speaker/register-speaker.component";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -58,13 +59,13 @@ export class SpeakerProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.changeForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      login: new FormControl(),
-      email: new FormControl(),
-      about: new FormControl(),
-      languages: new FormControl()
+    this.changeForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      login: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      about: [''],
+      languages: ['', Validators.required],
     });
     let langList: string[] = [];
     this.httpClient.get(this.userURL).subscribe(res => {
@@ -78,15 +79,13 @@ export class SpeakerProfileComponent implements OnInit {
         login: [res['userDTO'].login, Validators.required],
         email: [res['userDTO'].email, [Validators.required, Validators.email]],
         about: [res['userDTO'].about],
-        //rate: [res['userDTO'].rate],
-        languages: [langList, Validators.required],
+        languages: ['', Validators.required],
       });
     });
 
-    this.registerService.getLanguages()
-      .subscribe(
-        languages => {
-          this.languages = languages;
+    this.registerService.getLanguages().subscribe(
+      res => {
+          this.languages = res;
         },
         err => {
           console.log(err);
