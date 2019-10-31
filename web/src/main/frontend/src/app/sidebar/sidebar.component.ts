@@ -19,9 +19,11 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.httpClient.get(this.userURL).subscribe(res => {
-        if (res['userDTO'].roles[0] === "SPEAKER") {
+        if (res['userDTO'].roles.includes("SPEAKER")) {
+
           this.speaker = true;
-        } else if (res['userDTO'].roles[0] === "ADMIN") {
+        } else if (res['userDTO'].roles.includes("ADMIN") ) {
+
           this.admin = true;
         } else {
           this.listener = true;
