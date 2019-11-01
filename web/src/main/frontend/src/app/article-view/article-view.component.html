@@ -2,17 +2,16 @@
 <main>
   <div class="content">
     <!--<form>-->
-      <mat-chip-list aria-label="Topic">
-        <mat-chip>Business</mat-chip>
-        <mat-chip>Health</mat-chip>
-      </mat-chip-list>
-      <h1>{{ Title }}</h1>
+    <mat-chip-list *ngFor="let t of topics">
+      <mat-chip>{{t.name}}</mat-chip>
+    </mat-chip-list>
+      <h1>{{ title }}</h1>
       <!--<mat-form-field class="form__textarea">-->
-        <p>{{Content}}</p>
+        <p>{{content}}</p>
     <!--</mat-form-field>-->
-      <h2>Posted: 28 October at 9:32 PM</h2>
-      <h3>Author: <a [routerLink]="['/speaker-profile']">
-        Ivanenko Ivan</a></h3>
+      <h2>Posted: {{dateTimePosted}}</h2>
+      <h3>Author: <a [routerLink]="['/speaker-profile',author.id]">
+        {{author.firstName}} {{author.lastName}}</a></h3>
     <!--</form>-->
     <app-comment-section></app-comment-section>
   </div>
