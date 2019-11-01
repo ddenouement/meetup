@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {Authentificationrequest} from "../models/authentificationrequest";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {RegisterService} from "../register-speaker/register.service";
 import {LoginService} from "./login.service";
 
 @Component({
@@ -31,6 +30,8 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.do_login();
   }
+
+
 
   public do_login(): void {
     const user = <Authentificationrequest>{
@@ -69,3 +70,4 @@ export class LoginComponent implements OnInit {
     });
   }
 }
+

@@ -5,31 +5,34 @@
       <div class="user__personal personal-active">
         <div class="user__change">
           <div class="form__user">
-            <mat-form-field class="form__input">
-              <input matInput type="text"
-                     placeholder="First name"/>
-            </mat-form-field>
-            <mat-form-field class="form__input">
-              <input matInput type="text"
-                     placeholder="Last name"/>
-            </mat-form-field>
+            <div class="change__form">
+              <p class="change__form--text">First Name:</p>
+              <p class="form--text">{{firstName}}</p>
+            </div>
+            <div class="change__form">
+              <p class="change__form--text">Last Name:</p>
+              <p class="form--text">{{lastName}}</p>
+            </div>
           </div>
           <div class="form__user">
-            <mat-form-field class="form__input">
-              <input matInput formControlName="login" type="text" placeholder="Login">
-            </mat-form-field>
-            <mat-form-field class="form__input">
-              <input matInput placeholder="Email" formControlName="email">
-            </mat-form-field>
+            <div class="change__form">
+              <p class="change__form--text">Login:</p>
+              <p class="form--text">{{login}}</p>
+            </div>
+            <div class="change__form">
+              <p class="change__form--text">Email:</p>
+              <p class="form--text" >{{email}}</p>
+            </div>
           </div>
-          <mat-form-field class="form__input area">
-            <textarea class="form__textarea" formControlName="about" matInput placeholder="About"></textarea>
-          </mat-form-field>
+          <div class="change__form">
+            <p class="change__form--text">about:</p>
+            <p class="form--text" >{{about}}</p>
+          </div>
           <div class="form__user">
-            <mat-form-field class="form__input">
-              <mat-select placeholder="Languages" formControlName="languages" multiple>
-              </mat-select>
-            </mat-form-field>
+            <div class="change__form">
+              <p class="change__form--text">languages:</p>
+              <p class="form--text" *ngFor="let item of langList" >{{item}}</p>
+            </div>
           </div>
         </div>
         <div class="user__badges">
@@ -40,14 +43,10 @@
             <span class="header--text">BADGES</span>
           </div>
           <div class="badges">
-            <span *ngIf="true" class="badges--text">This speaker haven`t badges</span>
-            <div class="badge">
+            <span *ngIf="badgeList.length<1" class="badges--text">This speaker haven`t badges</span>
+            <div class="badge" *ngFor="let badge of badgeList">
               <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralсм чамвааививаиваиваalala</span>
-            </div>
-            <div class="badge">
-              <img class="badge--img" src="../../assets/images/medal.svg">
-              <span class="badges--text">lalalala tralalala</span>
+              <span class="badges--text">{{badge}}</span>
             </div>
           </div>
         </div>

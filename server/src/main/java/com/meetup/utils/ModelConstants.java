@@ -1,6 +1,5 @@
 package com.meetup.utils;
 
-import lombok.Data;
 
 /**
  * Utility (constants) class.

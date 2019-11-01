@@ -31,7 +31,7 @@ const routes: Routes = [
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminTableComponent},
-  {path: 'speaker-profile/:id', component: SpeakerProfileToUsersComponent},
+  {path: 'speaker-profile/to', component: SpeakerProfileToUsersComponent},
   {path: 'dictionaries', component:DictionariesComponent},
   {path: 'comment-section', component:CommentSectionComponent},
   //TODO id

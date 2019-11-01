@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {HttpClient} from "@angular/common/http";
-import {LoginService} from "../login/login.service";
 import {AdminTableService} from "./admin-table.service";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-admin-table',
@@ -15,12 +14,11 @@ export class AdminTableComponent implements OnInit {
   displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName'];
   dataSource;
 
-
   constructor(public adminService: AdminTableService) {
   }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit() {
     this.adminService.getAllSpeakers().subscribe(res => {
@@ -33,6 +31,7 @@ export class AdminTableComponent implements OnInit {
       }
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 }
@@ -44,5 +43,3 @@ export interface UsersToAdmin {
   firstName: string;
   lastName: string;
 }
-
-

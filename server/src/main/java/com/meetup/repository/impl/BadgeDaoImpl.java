@@ -8,6 +8,7 @@ import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IBadgeDAO;
 import java.util.List;
 import java.util.Objects;
+import static com.meetup.utils.DbQueryConstants.* ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -95,13 +96,13 @@ public class BadgeDaoImpl implements IBadgeDAO {
     /**
      * Return a badge with specified ID in the database.
      *
-     * @param id ID of badge to return
+     * @param id_badge ID of badge to return
      * @return a badge with specified ID
      */
     @Override
-    public Badge findById(final Integer id) {
+    public Badge findById(final Integer id_badge) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id);
+            .addValue(id.name(), id_badge);
         List<Badge> badges = template
             .query(findBadgeById, param, new BadgeMapper());
         if (badges.isEmpty()) {
@@ -114,17 +115,17 @@ public class BadgeDaoImpl implements IBadgeDAO {
     /**
      * Update a badge to a new one.
      *  @param badge new field values for badge
-     * @param id id of badge to update
+     * @param badge_id id of badge to update
      * @return updated badge
      */
     @Override
-    public Badge update(final Badge badge, final Integer id) {
+    public Badge update(final Badge badge, final Integer badge_id) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id)
-            .addValue("name", badge.getName())
-            .addValue("script", badge.getScript());
-        template.update(updateBadge, param, holder, new String[]{"id"});
+            .addValue(id.name(), badge_id)
+            .addValue(name.name(), badge.getName())
+            .addValue(script.name(), badge.getScript());
+        template.update(updateBadge, param, holder, new String[]{id.name()});
         badge.setId(Objects.requireNonNull(holder.getKey()).intValue());
         return badge;
     }
@@ -139,9 +140,9 @@ public class BadgeDaoImpl implements IBadgeDAO {
     public Badge insert(final Badge badge) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("name", badge.getName())
-            .addValue("script", badge.getScript());
-        template.update(insertBadge, param, holder, new String[]{"id"});
+            .addValue(name.name(), badge.getName())
+            .addValue(script.name(), badge.getScript());
+        template.update(insertBadge, param, holder, new String[]{id.name()});
         badge.setId(Objects.requireNonNull(holder.getKey()).intValue());
         return badge;
     }
@@ -149,12 +150,12 @@ public class BadgeDaoImpl implements IBadgeDAO {
     /**
      * Delete a badge with specified ID from the database.
      *
-     * @param id ID of badge to delete
+     * @param id_badge ID of badge to delete
      */
     @Override
-    public void delete(final Integer id) {
+    public void delete(final Integer id_badge) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id);
+            .addValue(id.name(), id_badge);
         template.update(deleteBadge, param);
     }
 
@@ -167,20 +168,20 @@ public class BadgeDaoImpl implements IBadgeDAO {
     @Override
     public List<String> getUserBadges(final Integer userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("user_id", userId);
+            .addValue(user_id.name(), userId);
         return template.query(getUserBadges, param, new StringMapper());
     }
 
     /**
      * Get a list of all users who would receive a badge with specified script.
      *
-     * @param script a script to compute the badge
+     * @param script_m a script to compute the badge
      * @return list of users to receive a badge with specified script
      */
     @Override
-    public List<User> getUsersWithBadge(final String script) {
+    public List<User> getUsersWithBadge(final String script_m) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("script", script);
+            .addValue(script.name(), script_m);
         return template.query(getUsersWithBadge, param, new UserMapper());
     }
 
