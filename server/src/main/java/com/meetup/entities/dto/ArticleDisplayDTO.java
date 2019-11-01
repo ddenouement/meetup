@@ -1,6 +1,8 @@
 package com.meetup.entities.dto;
 
 import com.meetup.entities.Topic;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -11,8 +13,14 @@ public class ArticleDisplayDTO {
 
     private String title;
     private String content;
-    private Topic[] topics;
+    private List<Topic> topics;
     private String dateTimePosted;
     private UserDTO author;
 
+    /**
+     * Init with empty lists.
+     */
+    public ArticleDisplayDTO() {
+        this.topics = new ArrayList<>();
+    }
 }

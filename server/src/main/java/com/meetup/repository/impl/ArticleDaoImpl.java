@@ -1,13 +1,16 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Article;
+import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.model.mapper.ArticleMapper;
+import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IArticleDAO;
 import static com.meetup.utils.DbQueryConstants.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +54,12 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${find_article_by_id}")
     private String findArticleByID;
+    /**
+     * SQL reference script.
+     * Get article topics.
+     */
+    @Value("${get_article_topics}")
+    private String findArticleTopics;
     /**
      * SQL reference script.
      * Get article by ID.
@@ -113,6 +122,20 @@ public class ArticleDaoImpl implements IArticleDAO {
             .addValue(id.name(), articleID);
         return this.template
             .queryForObject(findArticleByID, param, new ArticleMapper());
+    }
+
+    /**
+     * Get topics of article.
+     * @param articleID
+     * Article ID.
+     * @return
+     * List of topics.
+     */
+    @Override
+    public List<Topic> getArticleTopics(final int articleID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id_article", articleID);
+        return template.query(findArticleTopics, param, new TopicMapper());
     }
 
     /**

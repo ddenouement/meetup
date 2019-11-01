@@ -1,7 +1,9 @@
 package com.meetup.repository;
 
 import com.meetup.entities.Article;
+import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import java.util.List;
 
 /**
  * Interface for Article repository (DAO).
@@ -36,6 +38,15 @@ public interface IArticleDAO {
      * Article object.
      */
     Article findArticleByID(int articleID);
+
+    /**
+     * Get topics of article.
+     * @param articleID
+     * Article ID.
+     * @return
+     * List of topics.
+     */
+    List<Topic> getArticleTopics(int articleID);
 
     /**
      * Remove article by ID.
