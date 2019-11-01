@@ -1,5 +1,6 @@
 package com.meetup.service.impl;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.MeetupState;
 import com.meetup.entities.Role;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsListener(
-            final UserRegistrationDTO user) {
+        final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -71,7 +72,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsSpeaker(
-            final UserRegistrationDTO user) {
+        final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -113,7 +114,7 @@ public class UserServiceImpl implements IUserService {
      * @return UserDTO
      */
     @Override
-    public UserDTO getProfileUserDTO(final int id)  {
+    public UserDTO getProfileUserDTO(final int id) {
         User us = userDao.findUserById(id);
         if (us == null) {
             throw new UserNotFoundException();
@@ -126,8 +127,8 @@ public class UserServiceImpl implements IUserService {
 
 
     /**
-     *
      * Get all active speakers.
+     *
      * @return List<User> of speakers.
      */
     @Override
@@ -137,8 +138,8 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Get all active users.
-     * @return
-     * List<User> of users.
+     *
+     * @return List<User> of users.
      */
     @Override
     public List<User> getAllUsers() {
@@ -157,8 +158,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * .     *
-     * remove users from hosted meetups & remove this user from all meetups he is subscribed to
+     * .     * remove users from hosted meetups & remove this user from all
+     * meetups he is subscribed to
      *
      * @param id user id
      * @return boolean whether successful operation or not
@@ -182,7 +183,6 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     *
      * @return List of complaints from DB.
      */
     @Override
@@ -191,24 +191,25 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * @throws UserNotFoundException if no user with this login
      * @param complaintDTO complaint without source
      * @param login login of source
+     * @throws UserNotFoundException if no user with this login
      */
     @Override
-    public void postComplaintOn(final ComplaintDTO complaintDTO, final String login) throws UserNotFoundException{
+    public void postComplaintOn(final ComplaintDTO complaintDTO,
+        final String login) throws UserNotFoundException {
         User u = userDao.findUserByLogin(login);
         if (u == null) {
             throw new UserNotFoundException();
         }
         int id_source = u.getId();
-        complaintDTO.setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
+        complaintDTO
+            .setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
         complaintDTO.setId_user_from(id_source);
         userDao.postComplaintOn(complaintDTO);
     }
 
     /**
-     *
      * @param id Complaint id.
      * @return boolean whether is successfull
      */
@@ -216,21 +217,25 @@ public class UserServiceImpl implements IUserService {
     public boolean markAsReadComplaint(final int id) {
         return userDao.markAsReadComplaint(id);
     }
+
     /**
      * User can subscribe on speaker.
+     *
      * @param userId who is subscriber
      * @param speakerId on whom user subscribes
      */
-     @Override
+    @Override
     public void subscribeToSpeaker(final int userId, final int speakerId) {
-         User u = userDao.findUserById(userId);
+        User u = userDao.findUserById(userId);
         if (u == null) {
-             throw new UserNotFoundException();
-         }
-      userDao.subscribeToSpeaker(userId, speakerId);
+            throw new UserNotFoundException();
+        }
+        userDao.subscribeToSpeaker(userId, speakerId);
     }
+
     /**
      * User can unsubscribe from speaker.
+     *
      * @param userId who is subscriber
      * @param speakerId on whom user subscribes
      */
@@ -245,6 +250,7 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Get list of subscribers of a given speaker (by his ID).
+     *
      * @param speakerId speaker
      * @return list of subscribers
      */
@@ -255,6 +261,7 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Get basic info about users ho are subscribed on speaker.
+     *
      * @param speakerId speaker
      * @return List of SimpleUserDTO
      */
@@ -265,12 +272,29 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Change user's password.
+     *
      * @param userId id of user to change password for
      * @param newPassword the password to change to
      */
     @Override
     public void changePassword(final Integer userId, final String newPassword) {
         userDao.changePassword(userId, newPassword);
+    }
+
+    /**
+     * Rate specific meetup.
+     *
+     * @param meetupID Meetup ID.
+     * @param userLogin User login
+     * @param feedback Feedback object.
+     */
+    @Override
+    public void rateMeetup(int meetupID, String userLogin, Feedback feedback) {
+        User u = userDao.findUserByLogin(userLogin);
+        if (u == null) {
+            throw new UserNotFoundException();
+        }
+        meetupDao.rateMeetup(meetupID, u.getId(), feedback);
     }
 
 

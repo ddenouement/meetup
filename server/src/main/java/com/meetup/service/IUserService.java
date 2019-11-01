@@ -1,5 +1,6 @@
 package com.meetup.service;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
@@ -127,5 +128,16 @@ public interface IUserService {
      * @param newPassword the password to change to
      */
     void changePassword(Integer userId, String newPassword);
+
+    /**
+     * Rate specific meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @param userLogin
+     * User login
+     * @param feedback
+     * Feedback object.
+     */
+    void rateMeetup(int meetupID, String userLogin, Feedback feedback);
 }
 

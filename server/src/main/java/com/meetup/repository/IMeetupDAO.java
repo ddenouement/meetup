@@ -1,5 +1,6 @@
 package com.meetup.repository;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
@@ -119,5 +120,16 @@ public interface IMeetupDAO {
      */
     List<User> getUsersOnMeetup(int meetupId);
     List<Meetup> getSpeakerMeetupsAllHosted(  int speakerID) ;
+
+    /**
+     * Rate specific meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @param userID
+     * User ID.
+     * @param feedback
+     * Feedback object.
+     */
+    void rateMeetup(int meetupID, int userID, Feedback feedback);
 
 }

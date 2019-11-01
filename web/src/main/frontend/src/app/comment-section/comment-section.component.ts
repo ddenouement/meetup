@@ -32,10 +32,16 @@ showEmojiPicker:boolean;
   ngOnInit() {
     this.loadComments();
     this.authorLogin="ksddddd";
-    this.refreshData();
+    //this.refreshData();
     this.articleId=2;
     this.article_author_id=4;
   }
+  public openPopup: Function;
+
+  setPopupAction(fn: any) {
+    this.openPopup = fn;
+  }
+
   toggleEmojiPicker(){
     this.showEmojiPicker=!this.showEmojiPicker;
   }
@@ -59,7 +65,7 @@ showEmojiPicker:boolean;
   private loadComments() {
     this.comments = [];
     this.comments.push(new CommentDto(1,1, this.articleId, "katerine", "good article!",  +new Date()));
-    this.comments.push(new CommentDto(2,2, this.articleId, "ti-reks", "bad bad article!",  +new Date()));
+    this.comments.push(new CommentDto(2,2, this.articleId, "ti-reks", "bad badbad bad d badbad bad bad badbadbadv bad badbadbadbad d badbad bad bad badbadbadv bad badbadbadbad bad badbad bad bad badbadbadv bad badbadbadbad article!",  +new Date()));
     this.comments.push(new CommentDto(3,3, this.articleId, "helow", "ii really like the article!!",  +new Date()));
     this.comments.push(new CommentDto(4,4, this.articleId, "gs", "its my article;) thanks",  +new Date()));
     /*

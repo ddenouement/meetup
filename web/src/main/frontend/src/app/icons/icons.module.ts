@@ -11,3 +11,4 @@ const icons={Smile};
   exports: [FeatherModule]
 })
 export class IconsModule { }
+

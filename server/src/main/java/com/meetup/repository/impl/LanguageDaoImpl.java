@@ -4,6 +4,8 @@ import com.meetup.entities.Language;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.repository.ILanguageDAO;
 import java.util.List;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -81,7 +83,7 @@ public class LanguageDaoImpl implements ILanguageDAO {
     @Override
     public Language findLanguageByID(final int languageID) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", languageID);
+            .addValue(DbQueryConstants.id.name(), languageID);
         return this.template
             .queryForObject(findLanguageByID, param, new LanguageMapper());
     }
