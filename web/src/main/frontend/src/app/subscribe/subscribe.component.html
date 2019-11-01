@@ -1,0 +1,13 @@
+<app-sidebar></app-sidebar>
+<div class="cardList">
+  <ng-container *ngFor="let user of users">
+    <mat-card class="cardListItem">
+      <mat-card-subtitle fxLayout = "row" class="speakerName">
+        {{user.firstName}} {{user.lastName}}
+      </mat-card-subtitle>
+      <mat-card-title fxLayout = "row">
+        <a mat-raised-button color="accent" [routerLink]="['/speaker-profile',user.id]" >{{user.login}}</a>
+      </mat-card-title>
+    </mat-card>
+  </ng-container>
+</div>

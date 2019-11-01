@@ -20,6 +20,7 @@ import {ForgotPasswordComponent} from "./forgot-password/forgot-password.compone
 import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
 import {MeetupListComponent} from "./meetup-list/meetup-list.component";
 import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
+import {SubscribeComponent} from "./subscribe/subscribe.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -31,21 +32,20 @@ const routes: Routes = [
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminTableComponent},
-  {path: 'speaker-profile/to', component: SpeakerProfileToUsersComponent},
+  {path: 'speaker-profile/:speakerId', component: SpeakerProfileToUsersComponent},
   {path: 'dictionaries', component:DictionariesComponent},
   {path: 'comment-section', component:CommentSectionComponent},
-  //TODO id
   {path: 'article-view', component: ArticleViewComponent},
   {path: 'listener-profile', component: ListenerProfileComponent},
-  {path: 'listener-profile/:id', component: ListenerProfileToUsersComponent},
+  {path: 'listener-profile/:listenerId', component: ListenerProfileToUsersComponent},
   {path: 'approve-to-speaker', component: ApproveToSpeakerComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'speaker-profile/:id', component: SpeakerProfileToUsersComponent},
-
   {path: 'meetup-create', component: MeetupCreateComponent},
   {path: 'meetup-edit/:meetupId', component: MeetupCreateComponent},
   {path: 'meetup-list', component: MeetupListComponent},
   {path: 'meetup-profile/:meetupId', component: MeetupProfileComponent},
+  {path: 'subscriptions', component: SubscribeComponent},
 
   // otherwise redirect to home
   {path: '**', redirectTo: ''}

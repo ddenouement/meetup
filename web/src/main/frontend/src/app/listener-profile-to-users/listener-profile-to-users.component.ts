@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {MeetupsService} from "../services/meetups.service";
+import {ListenerProfileToUsersService} from "./listener-profile-to-users.service";
 
 @Component({
   selector: 'app-listener-profile-to-users',
@@ -8,17 +11,24 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ListenerProfileToUsersComponent implements OnInit {
   public badgeList: string[] = [];
-  private userURL = '/api/v1/user/profile';
+
   private login;
   private email;
+  private listenerId: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(public listenerService: ListenerProfileToUsersService, private httpClient: HttpClient, public route: ActivatedRoute) {
+  }
 
   ngOnInit() {
-    this.httpClient.get(this.userURL).subscribe(res => {
-      this.badgeList = res['badges'];
-      this.login = res['userDTO'].login;
-      this.email = res['userDTO'].email;
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('listenerId')) {
+        this.listenerId = paramMap.get('listenerId');
+        this.listenerService.getListener(+this.listenerId).subscribe(res => {
+          this.badgeList = res['badges'];
+          this.login = res['userDTO'].login;
+          this.email = res['userDTO'].email;
+        });
+      }
     });
   }
 

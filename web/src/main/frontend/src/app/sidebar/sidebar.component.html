@@ -5,10 +5,13 @@
 </div>
 <nav class="sidebar">
   <li *ngIf="admin" class="sidebar__icons sidebar__icons--active">
-      <img src="../../assets/images/teamActive.svg" routerLink="/create-article" alt="photo"/>
+      <img src="../../assets/images/teamActive.svg" routerLink="/create-article" alt="create-article"/>
+  </li>
+  <li *ngIf="speaker || listener" class="sidebar__icons ">
+    <img src="../../assets/images/teamNoActive.svg" routerLink="/subscriptions" alt="subscriptions"/>
   </li>
   <li *ngIf="admin" class="sidebar__icons sidebar__icons--active">
-    <img src="../../assets/images/notification.svg" routerLink="/dictionaries" alt="photo"/>
+    <img src="../../assets/images/notification.svg" routerLink="/" alt="photo"/>
   </li>
   <li *ngIf="speaker" class="sidebar__icons">
       <img src="../../assets/images/searchNoActive.svg" routerLink="/create-article" alt="photo"/>

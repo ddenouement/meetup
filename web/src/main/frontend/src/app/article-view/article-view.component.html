@@ -11,8 +11,8 @@
         <p>{{Content}}</p>
     <!--</mat-form-field>-->
       <h2>Posted: 28 October at 9:32 PM</h2>
-      <h3>Author: <a [routerLink]="['/speaker-profile']">
-        Ivanenko Ivan</a></h3>
+      <h3>Author: <a [routerLink]="['/speaker-profile',user.id]">
+        {{user.firstName}} {{user.lastName}}</a></h3>
     <!--</form>-->
     <app-comment-section></app-comment-section>
   </div>

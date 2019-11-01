@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {StarRatingComponent} from "ng-starrating";
 import {LanguagesList} from "../models/languagesList";
 import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ListenerProfileToUsersService} from "../listener-profile-to-users/listener-profile-to-users.service";
+import {SpeakerProfileToUsersService} from "./speaker-profile-to-users.service";
 
 @Component({
   selector: 'app-speaker-profile-to-users',
@@ -17,22 +20,28 @@ export class SpeakerProfileToUsersComponent implements OnInit {
   public login: string;
   public email: string;
   public about: string;
-  private userURL = '/api/v1/user/profile';
   private langList: string[] = [];
+  private speakerId: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(public speakerService: SpeakerProfileToUsersService, public route: ActivatedRoute) {
+  }
 
   ngOnInit() {
-    this.httpClient.get(this.userURL).subscribe(res => {
-      this.badgeList = res['badges'];
-      for (let i in res['userDTO'].languages) {
-        this.langList[i] = res['userDTO'].languages[i].name;
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('speakerId')) {
+        this.speakerId = paramMap.get('speakerId');
+        this.speakerService.getSpeaker(+this.speakerId).subscribe(res => {
+          this.badgeList = res['badges'];
+          for (let i in res['userDTO'].languages) {
+            this.langList[i] = res['userDTO'].languages[i].name;
+          }
+          this.firstName = res['userDTO'].firstName;
+          this.lastName = res['userDTO'].lastName;
+          this.login = res['userDTO'].login;
+          this.email = res['userDTO'].email;
+          this.about = res['userDTO'].about;
+        });
       }
-      this.firstName = res['userDTO'].firstName;
-      this.lastName = res['userDTO'].lastName;
-      this.login = res['userDTO'].login;
-      this.email = res['userDTO'].email;
-      this.about = res['userDTO'].about;
     });
   }
 
