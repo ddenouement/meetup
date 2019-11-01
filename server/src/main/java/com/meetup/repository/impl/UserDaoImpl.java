@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -187,17 +188,17 @@ public class UserDaoImpl implements IUserDAO {
      */
     private User toPerson(final ResultSet resultSet) throws SQLException {
         User person = new User();
-        person.setId(resultSet.getInt("id"));
-        String login = resultSet.getString("login");
+        person.setId(resultSet.getInt(DbQueryConstants.id.name()));
+        String login = resultSet.getString(DbQueryConstants.login.name());
         person.setLogin(login);
-        person.setFirstName(resultSet.getString("first_name"));
-        person.setLastName(resultSet.getString("last_name"));
-        person.setAbout(resultSet.getString("about"));
-        person.setEmail(resultSet.getString("email"));
-        person.setPassword(resultSet.getString("password"));
-        person.setActive(resultSet.getBoolean("active"));
-        person.setRate(resultSet.getFloat("rate"));
-        person.setNumRates(resultSet.getInt("num_rates"));
+        person.setFirstName(resultSet.getString(DbQueryConstants.first_name.name()));
+        person.setLastName(resultSet.getString(DbQueryConstants.last_name.name()));
+        person.setAbout(resultSet.getString(DbQueryConstants.about.name()));
+        person.setEmail(resultSet.getString(DbQueryConstants.email.name()));
+        person.setPassword(resultSet.getString(DbQueryConstants.password.name()));
+        person.setActive(resultSet.getBoolean(DbQueryConstants.active.name()));
+        person.setRate(resultSet.getFloat(DbQueryConstants.rate.name()));
+        person.setNumRates(resultSet.getInt(DbQueryConstants.num_rates.name()));
         for (Role role : findUserRolesByLogin(login)) {
             person.addRole(role);
         }
@@ -212,7 +213,7 @@ public class UserDaoImpl implements IUserDAO {
      */
     private Integer getRoleId(final String roleName) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(
-                "text", roleName);
+                DbQueryConstants.text.name(), roleName);
         return template.queryForObject(findRoleIdByName, namedParameters,
                 Integer.class);
     }
@@ -226,8 +227,8 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void addRoleToUser(final User us, final String r) {
         Map namedParameters = new HashMap();
-        namedParameters.put("usId", us.getId());
-        namedParameters.put("roleId", getRoleId(r));
+        namedParameters.put(DbQueryConstants.usId.name(), us.getId());
+        namedParameters.put(DbQueryConstants.roleId.name(), getRoleId(r));
         template.update(addRoleToUser, namedParameters);
     }
 
@@ -255,14 +256,14 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void insertNewUser(final UserRegistrationDTO user) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("login", user.getLogin())
-                .addValue("email", user.getEmail())
-                .addValue("password", user.getPassword())
-                .addValue("first_name", user.getFirstName())
-                .addValue("last_name", user.getLastName())
-                .addValue("about", user.getAbout())
-                .addValue("roles", createSqlArray(user.getRoles(), "TEXT"))
-                .addValue("language_ids",
+                .addValue(DbQueryConstants.login.name(), user.getLogin())
+                .addValue(DbQueryConstants.email.name(), user.getEmail())
+                .addValue(DbQueryConstants.password.name(), user.getPassword())
+                .addValue(DbQueryConstants.first_name.name(), user.getFirstName())
+                .addValue(DbQueryConstants.last_name.name(), user.getLastName())
+                .addValue(DbQueryConstants.about.name(), user.getAbout())
+                .addValue(DbQueryConstants.roles.name(), createSqlArray(user.getRoles(), "TEXT"))
+                .addValue(DbQueryConstants.language_ids.name(),
                         createSqlArray(user.getLanguageIds(), "INTEGER"));
         template.execute(insertFullUser, param, PreparedStatement::executeQuery);
     }
@@ -277,7 +278,7 @@ public class UserDaoImpl implements IUserDAO {
     public User findUserByLogin(final String log) {
 
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("login_param", log);
+                .addValue(DbQueryConstants.login_param.name(), log);
         List<User> foundusers =
                 template.query(findByLogin, param,
                         (resultSet, i) -> toPerson(resultSet));
@@ -298,7 +299,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public User findUserByEmail(final String em) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("email", em);
+                .addValue(DbQueryConstants.email.name(), em);
         List<User> foundUsers =
                 template.query(findUserByEmail, param,
                         (resultSet, i) -> toPerson(resultSet));
@@ -316,7 +317,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<Role> findUserRolesByLogin(final String login) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("login", login);
+                .addValue(DbQueryConstants.login.name(), login);
         ResultSet rs = null;
         return
                 template.query(findUserRolesByLogin, param,
@@ -330,7 +331,7 @@ public class UserDaoImpl implements IUserDAO {
      * @throws SQLException exc
      */
     private Role toRole(final ResultSet resultSet) throws SQLException {
-        return Role.valueOf(resultSet.getString("name"));
+        return Role.valueOf(resultSet.getString(DbQueryConstants.name.name()));
     }
 
     /**
@@ -341,7 +342,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("user_id_param", id);
+                .addValue(DbQueryConstants.user_id_param.name(), id);
         List<User> subscriptedTo =
                 template.query(
                         findSubscriptionOfUserById, param,
@@ -359,7 +360,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<Language> getUsersLanguages(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("user_id_param", id);
+                .addValue(DbQueryConstants.user_id_param.name(), id);
         ResultSet rs = null;
         List<Language> languages =
                 template.query(findUsersLanguages, param, new LanguageMapper());
@@ -375,7 +376,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public boolean deactivateUser(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("user_id_param", id);
+                .addValue(DbQueryConstants.user_id_param.name(), id);
         ResultSet rs = null;
         template.update(deactivateUser, param);
         return true;
@@ -397,10 +398,10 @@ public class UserDaoImpl implements IUserDAO {
     public ComplaintDTO postComplaintOn(final ComplaintDTO compl) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("reason", compl.getContent())
-                .addValue("id_destination", compl.getId_user_to())
-                .addValue("time_posted", compl.getPostedDate())
-                .addValue("id_source", compl.getId_user_from());
+                .addValue(DbQueryConstants.reason.name(), compl.getContent())
+                .addValue(DbQueryConstants.id_destination.name(), compl.getId_user_to())
+                .addValue(DbQueryConstants.time_posted.name(), compl.getPostedDate())
+                .addValue(DbQueryConstants.id_source.name(), compl.getId_user_from());
         ResultSet rs = null;
         template.update(postComplaint, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
@@ -417,7 +418,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public boolean markAsReadComplaint(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id", id);
+                .addValue(DbQueryConstants.id.name(), id);
         template.update(markComplaint, param);
         return true;
     }
@@ -430,8 +431,8 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void subscribeToSpeaker(int userId, int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", userId)
-              .addValue("id_speak", speakerId);
+                .addValue(DbQueryConstants.id_user.name(), userId)
+              .addValue(DbQueryConstants.id_speak.name(), speakerId);
         template.update(subscribeToSpeaker, param);
     }
 
@@ -443,8 +444,8 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void unSubscribeFromSpeaker(int userId, int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", userId)
-                .addValue("id_speak", speakerId);
+                .addValue(DbQueryConstants.id_user.name(), userId)
+                .addValue(DbQueryConstants.id_speak.name(), speakerId);
         template.update(unsubscribeFromSpeaker, param);
     }
 
@@ -456,7 +457,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<User> getSubscribersOfSpeaker(int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("speaker_id_param", speakerId);
+                .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
                 template.query(findById, param,
                         (resultSet, i) -> toPerson(resultSet));
@@ -465,7 +466,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public User findUserById(int userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_param", userId);
+                .addValue(DbQueryConstants.id_param.name(), userId);
         List<User> foundUsers =
                 template.query(findById, param,
                         (resultSet, i) -> toPerson(resultSet));
@@ -483,7 +484,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("speaker_id_param", speakerId);
+                .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
                 template.query(simpleSubscribersOfSpeaker, param,new SimpleUserDTOMapper());
     }
@@ -516,8 +517,8 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void changePassword(final Integer userId, final String newPassword) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("password", newPassword)
-            .addValue("id", userId);
+            .addValue(DbQueryConstants.password.name(), newPassword)
+            .addValue(DbQueryConstants.id.name(), userId);
         template.update(changePassword, param);
     }
 }

@@ -53,6 +53,11 @@ ____________________________________
 - RequestBody: String password
 - /api/v1/users/password
 
+#### Get user's ID
+- Type: GET
+- /api/v1/users/id
+
+
 
 ### SPEAKER CONTROLLER
 ____________________________________

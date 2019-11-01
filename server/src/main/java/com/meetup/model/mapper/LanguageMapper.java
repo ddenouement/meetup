@@ -3,6 +3,8 @@ package com.meetup.model.mapper;
 import com.meetup.entities.Language;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 /**.
@@ -22,8 +24,8 @@ public final class LanguageMapper implements RowMapper<Language> {
     public Language mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         Language language = new Language();
-        language.setId(rs.getInt("id"));
-        language.setName(rs.getString("name"));
+        language.setId(rs.getInt(DbQueryConstants.id.name()));
+        language.setName(rs.getString(DbQueryConstants.name.name()));
         return language;
     }
 }

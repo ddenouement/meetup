@@ -1,6 +1,7 @@
 package com.meetup.model.mapper;
 
 import com.meetup.entities.dto.SimpleUserDTO;
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -24,12 +25,12 @@ public final class SimpleUserDTOMapper implements RowMapper<SimpleUserDTO> {
     public SimpleUserDTO mapRow(final ResultSet rs, final int rowNum)
             throws SQLException {
         SimpleUserDTO user = new SimpleUserDTO();
-        user.setId(rs.getInt("id"));
-        user.setLogin(rs.getString("login"));
-        user.setFirstName(rs.getString("first_name"));
-        user.setLastName(rs.getString("last_name"));
-        user.setRate(rs.getFloat("rate"));
-        user.setNumRates(rs.getInt("num_rates"));
+        user.setId(rs.getInt(DbQueryConstants.id.name()));
+        user.setLogin(rs.getString(DbQueryConstants.login.name()));
+        user.setFirstName(rs.getString(DbQueryConstants.first_name.name()));
+        user.setLastName(rs.getString(DbQueryConstants.last_name.name()));
+        user.setRate(rs.getFloat(DbQueryConstants.rate.name()));
+        user.setNumRates(rs.getInt(DbQueryConstants.num_rates.name()));
         return user;
     }
 }

@@ -8,7 +8,6 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserDTO;
 import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
@@ -313,7 +312,6 @@ public class UserController {
             HttpStatus.OK);
     }
 
-
     /**
      * Change user's password.
      *
@@ -354,5 +352,21 @@ public class UserController {
         String userLogin = loginValidatorService.extractLogin(token);
         userService.rateMeetup(meetupID, userLogin, feedback);
         return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+    /**
+     * Get user's id.
+     *
+     * @param token cookie with JWT
+     * @return user's id
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/id")
+    public ResponseEntity<Integer> getUserId(
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        return new ResponseEntity<>(userId, HttpStatus.OK);
     }
 }

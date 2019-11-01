@@ -2,9 +2,10 @@
 <div class="comments-container-outer">
 
 <div class="add-comment-section">
-  <button type="button" class="toggle-emoji" (click)="toggleEmojiPicker()"><i-feather name="smile"></i-feather></button>
+   <button type="button" class="toggle-emoji" (click)="toggleEmojiPicker()"><i-feather name="smile"></i-feather></button>
   <input  type="text" [(ngModel)]="text" class="input_comment"  />
   <input type="button" value="Comment" class="addbtn btn_my" [disabled]="!text" (click)="addComment()" />
+ <!-- <emoji-input class="input_comment" [(model)]="text" [textArea]="{cols: 40, rows: 5}"  (setPopupAction)="setPopupAction($event)"> </emoji-input>-->
 </div>
   <emoji-mart class="emoji-mart" set="emojione" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker" title="Pick smile..."></emoji-mart>
 
