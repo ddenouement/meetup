@@ -9,25 +9,33 @@ public enum NotificationType {
      */
     MEETUP_BOOKED(1),
     /**
-     * Meetup hosted or joined by user starts soon.
+     * Meetup hosted by user starts soon.
      */
-    MEETUP_STARTS_SOON(2),
+    HOSTED_MEETUP_STARTS_SOON(2),
+    /**
+     * Meetup joined by user starts soon.
+     */
+    JOINED_MEETUP_STARTS_SOON(3),
     /**
      * Information aboup a meetup joined by user has changed.
      */
-    MEETUP_INFO_CHANGED(3),
+    MEETUP_INFO_CHANGED(4),
     /**
      * A new meetup hosted by the speaker user is subscribed to is created.
      */
-    NEW_SUBSCRIBED_MEETUP(4),
-    /**
-     * User's profile is deactivated by admin.
-     */
-    PROFILE_DEACTIVATED(5),
+    NEW_SUBSCRIBED_MEETUP(5),
     /**
      * Meetup joined by user has ended and he is suggested to leave feedback.
      */
-    LEAVE_FEEDBACK(6);
+    LEAVE_FEEDBACK(6),
+    /**
+     * User's profile is deactivated by admin.
+     */
+    PROFILE_DEACTIVATED(7),
+    /**
+     * User's profile is activated by admin.
+     */
+    PROFILE_ACTIVATED(8);
 
     /** Id of notification type in the database. */
     private int id;
