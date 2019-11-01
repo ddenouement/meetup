@@ -204,11 +204,12 @@ CREATE TABLE notification_types
 
 CREATE TABLE notifications
 (
-    id      BIGSERIAL NOT NULL,
-    message TEXT      NOT NULL,
-    id_user BIGINT    NOT NULL,
-    read    BOOLEAN   NOT NULL,
-    id_type INTEGER   NOT NULL,
+    id              BIGSERIAL   NOT NULL,
+    message         TEXT        NOT NULL,
+    id_user         BIGINT      NOT NULL,
+    read            BOOLEAN     NOT NULL DEFAULT FALSE,
+    id_type         INTEGER     NOT NULL,
+    time_created    TIMESTAMP   NOT NULL,
     FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_type) REFERENCES notification_types (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id)
@@ -216,11 +217,12 @@ CREATE TABLE notifications
 
 CREATE TABLE complaints
 (
-    id             BIGSERIAL NOT NULL,
-    reason         TEXT      NOT NULL,
-    time_posted    TIMESTAMP NOT NULL,
-    id_source      BIGINT    NOT NULL,
-    id_destination BIGINT    NOT NULL,
+    id              BIGSERIAL   NOT NULL,
+    reason          TEXT        NOT NULL,
+    time_posted     TIMESTAMP   NOT NULL,
+    id_source       BIGINT      NOT NULL,
+    id_destination  BIGINT      NOT NULL,
+    read            BOOLEAN     NOT NULL DEFAULT FALSE,
     FOREIGN KEY (id_source) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_destination) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (id)

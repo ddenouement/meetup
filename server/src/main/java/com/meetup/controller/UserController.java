@@ -3,6 +3,7 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Meetup;
+import com.meetup.entities.Notification;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
@@ -11,6 +12,7 @@ import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
+import com.meetup.service.INotificationService;
 import com.meetup.service.IProfileService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.ModelConstants;
@@ -63,14 +65,18 @@ public class UserController {
      */
     private IArticleService articleService;
 
+    private INotificationService notificationService;
+
     /**
      * Constructor.
      *
-     * @param meetupService MeetupService.
-     * @param userService UserService.
+     * @param meetupService meetup operations
+     * @param userService user operations
      * @param loginValidatorService LoginValidatorService
      * @param badgeService badge operations
      * @param profileService profile operations
+     * @param articleService article operations
+     * @param notificationService notification operations
      */
     @Autowired
     public UserController(final IMeetupService meetupService,
@@ -78,13 +84,15 @@ public class UserController {
         final ILoginValidatorService loginValidatorService,
         final IBadgeService badgeService,
         final IProfileService profileService,
-        final IArticleService articleService) {
+        final IArticleService articleService,
+        final INotificationService notificationService) {
         this.meetupService = meetupService;
         this.userService = userService;
         this.loginValidatorService = loginValidatorService;
         this.badgeService = badgeService;
         this.profileService = profileService;
         this.articleService = articleService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -343,6 +351,40 @@ public class UserController {
     public ResponseEntity<Integer> getUserId(
         @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);
-        return new ResponseEntity<>(userId, HttpStatus.OK);
+        return ok(userId);
+    }
+
+    /**
+     * Return all unread notifications for user, sorted in descending order of
+     * time created.
+     *
+     * @param token cookie with JWT
+     * @return list of notifications
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/notifications")
+    public ResponseEntity<List<Notification>> getNotifications(
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        return ok(notificationService.findAll(userId));
+    }
+
+    /**
+     * Mark a notification with specified id as read.
+     * @param id id of notification to mark
+     * @param token cookie with JWT
+     * @return status
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @PutMapping(value = "/api/v1/users/notifications/{id}/read")
+    public ResponseEntity markNotificationAsRead(@PathVariable final Integer id,
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        notificationService.markAsRead(id, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
