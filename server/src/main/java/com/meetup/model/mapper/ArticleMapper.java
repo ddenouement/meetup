@@ -3,6 +3,8 @@ package com.meetup.model.mapper;
 import com.meetup.entities.Article;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -21,12 +23,12 @@ public final class ArticleMapper implements RowMapper<Article> {
     public Article mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         Article article = new Article();
-        article.setId(rs.getInt("id"));
-        article.setAuthorID(rs.getInt("id_author"));
-        article.setTitle(rs.getString("id_title"));
-        article.setContent(rs.getString("contents"));
+        article.setId(rs.getInt(DbQueryConstants.id.name()));
+        article.setAuthorID(rs.getInt(DbQueryConstants.id_author.name()));
+        article.setTitle(rs.getString(DbQueryConstants.id_title.name()));
+        article.setContent(rs.getString(DbQueryConstants.contents.name()));
         article.setPostDateTime(
-            TimeUtility.convertToLocalDateTime(rs.getTimestamp("time_posted")));
+            TimeUtility.convertToLocalDateTime(rs.getTimestamp(DbQueryConstants.time_posted.name())));
         return article;
     }
 }

@@ -2,6 +2,7 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Notification;
 import com.meetup.entities.User;
@@ -338,6 +339,29 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Rate specific meetup.
+     * @param feedback
+     * Feedback of user.
+     * @param token
+     * JSON web token.
+     * @param meetupID
+     * Meetup ID.
+     * @return
+     * Response entity with status code.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @PostMapping(value = "/api/v1/rate/meetups/{id}")
+    public ResponseEntity rateMeetup(
+        @RequestBody final Feedback feedback,
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        userService.rateMeetup(meetupID, userLogin, feedback);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
     /**
      * Get user's id.
      *

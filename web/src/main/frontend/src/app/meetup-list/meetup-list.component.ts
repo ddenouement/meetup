@@ -9,6 +9,7 @@ import {MeetupsService} from "../services/meetups.service";
   templateUrl: './meetup-list.component.html',
   styleUrls: ['./meetup-list.component.scss']
 })
+
 export class MeetupListComponent implements OnInit, OnDestroy{
 
   meetups : Meetup[] = [];

@@ -3,6 +3,8 @@ package com.meetup.model.mapper;
 import com.meetup.entities.Meetup;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
@@ -21,17 +23,17 @@ public final class MeetupMapper implements RowMapper<Meetup> {
     public Meetup mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         Meetup meetup = new Meetup();
-        meetup.setId(rs.getInt("id"));
-        meetup.setSpeakerId(rs.getInt("id_speaker"));
-        meetup.setLanguageId(rs.getInt("id_language"));
-        meetup.setStateId(rs.getInt("id_state"));
-        meetup.setTitle(rs.getString("title"));
+        meetup.setId(rs.getInt(DbQueryConstants.id.name()));
+        meetup.setSpeakerId(rs.getInt(DbQueryConstants.id_speaker.name()));
+        meetup.setLanguageId(rs.getInt(DbQueryConstants.id_language.name()));
+        meetup.setStateId(rs.getInt(DbQueryConstants.id_state.name()));
+        meetup.setTitle(rs.getString(DbQueryConstants.title.name()));
         meetup.setStartDate(
-            TimeUtility.convertToLocalDateTime(rs.getTimestamp("start_time")));
-        meetup.setDurationMinutes(rs.getInt("duration_minutes"));
-        meetup.setMinAttendees(rs.getInt("min_attendees"));
-        meetup.setMaxAttendees(rs.getInt("max_attendees"));
-        meetup.setDescription(rs.getString("description"));
+            TimeUtility.convertToLocalDateTime(rs.getTimestamp(DbQueryConstants.start_time.name())));
+        meetup.setDurationMinutes(rs.getInt(DbQueryConstants.duration_minutes.name()));
+        meetup.setMinAttendees(rs.getInt(DbQueryConstants.min_attendees.name()));
+        meetup.setMaxAttendees(rs.getInt(DbQueryConstants.max_attendees.name()));
+        meetup.setDescription(rs.getString(DbQueryConstants.description.name()));
         return meetup;
     }
 }

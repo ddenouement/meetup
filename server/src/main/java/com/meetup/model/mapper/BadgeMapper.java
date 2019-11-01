@@ -3,6 +3,8 @@ package com.meetup.model.mapper;
 import com.meetup.entities.Badge;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 /**.
@@ -22,9 +24,9 @@ public final class BadgeMapper implements RowMapper<Badge> {
     public Badge mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         Badge badge = new Badge();
-        badge.setId(rs.getInt("id"));
-        badge.setName(rs.getString("name"));
-        badge.setScript(rs.getString("script"));
+        badge.setId(rs.getInt(DbQueryConstants.id.name()));
+        badge.setName(rs.getString(DbQueryConstants.name.name()));
+        badge.setScript(rs.getString(DbQueryConstants.script.name()));
         return badge;
     }
 }

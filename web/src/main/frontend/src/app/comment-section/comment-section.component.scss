@@ -25,14 +25,18 @@
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   border-radius: 5px;
-  margin: 5px;
+
 }
 
 .comment-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,100,0.2);
 }
 .comments-container-outer{
-  //width:50%;
+  margin-right: auto;
+
+  margin-left: auto;
+
+  width: 50%;
 }
 input[type="text"] {
   border: 1px solid #000066;
@@ -50,7 +54,7 @@ input[type="text"] {
   content: 'author';
   background: #03658c;
   color: #FFF;
-  font-size: 12px;
+  font-size: 10px;
   padding: 3px 5px;
   font-weight: 700;
   margin-left: 10px;
@@ -97,9 +101,6 @@ input[type="text"] {
   white-space: -o-pre-wrap; /* Opera 7 */
   word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
-.comment_text-wrp{
-  width: 300px;
-}
 .link_person{
   font-size: 15px;
   font-weight: bold;
@@ -107,5 +108,37 @@ input[type="text"] {
   text-decoration: none;
 }
 .input_comment{
-  width: 200px;
+  width: 70%;
 }
+::ng-deep .mat-line{
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+}
+::ng-deep  .mat-list .mat-list-item{
+  height:initial!important;
+}
+.meta {
+  width: 160px;
+}
+.comment_text-wrp{
+  width: calc(100% - 160px);
+}
+@media (max-width: 900px) {
+  .content {
+    width: 70%;
+  }
+  .comments-container-outer {
+    width: 100%;
+  }
+  .addbtn{
+    width: 100%;float:left;
+    margin:0;
+    margin-top: 5px;
+  }
+  .input_comment{
+    width: 100%;  float:left;
+    clear: left;
+  }
+}
+
+

@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
-
+import {EmojiPickerModule} from 'ng-emoji-picker';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -59,6 +59,7 @@ import {FromNowPipe} from "./pipes/from_now_pipe";
 import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FooterComponent} from "./footer/footer.component";
+import { SubscribeComponent } from './subscribe/subscribe.component';
 
 @NgModule({
   declarations: [
@@ -90,12 +91,15 @@ import {FooterComponent} from "./footer/footer.component";
     MeetupListComponent,
     MeetupProfileComponent,
     FooterComponent,
-    FromNowPipe
+    FromNowPipe,
+    SubscribeComponent
   ],
   imports: [
     //for smiles
-    IconsModule,
-    PickerModule,
+     IconsModule,
+     PickerModule,
+    //ne
+ //   EmojiPickerModule,
 
     MatTabsModule,
     MatExpansionModule,

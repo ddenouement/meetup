@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
  * Used to communicate with database, to perform operations with Topic.
  */
 @Repository
-@PropertySource("classpath:sql/meetup_queries.properties")
+@PropertySource("classpath:sql/topic_queries.properties")
 public class TopicDaoImpl implements ITopicDAO {
 
     /**
