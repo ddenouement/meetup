@@ -4,6 +4,7 @@ import com.meetup.entities.Article;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.repository.IArticleDAO;
+import static com.meetup.utils.DbQueryConstants.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
 
 /**
  * Article repository class.
@@ -68,10 +70,10 @@ public class ArticleDaoImpl implements IArticleDAO {
         final int authorId) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id_author", authorId)
-            .addValue("id_title", articleCreationDTO.getTitle())
-            .addValue("contents", articleCreationDTO.getContent())
-            .addValue("time_posted", getCurrentTimestamp());
+            .addValue( id_author.name(), authorId)
+            .addValue(id_title.name(), articleCreationDTO.getTitle())
+            .addValue(contents.name(), articleCreationDTO.getContent())
+            .addValue(time_posted.name(), getCurrentTimestamp());
         template.update(insertNewArticle, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             int articleID = holder.getKey().intValue();
@@ -93,8 +95,8 @@ public class ArticleDaoImpl implements IArticleDAO {
     @Override
     public void addTopicToArticle(final int articleID, final int topicID) {
         Map parametersForAddingTopic = new HashMap();
-        parametersForAddingTopic.put("id_article", articleID);
-        parametersForAddingTopic.put("id_topic", topicID);
+        parametersForAddingTopic.put(id_article.name(), articleID);
+        parametersForAddingTopic.put(id_topic.name(), topicID);
         template.update(addTopicToArticle, parametersForAddingTopic);
     }
 
@@ -108,7 +110,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     @Override
     public Article findArticleByID(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", articleID);
+            .addValue(id.name(), articleID);
         return this.template
             .queryForObject(findArticleByID, param, new ArticleMapper());
     }
@@ -121,7 +123,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     @Override
     public void removeArticle(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", articleID);
+            .addValue(id.name(), articleID);
         template.update(removeArticle, param);
     }
 

@@ -100,16 +100,15 @@ public class UserController {
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity getUserProfile(
         @CookieValue("token") final String token) {
-        UserDTO user = userService
-            .getProfileUserDTO(loginValidatorService.extractLogin(token));
+        int id = loginValidatorService.extractId(token);
         Map<Object, Object> model =
-            profileService.getOtherUserProfile(user.getLogin());
+            profileService.getOtherUserProfile(id);
         if (model.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         //user can see his own future joined meetups
         List<Meetup> userJoinedMeetupsFuture =
-            meetupService.getJoinedMeetupsFuture(user.getId());
+            meetupService.getJoinedMeetupsFuture(id);
         model.put(ModelConstants.joinedMeetupsFuture, userJoinedMeetupsFuture);
         return ok(model);
     }
@@ -145,15 +144,15 @@ public class UserController {
     /**
      * How users see profile of other users.
      *
-     * @param userId login of user, whose profile we want to look at
+     * @param userId id of user, whose profile we want to look at
      * @return ResponseEntity as HashMap
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
         + "T(com.meetup.entities.Role).SPEAKER, "
         + "T(com.meetup.entities.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/user/people/profile")
+    @GetMapping(value = "/api/v1/user/people/profile/{id}")
     public ResponseEntity getOtherUserProfile(
-        final @PathVariable String userId) {
+          @PathVariable("id") final int userId) {
         Map<Object, Object> model = profileService.getOtherUserProfile(userId);
         if (model.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

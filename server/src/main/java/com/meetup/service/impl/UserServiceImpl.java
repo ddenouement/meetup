@@ -109,12 +109,12 @@ public class UserServiceImpl implements IUserService {
     /**
      * .
      *
-     * @param login String
+     * @param id user`s id
      * @return UserDTO
      */
     @Override
-    public UserDTO getProfileUserDTO(final String login)  {
-        User us = userDao.findUserByLogin(login);
+    public UserDTO getProfileUserDTO(final int id)  {
+        User us = userDao.findUserById(id);
         if (us == null) {
             throw new UserNotFoundException();
         }

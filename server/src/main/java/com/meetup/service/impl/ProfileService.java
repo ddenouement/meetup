@@ -3,6 +3,7 @@ package com.meetup.service.impl;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.error.UserNotFoundException;
+import com.meetup.repository.IUserDAO;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IProfileService;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProfileService implements IProfileService {
 
+    @Autowired
+    private IUserDAO userDAO;
     /**
      * .
      */
@@ -44,14 +47,13 @@ public class ProfileService implements IProfileService {
      * @return Map of objects, that characterize user
      */
     @Override
-    public Map<Object, Object> getOtherUserProfile(final String login) {
+    public Map<Object, Object> getOtherUserProfile(final int id) {
         Map<Object, Object> model = new HashMap<>();
-        UserDTO user;
-        try {
-            user = userService.getProfileUserDTO(login);
-        } catch (UserNotFoundException a) {
-            return model;
-        }
+        //throws UserNotFoundException
+        UserDTO
+            user = userService.getProfileUserDTO(id);
+
+        user.setLanguages(userDAO.getUsersLanguages(id));
         model.put(ModelConstants.userDTO, user);
         model.put(ModelConstants.subscribedTo,
             userService.getUsersSubscriptionsToSpeakers(
