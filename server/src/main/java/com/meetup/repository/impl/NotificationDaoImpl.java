@@ -3,6 +3,7 @@ package com.meetup.repository.impl;
 import com.meetup.entities.Notification;
 import com.meetup.model.mapper.NotificationMapper;
 import com.meetup.repository.INotificationDAO;
+import com.meetup.utils.DbQueryConstants;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ public class NotificationDaoImpl implements INotificationDAO {
     @Override
     public List<Notification> findAll(final Integer userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id_user", userId);
+            .addValue(DbQueryConstants.id_user.name(), userId);
         return template
             .query(findAllNotifications, param, new NotificationMapper());
     }
@@ -85,7 +86,7 @@ public class NotificationDaoImpl implements INotificationDAO {
     @Override
     public Notification findById(final Integer id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id);
+            .addValue(DbQueryConstants.id.name(), id);
         List<Notification> notifications = template
             .query(findNotificationById, param, new NotificationMapper());
         if (notifications.isEmpty()) {
@@ -104,8 +105,8 @@ public class NotificationDaoImpl implements INotificationDAO {
     @Override
     public void markAsRead(final Integer id, final Integer userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id)
-            .addValue("id_user", userId);
+            .addValue(DbQueryConstants.id.name(), id)
+            .addValue(DbQueryConstants.id_user.name(), userId);
         template.update(markNotificationAsRead, param);
     }
 
@@ -119,11 +120,11 @@ public class NotificationDaoImpl implements INotificationDAO {
     public Notification insert(final Notification notification) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("message", notification.getMessage())
-            .addValue("id_user", notification.getIdUser())
-            .addValue("read", notification.getRead())
-            .addValue("id_type", notification.getType().getId())
-            .addValue("time_created", notification.getTimeCreated());
+            .addValue(DbQueryConstants.message.name(), notification.getMessage())
+            .addValue(DbQueryConstants.id_user.name(), notification.getIdUser())
+            .addValue(DbQueryConstants.read.name(), notification.getRead())
+            .addValue(DbQueryConstants.id_type.name(), notification.getType().getId())
+            .addValue(DbQueryConstants.time_created.name(), notification.getTimeCreated());
         template.update(insertNotification, param, holder, new String[]{"id"});
         notification.setId(Objects.requireNonNull(holder.getKey()).intValue());
         return notification;

@@ -46,8 +46,9 @@ public enum DbQueryConstants {
     id_param,
     active,
     rate,
-    num_rates;
-
-
-
+    num_rates,
+    message,
+    type,
+    time_created,
+    id_type
 }

@@ -2,6 +2,7 @@ package com.meetup.model.mapper;
 
 import com.meetup.entities.Notification;
 import com.meetup.entities.NotificationType;
+import com.meetup.utils.DbQueryConstants;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,14 +24,14 @@ public final class NotificationMapper implements RowMapper<Notification> {
     public Notification mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         Notification notification = new Notification();
-        notification.setId(rs.getInt("id"));
-        notification.setMessage(rs.getString("message"));
-        notification.setIdUser(rs.getInt("id_user"));
-        notification.setRead(rs.getBoolean("read"));
-        notification.setType(NotificationType.valueOf(rs.getString("type")));
+        notification.setId(rs.getInt(DbQueryConstants.id.name()));
+        notification.setMessage(rs.getString(DbQueryConstants.message.name()));
+        notification.setIdUser(rs.getInt(DbQueryConstants.id_user.name()));
+        notification.setRead(rs.getBoolean(DbQueryConstants.read.name()));
+        notification.setType(NotificationType.valueOf(rs.getString(DbQueryConstants.type.name())));
         notification.setTimeCreated(
             TimeUtility
-                .convertToLocalDateTime(rs.getTimestamp("time_created")));
+                .convertToLocalDateTime(rs.getTimestamp(DbQueryConstants.time_created.name())));
         return notification;
     }
 }
