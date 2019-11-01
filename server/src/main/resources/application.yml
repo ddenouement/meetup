@@ -16,9 +16,9 @@ spring:
       maximumPoolSize: 7
 
     #    for local Postgres db(julia)
-    #    url: jdbc:postgresql://localhost:5432/postgres
-    #    username: postgres
-    #    password: user
+ #   url: jdbc:postgresql://localhost:5432/postgres
+ #   username: postgres
+ #   password: user
 
     #    for local Postgres db(polina)
     #    url: jdbc:postgresql://localhost:5432/meetup

@@ -4,9 +4,11 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
+import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
@@ -57,6 +59,10 @@ public class UserController {
      * . Operations with user profile
      */
     private IProfileService profileService;
+    /**
+     * Article operations service.
+     */
+    private IArticleService articleService;
 
     /**
      * Constructor.
@@ -72,12 +78,14 @@ public class UserController {
         final IUserService userService,
         final ILoginValidatorService loginValidatorService,
         final IBadgeService badgeService,
-        final IProfileService profileService) {
+        final IProfileService profileService,
+        final IArticleService articleService) {
         this.meetupService = meetupService;
         this.userService = userService;
         this.loginValidatorService = loginValidatorService;
         this.badgeService = badgeService;
         this.profileService = profileService;
+        this.articleService = articleService;
     }
 
     /**
@@ -207,8 +215,9 @@ public class UserController {
     }
 
     /**
-     * Every user can post a complaint on other.
-     *
+    * Every user can post a complaint on other.
+     *Convert login -> id, convert date in long format -> Date exemplar and pass it to DAO
+
      * @param compl complaint entity
      * @return ResponseEntity
      */
@@ -294,6 +303,14 @@ public class UserController {
         List<SimpleUserDTO> result_users =
             userService.getSimpleSubscribersOfSpeaker(speakerID);
         return ok(result_users);
+    }
+
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/articles/random")
+    public ResponseEntity<ArticleDisplayDTO> getArticle() {
+        return new ResponseEntity<>(articleService.getDisplayableArticle(),
+            HttpStatus.OK);
     }
 
 

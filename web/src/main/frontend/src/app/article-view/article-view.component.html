@@ -1,57 +1,20 @@
 <app-sidebar></app-sidebar>
 <main>
   <div class="content">
-    <form>
+    <!--<form>-->
       <mat-chip-list aria-label="Topic">
         <mat-chip>Business</mat-chip>
         <mat-chip>Health</mat-chip>
       </mat-chip-list>
-      <h1 formControlName="title">Article title</h1>
-      <mat-form-field class="form__textarea">
-        <p formControlName="content">Be honest: Are you working at your absolute peak? Just look at
-          The Rock. Sure he's charismatic and a strong actor, but how does he fly across the world
-          to record back-to-back films with barely a moment to rest? It's because he's in incredible
-          shape. The Rock gets the most out of his acting chops because he obsesses over his health.
-
-          Related: 10 Habits That Will Dramatically Improve Your Life
-
-          That same idea applies to you as an entrepreneur. Treat your body well -- eat right,
-          challenge your body, get proper sleep -- and you'll reward yourself with more energy,
-          greater focus, and a heightened level of discipline. You'll achieve new levels of
-          productivity while your competition falls behind and watches you scale faster and faster.
-
-          <br>Today I'm sharing with you three ways a healthy lifestyle will transform you into a
-          world-class entrepreneur -- and stack more dollars in your bank account. Specifically, I
-          want you to understand why sleep, exercise and nutrition are the keys to the success of
-          today's most influential entrepreneurs, artists, experts, thought leaders, industry titans
-          and anyone else who performs at a high level.
-          Get sleep, so you can be your business's clear-headed leader.
-          "The snooze button is the single worst invention for sleep ever."
-
-          That's what sleep expert Michael Breus says, and it's damn true. His theory is that the
-          extra "sleep" we get from hitting the snooze button is actually "light, fragmented sleep"
-          that leaves us feeling groggy, not refreshed.
-
-          <br>That bad sleep destroys the rest of your day. As entrepreneurs, we're on our feet all
-          day making decisions left and right. The buck stops and starts with us. You think someone
-          can do that when they're foggy in the head and running on fumes?
-
-          Sleep is critical if you want to effectively lead your business. You need a clear head in
-          order to negotiate big-money deals, effectively communicate with your team and inspire
-          others through the social media content you produce. You owe it to yourself, your clients
-          and your team to stay well-rested and alert.
-          <br>Hitting snooze does something to you psychologically as well. When you hit the snooze
-          button, you subconsciously tell yourself that five more minutes of low-quality sleep is
-          more important than accomplishing your life's mission.
-
-          I don't know about you, but I can't rest knowing that there are still so many
-          entrepreneurs out there with struggling businesses that need my help. You shouldn't settle
-          either. Structure your evening so you get deep, uninterrupted sleep. Then, structure your
-          morning so you can jump out of bed and tackle everything on your to-do list.</p>
-      </mat-form-field>
-      <h2 formControlName="dateTimePosted">Posted: 28 October at 9:32 PM</h2>
-      <h3 formControlName="author">Author: <a [routerLink]="['/speaker-profile']">
+      <h1>{{ Title }}</h1>
+      <!--<mat-form-field class="form__textarea">-->
+        <p>{{Content}}</p>
+    <!--</mat-form-field>-->
+      <h2>Posted: 28 October at 9:32 PM</h2>
+      <h3>Author: <a [routerLink]="['/speaker-profile']">
         Ivanenko Ivan</a></h3>
-    </form>
+    <!--</form>-->
+    <app-comment-section></app-comment-section>
   </div>
+
 </main>

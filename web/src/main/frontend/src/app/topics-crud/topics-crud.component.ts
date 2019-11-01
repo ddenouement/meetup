@@ -2,8 +2,7 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {TopicClass} from "../models/topic_class";
 import {Topicsservice} from "./Topicsservice";
 import {Language} from "../models/language";
-import {Languagesservice} from "../languages-crud/languagessservice";
-/*
+
 @Component({
   selector: 'app-topics-crud',
   templateUrl: './topics-crud.component.html',
@@ -107,4 +106,3 @@ export class TopicsCrudComponent implements OnInit {
       });
   }
 }
-*/

@@ -29,6 +29,11 @@ public class ComplaintDTO {
      */
     private Date postedDate;
     /**.
+     * time posted (int)
+     */
+    private long postedDateInNumFormat;
+
+    /**.
      *  if admin has read this complaint
      */
     private boolean isRead;

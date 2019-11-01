@@ -18,6 +18,7 @@ import com.meetup.service.IUserService;
 import com.meetup.utils.UserDTOConverter;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,6 +202,7 @@ public class UserServiceImpl implements IUserService {
             throw new UserNotFoundException();
         }
         int id_source = u.getId();
+        complaintDTO.setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
         complaintDTO.setId_user_from(id_source);
         userDao.postComplaintOn(complaintDTO);
     }

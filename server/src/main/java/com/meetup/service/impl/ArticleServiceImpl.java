@@ -2,6 +2,8 @@ package com.meetup.service.impl;
 import com.meetup.entities.Article;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.entities.dto.ArticleDisplayDTO;
+import com.meetup.entities.dto.UserDTO;
 import com.meetup.error.SpeakerOperationNotAllowedException;
 import com.meetup.repository.IArticleDAO;
 import com.meetup.repository.IUserDAO;
@@ -9,6 +11,8 @@ import com.meetup.repository.impl.ArticleDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IArticleService;
 import com.meetup.utils.RoleProcessor;
+import com.meetup.utils.UserDTOConverter;
+import javax.jws.soap.SOAPBinding.Use;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -75,6 +79,28 @@ public class ArticleServiceImpl implements IArticleService {
         } else {
             throw new SpeakerOperationNotAllowedException();
         }
+    }
+
+    /**
+     * Get article, that could be displayed.
+     * @return
+     * ArticleDisplayDTO.
+     */
+    //TODO rewrite
+    @Override
+    public ArticleDisplayDTO getDisplayableArticle() {
+        //TODO id
+        UserDTOConverter userDTOConverter = new UserDTOConverter();
+        Article article = articleDao.findArticleByID(8);
+        User user = userDao.findUserById(article.getAuthorID());
+        UserDTO userDTO = userDTOConverter.convertToUserDTO(user);
+        ArticleDisplayDTO articleDisplayDTO = new ArticleDisplayDTO();
+        articleDisplayDTO.setAuthor(userDTO);
+        articleDisplayDTO.setTitle(article.getTitle());
+        articleDisplayDTO.setContent(article.getContent());
+        articleDisplayDTO.setDateTimePosted(article.getPostDateTime().toString());
+//        articleDisplayDTO.setTopics(article.getTopicIds());
+        return articleDisplayDTO;
     }
 
 }

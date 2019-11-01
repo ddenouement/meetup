@@ -7,8 +7,8 @@
   <li *ngIf="admin" class="sidebar__icons sidebar__icons--active">
       <img src="../../assets/images/teamActive.svg" routerLink="/create-article" alt="photo"/>
   </li>
-  <li *ngIf="admin" class="sidebar__icons ">
-    <img src="../../assets/images/notification.svg" routerLink="/dictionaries-crud" alt="photo"/>
+  <li *ngIf="admin" class="sidebar__icons sidebar__icons--active">
+    <img src="../../assets/images/notification.svg" routerLink="/dictionaries" alt="photo"/>
   </li>
   <li *ngIf="speaker" class="sidebar__icons">
       <img src="../../assets/images/searchNoActive.svg" routerLink="/create-article" alt="photo"/>
@@ -17,7 +17,7 @@
       <img src="../../assets/images/myProfileActive.svg" routerLink="/speaker-profile" alt="photo"/>
   </li>
   <li *ngIf="speaker" class="sidebar__icons">
-      <img src="../../assets/images/messagesNoActive.svg"  routerLink="/approve-to-speaker" alt="photo"/>
+      <img src="../../assets/images/messagesNoActive.svg" alt="photo"/>
   </li>
   <li *ngIf="speaker" class="sidebar__icons">
       <img src="../../assets/images/notification.svg" routerLink="/speaker-profile/to" alt="photo"/>
@@ -25,4 +25,20 @@
   <li *ngIf="listener" class="sidebar__icons sidebar__icons--active">
     <img src="../../assets/images/myProfileActive.svg" routerLink="/listener-profile" alt="photo"/>
   </li>
+
+<!--*ngIf="speaker" -->
+  <li class="sidebar__icons">
+    <button mat-icon-button routerLink="/meetup-create">
+      <mat-icon>fiber_new</mat-icon>
+    </button>
+  </li>
+
+    <!--&lt;!&ndash;    </button>-->
+<!--  *ngIf="speaker" -->
+  <li class="sidebar__icons">
+    <button mat-icon-button routerLink="/meetup-list">
+      <mat-icon>dynamic_feed</mat-icon>
+    </button>
+  </li>
+
 </nav>

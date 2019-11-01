@@ -85,7 +85,7 @@ public interface IUserService {
      */
     List <ComplaintDTO>  getAllNotReadComplaints( );
     /**
-     * .
+     * Convert login -> id, convert date in long format -> Date exemplar and pass it to DAO
      * @param compl ComplaintDTO
      */
     void postComplaintOn(ComplaintDTO compl, String login) throws UserNotFoundException;
