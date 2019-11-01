@@ -95,7 +95,8 @@ export class RegisterSpeakerComponent implements OnInit {
       error => {
         this.loading = false;
         this.error = error.error;
-        console.log(error);
+        console.warn('ERROR in register Speaker');
+        console.warn(error);
         this.registerForm.controls['firstName'].enable();
         this.registerForm.controls['lastName'].enable();
         this.registerForm.controls['login'].enable();
