@@ -170,6 +170,7 @@ form {
 
 .change__form {
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .change__form--text {
@@ -177,11 +178,21 @@ form {
   font-family: $font_family_1;
   font-style: normal;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 22px;
   line-height: 14px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: $color_2;
+}
+
+.form--text{
+  font-size: 18px;
+  font-family: $font_family_1;
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 1px;
 }
 
 .form__input {

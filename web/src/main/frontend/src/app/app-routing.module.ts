@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin', component: AdminTableComponent},
-  {path: 'speaker-profile/:id', component: SpeakerProfileToUsersComponent},
+  {path: 'speaker-profile/to', component: SpeakerProfileToUsersComponent},
   {path: 'listener-profile', component: ListenerProfileComponent},
   {path: 'listener-profile/:id', component: ListenerProfileToUsersComponent},
   {path: 'approve-to-speaker', component: ApproveToSpeakerComponent},

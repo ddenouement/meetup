@@ -46,10 +46,23 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.rozsulka();
     this.register();
   }
 
   onStrengthChanged(strength: number) {
+  }
+
+  public rozsulka(): void{
+    const user = <Aachen>{
+      login: this.registerForm.get('login').value,
+      email: this.registerForm.get('password').value
+    };
+    this.httpClient.post('https://events.sendpulse.com/events/id/63c05ac4961149dffbc76906bc2db760/7246374', user).subscribe(res=>{
+
+    },error1 => {
+      console.warn(error1);
+    })
   }
 
   public register(): void {
@@ -106,4 +119,8 @@ export function MustMatch(controlName: string, matchingControlName: string) {
       matchingControl.setErrors(null);
     }
   }
+}
+export class Aachen {
+  public login: string;
+  public email: string;
 }
