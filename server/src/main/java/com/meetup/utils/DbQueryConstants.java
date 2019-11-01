@@ -1,6 +1,7 @@
 package com.meetup.utils;
 
 public enum DbQueryConstants {
+
     id_author,
     id_title,
     contents,
@@ -16,11 +17,13 @@ public enum DbQueryConstants {
     id_language,
     id_state,
     title,
+    read,
     start_time,
     duration_minutes,
     min_attendees,
     max_attendees,
     description,
+    meetup_id,
     id_meetup,
     text,
     usId,
@@ -44,6 +47,7 @@ public enum DbQueryConstants {
     active,
     rate,
     num_rates;
+
 
 
 }

@@ -3,6 +3,8 @@ package com.meetup.model.mapper;
 import com.meetup.entities.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 /**.
@@ -25,16 +27,16 @@ public final class UserMapper implements RowMapper<User> {
     public User mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         User user = new User();
-        user.setId(rs.getInt("id"));
-        user.setLogin(rs.getString("login"));
-        user.setEmail(rs.getString("email"));
-        user.setPassword(rs.getString("password"));
-        user.setFirstName(rs.getString("first_name"));
-        user.setLastName(rs.getString("last_name"));
-        user.setActive(rs.getBoolean("active"));
-        user.setAbout(rs.getString("about"));
-        user.setRate(rs.getFloat("rate"));
-        user.setNumRates(rs.getInt("num_rates"));
+        user.setId(rs.getInt(DbQueryConstants.id.name()));
+        user.setLogin(rs.getString(DbQueryConstants.login.name()));
+        user.setEmail(rs.getString(DbQueryConstants.email.name()));
+        user.setPassword(rs.getString(DbQueryConstants.password.name()));
+        user.setFirstName(rs.getString(DbQueryConstants.first_name.name()));
+        user.setLastName(rs.getString(DbQueryConstants.last_name.name()));
+        user.setActive(rs.getBoolean(DbQueryConstants.active.name()));
+        user.setAbout(rs.getString(DbQueryConstants.about.name()));
+        user.setRate(rs.getFloat(DbQueryConstants.rate.name()));
+        user.setNumRates(rs.getInt(DbQueryConstants.num_rates.name()));
         return user;
     }
 }

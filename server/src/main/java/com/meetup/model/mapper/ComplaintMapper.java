@@ -1,6 +1,7 @@
 package com.meetup.model.mapper;
 
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -19,13 +20,13 @@ public class ComplaintMapper implements RowMapper<ComplaintDTO> {
     public ComplaintDTO mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
         ComplaintDTO c = new ComplaintDTO();
-        c.setId(rs.getInt("id"));
-        c.setContent(rs.getString("reason"));
-        c.setId_user_from(rs.getInt("id_source"));
-        c.setId_user_to(rs.getInt("id_destination"));
+        c.setId(rs.getInt(DbQueryConstants.id.name()));
+        c.setContent(rs.getString(DbQueryConstants.reason.name()));
+        c.setId_user_from(rs.getInt(DbQueryConstants.id_source.name()));
+        c.setId_user_to(rs.getInt(DbQueryConstants.id_destination.name()));
         // TODO: do we need to get timestamp there?
-        c.setPostedDate(rs.getDate("time_posted"));
-        c.setRead(rs.getBoolean("read"));
+        c.setPostedDate(rs.getDate(DbQueryConstants.time_posted.name()));
+        c.setRead(rs.getBoolean(DbQueryConstants.read.name()));
         return c;
     }
 }
