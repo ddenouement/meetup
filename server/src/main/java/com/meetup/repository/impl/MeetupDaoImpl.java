@@ -1,5 +1,6 @@
 package com.meetup.repository.impl;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.MeetupState;
 import com.meetup.entities.Topic;
@@ -8,6 +9,8 @@ import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IMeetupDAO;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +130,12 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${find_meetup_by_id}")
     private String getMeetupByID;
+    /**
+     * SQL reference script.
+     * Rate meetup.
+     */
+    @Value("${rate_meetup}")
+    private String rateMeetup;
 
     /**.
      * Get all meetups from DB.
@@ -289,6 +298,18 @@ public class MeetupDaoImpl implements IMeetupDAO {
         return this.template
                 .query(getSpeakerMeetups, param, new MeetupMapper());
     }
+
+    @Override
+    public void rateMeetup(int meetupID, int userID, Feedback feedback) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id_meetup", meetupID)
+            .addValue("id_user", userID)
+            .addValue("speaker_rate", feedback.getRate())
+            .addValue("speaker_feedback", feedback.getFeedback())
+            .addValue("time_posted", getCurrentTimestamp());
+        template.update(rateMeetup, param);
+    }
+
     /**
      * . Get all meetups, that user will attend.
      *
@@ -366,5 +387,14 @@ public class MeetupDaoImpl implements IMeetupDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("meetup_id", meetupId);
         return this.template.query(getUsersOnMeetup, param, new UserMapper());
+    }
+
+    /**
+     * Get current date.
+     * @return
+     * SQL Timestamp date format.
+     */
+    public Timestamp getCurrentTimestamp() {
+        return new Timestamp(new Date().getTime());
     }
 }

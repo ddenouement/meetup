@@ -2,6 +2,7 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleDisplayDTO;
@@ -152,7 +153,7 @@ public class UserController {
         + "T(com.meetup.entities.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/people/profile/{id}")
     public ResponseEntity getOtherUserProfile(
-          @PathVariable("id") final int userId) {
+        @PathVariable("id") final int userId) {
         Map<Object, Object> model = profileService.getOtherUserProfile(userId);
         if (model.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -214,9 +215,9 @@ public class UserController {
     }
 
     /**
-    * Every user can post a complaint on other.
-     *Convert login -> id, convert date in long format -> Date exemplar and pass it to DAO
-
+     * Every user can post a complaint on other. Convert login -> id, convert
+     * date in long format -> Date exemplar and pass it to DAO
+     *
      * @param compl complaint entity
      * @return ResponseEntity
      */
@@ -332,4 +333,26 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Rate specific meetup.
+     * @param feedback
+     * Feedback of user.
+     * @param token
+     * JSON web token.
+     * @param meetupID
+     * Meetup ID.
+     * @return
+     * Response entity with status code.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @PostMapping(value = "/api/v1/rate/meetups/{id}")
+    public ResponseEntity rateMeetup(
+        @RequestBody final Feedback feedback,
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        userService.rateMeetup(meetupID, userLogin, feedback);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
