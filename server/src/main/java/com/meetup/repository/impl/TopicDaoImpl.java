@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,6 +34,13 @@ public class TopicDaoImpl implements ITopicDAO {
     private String getAllTopicsScript;
 
     /**
+     * SQL reference script.
+     * Retrieve topic by ID.
+     */
+    @Value("${find_topic_by_id}")
+    private String findTopicByID;
+
+    /**
      * Retrieve all available topics from database.
      * @return
      * List of topics
@@ -39,6 +48,20 @@ public class TopicDaoImpl implements ITopicDAO {
     @Override
     public List<Topic> getAllTopics() {
         return this.template.query(getAllTopicsScript, new TopicMapper());
+    }
+
+    /**
+     * Find topic by ID.
+     * @param topicID
+     * ID of topic.
+     * @return
+     * Topic.
+     */
+    @Override
+    public Topic findTopicByID(final int topicID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id", topicID);
+        return this.template.queryForObject(findTopicByID, param, new TopicMapper());
     }
 
 

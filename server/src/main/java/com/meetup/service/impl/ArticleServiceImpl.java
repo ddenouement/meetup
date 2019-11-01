@@ -1,18 +1,24 @@
 package com.meetup.service.impl;
+
 import com.meetup.entities.Article;
+import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.error.SpeakerOperationNotAllowedException;
 import com.meetup.repository.IArticleDAO;
+import com.meetup.repository.ITopicDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.ArticleDaoImpl;
+import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IArticleService;
+import com.meetup.utils.ArticleDTOConverter;
 import com.meetup.utils.RoleProcessor;
 import com.meetup.utils.UserDTOConverter;
-import javax.jws.soap.SOAPBinding.Use;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +36,10 @@ public class ArticleServiceImpl implements IArticleService {
      * User repository.
      */
     private IArticleDAO articleDao;
+    /**
+     * Topic repository.
+     */
+    private ITopicDAO topicDao;
 
     /**
      * Constructor.
@@ -38,9 +48,11 @@ public class ArticleServiceImpl implements IArticleService {
      * @param articleDao Article repository.
      */
     ArticleServiceImpl(@Autowired final UserDaoImpl userDao,
-        @Autowired final ArticleDaoImpl articleDao) {
+        @Autowired final ArticleDaoImpl articleDao,
+        @Autowired final TopicDaoImpl topicDao) {
         this.userDao = userDao;
         this.articleDao = articleDao;
+        this.topicDao = topicDao;
     }
 
     /**
@@ -83,24 +95,21 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * Get article, that could be displayed.
-     * @return
-     * ArticleDisplayDTO.
+     *
+     * @return ArticleDisplayDTO.
      */
     //TODO rewrite
     @Override
     public ArticleDisplayDTO getDisplayableArticle() {
-        //TODO id
         UserDTOConverter userDTOConverter = new UserDTOConverter();
+        ArticleDTOConverter articleDTOConverter = new ArticleDTOConverter();
+
         Article article = articleDao.findArticleByID(8);
+        List<Topic> topics = articleDao.getArticleTopics(8);
+
         User user = userDao.findUserById(article.getAuthorID());
         UserDTO userDTO = userDTOConverter.convertToUserDTO(user);
-        ArticleDisplayDTO articleDisplayDTO = new ArticleDisplayDTO();
-        articleDisplayDTO.setAuthor(userDTO);
-        articleDisplayDTO.setTitle(article.getTitle());
-        articleDisplayDTO.setContent(article.getContent());
-        articleDisplayDTO.setDateTimePosted(article.getPostDateTime().toString());
-//        articleDisplayDTO.setTopics(article.getTopicIds());
-        return articleDisplayDTO;
-    }
 
+        return articleDTOConverter.convertToArticleDisplayDTO(article,topics,userDTO);
+    }
 }

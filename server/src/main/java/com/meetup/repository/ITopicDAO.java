@@ -14,4 +14,13 @@ public interface ITopicDAO {
      * List of all topics.
      */
     List<Topic> getAllTopics();
+
+    /**
+     * Find topic by ID.
+     * @param id
+     * ID of topic.
+     * @return
+     * Topic.
+     */
+    Topic findTopicByID(int id);
 }
