@@ -97,6 +97,7 @@ public class AuthorizationController {
 
     /**
      * Delete token from cookies.
+     *
      * @param response HttpServletResponse
      * @return status of operation
      */
@@ -157,7 +158,8 @@ public class AuthorizationController {
      * @param response response to write deleted cookie with JWT to
      * @return status
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).LISTENER)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).LISTENER) "
+        + "AND !hasRole(T(com.meetup.utils.Role).SPEAKER)")
     @PutMapping(value = "/api/v1/users/upgrade")
     public ResponseEntity registerSpeaker(
         @CookieValue("token") final String token,
@@ -188,6 +190,7 @@ public class AuthorizationController {
 
     /**
      * Save a token to cookie and add it to response.
+     *
      * @param response where to add cookie
      * @param token token to save
      */
@@ -199,6 +202,7 @@ public class AuthorizationController {
 
     /**
      * Delete a token from cookie through response.
+     *
      * @param response where to overwrite cookie
      */
     private void deleteToken(final HttpServletResponse response) {
