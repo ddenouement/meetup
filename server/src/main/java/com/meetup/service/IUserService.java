@@ -30,6 +30,14 @@ public interface IUserService {
     void registerAsSpeaker(UserRegistrationDTO user);
 
     /**
+     * Upgrade listener to speaker.
+     *
+     * @param user additional info for upgraded user
+     * @param userId of listener to upgrade
+     */
+    void upgradeToSpeaker(UserRegistrationDTO user, Integer userId);
+
+    /**
      * .
      *
      * @param user User

@@ -9,6 +9,7 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
+import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
