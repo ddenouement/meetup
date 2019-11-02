@@ -2,7 +2,7 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
-import com.meetup.entities.MeetupState;
+import com.meetup.utils.MeetupState;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.model.mapper.MeetupMapper;

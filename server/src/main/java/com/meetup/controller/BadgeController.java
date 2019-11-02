@@ -44,7 +44,7 @@ public class BadgeController {
      *
      * @return a list of badges
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping("/api/v1/badges")
     public ResponseEntity<List<Badge>> getBadges() {
         return ok(badgeService.getAll());
@@ -56,7 +56,7 @@ public class BadgeController {
      * @param id id of badge to return
      * @return a badge
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping("/api/v1/badge/{id}")
     public ResponseEntity<Badge> getBadgeById(
         @PathVariable("id") final Integer id) {
@@ -73,7 +73,7 @@ public class BadgeController {
      * @param badge badge to insert
      * @return inserted badge
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping("/api/v1/badge")
     public ResponseEntity<Badge> insertBadge(@RequestBody final Badge badge) {
         return new ResponseEntity<>(badgeService.insert(badge),
@@ -87,7 +87,7 @@ public class BadgeController {
      * @param badge updated badge
      * @return updated badge
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @PutMapping("/api/v1/badge/{id}")
     public ResponseEntity<Badge> updateBadge(
         @PathVariable("id") final Integer id,
@@ -102,7 +102,7 @@ public class BadgeController {
      * @param id id of badge to delete
      * @return status
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @DeleteMapping("/api/v1/badge/{id}")
     public ResponseEntity deleteBadge(@PathVariable("id") final Integer id) {
         badgeService.delete(id);
@@ -115,9 +115,9 @@ public class BadgeController {
      * @param id id of user to get badges for
      * @return a list of badges for user
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping("/api/v1/user/{id}/badges")
     public ResponseEntity<List<String>> getUserBadges(
         @PathVariable("id") final Integer id) {
@@ -131,7 +131,7 @@ public class BadgeController {
      * @param script script for badge
      * @return a list of badges for user
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping("/api/v1/badge/check")
     public ResponseEntity<List<User>> checkBadgeScript(
         @RequestBody final String script) {

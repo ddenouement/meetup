@@ -1,4 +1,4 @@
-package com.meetup.entities;
+package com.meetup.utils;
 
 /**
  * Types of notifications in the system.

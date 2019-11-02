@@ -1,12 +1,11 @@
 package com.meetup.repository;
 
 import com.meetup.entities.Language;
-import com.meetup.entities.Role;
+import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
-import com.meetup.error.UserNotFoundException;
 
 import java.util.List;
 

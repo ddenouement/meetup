@@ -2,8 +2,8 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
-import com.meetup.entities.MeetupState;
-import com.meetup.entities.Role;
+import com.meetup.utils.MeetupState;
+import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;

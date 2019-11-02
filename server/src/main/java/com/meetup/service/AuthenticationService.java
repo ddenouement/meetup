@@ -1,6 +1,6 @@
 package com.meetup.service;
 
-import com.meetup.entities.Role;
+import com.meetup.utils.Role;
 import com.meetup.repository.impl.UserDaoImpl;
 import java.util.ArrayList;
 import java.util.List;

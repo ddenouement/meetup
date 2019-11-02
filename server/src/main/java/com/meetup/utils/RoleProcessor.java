@@ -1,6 +1,5 @@
 package com.meetup.utils;
 
-import com.meetup.entities.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserDTO;
 

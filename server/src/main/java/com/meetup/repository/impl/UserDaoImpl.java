@@ -1,8 +1,7 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
-import com.meetup.entities.Role;
-import com.meetup.entities.Topic;
+import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;

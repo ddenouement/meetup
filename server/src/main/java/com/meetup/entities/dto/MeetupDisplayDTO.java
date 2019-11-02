@@ -1,7 +1,7 @@
 package com.meetup.entities.dto;
 
 import com.meetup.entities.Language;
-import com.meetup.entities.MeetupState;
+import com.meetup.utils.MeetupState;
 import com.meetup.entities.Topic;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

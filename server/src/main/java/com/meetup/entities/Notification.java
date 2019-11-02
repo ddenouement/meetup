@@ -1,5 +1,6 @@
 package com.meetup.entities;
 
+import com.meetup.utils.NotificationType;
 import java.time.LocalDateTime;
 import lombok.Data;
 

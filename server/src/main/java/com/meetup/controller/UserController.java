@@ -102,9 +102,9 @@ public class UserController {
      * @param token JWT from client
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity getUserProfile(
         @CookieValue("token") final String token) {
@@ -126,9 +126,9 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/speakers")
     public ResponseEntity<List<User>> getAllSpeakers() {
         return new ResponseEntity<>(userService.getAllSpeakers(),
@@ -140,9 +140,9 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(),
@@ -155,9 +155,9 @@ public class UserController {
      * @param userId id of user, whose profile we want to look at
      * @return ResponseEntity as HashMap
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/people/profile/{id}")
     public ResponseEntity getOtherUserProfile(
         @PathVariable("id") final int userId) {
@@ -176,9 +176,9 @@ public class UserController {
      * @param token JSON web token.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping("api/v1/user/meetups/{id}")
     public ResponseEntity joinMeetup(
         @CookieValue("token") final String token,
@@ -195,9 +195,9 @@ public class UserController {
      * @param meetupID Meetup, that user should leave.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping("api/v1/user/meetups/{id}")
     public ResponseEntity leaveMeetup(
         @CookieValue("token") final String token,
@@ -213,7 +213,7 @@ public class UserController {
      * @param id user's id
      * @return ResponseEntity
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping(value = "/api/v1/user/deactivateUser")
     public ResponseEntity deactivateUser(final @RequestParam int id) {
         userService.deactivateUser(id);
@@ -228,9 +228,9 @@ public class UserController {
      * @param compl complaint entity
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/api/v1/user/complaint")
     public ResponseEntity postComplaintOnUser(
         @CookieValue("token") final String token,
@@ -245,7 +245,7 @@ public class UserController {
      *
      * @return ResponseEntity with list
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping(value = "/api/v1/user/complaints")
     public ResponseEntity getAllComplaints() {
         return new ResponseEntity<>(
@@ -257,7 +257,7 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping(value = "/api/v1/user/complaints/read/{id}")
     public ResponseEntity markAsReadComplaint(
         @PathVariable("id") final int complaintID) {
@@ -270,8 +270,8 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/api/v1/user/subscriptions/{id}")
     public ResponseEntity subscribeToSpeaker(
         @CookieValue("token") final String token,
@@ -286,8 +286,8 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping(value = "/api/v1/user/subscriptions/{id}")
     public ResponseEntity unsubscribeFromSpeaker(
         @CookieValue("token") final String token,
@@ -302,8 +302,8 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/speakers/{id}/subscribers")
     public ResponseEntity<List<SimpleUserDTO>> getSubscribersOfSpeaker(
         @PathVariable("id") final int speakerID) {
@@ -312,8 +312,8 @@ public class UserController {
         return ok(result_users);
     }
 
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/articles/random")
     public ResponseEntity<ArticleDisplayDTO> getArticle() {
         return new ResponseEntity<>(articleService.getDisplayableArticle(),
@@ -327,9 +327,9 @@ public class UserController {
      * @param token cookie with JWT
      * @return status
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PutMapping(value = "/api/v1/users/password")
     public ResponseEntity changePassword(
         @RequestBody final String password,
@@ -350,8 +350,8 @@ public class UserController {
      * @return
      * Response entity with status code.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/api/v1/rate/meetups/{id}")
     public ResponseEntity rateMeetup(
         @RequestBody final Feedback feedback,
@@ -368,9 +368,9 @@ public class UserController {
      * @param token cookie with JWT
      * @return user's id
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/users/id")
     public ResponseEntity<Integer> getUserId(
         @CookieValue("token") final String token) {
@@ -385,9 +385,9 @@ public class UserController {
      * @param token cookie with JWT
      * @return list of notifications
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/users/notifications")
     public ResponseEntity<List<Notification>> getNotifications(
         @CookieValue("token") final String token) {
@@ -401,9 +401,9 @@ public class UserController {
      * @param token cookie with JWT
      * @return count of notifications
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/users/notifications/count")
     public ResponseEntity<Integer> countNotifications(
         @CookieValue("token") final String token) {
@@ -417,9 +417,9 @@ public class UserController {
      * @param token cookie with JWT
      * @return status
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PutMapping(value = "/api/v1/users/notifications/{id}/read")
     public ResponseEntity markNotificationAsRead(@PathVariable final Integer id,
         @CookieValue("token") final String token) {

@@ -92,9 +92,9 @@ public class AuthorizationController {
      * @param response HttpServletResponse
      * @return status of operation
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "api/v1/user/logout")
     public ResponseEntity logout(final HttpServletResponse response) {
         deleteToken(response);

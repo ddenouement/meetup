@@ -1,7 +1,7 @@
 package com.meetup.model.mapper;
 
 import com.meetup.entities.Notification;
-import com.meetup.entities.NotificationType;
+import com.meetup.utils.NotificationType;
 import com.meetup.utils.DbQueryConstants;
 import java.sql.ResultSet;
 import java.sql.SQLException;

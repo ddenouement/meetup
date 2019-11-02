@@ -3,7 +3,7 @@ package com.meetup.service.impl;
 import static com.meetup.utils.RoleProcessor.isSpeaker;
 
 import com.meetup.entities.Meetup;
-import com.meetup.entities.MeetupState;
+import com.meetup.utils.MeetupState;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;

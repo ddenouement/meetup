@@ -1,4 +1,4 @@
-package com.meetup.entities;
+package com.meetup.utils;
 
 import lombok.Getter;
 
