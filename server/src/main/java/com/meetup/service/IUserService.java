@@ -38,14 +38,6 @@ public interface IUserService {
     User updateProfile(User user);
 
     /**
-     * .
-     *
-     * @param user User
-     * @return User
-     */
-    User changePassword(User user);
-
-    /**
      * Get user's profile info.
      * @param id   of user to get
      * @return UserDTO with info

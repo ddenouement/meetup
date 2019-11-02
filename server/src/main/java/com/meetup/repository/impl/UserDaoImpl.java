@@ -39,7 +39,6 @@ import org.springframework.stereotype.Repository;
 @PropertySource("classpath:sql/user_queries.properties")
 public class UserDaoImpl implements IUserDAO {
 
-    //TODO Hikari pool
     /**
      * . NamedParameterJdbcTemplate
      */
@@ -154,6 +153,13 @@ public class UserDaoImpl implements IUserDAO {
      * */
     @Value("${change_password}")
     private String changePassword;
+
+    /**
+     * SQL reference script.
+     * Update user.
+     * */
+    @Value("${update_user}")
+    private String updateUser;
 
 
     /**

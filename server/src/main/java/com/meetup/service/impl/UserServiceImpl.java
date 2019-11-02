@@ -98,18 +98,6 @@ public class UserServiceImpl implements IUserService {
     /**
      * .
      *
-     * @param user User
-     * @return User with new password
-     */
-    @Override
-    public User changePassword(final User user) {
-        //TODO implement
-        return null;
-    }
-
-    /**
-     * .
-     *
      * @param id user`s id
      * @return UserDTO
      */
