@@ -40,8 +40,18 @@ public class NotificationServiceImpl implements INotificationService {
      * @return a list of notifications
      */
     @Override
-    public List<Notification> findAll(final Integer userId) {
-        return notificationDAO.findAll(userId);
+    public List<Notification> findUnread(final Integer userId) {
+        return notificationDAO.findUnread(userId);
+    }
+
+    /**
+     * Return the count of all unread notifications for user with specified id.
+     * @param userId id of user to count notifications for
+     * @return a count of notifications
+     */
+    @Override
+    public Integer countUnread(final Integer userId) {
+        return notificationDAO.countUnread(userId);
     }
 
     /**

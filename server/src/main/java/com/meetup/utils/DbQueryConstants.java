@@ -50,5 +50,6 @@ public enum DbQueryConstants {
     message,
     type,
     time_created,
-    id_type
+    id_type,
+    count
 }

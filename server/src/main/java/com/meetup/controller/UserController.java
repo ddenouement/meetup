@@ -392,7 +392,23 @@ public class UserController {
     public ResponseEntity<List<Notification>> getNotifications(
         @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);
-        return ok(notificationService.findAll(userId));
+        return ok(notificationService.findUnread(userId));
+    }
+
+    /**
+     * Count all unread notifications for user.
+     *
+     * @param token cookie with JWT
+     * @return count of notifications
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
+        + "T(com.meetup.entities.Role).SPEAKER, "
+        + "T(com.meetup.entities.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/notifications/count")
+    public ResponseEntity<Integer> countNotifications(
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        return ok(notificationService.countUnread(userId));
     }
 
     /**

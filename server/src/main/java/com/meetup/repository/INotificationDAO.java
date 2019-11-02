@@ -21,7 +21,14 @@ public interface INotificationDAO {
      * @param userId id of user to find notifications for
      * @return a list of notifications
      */
-    List<Notification> findAll(Integer userId);
+    List<Notification> findUnread(Integer userId);
+
+    /**
+     * Return the count of all unread notifications for user with specified id.
+     * @param userId id of user to count notifications for
+     * @return a count of notifications
+     */
+    Integer countUnread(Integer userId);
 
     /**
      * Mark a specific notification as read.

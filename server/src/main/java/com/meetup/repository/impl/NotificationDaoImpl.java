@@ -1,6 +1,7 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Notification;
+import com.meetup.model.mapper.CountMapper;
 import com.meetup.model.mapper.NotificationMapper;
 import com.meetup.repository.INotificationDAO;
 import com.meetup.utils.DbQueryConstants;
@@ -39,10 +40,18 @@ public class NotificationDaoImpl implements INotificationDAO {
     }
 
     /**
-     * SQL script to select all rows in table notifications.
+     * SQL script to select all rows in table notifications with specific
+     * user_id, read = false and sorted by time_created in descending order.
      */
     @Value("${find_all_notifications}")
     private String findAllNotifications;
+
+    /**
+     * SQL script to count all rows in table notifications with specific user_id
+     * and read = false.
+     */
+    @Value("${count_all_notifications}")
+    private String countAllNotifications;
 
     /**
      * SQL script to select a row with specific id in table notifications.
@@ -70,11 +79,29 @@ public class NotificationDaoImpl implements INotificationDAO {
      * @return a list of notifications
      */
     @Override
-    public List<Notification> findAll(final Integer userId) {
+    public List<Notification> findUnread(final Integer userId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id_user.name(), userId);
         return template
             .query(findAllNotifications, param, new NotificationMapper());
+    }
+
+    /**
+     * Return the count of all unread notifications for user with specified id.
+     * @param userId id of user to count notifications for
+     * @return a count of notifications
+     */
+    @Override
+    public Integer countUnread(final Integer userId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id_user.name(), userId);
+        List<Integer> counts = template
+            .query(countAllNotifications, param, new CountMapper());
+        if (counts.isEmpty()) {
+            return null;
+        } else {
+            return counts.get(0);
+        }
     }
 
     /**
