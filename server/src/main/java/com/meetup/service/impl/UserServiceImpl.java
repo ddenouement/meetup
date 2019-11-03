@@ -158,6 +158,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * Get all users.
+     *
+     * @return List<User> of users.
+     */
+    @Override
+    public List<User> getUsers() {
+        return userDao.getUsers();
+    }
+
+    /**
      * .
      *
      * @param id id

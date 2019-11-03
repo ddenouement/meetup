@@ -174,6 +174,21 @@ public class UserController {
     }
 
     /**
+     * Return all users.
+     *
+     * @return List of Users
+     */
+    //TODO edit endpoint name
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "user/users/all")
+    public ResponseEntity<List<User>> getUsers() {
+        return new ResponseEntity<>(userService.getUsers(),
+            HttpStatus.OK);
+    }
+
+    /**
      * How users see profile of other users.
      *
      * @param userId id of user, whose profile we want to look at

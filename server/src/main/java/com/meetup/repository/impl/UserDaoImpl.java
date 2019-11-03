@@ -149,10 +149,16 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${find_all_speakers}")
     private String findAllSpeakers;
     /**
-     * SQL reference script. Get all users.
+     * SQL reference script. Get all active users.
      */
     @Value("${find_all_users}")
     private String findAllUsers;
+
+    /**
+     * SQL reference script. Get all users.
+     */
+    @Value("${find_users}")
+    private String findUsers;
 
     /**
      * SQL reference script. Change password for specific user.
@@ -577,13 +583,23 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     /**
-     * Get all users.
+     * Get all active users.
      *
      * @return List of users.
      */
     @Override
     public List<User> getAllUsers() {
         return template.query(findAllUsers, new UserMapper());
+    }
+
+    /**
+     * Get all users.
+     *
+     * @return List of users.
+     */
+    @Override
+    public List<User> getUsers() {
+        return template.query(findUsers, new UserMapper());
     }
 
     /**

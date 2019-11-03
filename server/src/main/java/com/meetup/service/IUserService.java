@@ -69,6 +69,13 @@ public interface IUserService {
     List<User> getAllUsers();
 
     /**
+     * Get all users.
+     *
+     * @return List<User> of users.
+     */
+    List<User> getUsers();
+
+    /**
      * .
      *
      * @param id id

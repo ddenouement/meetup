@@ -54,10 +54,14 @@ ____________________________________
 - RequestParam: String login
 - /api/v1/user/speakers
 
-##### Get all users
+##### Get all active users
 - Type: GET
 - RequestParam: String login
 - /api/v1/user/users
+
+##### Get all users
+- Type: GET
+- /api/v1/user/users/all
 
 ##### Get other user profile
 - Type: GET
