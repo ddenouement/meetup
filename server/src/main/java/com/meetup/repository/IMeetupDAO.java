@@ -4,6 +4,7 @@ import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,6 +18,14 @@ public interface IMeetupDAO {
      * @return List of all meetups
      */
     List<Meetup> getAllMeetups();
+
+    /**
+     * Retrieve all meetups from database that start at the specified time.
+     *
+     * @param startTime start of meetup
+     * @return List of meetups
+     */
+    List<Meetup> getMeetupsByStartTime(LocalDateTime startTime);
 
     /**
      * Add meetup to database.

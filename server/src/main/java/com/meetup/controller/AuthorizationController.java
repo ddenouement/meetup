@@ -7,6 +7,7 @@ import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
+import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.RoleProcessor;
 import io.swagger.annotations.Api;
@@ -24,8 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +62,11 @@ public class AuthorizationController {
      */
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    /**
+     * Login validation service.
+     */
+    @Autowired
+    private ILoginValidatorService loginValidatorService;
 
     /**
      * ,. SignIn   generates a token
@@ -91,6 +99,7 @@ public class AuthorizationController {
 
     /**
      * Delete token from cookies.
+     *
      * @param response HttpServletResponse
      * @return status of operation
      */
@@ -144,6 +153,27 @@ public class AuthorizationController {
     }
 
     /**
+     * Upgrade listener to speaker and log out.
+     *
+     * @param token cookie with JWT
+     * @param user info about upgraded user
+     * @param response response to write deleted cookie with JWT to
+     * @return status
+     */
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).LISTENER) "
+        + "AND !hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PutMapping(value = "/api/v1/users/upgrade")
+    public ResponseEntity registerSpeaker(
+        @CookieValue("token") final String token,
+        @RequestBody final UserRegistrationDTO user,
+        final HttpServletResponse response) {
+        Integer userId = loginValidatorService.extractId(token);
+        userService.upgradeToSpeaker(user, userId);
+        deleteToken(response);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
      * Create a cookie and add it to response.
      *
      * @param response where to add cookie
@@ -162,6 +192,7 @@ public class AuthorizationController {
 
     /**
      * Save a token to cookie and add it to response.
+     *
      * @param response where to add cookie
      * @param token token to save
      */
@@ -173,6 +204,7 @@ public class AuthorizationController {
 
     /**
      * Delete a token from cookie through response.
+     *
      * @param response where to overwrite cookie
      */
     private void deleteToken(final HttpServletResponse response) {

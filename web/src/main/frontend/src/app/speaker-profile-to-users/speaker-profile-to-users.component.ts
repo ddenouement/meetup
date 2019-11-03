@@ -21,7 +21,12 @@ export class SpeakerProfileToUsersComponent implements OnInit {
   public email: string;
   public about: string;
   private langList: string[] = [];
+  private subscribeToIdsList: number[] = [];
   private speakerId: string;
+  public star: number;
+  subscribe = true;
+  unsubscribe = false;
+  subscribeText = 'SUBSCRIBE';
 
   constructor(public speakerService: SpeakerProfileToUsersService, public route: ActivatedRoute) {
   }
@@ -31,6 +36,21 @@ export class SpeakerProfileToUsersComponent implements OnInit {
       if (paramMap.has('speakerId')) {
         this.speakerId = paramMap.get('speakerId');
         this.speakerService.getSpeaker(+this.speakerId).subscribe(res => {
+          this.speakerService.getMyProfile().subscribe(res => {
+            for (let i in res['subscribedTo']) {
+              this.subscribeToIdsList[i] = res['subscribedTo'][i].id;
+            }
+            if(this.subscribeToIdsList.includes(+this.speakerId)){
+              this.subscribeText = 'UNSUBSCRIBE';
+              this.subscribe = false;
+              this.unsubscribe = true;
+            }else {
+              this.subscribeText = 'SUBSCRIBE';
+              this.subscribe = true;
+              this.unsubscribe = false;
+            }
+          });
+          this.star = res['userDTO'].rate;
           this.badgeList = res['badges'];
           for (let i in res['userDTO'].languages) {
             this.langList[i] = res['userDTO'].languages[i].name;
@@ -43,13 +63,22 @@ export class SpeakerProfileToUsersComponent implements OnInit {
         });
       }
     });
+
   }
 
-  onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
-    alert(`Old Value:${$event.oldValue}, 
-      New Value: ${$event.newValue}, 
-      Checked Color: ${$event.starRating.checkedcolor}, 
-      Unchecked Color: ${$event.starRating.uncheckedcolor}`);
+  onSubscribe() {
+    if (this.subscribe) {
+      this.speakerService.unsubscribeTo(+this.speakerId).subscribe(res => {
+        this.subscribe = false;
+        this.unsubscribe = true;
+        this.subscribeText = 'UNSUBSCRIBE';
+      });
+    } else {
+      this.speakerService.subscribeTo(+this.speakerId).subscribe(res => {
+        this.subscribe = true;
+        this.unsubscribe = false;
+        this.subscribeText = 'SUBSCRIBE';
+      });
+    }
   }
-
 }

@@ -30,12 +30,12 @@ public interface IUserService {
     void registerAsSpeaker(UserRegistrationDTO user);
 
     /**
-     * .
+     * Upgrade listener to speaker.
      *
-     * @param user User
-     * @return User
+     * @param user additional info for upgraded user
+     * @param userId of listener to upgrade
      */
-    User updateProfile(User user);
+    void upgradeToSpeaker(UserRegistrationDTO user, Integer userId);
 
     /**
      * .
@@ -43,7 +43,7 @@ public interface IUserService {
      * @param user User
      * @return User
      */
-    User changePassword(User user);
+    User updateProfile(User user);
 
     /**
      * Get user's profile info.
@@ -79,6 +79,13 @@ public interface IUserService {
      * @return boolean whether successful operation or not
      */
     boolean deactivateUser(int id);
+
+    /**
+     * Activate user.
+     * @param id id of user to activate
+     * @return true iff successful
+     */
+    boolean activateUser(int id);
 
     /**
      * .

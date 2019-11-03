@@ -2,24 +2,31 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.meetup.entities.Feedback;
-import com.meetup.entities.Meetup;
-import com.meetup.entities.Notification;
-import com.meetup.entities.User;
+import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
+
+import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.service.IProfileService;
+import com.meetup.service.ISearchService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.FileHandler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * . Operations used to manage user functionality
+ * Operations used to manage user functionality.
  */
 @RestController
 @Api(value = "meetup-application")
@@ -44,11 +51,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     /**
-     * . Operations with meetups
+     * Operations with meetups.
      */
     private IMeetupService meetupService;
     /**
-     * . Operations with users
+     * Operations with users.
      */
     private IUserService userService;
     /**
@@ -60,15 +67,19 @@ public class UserController {
      */
     private IBadgeService badgeService;
     /**
-     * . Operations with user profile
+     * Operations with user profile.
      */
     private IProfileService profileService;
     /**
      * Article operations service.
      */
     private IArticleService articleService;
-
+    /**
+     * Notification operations.
+     */
     private INotificationService notificationService;
+
+    private  ISearchService searchService;
 
     /**
      * Constructor.
@@ -87,6 +98,7 @@ public class UserController {
         final ILoginValidatorService loginValidatorService,
         final IBadgeService badgeService,
         final IProfileService profileService,
+        final ISearchService searchService,
         final IArticleService articleService,
         final INotificationService notificationService) {
         this.meetupService = meetupService;
@@ -96,10 +108,11 @@ public class UserController {
         this.profileService = profileService;
         this.articleService = articleService;
         this.notificationService = notificationService;
+        this.searchService= searchService;
     }
 
     /**
-     * . get info about current User.
+     * Get info about current User.
      *
      * @param token JWT from client
      * @return ResponseEntity
@@ -191,7 +204,7 @@ public class UserController {
     }
 
     /**
-     * Remove user from meeetup.     *
+     * Remove user from meeetup.
      *
      * @param token JSON web token.
      * @param meetupID Meetup, that user should leave.
@@ -220,13 +233,27 @@ public class UserController {
     public ResponseEntity deactivateUser(
         @PathVariable("id") final int id) {
         userService.deactivateUser(id);
-        return new ResponseEntity<>("Done", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    /**
+     * Admin can activate user by his Id.
+     *
+     * @param id user's id
+     * @return status
+     */
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/users/{id}/activate")
+    public ResponseEntity activateUser(final @PathVariable("id") int id) {
+        userService.activateUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     /**
      * Every user can post a complaint on other. Convert login -> id, convert
-     * date in long format -> Date exemplar and pass it to DAO
+     * date in long format -> Date exemplar and pass it to DAO.
      *
      * @param compl complaint entity
      * @return ResponseEntity
@@ -301,7 +328,7 @@ public class UserController {
     }
 
     /**
-     * Get simplified users who are active & are subscribed on given speaker
+     * Get simplified users who are active & are subscribed on given speaker.
      *
      * @return ResponseEntity
      */
@@ -450,5 +477,86 @@ public class UserController {
         Integer userId = loginValidatorService.extractId(token);
         notificationService.markAsRead(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Perform filtered search.
+     * @return list of matched meetups
+     * */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/search")
+    public ResponseEntity<List<Meetup>> searchWithFilter(
+
+    ) {
+        Filter filter = new Filter();
+      //  filter.setRate_to(5);
+        filter.setTitle_substring("pt");
+        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setId_language(2);
+         filter.setId_user(2);//petrenko (needed only for saving filter)
+        Date d = null;
+        try{
+            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/13");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        filter.setTime_to(d);
+
+        return ok(searchService.searchWithFilter(filter));
+    }
+
+    //only for testing, to see how JSON looks like
+    @GetMapping(value = "/api/v1/users/filter")
+    public ResponseEntity<Filter> getSampleFilter(
+    ) {
+        Filter filter = new Filter();
+        filter.setRate_to(5);
+        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setId_language(2);
+         filter.setId_user(2);//petrenko
+        Date d = null;
+        try{
+            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/14");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        filter.setTime_to(d);
+        return ok(filter);
+    }
+
+    /**
+     * user can save filter.
+     * @param token cookie value
+     * @param filter Filter to save
+     * @return saved Filter
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping(value = "/api/v1/users/current/filters")
+    public ResponseEntity<Filter> saveFilter(
+            @CookieValue("token") final String token,
+            @RequestBody final Filter filter
+    ) {
+        int id = loginValidatorService.extractId(token);
+        return ok(searchService.insertFilter(filter, id));
+    }
+
+    /**
+     * Return saved user`s filters.
+     * @param token cookie value
+     * @return saved Filters list
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/current/filters")
+    public ResponseEntity<List<Filter>> savedFilters(
+            @CookieValue("token") final String token
+    ) {
+        int id = loginValidatorService.extractId(token);
+        return ok(searchService.getUserFilters(id));
     }
 }

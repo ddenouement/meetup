@@ -40,6 +40,7 @@ export class SpeakerProfileComponent implements OnInit {
   private userURL = '/api/v1/user/profile';
   speakerMeetups : Meetup[] = [];
   private meetingsSub: Subscription;
+  star: number;
 
   constructor(
     private httpClient: HttpClient,
@@ -65,19 +66,21 @@ export class SpeakerProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.changeForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       about: [''],
-      languages: ['', Validators.required],
+      languages: ['', Validators.required]
     });
     let langList: string[] = [];
     this.httpClient.get(this.userURL).subscribe(res => {
       for (let i in res['userDTO'].languages) {
         langList[i] = res['userDTO'].languages[i].name;
       }
+      this.star =res['userDTO'].rate;
       this.speakerId = res['userDTO'].id;
       // console.log("SPEAKER ID" + this.speakerId);
       this.badgeList = res['badges'];
@@ -87,7 +90,7 @@ export class SpeakerProfileComponent implements OnInit {
         login: [res['userDTO'].login, Validators.required],
         email: [res['userDTO'].email, [Validators.required, Validators.email]],
         about: [res['userDTO'].about],
-        languages: ['', Validators.required],
+        languages: ['', Validators.required]
       });
     });
 
