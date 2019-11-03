@@ -1,7 +1,6 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
-import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
@@ -11,7 +10,8 @@ import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.model.mapper.SimpleUserDTOMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IUserDAO;
-
+import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.Role;
 import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +19,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.meetup.utils.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -63,7 +61,7 @@ public class UserDaoImpl implements IUserDAO {
      * sql query to find user by his ID
      */
     @Value("${find_user_with_id}")
-    private  String findById;
+    private String findById;
     /**
      * . sql query find user by email
      */
@@ -80,6 +78,11 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${insert_full_user}")
     private String insertFullUser;
+    /**
+     * SQL query to upgrade listener to speaker.
+     */
+    @Value("${upgrade_to_speaker}")
+    private String upgradeToSpeaker;
     /**
      * . sql query get from DB subscriptions of user (by his id)
      */
@@ -115,49 +118,45 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${mark_as_read}")
     private String markComplaint;
     /**
-     *sql query to subscribe to speaker.
+     * sql query to subscribe to speaker.
      */
     @Value("${subscribe_to_speaker}")
-    private  String subscribeToSpeaker;
+    private String subscribeToSpeaker;
     /**
-     *sql query to unsubscribe from speaker.
+     * sql query to unsubscribe from speaker.
      */
     @Value("${unsubscribe_from_speaker}")
-    private  String unsubscribeFromSpeaker;
+    private String unsubscribeFromSpeaker;
     /**
-     *sql query to find users-subscribers of speaker by his ID.
+     * sql query to find users-subscribers of speaker by his ID.
      */
     @Value("${find_subscribers_of_speaker_by_his_id}")
     private String findSubscribersOfSpeaker;
     /**
-     *sql query to find simplified users-subscribers of speaker by his ID.
+     * sql query to find simplified users-subscribers of speaker by his ID.
      */
     @Value("${simple_subscribers_of_speaker_by_his_id}")
     private String simpleSubscribersOfSpeaker;
     /**
-     * SQL reference script.
-     * Get all speakers.
+     * SQL reference script. Get all speakers.
      */
     @Value("${find_all_speakers}")
     private String findAllSpeakers;
     /**
-     * SQL reference script.
-     * Get all users.
+     * SQL reference script. Get all users.
      */
     @Value("${find_all_users}")
     private String findAllUsers;
 
     /**
-     * SQL reference script.
-     * Change password for specific user.
-     * */
+     * SQL reference script. Change password for specific user.
+     */
     @Value("${change_password}")
     private String changePassword;
 
     /**
-     * SQL reference script.
-     * Update user.
-     * */
+     * SQL reference script. Update user.
+     */
     @Value("${update_user}")
     private String updateUser;
 
@@ -196,11 +195,14 @@ public class UserDaoImpl implements IUserDAO {
         person.setId(resultSet.getInt(DbQueryConstants.id.name()));
         String login = resultSet.getString(DbQueryConstants.login.name());
         person.setLogin(login);
-        person.setFirstName(resultSet.getString(DbQueryConstants.first_name.name()));
-        person.setLastName(resultSet.getString(DbQueryConstants.last_name.name()));
+        person.setFirstName(
+            resultSet.getString(DbQueryConstants.first_name.name()));
+        person.setLastName(
+            resultSet.getString(DbQueryConstants.last_name.name()));
         person.setAbout(resultSet.getString(DbQueryConstants.about.name()));
         person.setEmail(resultSet.getString(DbQueryConstants.email.name()));
-        person.setPassword(resultSet.getString(DbQueryConstants.password.name()));
+        person
+            .setPassword(resultSet.getString(DbQueryConstants.password.name()));
         person.setActive(resultSet.getBoolean(DbQueryConstants.active.name()));
         person.setRate(resultSet.getFloat(DbQueryConstants.rate.name()));
         person.setNumRates(resultSet.getInt(DbQueryConstants.num_rates.name()));
@@ -218,16 +220,16 @@ public class UserDaoImpl implements IUserDAO {
      */
     private Integer getRoleId(final String roleName) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(
-                DbQueryConstants.text.name(), roleName);
+            DbQueryConstants.text.name(), roleName);
         return template.queryForObject(findRoleIdByName, namedParameters,
-                Integer.class);
+            Integer.class);
     }
 
     /**
      * .
      *
      * @param us User
-     * @param r  String
+     * @param r String
      */
     @Override
     public void addRoleToUser(final User us, final String r) {
@@ -242,14 +244,14 @@ public class UserDaoImpl implements IUserDAO {
      *
      * @param elements list of Ts
      * @param typename sql typename for Array
-     * @param <T>      type of elements in incoming list
+     * @param <T> type of elements in incoming list
      * @return sql Array
      */
     private <T> Array createSqlArray(final List<T> elements,
-                                     final String typename) {
+        final String typename) {
         return template.getJdbcOperations()
-                .execute((ConnectionCallback<Array>) con -> con
-                        .createArrayOf(typename, elements.toArray()));
+            .execute((ConnectionCallback<Array>) con -> con
+                .createArrayOf(typename, elements.toArray()));
     }
 
     /**
@@ -261,16 +263,40 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public void insertNewUser(final UserRegistrationDTO user) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.login.name(), user.getLogin())
-                .addValue(DbQueryConstants.email.name(), user.getEmail())
-                .addValue(DbQueryConstants.password.name(), user.getPassword())
-                .addValue(DbQueryConstants.first_name.name(), user.getFirstName())
-                .addValue(DbQueryConstants.last_name.name(), user.getLastName())
-                .addValue(DbQueryConstants.about.name(), user.getAbout())
-                .addValue(DbQueryConstants.roles.name(), createSqlArray(user.getRoles(), "TEXT"))
-                .addValue(DbQueryConstants.language_ids.name(),
-                        createSqlArray(user.getLanguageIds(), "INTEGER"));
-        template.execute(insertFullUser, param, PreparedStatement::executeQuery);
+            .addValue(DbQueryConstants.login.name(), user.getLogin())
+            .addValue(DbQueryConstants.email.name(), user.getEmail())
+            .addValue(DbQueryConstants.password.name(), user.getPassword())
+            .addValue(DbQueryConstants.first_name.name(), user.getFirstName())
+            .addValue(DbQueryConstants.last_name.name(), user.getLastName())
+            .addValue(DbQueryConstants.about.name(), user.getAbout())
+            .addValue(DbQueryConstants.roles.name(),
+                createSqlArray(user.getRoles(), "TEXT"))
+            .addValue(DbQueryConstants.language_ids.name(),
+                createSqlArray(user.getLanguageIds(), "INTEGER"));
+        template
+            .execute(insertFullUser, param, PreparedStatement::executeQuery);
+    }
+
+    /**
+     * Upgrade listener to speaker.
+     *
+     * @param user additional info for upgraded user
+     * @param userId of listener to upgrade
+     */
+    @Override
+    public void upgradeToSpeaker(final UserRegistrationDTO user,
+        final Integer userId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id.name(), userId)
+            .addValue(DbQueryConstants.login.name(), user.getLogin())
+            .addValue(DbQueryConstants.email.name(), user.getEmail())
+            .addValue(DbQueryConstants.first_name.name(), user.getFirstName())
+            .addValue(DbQueryConstants.last_name.name(), user.getLastName())
+            .addValue(DbQueryConstants.about.name(), user.getAbout())
+            .addValue(DbQueryConstants.language_ids.name(),
+                createSqlArray(user.getLanguageIds(), "INTEGER"));
+        template
+            .execute(upgradeToSpeaker, param, PreparedStatement::executeQuery);
     }
 
     /**
@@ -283,10 +309,10 @@ public class UserDaoImpl implements IUserDAO {
     public User findUserByLogin(final String log) {
 
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.login_param.name(), log);
+            .addValue(DbQueryConstants.login_param.name(), log);
         List<User> foundusers =
-                template.query(findByLogin, param,
-                        (resultSet, i) -> toPerson(resultSet));
+            template.query(findByLogin, param,
+                (resultSet, i) -> toPerson(resultSet));
         if (foundusers.size() == 0) {
             return null;
         } else {
@@ -304,10 +330,10 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public User findUserByEmail(final String em) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.email.name(), em);
+            .addValue(DbQueryConstants.email.name(), em);
         List<User> foundUsers =
-                template.query(findUserByEmail, param,
-                        (resultSet, i) -> toPerson(resultSet));
+            template.query(findUserByEmail, param,
+                (resultSet, i) -> toPerson(resultSet));
         if (foundUsers.size() == 0) {
             return null;
         } else {
@@ -315,22 +341,25 @@ public class UserDaoImpl implements IUserDAO {
         }
     }
 
-    /** Find users roles.
+    /**
+     * Find users roles.
+     *
      * @param login String
      * @return List <String>
      */
     @Override
     public List<Role> findUserRolesByLogin(final String login) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.login.name(), login);
+            .addValue(DbQueryConstants.login.name(), login);
         ResultSet rs = null;
         return
-                template.query(findUserRolesByLogin, param,
-                        (resultSet, i) -> toRole(resultSet));
+            template.query(findUserRolesByLogin, param,
+                (resultSet, i) -> toRole(resultSet));
     }
 
     /**
      * mapper to Role entity.
+     *
      * @param resultSet ResultSet
      * @return String
      * @throws SQLException exc
@@ -347,12 +376,12 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<User> getUsersSubscriptionsToSpeakers(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.user_id_param.name(), id);
+            .addValue(DbQueryConstants.user_id_param.name(), id);
         List<User> subscriptedTo =
-                template.query(
-                        findSubscriptionOfUserById, param,
-                        (resultSet, i) -> toPerson(resultSet)
-                );
+            template.query(
+                findSubscriptionOfUserById, param,
+                (resultSet, i) -> toPerson(resultSet)
+            );
         return subscriptedTo;
     }
 
@@ -365,10 +394,10 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<Language> getUsersLanguages(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.user_id_param.name(), id);
+            .addValue(DbQueryConstants.user_id_param.name(), id);
         ResultSet rs = null;
         List<Language> languages =
-                template.query(findUsersLanguages, param, new LanguageMapper());
+            template.query(findUsersLanguages, param, new LanguageMapper());
         return languages;
     }
 
@@ -381,7 +410,7 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public boolean deactivateUser(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.user_id_param.name(), id);
+            .addValue(DbQueryConstants.user_id_param.name(), id);
         ResultSet rs = null;
         template.update(deactivateUser, param);
         return true;
@@ -403,10 +432,13 @@ public class UserDaoImpl implements IUserDAO {
     public ComplaintDTO postComplaintOn(final ComplaintDTO compl) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.reason.name(), compl.getContent())
-                .addValue(DbQueryConstants.id_destination.name(), compl.getId_user_to())
-                .addValue(DbQueryConstants.time_posted.name(), compl.getPostedDate())
-                .addValue(DbQueryConstants.id_source.name(), compl.getId_user_from());
+            .addValue(DbQueryConstants.reason.name(), compl.getContent())
+            .addValue(DbQueryConstants.id_destination.name(),
+                compl.getId_user_to())
+            .addValue(DbQueryConstants.time_posted.name(),
+                compl.getPostedDate())
+            .addValue(DbQueryConstants.id_source.name(),
+                compl.getId_user_from());
         ResultSet rs = null;
         template.update(postComplaint, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
@@ -417,87 +449,94 @@ public class UserDaoImpl implements IUserDAO {
 
     /**
      * Mark complaint as read by its id.
+     *
      * @param id id of complaint
      * @return true
      */
     @Override
     public boolean markAsReadComplaint(final int id) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.id.name(), id);
+            .addValue(DbQueryConstants.id.name(), id);
         template.update(markComplaint, param);
         return true;
     }
 
     /**
      * User can subscribe tp speaker.
+     *
      * @param userId who is subscriber
      * @param speakerId on whom user subscribes
      */
     @Override
     public void subscribeToSpeaker(int userId, int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.id_user.name(), userId)
-              .addValue(DbQueryConstants.id_speak.name(), speakerId);
+            .addValue(DbQueryConstants.id_user.name(), userId)
+            .addValue(DbQueryConstants.id_speak.name(), speakerId);
         template.update(subscribeToSpeaker, param);
     }
 
     /**
      * User can unsubscribe from speaker.
+     *
      * @param userId who is subscriber
      * @param speakerId on whom user was subscribed
      */
     @Override
     public void unSubscribeFromSpeaker(int userId, int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.id_user.name(), userId)
-                .addValue(DbQueryConstants.id_speak.name(), speakerId);
+            .addValue(DbQueryConstants.id_user.name(), userId)
+            .addValue(DbQueryConstants.id_speak.name(), speakerId);
         template.update(unsubscribeFromSpeaker, param);
     }
 
     /**
      * Find all subscribers of a given speaker (by his ID).
+     *
      * @param speakerId int, id of speaker
      * @return List of users-subscribers
      */
     @Override
     public List<User> getSubscribersOfSpeaker(int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
+            .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
-                template.query(findById, param,
-                        (resultSet, i) -> toPerson(resultSet));
+            template.query(findById, param,
+                (resultSet, i) -> toPerson(resultSet));
     }
 
     @Override
     public User findUserById(int userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.id_param.name(), userId);
+            .addValue(DbQueryConstants.id_param.name(), userId);
         List<User> foundUsers =
-                template.query(findById, param,
-                        (resultSet, i) -> toPerson(resultSet));
+            template.query(findById, param,
+                (resultSet, i) -> toPerson(resultSet));
         if (foundUsers.size() == 0) {
             return null;
         } else {
             return foundUsers.get(0);
         }
     }
+
     /**
      * Get list of simplified users, subscribed on given speaker.
+     *
      * @param speakerId id of speaker
      * @return List<SimpleUserDTO>
      */
     @Override
     public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
+            .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
-                template.query(simpleSubscribersOfSpeaker, param,new SimpleUserDTOMapper());
+            template.query(simpleSubscribersOfSpeaker, param,
+                new SimpleUserDTOMapper());
     }
 
     /**
      * Get all users with role: Speaker.
-     * @return
-     * List of speakers.
+     *
+     * @return List of speakers.
      */
     @Override
     public List<User> getAllSpeakers() {
@@ -506,8 +545,8 @@ public class UserDaoImpl implements IUserDAO {
 
     /**
      * Get all users.
-     * @return
-     * List of users.
+     *
+     * @return List of users.
      */
     @Override
     public List<User> getAllUsers() {
@@ -516,6 +555,7 @@ public class UserDaoImpl implements IUserDAO {
 
     /**
      * Change user's password.
+     *
      * @param userId id of user to change password for
      * @param newPassword the password to change to
      */

@@ -61,7 +61,7 @@ export class TopicsCrudComponent implements OnInit {
     if(this.editedTopic.name.length==0){
       this.statusMessageT='Please enter valid name';
     }
-    if (this.isNewRecordT) {
+   /* if (this.isNewRecordT) {
       this.serv.createTopic(this.editedTopic).subscribe(data => {
 
           this.statusMessageT = 'Saved',
@@ -85,7 +85,7 @@ export class TopicsCrudComponent implements OnInit {
           alert(err);
         });
       this.editedTopic = null;
-    }
+    }*/
   }
   cancelT() {
     if (this.isNewRecordT) {
@@ -95,7 +95,7 @@ export class TopicsCrudComponent implements OnInit {
     this.editedTopic = null;
   }
   deleteTopic(t: TopicClass) {
-    this.serv.deleteTopic(t.id).subscribe(data => {
+    /*this.serv.deleteTopic(t.id).subscribe(data => {
         this.statusMessageT = 'Deletd',
           this.topics.splice(this.topics.indexOf(t),1);
 
@@ -103,6 +103,6 @@ export class TopicsCrudComponent implements OnInit {
       err => {
         // alert(err),
         this.statusMessageT = err;
-      });
+      });*/
   }
 }

@@ -4,8 +4,6 @@ import com.meetup.entities.Filter;
 import com.meetup.entities.Meetup;
 import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.IUserDAO;
-import com.meetup.repository.impl.ArticleDaoImpl;
-import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ISearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,8 @@ public class SearchServiceImpl implements ISearchService {
      * Search with filters repository.
      */
     private ISearchDAO searchDao;
+
+
     SearchServiceImpl(@Autowired final UserDaoImpl userDao,
                        @Autowired final ISearchDAO searchDao ) {
         this.userDao = userDao;
@@ -32,5 +32,16 @@ public class SearchServiceImpl implements ISearchService {
     public  List<Meetup> searchWithFilter(final Filter filter) {
              return searchDao.searchWithFilter(filter);
     }
+
+    @Override
+    public Filter insertFilter(Filter filter, int userID) {
+        return searchDao.saveFilterToCurrentUser(filter, userID);
+    }
+
+    @Override
+    public List<Filter> getUserFilters(int userId) {
+       return searchDao.getUserFiltersSaved(userId);
+    }
+
 
 }

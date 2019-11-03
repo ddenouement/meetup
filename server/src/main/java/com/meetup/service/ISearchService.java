@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ISearchService {
       List<Meetup> searchWithFilter(  Filter filter) ;
+      Filter insertFilter(Filter filter, int userID);
+      List<Filter> getUserFilters(int userId);
 }

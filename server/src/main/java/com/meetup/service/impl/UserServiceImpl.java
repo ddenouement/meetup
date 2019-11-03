@@ -84,6 +84,23 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * Upgrade listener to speaker.
+     *
+     * @param user additional info for upgraded user
+     * @param userId of listener to upgrade
+     */
+    @Override
+    public void upgradeToSpeaker(final UserRegistrationDTO user, final Integer userId) {
+        if (userDao.isLoginUsed(user.getLogin())) {
+            throw new LoginIsUsedException();
+        } else if (userDao.isEmailUsed(user.getEmail())) {
+            throw new EmailIsUsedException();
+        } else {
+            userDao.upgradeToSpeaker(user, userId);
+        }
+    }
+
+    /**
      * .
      *
      * @param user User

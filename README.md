@@ -2,6 +2,13 @@
 
 ## Rest api:
 
+### AUTHORIZATION CONTROLLER
+____________________________________
+##### Upgrade to speaker (only listener)
+- Type: PUT
+- RequestBody: UserRegistrationDTO
+- api/v1/users/upgrade
+
 ### MEETUP CONTROLLER
 ____________________________________
 ##### Get all meetups

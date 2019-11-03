@@ -6,11 +6,23 @@ import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.service.*;
+
+import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.service.IArticleService;
+import com.meetup.service.IBadgeService;
+import com.meetup.service.ILoginValidatorService;
+import com.meetup.service.IMeetupService;
+import com.meetup.service.INotificationService;
+import com.meetup.service.IProfileService;
+import com.meetup.service.ISearchService;
+import com.meetup.service.IUserService;
 import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.FileHandler;
@@ -427,7 +439,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    /**
+     * Perform filtered search.
+     * @return list of matched meetups
+     * */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
@@ -436,9 +451,72 @@ public class UserController {
 
     ) {
         Filter filter = new Filter();
-        filter.setRate_to(5);
-        filter.setTopics_ids(Arrays.asList(1,2));
+      //  filter.setRate_to(5);
+        filter.setTitle_substring("pt");
+        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setId_language(2);
+         filter.setId_user(2);//petrenko (needed only for saving filter)
+        Date d = null;
+        try{
+            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/13");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        filter.setTime_to(d);
 
         return ok(searchService.searchWithFilter(filter));
+    }
+
+    //only for testing, to see how JSON looks like
+    @GetMapping(value = "/api/v1/users/filter")
+    public ResponseEntity<Filter> getSampleFilter(
+    ) {
+        Filter filter = new Filter();
+        filter.setRate_to(5);
+        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setId_language(2);
+         filter.setId_user(2);//petrenko
+        Date d = null;
+        try{
+            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/14");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        filter.setTime_to(d);
+        return ok(filter);
+    }
+
+    /**
+     * user can save filter.
+     * @param token cookie value
+     * @param filter Filter to save
+     * @return saved Filter
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping(value = "/api/v1/users/current/filters")
+    public ResponseEntity<Filter> saveFilter(
+            @CookieValue("token") final String token,
+            @RequestBody final Filter filter
+    ) {
+        int id = loginValidatorService.extractId(token);
+        return ok(searchService.insertFilter(filter, id));
+    }
+
+    /**
+     * Return saved user`s filters.
+     * @param token cookie value
+     * @return saved Filters list
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/current/filters")
+    public ResponseEntity<List<Filter>> savedFilters(
+            @CookieValue("token") final String token
+    ) {
+        int id = loginValidatorService.extractId(token);
+        return ok(searchService.getUserFilters(id));
     }
 }

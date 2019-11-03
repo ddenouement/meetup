@@ -70,6 +70,14 @@ public interface IUserDAO {
     void insertNewUser(UserRegistrationDTO user);
 
     /**
+     * Upgrade listener to speaker.
+     *
+     * @param user additional info for upgraded user
+     * @param userId of listener to upgrade
+     */
+    void upgradeToSpeaker(UserRegistrationDTO user, Integer userId);
+
+    /**
      * .
      * get from DB users subscriptions (speakers)
      *
