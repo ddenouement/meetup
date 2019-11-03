@@ -57,8 +57,8 @@
           <!--           -->
         </div>
         <div class="user__badges">
-          <star-rating class="user__img--change" value="4" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
-                       readonly="true" (rate)="onRate($event)"></star-rating>
+          <star-rating class="user__img--change" [value]="star" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
+                       readonly="true"></star-rating>
           <div class="badges--header">
             <img class="header--img" src="../../assets/images/crown.svg">
             <span class="header--text">BADGES</span>

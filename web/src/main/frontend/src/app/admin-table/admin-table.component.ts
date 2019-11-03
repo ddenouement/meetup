@@ -11,7 +11,7 @@ import {MatSort} from "@angular/material/sort";
 })
 export class AdminTableComponent implements OnInit {
   public ELEMENT_DATA: UsersToAdmin[] = [];
-  displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName'];
+  displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName', 'complaint'];
   dataSource;
 
   constructor(public adminService: AdminTableService) {
@@ -26,7 +26,8 @@ export class AdminTableComponent implements OnInit {
         this.ELEMENT_DATA[element] = {
           id: res[element]['id'], login: res[element]['login'], email: res[element]['email'],
           firstName: res[element]['firstName'],
-          lastName: res[element]['lastName']
+          lastName: res[element]['lastName'],
+          complaint: res[element]['complaint']
         };
       }
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -42,4 +43,5 @@ export interface UsersToAdmin {
   email: string;
   firstName: string;
   lastName: string;
+  complaint: number;
 }
