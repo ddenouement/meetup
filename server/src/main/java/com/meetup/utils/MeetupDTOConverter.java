@@ -1,7 +1,6 @@
 package com.meetup.utils;
 
 import com.meetup.entities.Meetup;
-import com.meetup.entities.MeetupState;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.entities.dto.UserDTO;

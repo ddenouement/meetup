@@ -2,7 +2,7 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
-import com.meetup.entities.MeetupState;
+import com.meetup.utils.MeetupState;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.model.mapper.MeetupMapper;
@@ -10,6 +10,7 @@ import com.meetup.model.mapper.TopicMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IMeetupDAO;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${get_all_meetings}")
     private String getAllMeetups;
+    /**
+     * SQL reference script. Retrieve all meetups with specified start time.
+     */
+    @Value("${get_meetups_by_start_time}")
+    private String getMeetupsByStartTime;
     /**
      * . SQL reference script. Retrieve specific speaker meetups.
      */
@@ -148,6 +154,24 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public List<Meetup> getAllMeetups() {
         List<Meetup> meetups = this.template.query(
             getAllMeetups, new MeetupMapper());
+        for (Meetup m: meetups) {
+            m.setTopics(getMeetupTopics(m.getId()));
+        }
+        return meetups;
+    }
+
+    /**
+     * Retrieve all meetups from database that start at the specified time.
+     *
+     * @param startTime start of meetup
+     * @return List of meetups
+     */
+    @Override
+    public List<Meetup> getMeetupsByStartTime(final LocalDateTime startTime) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.start_time.name(), startTime);
+        List<Meetup> meetups = this.template.query(
+            getMeetupsByStartTime, param, new MeetupMapper());
         for (Meetup m: meetups) {
             m.setTopics(getMeetupTopics(m.getId()));
         }
@@ -382,7 +406,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
     }
 
     /**
-     * . Get users, registered on meetup.
+     * Get users registered on meetup.
      *
      * @param meetupId Meetup ID
      * @return List of users.

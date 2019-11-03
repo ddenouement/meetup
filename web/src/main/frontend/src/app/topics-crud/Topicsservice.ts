@@ -12,7 +12,7 @@ export class Topicsservice {
   constructor(private http: HttpClient) {
   }
 
-  private topicsURL = '/api/v1/languages?sorted=true';
+  private topicsURL = '/api/v1/meetups/topics';
   getTopics(): Observable<TopicClass[]>{
     return this.http.get<TopicClass[]>(this.topicsURL).pipe(map((response:Response)=>response));
   }

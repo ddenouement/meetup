@@ -2,22 +2,31 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.meetup.entities.Feedback;
-import com.meetup.entities.Meetup;
-import com.meetup.entities.User;
+import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
+
+import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
+import com.meetup.service.INotificationService;
 import com.meetup.service.IProfileService;
+import com.meetup.service.ISearchService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.FileHandler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,18 +42,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * . Operations used to manage user functionality
+ * Operations used to manage user functionality.
  */
 @RestController
 @Api(value = "meetup-application")
 public class UserController {
 
     /**
-     * . Operations with meetups
+     * Operations with meetups.
      */
     private IMeetupService meetupService;
     /**
-     * . Operations with users
+     * Operations with users.
      */
     private IUserService userService;
     /**
@@ -56,22 +65,30 @@ public class UserController {
      */
     private IBadgeService badgeService;
     /**
-     * . Operations with user profile
+     * Operations with user profile.
      */
     private IProfileService profileService;
     /**
      * Article operations service.
      */
     private IArticleService articleService;
+    /**
+     * Notification operations.
+     */
+    private INotificationService notificationService;
+
+    private  ISearchService searchService;
 
     /**
      * Constructor.
      *
-     * @param meetupService MeetupService.
-     * @param userService UserService.
+     * @param meetupService meetup operations
+     * @param userService user operations
      * @param loginValidatorService LoginValidatorService
      * @param badgeService badge operations
      * @param profileService profile operations
+     * @param articleService article operations
+     * @param notificationService notification operations
      */
     @Autowired
     public UserController(final IMeetupService meetupService,
@@ -79,24 +96,28 @@ public class UserController {
         final ILoginValidatorService loginValidatorService,
         final IBadgeService badgeService,
         final IProfileService profileService,
-        final IArticleService articleService) {
+        final ISearchService searchService,
+        final IArticleService articleService,
+        final INotificationService notificationService) {
         this.meetupService = meetupService;
         this.userService = userService;
         this.loginValidatorService = loginValidatorService;
         this.badgeService = badgeService;
         this.profileService = profileService;
         this.articleService = articleService;
+        this.notificationService = notificationService;
+        this.searchService= searchService;
     }
 
     /**
-     * . get info about current User.
+     * Get info about current User.
      *
      * @param token JWT from client
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/profile")
     public ResponseEntity getUserProfile(
         @CookieValue("token") final String token) {
@@ -118,9 +139,9 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/speakers")
     public ResponseEntity<List<User>> getAllSpeakers() {
         return new ResponseEntity<>(userService.getAllSpeakers(),
@@ -132,9 +153,9 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(),
@@ -147,9 +168,9 @@ public class UserController {
      * @param userId id of user, whose profile we want to look at
      * @return ResponseEntity as HashMap
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/people/profile/{id}")
     public ResponseEntity getOtherUserProfile(
         @PathVariable("id") final int userId) {
@@ -168,9 +189,9 @@ public class UserController {
      * @param token JSON web token.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping("api/v1/user/meetups/{id}")
     public ResponseEntity joinMeetup(
         @CookieValue("token") final String token,
@@ -181,15 +202,15 @@ public class UserController {
     }
 
     /**
-     * Remove user from meeetup.     *
+     * Remove user from meeetup.
      *
      * @param token JSON web token.
      * @param meetupID Meetup, that user should leave.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping("api/v1/user/meetups/{id}")
     public ResponseEntity leaveMeetup(
         @CookieValue("token") final String token,
@@ -205,24 +226,38 @@ public class UserController {
      * @param id user's id
      * @return ResponseEntity
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
-    @PostMapping(value = "/api/v1/user/deactivateUser")
-    public ResponseEntity deactivateUser(final @RequestParam int id) {
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/users/{id}/deactivate")
+    public ResponseEntity deactivateUser(final @PathVariable("id") int id) {
         userService.deactivateUser(id);
-        return new ResponseEntity<>("Done", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    /**
+     * Admin can activate user by his Id.
+     *
+     * @param id user's id
+     * @return status
+     */
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/users/{id}/activate")
+    public ResponseEntity activateUser(final @PathVariable("id") int id) {
+        userService.activateUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     /**
      * Every user can post a complaint on other. Convert login -> id, convert
-     * date in long format -> Date exemplar and pass it to DAO
+     * date in long format -> Date exemplar and pass it to DAO.
      *
      * @param compl complaint entity
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/api/v1/user/complaint")
     public ResponseEntity postComplaintOnUser(
         @CookieValue("token") final String token,
@@ -237,7 +272,7 @@ public class UserController {
      *
      * @return ResponseEntity with list
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping(value = "/api/v1/user/complaints")
     public ResponseEntity getAllComplaints() {
         return new ResponseEntity<>(
@@ -249,7 +284,7 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasRole(T(com.meetup.entities.Role).ADMIN)")
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping(value = "/api/v1/user/complaints/read/{id}")
     public ResponseEntity markAsReadComplaint(
         @PathVariable("id") final int complaintID) {
@@ -262,8 +297,8 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/api/v1/user/subscriptions/{id}")
     public ResponseEntity subscribeToSpeaker(
         @CookieValue("token") final String token,
@@ -278,8 +313,8 @@ public class UserController {
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping(value = "/api/v1/user/subscriptions/{id}")
     public ResponseEntity unsubscribeFromSpeaker(
         @CookieValue("token") final String token,
@@ -290,12 +325,12 @@ public class UserController {
     }
 
     /**
-     * Get simplified users who are active & are subscribed on given speaker
+     * Get simplified users who are active & are subscribed on given speaker.
      *
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/user/speakers/{id}/subscribers")
     public ResponseEntity<List<SimpleUserDTO>> getSubscribersOfSpeaker(
         @PathVariable("id") final int speakerID) {
@@ -304,8 +339,8 @@ public class UserController {
         return ok(result_users);
     }
 
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/articles/random")
     public ResponseEntity<ArticleDisplayDTO> getArticle() {
         return new ResponseEntity<>(articleService.getDisplayableArticle(),
@@ -319,9 +354,9 @@ public class UserController {
      * @param token cookie with JWT
      * @return status
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PutMapping(value = "/api/v1/users/password")
     public ResponseEntity changePassword(
         @RequestBody final String password,
@@ -333,17 +368,14 @@ public class UserController {
 
     /**
      * Rate specific meetup.
-     * @param feedback
-     * Feedback of user.
-     * @param token
-     * JSON web token.
-     * @param meetupID
-     * Meetup ID.
-     * @return
-     * Response entity with status code.
+     *
+     * @param feedback Feedback of user.
+     * @param token JSON web token.
+     * @param meetupID Meetup ID.
+     * @return Response entity with status code.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/api/v1/rate/meetups/{id}")
     public ResponseEntity rateMeetup(
         @RequestBody final Feedback feedback,
@@ -354,19 +386,152 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
     /**
      * Get user's id.
      *
      * @param token cookie with JWT
      * @return user's id
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/api/v1/users/id")
     public ResponseEntity<Integer> getUserId(
         @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);
-        return new ResponseEntity<>(userId, HttpStatus.OK);
+        return ok(userId);
+    }
+
+    /**
+     * Return all unread notifications for user, sorted in descending order of
+     * time created.
+     *
+     * @param token cookie with JWT
+     * @return list of notifications
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/notifications")
+    public ResponseEntity<List<Notification>> getNotifications(
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        return ok(notificationService.findUnread(userId));
+    }
+
+    /**
+     * Count all unread notifications for user.
+     *
+     * @param token cookie with JWT
+     * @return count of notifications
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/notifications/count")
+    public ResponseEntity<Integer> countNotifications(
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        return ok(notificationService.countUnread(userId));
+    }
+
+    /**
+     * Mark a notification with specified id as read.
+     *
+     * @param id id of notification to mark
+     * @param token cookie with JWT
+     * @return status
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PutMapping(value = "/api/v1/users/notifications/{id}/read")
+    public ResponseEntity markNotificationAsRead(@PathVariable final Integer id,
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        notificationService.markAsRead(id, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Perform filtered search.
+     * @return list of matched meetups
+     * */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/search")
+    public ResponseEntity<List<Meetup>> searchWithFilter(
+
+    ) {
+        Filter filter = new Filter();
+      //  filter.setRate_to(5);
+        filter.setTitle_substring("pt");
+        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setId_language(2);
+         filter.setId_user(2);//petrenko (needed only for saving filter)
+        Date d = null;
+        try{
+            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/13");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        filter.setTime_to(d);
+
+        return ok(searchService.searchWithFilter(filter));
+    }
+
+    //only for testing, to see how JSON looks like
+    @GetMapping(value = "/api/v1/users/filter")
+    public ResponseEntity<Filter> getSampleFilter(
+    ) {
+        Filter filter = new Filter();
+        filter.setRate_to(5);
+        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setId_language(2);
+         filter.setId_user(2);//petrenko
+        Date d = null;
+        try{
+            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/14");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        filter.setTime_to(d);
+        return ok(filter);
+    }
+
+    /**
+     * user can save filter.
+     * @param token cookie value
+     * @param filter Filter to save
+     * @return saved Filter
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping(value = "/api/v1/users/current/filters")
+    public ResponseEntity<Filter> saveFilter(
+            @CookieValue("token") final String token,
+            @RequestBody final Filter filter
+    ) {
+        int id = loginValidatorService.extractId(token);
+        return ok(searchService.insertFilter(filter, id));
+    }
+
+    /**
+     * Return saved user`s filters.
+     * @param token cookie value
+     * @return saved Filters list
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/current/filters")
+    public ResponseEntity<List<Filter>> savedFilters(
+            @CookieValue("token") final String token
+    ) {
+        int id = loginValidatorService.extractId(token);
+        return ok(searchService.getUserFilters(id));
     }
 }

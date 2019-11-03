@@ -2,6 +2,13 @@
 
 ## Rest api:
 
+### AUTHORIZATION CONTROLLER
+____________________________________
+##### Upgrade to speaker (only listener)
+- Type: PUT
+- RequestBody: UserRegistrationDTO
+- api/v1/users/upgrade
+
 ### MEETUP CONTROLLER
 ____________________________________
 ##### Get all meetups
@@ -40,24 +47,30 @@ ____________________________________
 - Type: DELETE
 - /api/v1/user/meetups/{id}
 
-#### Get all active speakers
+##### Get all active speakers
 - Type: GET
 - /api/v1/user/speakers
 
-#### Get all active listeners
+##### Get all active listeners
 - Type: GET
 - /api/v1/user/users
 
-#### Change user's password
+##### Change user's password
 - Type: PUT
 - RequestBody: String password
 - /api/v1/users/password
 
-#### Get user's ID
+##### Get user's ID
 - Type: GET
 - /api/v1/users/id
 
+##### Deactivate user (admin only)
+- Type: POST
+- /api/v1/users/{id}/deactivate
 
+##### Activate user (admin only)
+- Type: POST
+- /api/v1/users/{id}/activate
 
 ### SPEAKER CONTROLLER
 ____________________________________
