@@ -2,6 +2,7 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
+import com.meetup.service.INotificationService;
 import com.meetup.utils.MeetupState;
 import com.meetup.utils.Role;
 import com.meetup.entities.User;
@@ -46,6 +47,11 @@ public class UserServiceImpl implements IUserService {
      */
     @Autowired
     private IMeetupService meetupService;
+    /**
+     * Notification operations.
+     */
+    @Autowired
+    private INotificationService notificationService;
 
     /**
      * .
@@ -163,27 +169,37 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * .     * remove users from hosted meetups & remove this user from all
-     * meetups he is subscribed to
+     * Deactivate user. This in turn removes this user from all of his future
+     * joined meetups and cancels all of his future hosted meetups.
      *
      * @param id user id
      * @return boolean whether successful operation or not
      */
     @Override
     public boolean deactivateUser(final int id) {
-        //unsubscribe from future meetups
+        // Leave future joined meetups.
         for (Meetup meet : meetupService.getJoinedMeetupsFuture(id)) {
-            meetupDao.removeUserFromMeetup(meet.getId(), id);
+            meetupService.leaveMeetup(meet.getId(), id);
         }
+        // Cancel future hosted meetups.
         for (Meetup meetup : meetupDao.getSpeakerMeetupsFuture(id)) {
-            for (User user : meetupDao.getUsersOnMeetup(meetup.getId())) {
-                meetupDao.removeUserFromMeetup(meetup.getId(), user.getId());
-            }
-            // cancel Meetup a
-            meetup.setStateId(MeetupState.CANCELED.getCode());
-            meetupDao.updateMeetup(meetup, meetup.getId());
+            meetupService.cancelMeetup(meetup.getId(), id);
         }
         userDao.deactivateUser(id);
+        notificationService.sendProfileDeactivatedNotification(id);
+        return true;
+    }
+
+    /**
+     * Activate user.
+     *
+     * @param id user id
+     * @return boolean whether successful operation or not
+     */
+    @Override
+    public boolean activateUser(final int id) {
+        userDao.activateUser(id);
+        notificationService.sendProfileActivatedNotification(id);
         return true;
     }
 
@@ -265,7 +281,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * Get basic info about users ho are subscribed on speaker.
+     * Get basic info about users who are subscribed on speaker.
      *
      * @param speakerId speaker
      * @return List of SimpleUserDTO

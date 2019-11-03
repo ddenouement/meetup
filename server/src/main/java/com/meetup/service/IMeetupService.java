@@ -2,8 +2,10 @@ package com.meetup.service;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
+import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.utils.Pair;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,12 +33,30 @@ public interface IMeetupService {
     Meetup updateMeetup(int meetupID, Meetup editedMeetup, String login);
 
     /**
+     * Updates an existing meetup.
+     *
+     * @param meetupID Meetup to be updated
+     * @param editedMeetup Edited meetup.
+     * @param userID User ID (that updates the meetup)
+     * @return updated meetup
+     */
+    Meetup updateMeetup(int meetupID, Meetup editedMeetup, int userID);
+
+    /**
      * Cancel existing meetup.
      *  @param meetupID Meetup ID to be canceled
      * @param login User login (that removes the meetup)
      * @return cancelled meetup
      */
     Meetup cancelMeetup(int meetupID, String login);
+
+    /**
+     * Cancel existing meetup.
+     * @param meetupID Meetup ID to be canceled
+     * @param userID User ID (that removes the meetup)
+     * @return cancelled meetup
+     */
+    Meetup cancelMeetup(int meetupID, int userID);
 
     /**
      * Updates an existing meetup.
@@ -77,6 +97,14 @@ public interface IMeetupService {
     List<MeetupDisplayDTO> getAllMeetups();
 
     /**
+     * Retrieve all meetups from database that start at the specified time.
+     *
+     * @param startTime start of meetup
+     * @return List of meetups
+     */
+    List<Meetup> getMeetupsByStartTime(LocalDateTime startTime);
+
+    /**
      * Get all meetups of specified speaker.
      *
      * @param speakerID Speaker ID
@@ -86,20 +114,28 @@ public interface IMeetupService {
 
 
     /**
-     * . Register user for meetup.
+     * Register user for meetup.
      *
      * @param meetupID Meetup, that will be used to register user to
-     * @param token JSON web token to extract user credentials
+     * @param userLogin user's login
      */
-    void joinMeetup(int meetupID, String token);
+    void joinMeetup(int meetupID, String userLogin);
 
     /**
-     * . Remove user for meetup.
+     * Remove user for meetup.
      *
      * @param meetupID Meetup, that will be used to remove user to
-     * @param token JSON web token to extract user credentials
+     * @param userLogin user's login
      */
-    void leaveMeetup(int meetupID, String token);
+    void leaveMeetup(int meetupID, String userLogin);
+
+    /**
+     * Remove user for meetup.
+     *
+     * @param meetupID Meetup, that will be used to remove user to
+     * @param userID user's id
+     */
+    void leaveMeetup(int meetupID, int userID);
 
     /**
      * . get Meetups that userhave attended in past.
@@ -112,17 +148,25 @@ public interface IMeetupService {
      * @param id int
      * @return List of Meetups
      */
-    List<Meetup>  getJoinedMeetupsFuture(final int id);
+    List<Meetup>  getJoinedMeetupsFuture(int id);
     /**
      * . get Meetups that user have hosted in past.
      * @param id int
      * @return List of Meetups
      */
-    List<Meetup>  getHostedMeetupsPast( int id);
+    List<Meetup>  getHostedMeetupsPast(int id);
     /**
      * . get Meetups thatuser will host
      * @param id int
      * @return List of Meetups
      */
-    List<Meetup>  getHostedMeetupsFuture( int id);
+    List<Meetup>  getHostedMeetupsFuture(int id);
+
+    /**
+     * Get users registered on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return List of users.
+     */
+    List<User> getUsersOnMeetup(int meetupId);
 }

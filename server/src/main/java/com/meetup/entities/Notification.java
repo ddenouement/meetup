@@ -2,9 +2,15 @@ package com.meetup.entities;
 
 import com.meetup.utils.NotificationType;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
+@Builder
 public class Notification {
 
     /**
@@ -31,4 +37,11 @@ public class Notification {
      * When was tjis notification created.
      */
     private LocalDateTime timeCreated;
+
+    public Notification(final String message, final NotificationType type) {
+        this.message = message;
+        this.read = false;
+        this.type = type;
+        this.timeCreated = LocalDateTime.now();
+    }
 }
