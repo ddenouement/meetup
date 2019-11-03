@@ -7,7 +7,14 @@ import com.meetup.entities.dto.UserDTO;
 /**.
  * Class to convert a User exemplar to UserDTO exemplar
  */
-public class UserDTOConverter {
+public final class UserDTOConverter {
+
+    /**
+     * Private utility class constructor.
+     */
+    private UserDTOConverter(){
+
+    }
 
     /**
      * . Convert a User exemplar to UserDTO exemplar (e.g. without password)
@@ -15,7 +22,7 @@ public class UserDTOConverter {
      * @param us User
      * @return UserDTO
      */
-    public UserDTO convertToUserDTO(final User us) {
+    public static UserDTO convertToUserDTO(final User us) {
         UserDTO newUser = new UserDTO();
         newUser.setAbout(us.getAbout());
         newUser.setActive(us.isActive());
@@ -34,7 +41,7 @@ public class UserDTOConverter {
      * @param us User
      * @return UserDTO
      */
-    public SimpleUserDTO convertToSimpleUserDTO(final User us) {
+    public static SimpleUserDTO convertToSimpleUserDTO(final User us) {
         SimpleUserDTO newUser = new SimpleUserDTO();
         newUser.setId(us.getId());
         newUser.setLastName(us.getLastName());

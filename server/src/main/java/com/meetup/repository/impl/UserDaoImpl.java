@@ -3,6 +3,7 @@ package com.meetup.repository.impl;
 import com.meetup.entities.Language;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.model.mapper.ComplaintMapper;
@@ -166,11 +167,16 @@ public class UserDaoImpl implements IUserDAO {
     private String updateUser;
 
     /**
-     * SQL reference script.
-     * Update user rate.
-     * */
+     * SQL reference script. Update user rate.
+     */
     @Value("${update_user_rate}")
     private String updateUserRate;
+
+    /**
+     * SQL reference script. Update user profile.
+     */
+    @Value("${update_user_profile}")
+    private String updateUserProfile;
 
 
     /**
@@ -596,8 +602,8 @@ public class UserDaoImpl implements IUserDAO {
 
     /**
      * Update user rate.
-     * @param user
-     * User.
+     *
+     * @param user User.
      */
     @Override
     public void updateRate(User user) {
@@ -606,6 +612,26 @@ public class UserDaoImpl implements IUserDAO {
             .addValue(DbQueryConstants.rate.name(), user.getRate())
             .addValue(DbQueryConstants.num_rates.name(), user.getNumRates());
         template.update(updateUserRate, param);
+    }
+
+    /**
+     * Update general info about user.
+     *
+     * @param user User to be edited.
+     * @param profileDTO Edited info.
+     */
+    @Override
+    public void updateInfo(User user, ProfileDTO profileDTO) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id.name(),
+                user.getId())
+            .addValue(DbQueryConstants.first_name.name(),
+                profileDTO.getFirstName())
+            .addValue(DbQueryConstants.last_name.name(),
+                profileDTO.getLastName())
+            .addValue(DbQueryConstants.about.name(),
+                profileDTO.getAbout());
+        template.update(updateUserProfile, param);
     }
 }
 

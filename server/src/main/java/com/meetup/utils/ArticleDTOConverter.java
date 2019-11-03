@@ -10,7 +10,14 @@ import java.util.List;
  * Utility class used to convert Article object
  * to displayable DTO.
  */
-public class ArticleDTOConverter {
+public final class ArticleDTOConverter {
+
+    /**
+     * Private utility class constructor.
+     */
+    private ArticleDTOConverter(){
+
+    }
 
     /**
      * Convert Article object to displayable DTO.
@@ -23,7 +30,7 @@ public class ArticleDTOConverter {
      * @return
      * ArticleDisplayDTO.
      */
-    public ArticleDisplayDTO convertToArticleDisplayDTO(final Article article,
+    public static ArticleDisplayDTO convertToArticleDisplayDTO(final Article article,
         final List<Topic> topics,
         final UserDTO userDTO) {
         ArticleDisplayDTO articleDisplayDTO = new ArticleDisplayDTO();

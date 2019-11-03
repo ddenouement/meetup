@@ -5,6 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 
 import com.meetup.entities.dto.UserRegistrationDTO;
@@ -136,6 +137,17 @@ public class UserController {
         return ok(model);
     }
 
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PutMapping(value = "/user/profile")
+    public ResponseEntity updateProfile(
+        @CookieValue("token") final String token,
+        final @RequestBody ProfileDTO profileDTO){
+        userService.updateProfile(profileDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     /**
      * Return all active speakers.
      *
@@ -244,7 +256,7 @@ public class UserController {
      * @return status
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @PostMapping(value = "/api/v1/users/{id}/activate")
+    @PostMapping(value = "/users/{id}/activate")
     public ResponseEntity activateUser(final @PathVariable("id") int id) {
         userService.activateUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -373,6 +385,20 @@ public class UserController {
     }
 
     /**
+     * Admin can remove article by Id.
+     *
+     * @param articleID Article ID.
+     * @return ResponseEntity with status code.
+     */
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @DeleteMapping(value = "/user/articles/{id}")
+    public ResponseEntity removeArticle(
+        @PathVariable("id") final int articleID) {
+        articleService.removeArticleByAdmin(articleID);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
      * Change user's password.
      *
      * @param password new password
@@ -486,7 +512,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/users/search")
+    @GetMapping(value = "/users/search")
     public ResponseEntity<List<Meetup>> searchWithFilter(
 
     ) {
@@ -508,7 +534,7 @@ public class UserController {
     }
 
     //only for testing, to see how JSON looks like
-    @GetMapping(value = "/api/v1/users/filter")
+    @GetMapping(value = "/users/filter")
     public ResponseEntity<Filter> getSampleFilter(
     ) {
         Filter filter = new Filter();
@@ -535,7 +561,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @PostMapping(value = "/api/v1/users/current/filters")
+    @PostMapping(value = "/users/current/filters")
     public ResponseEntity<Filter> saveFilter(
             @CookieValue("token") final String token,
             @RequestBody final Filter filter
@@ -552,7 +578,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/users/current/filters")
+    @GetMapping(value = "/users/current/filters")
     public ResponseEntity<List<Filter>> savedFilters(
             @CookieValue("token") final String token
     ) {
