@@ -1,6 +1,7 @@
 package com.meetup.repository;
 
 import com.meetup.entities.Language;
+import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
@@ -198,5 +199,14 @@ public interface IUserDAO {
      * User.
      */
     void updateRate(User user);
+
+    /**
+     * Update general info about user.
+     * @param user
+     * User to be edited.
+     * @param profileDTO
+     * Edited profile info.
+     */
+    void updateInfo(User user, ProfileDTO profileDTO);
 }
 

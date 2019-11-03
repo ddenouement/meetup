@@ -45,4 +45,11 @@ public interface IArticleService {
      * List of articles.
      */
     List<ArticleDisplayDTO> getAllDisplayableArticles();
+
+    /**
+     * Remove article by admin.
+     * @param articleID
+     * Article ID.
+     */
+    void removeArticleByAdmin(int articleID);
 }

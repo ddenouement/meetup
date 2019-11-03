@@ -1,5 +1,6 @@
 package com.meetup.controller;
 
+import com.meetup.error.ArticleNotFoundException;
 import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.error.BadgeScriptIsIncorrectException;
@@ -45,6 +46,18 @@ public class GlobalExceptionController {
     public ResponseEntity<Object> topicNotFoundException() {
         return new ResponseEntity<>(
             "Topic not found!",
+            HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * ArticleNotFoundException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(ArticleNotFoundException.class)
+    public ResponseEntity<Object> articleNotFoundException() {
+        return new ResponseEntity<>(
+            "Article not found!",
             HttpStatus.NOT_FOUND);
     }
 

@@ -2,6 +2,7 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
+import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.service.INotificationService;
 import com.meetup.utils.MeetupState;
 import com.meetup.utils.Role;
@@ -96,7 +97,8 @@ public class UserServiceImpl implements IUserService {
      * @param userId of listener to upgrade
      */
     @Override
-    public void upgradeToSpeaker(final UserRegistrationDTO user, final Integer userId) {
+    public void upgradeToSpeaker(final UserRegistrationDTO user,
+        final Integer userId) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -107,15 +109,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * .
+     * Update general info about user.
      *
-     * @param user User
-     * @return User, but with new profile
+     * @param profileDTO User profile
      */
     @Override
-    public User updateProfile(final User user) {
-        //TODO implement
-        return null;
+    public void updateProfile(final ProfileDTO profileDTO) {
+        User user = userDao.findUserByLogin(profileDTO.getLogin());
+        userDao.updateInfo(user, profileDTO);
+        //TODO update languages
     }
 
     /**
@@ -130,8 +132,7 @@ public class UserServiceImpl implements IUserService {
         if (us == null) {
             throw new UserNotFoundException();
         }
-        UserDTOConverter converter = new UserDTOConverter();
-        UserDTO dtouser = converter.convertToUserDTO(us);
+        UserDTO dtouser = UserDTOConverter.convertToUserDTO(us);
         dtouser.setLanguages(userDao.getUsersLanguages(us.getId()));
         return dtouser;
     }

@@ -27,6 +27,10 @@ ____________________________________
 - Type: GET
 - /api/v1/user/profile
 
+##### Update user profile
+- Type: PUT
+- /api/v1/user/profile
+
 ##### Get all speakers
 - Type: GET
 - RequestParam: String login

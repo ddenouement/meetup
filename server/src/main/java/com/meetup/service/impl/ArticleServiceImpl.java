@@ -6,7 +6,9 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.UserDTO;
+import com.meetup.error.ArticleNotFoundException;
 import com.meetup.error.SpeakerOperationNotAllowedException;
+import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IArticleDAO;
 import com.meetup.repository.ITopicDAO;
 import com.meetup.repository.IUserDAO;
@@ -65,6 +67,9 @@ public class ArticleServiceImpl implements IArticleService {
     public void postArticle(final ArticleCreationDTO articleCreationDTO,
         final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
         if (RoleProcessor.isSpeaker(user)) {
             articleDao.insertNewArticle(articleCreationDTO, user.getId());
         } else {
@@ -82,7 +87,13 @@ public class ArticleServiceImpl implements IArticleService {
     public void removeArticle(final int articleID,
         final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
         Article currentArticle = articleDao.findArticleByID(articleID);
+        if (currentArticle == null) {
+            throw new ArticleNotFoundException();
+        }
         if (RoleProcessor.isSpeaker(user)) {
             if (user.getId() == currentArticle.getAuthorID()) {
                 articleDao.removeArticle(articleID);
@@ -96,48 +107,52 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * Get article, that could be displayed.
-     * @param articleID
-     * Article ID.
      *
+     * @param articleID Article ID.
      * @return ArticleDisplayDTO.
      */
     @Override
     public ArticleDisplayDTO getDisplayableArticle(final int articleID) {
-        UserDTOConverter userDTOConverter = new UserDTOConverter();
-        ArticleDTOConverter articleDTOConverter = new ArticleDTOConverter();
-
         Article article = articleDao.findArticleByID(articleID);
         List<Topic> topics = articleDao.getArticleTopics(articleID);
 
         User user = userDao.findUserById(article.getAuthorID());
-        UserDTO userDTO = userDTOConverter.convertToUserDTO(user);
+        UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
 
-        return articleDTOConverter
+        return ArticleDTOConverter
             .convertToArticleDisplayDTO(article, topics, userDTO);
     }
 
     /**
      * Get all articles.
-     * @return
-     * List of displayable articles.
+     *
+     * @return List of displayable articles.
      */
     @Override
     public List<ArticleDisplayDTO> getAllDisplayableArticles() {
-        UserDTOConverter userDTOConverter = new UserDTOConverter();
-        ArticleDTOConverter articleDTOConverter = new ArticleDTOConverter();
-
         List<Article> articles = articleDao.getAllArticles();
         List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
 
-        for (Article article: articles){
+        for (Article article : articles) {
             User user = userDao.findUserById(article.getAuthorID());
-            UserDTO userDTO = userDTOConverter.convertToUserDTO(user);
+            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
             List<Topic> topics = articleDao.getArticleTopics(article.getId());
-            displayableArticles.add(articleDTOConverter.convertToArticleDisplayDTO(
-                article,
-                topics,
-                userDTO));
+            displayableArticles
+                .add(ArticleDTOConverter.convertToArticleDisplayDTO(
+                    article,
+                    topics,
+                    userDTO));
         }
         return displayableArticles;
+    }
+
+    /**
+     * Remove article by admin
+     *
+     * @param articleID Article ID.
+     */
+    @Override
+    public void removeArticleByAdmin(int articleID) {
+        articleDao.removeArticle(articleID);
     }
 }
