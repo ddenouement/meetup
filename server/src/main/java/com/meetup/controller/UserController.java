@@ -534,4 +534,5 @@ public class UserController {
         int id = loginValidatorService.extractId(token);
         return ok(searchService.getUserFilters(id));
     }
+
 }
