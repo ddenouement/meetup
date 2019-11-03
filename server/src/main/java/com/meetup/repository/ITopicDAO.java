@@ -23,4 +23,29 @@ public interface ITopicDAO {
      * Topic.
      */
     Topic findTopicByID(int id);
+
+    /**
+     * Insert new topic to DB.
+     * @param topic
+     * Topic to be added to DB.
+     * @return Created topic.
+     */
+    Topic insertTopic(Topic topic);
+
+    /**
+     * Remove topic from DB.
+     * @param topicID
+     * Topic ID to be removed.
+     */
+    void removeTopic(int topicID);
+
+    /**
+     * Update topic.
+     * @param topic
+     * Updated topic.
+     * @param topicID Topic ID to be updated.
+     * @return
+     * Updated topic.
+     */
+    Topic updateTopic(int topicID, Topic topic);
 }

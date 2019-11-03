@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -88,6 +92,70 @@ public class MeetupController {
         return new ResponseEntity<>(meetupService.getAllTopics(),
             HttpStatus.OK);
     }
+
+    /**
+     * Get topic.
+     * @param topicID topic ID.
+     * @return Response entity with topic.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping("/meetups/topics/{id}")
+    public ResponseEntity<Topic> getTopic(
+        @PathVariable("id") final int topicID) {
+        return new ResponseEntity<>(meetupService.getTopic(topicID),
+            HttpStatus.OK);
+    }
+
+    /**
+     * Create topic.
+     * @param topic edited topic.
+     * @return Response entity with topic.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping("/meetups/topics")
+    public ResponseEntity<Topic> createTopic(
+        @RequestBody final Topic topic) {
+        return new ResponseEntity<>(meetupService.createTopic(topic),
+            HttpStatus.CREATED);
+    }
+
+    /**
+     * Update topic.
+     * @param topicID topic ID to be edited.
+     * @param topic edited topic.
+     * @return Response entity with topic.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PutMapping("/meetups/topics/{id}")
+    public ResponseEntity<Topic> updateTopic(
+        @PathVariable("id") final int topicID,
+        @RequestBody final Topic topic) {
+        return new ResponseEntity<>(meetupService.updateTopic(topicID, topic),
+            HttpStatus.OK);
+    }
+
+    /**
+     * Remove topic.
+     * @param topicID topic ID to be removed.
+     * @return Response entity with status code.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @DeleteMapping("/meetups/topics/{id}")
+    public ResponseEntity removeTopic(
+        @PathVariable("id") final int topicID) {
+        meetupService.removeTopic(topicID);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
     /**
      * Retrieve meetups of speaker.
