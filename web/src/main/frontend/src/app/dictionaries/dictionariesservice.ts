@@ -11,6 +11,7 @@ import {Topic} from "../models/topic";
 export class Dictionariesservice{
   constructor(private http: HttpClient){ }
   private languagesURL = '/api/v1/languages';
+  //TODO ???
   private topicsURL = '/api/v1/languages?sorted=true';
 
   getLanguages(): Observable<Language[]>{

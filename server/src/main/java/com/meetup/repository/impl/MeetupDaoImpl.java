@@ -199,7 +199,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.id.name(), meetupID)
             .addValue(DbQueryConstants.id_speaker.name(), editedMeetup.getSpeakerId())
             .addValue(DbQueryConstants.id_language.name(), editedMeetup.getLanguageId())
-            .addValue(DbQueryConstants.id_state.name(), editedMeetup.getStateId())
+            .addValue(DbQueryConstants.id_state.name(), MeetupState.SCHEDULED.getCode())
             .addValue(DbQueryConstants.title.name(), editedMeetup.getTitle())
             .addValue(DbQueryConstants.start_time.name(), editedMeetup.getStartDate())
             .addValue(DbQueryConstants.duration_minutes.name(), editedMeetup.getDurationMinutes())

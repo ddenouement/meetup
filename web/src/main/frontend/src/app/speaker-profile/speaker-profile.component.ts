@@ -37,7 +37,7 @@ export class SpeakerProfileComponent implements OnInit {
   public login: string;
   public email: string;
   public about: string;
-  private userURL = 'http://localhost:9990/api/v1/user/profile';
+  private userURL = '/api/v1/user/profile';
   speakerMeetups : Meetup[] = [];
   private meetingsSub: Subscription;
 

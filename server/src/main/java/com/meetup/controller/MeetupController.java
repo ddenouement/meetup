@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "meetup-application")
+@RequestMapping("/api/v1")
 public class MeetupController {
 
     /**
@@ -50,7 +52,7 @@ public class MeetupController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "api/v1/meetups")
+    @GetMapping(value = "/meetups")
     public ResponseEntity<List<MeetupDisplayDTO>> getAllMeetups() {
         return new ResponseEntity<>(meetupService.getAllMeetups(),
             HttpStatus.OK);
@@ -66,7 +68,7 @@ public class MeetupController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/meetups/{id}")
+    @GetMapping(value = "/meetups/{id}")
     public ResponseEntity<MeetupDisplayDTO> getMeetup(
         @PathVariable("id") final int meetupID) {
         return new ResponseEntity<>(meetupService.getMeetup(meetupID),
@@ -81,7 +83,7 @@ public class MeetupController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping("api/v1/meetups/topics")
+    @GetMapping("/meetups/topics")
     public ResponseEntity<List<Topic>> getAvailableTopics() {
         return new ResponseEntity<>(meetupService.getAllTopics(),
             HttpStatus.OK);
@@ -96,7 +98,7 @@ public class MeetupController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/meetups/speaker/{id}")
+    @GetMapping(value = "/meetups/speakers/{id}")
     public ResponseEntity<List<MeetupDisplayDTO>> getSpeakerMeetups(
         @PathVariable("id") final int speakerID) {
         return new ResponseEntity<>(

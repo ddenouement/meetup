@@ -27,6 +27,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @Api(value = "meetup-application")
+@RequestMapping("/api/v1")
 public class AuthorizationController {
 
     /**
@@ -65,7 +67,7 @@ public class AuthorizationController {
      * @param response HttpServletResponse
      * @return ResponseEntity
      **/
-    @PostMapping("/api/v1/user/login")
+    @PostMapping("/user/login")
     public ResponseEntity signIn(
         final @RequestBody AuthentificationRequest data,
         final HttpServletResponse response) {
@@ -95,7 +97,7 @@ public class AuthorizationController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "api/v1/user/logout")
+    @GetMapping(value = "/user/logout")
     public ResponseEntity logout(final HttpServletResponse response) {
         deleteToken(response);
         return new ResponseEntity(HttpStatus.OK);
@@ -121,7 +123,7 @@ public class AuthorizationController {
      * @param user User
      * @return ResponseEntity
      */
-    @PostMapping(value = "/api/v1/user/register/listener")
+    @PostMapping(value = "/user/register/listener")
     public ResponseEntity registerListener(
         final @RequestBody UserRegistrationDTO user) {
         userService.registerAsListener(user);
@@ -134,7 +136,7 @@ public class AuthorizationController {
      * @param user User
      * @return ResponseEntity
      */
-    @PostMapping(value = "/api/v1/user/register/speaker")
+    @PostMapping(value = "/user/register/speaker")
     public ResponseEntity registerSpeaker(
         final @RequestBody UserRegistrationDTO user) {
         userService.registerAsSpeaker(user);

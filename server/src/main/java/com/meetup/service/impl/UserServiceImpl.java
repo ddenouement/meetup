@@ -289,12 +289,35 @@ public class UserServiceImpl implements IUserService {
      * @param feedback Feedback object.
      */
     @Override
-    public void rateMeetup(int meetupID, String userLogin, Feedback feedback) {
-        User u = userDao.findUserByLogin(userLogin);
-        if (u == null) {
+    public void rateMeetup(final int meetupID,
+        final String userLogin,
+        final Feedback feedback) {
+        User user = userDao.findUserByLogin(userLogin);
+        if (user == null) {
             throw new UserNotFoundException();
         }
-        meetupDao.rateMeetup(meetupID, u.getId(), feedback);
+        meetupDao.rateMeetup(meetupID, user.getId(), feedback);
+
+        Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
+        User speakerOfMeetup = userDao
+            .findUserById(currentMeetup.getSpeakerId());
+        updateUserRate(speakerOfMeetup, feedback);
+    }
+
+    /**
+     * Update speaker rate after rating meetup.
+     *
+     * @param user User.
+     * @param feedback Feedback of meetup.
+     */
+    private void updateUserRate(final User user,
+        final Feedback feedback) {
+        float rate =
+            (user.getRate() * user.getNumRates() + feedback.getRate()) /
+                (user.getNumRates() + 1);
+        user.setRate(rate);
+        user.setNumRates(user.getNumRates() + 1);
+        userDao.updateRate(user);
     }
 
 

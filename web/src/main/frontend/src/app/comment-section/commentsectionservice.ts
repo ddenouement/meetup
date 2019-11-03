@@ -13,6 +13,7 @@ export class Commentsectionservice {
   constructor(private http: HttpClient) {
   }
 
+  //TODO
   private commentsURL = '/api/v1/comments';
 
   getComments(): Observable<CommentDto[]> {

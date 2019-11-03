@@ -20,7 +20,7 @@ export class FeedbackComponent implements OnInit {
   feedback: string;
   public enable = false;
   //TODO remove hardcode
-  private feedbackURL = '/api/v1/rate/meetups/13';
+  private feedbackURL = '/api/v1/rate/meetups/{id}';
 
   constructor(private httpClient: HttpClient,
               private formBuilder: FormBuilder,

@@ -55,4 +55,11 @@ public interface IArticleDAO {
      */
     void removeArticle(int articleID);
 
+    /**
+     * Get all articles.
+     * @return
+     * List of articles.
+     */
+    List<Article> getAllArticles();
+
 }

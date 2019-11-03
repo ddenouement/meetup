@@ -155,6 +155,13 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${change_password}")
     private String changePassword;
 
+    /**
+     * SQL reference script.
+     * Update user rate.
+     * */
+    @Value("${update_user_rate}")
+    private String updateUserRate;
+
 
     /**
      * . .
@@ -519,6 +526,20 @@ public class UserDaoImpl implements IUserDAO {
             .addValue(DbQueryConstants.password.name(), newPassword)
             .addValue(DbQueryConstants.id.name(), userId);
         template.update(changePassword, param);
+    }
+
+    /**
+     * Update user rate.
+     * @param user
+     * User.
+     */
+    @Override
+    public void updateRate(User user) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id.name(), user.getId())
+            .addValue(DbQueryConstants.rate.name(), user.getRate())
+            .addValue(DbQueryConstants.num_rates.name(), user.getNumRates());
+        template.update(updateUserRate, param);
     }
 }
 
