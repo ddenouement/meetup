@@ -37,7 +37,7 @@ export class ComplaintComponent implements OnInit {
     };
    alert(complaint_in_request_body.content);
     alert(complaint_in_request_body.id_user_to);
-     this.httpClient.post("/api/v1/user/complain", complaint_in_request_body).subscribe();
+     this.httpClient.post("/api/v1/user/complaint", complaint_in_request_body).subscribe();
   }
 
 }

@@ -49,14 +49,13 @@ public enum MeetupState {
 
     /**
      * Get MeetupState enum instance by ID.
-     * @param id
-     * ID of state.
-     * @return
-     * MeetupState enum instance.
+     *
+     * @param id ID of state.
+     * @return MeetupState enum instance.
      */
     public static MeetupState getStateByID(int id) {
-        for(MeetupState state : values()) {
-            if(state.code == id) {
+        for (MeetupState state : values()) {
+            if (state.code == id) {
                 return state;
             }
         }

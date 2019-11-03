@@ -2,6 +2,7 @@ package com.meetup.service;
 
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
+import java.util.List;
 
 /**
  * Article service interface.
@@ -31,8 +32,17 @@ public interface IArticleService {
 
     /**
      * Get article, that could be displayed.
+     * @param articleID
+     * Article ID.
      * @return
      * ArticleDisplayDTO.
      */
-    ArticleDisplayDTO getDisplayableArticle();
+    ArticleDisplayDTO getDisplayableArticle(int articleID);
+
+    /**
+     * Get all displayable articles
+     * @return
+     * List of articles.
+     */
+    List<ArticleDisplayDTO> getAllDisplayableArticles();
 }

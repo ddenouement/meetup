@@ -46,6 +46,7 @@ public class ArticleServiceImpl implements IArticleService {
      *
      * @param userDao User repository.
      * @param articleDao Article repository.
+     * @param topicDao Topic repository.
      */
     ArticleServiceImpl(@Autowired final UserDaoImpl userDao,
         @Autowired final ArticleDaoImpl articleDao,
@@ -95,21 +96,48 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * Get article, that could be displayed.
+     * @param articleID
+     * Article ID.
      *
      * @return ArticleDisplayDTO.
      */
-    //TODO rewrite
     @Override
-    public ArticleDisplayDTO getDisplayableArticle() {
+    public ArticleDisplayDTO getDisplayableArticle(final int articleID) {
         UserDTOConverter userDTOConverter = new UserDTOConverter();
         ArticleDTOConverter articleDTOConverter = new ArticleDTOConverter();
 
-        Article article = articleDao.findArticleByID(8);
-        List<Topic> topics = articleDao.getArticleTopics(8);
+        Article article = articleDao.findArticleByID(articleID);
+        List<Topic> topics = articleDao.getArticleTopics(articleID);
 
         User user = userDao.findUserById(article.getAuthorID());
         UserDTO userDTO = userDTOConverter.convertToUserDTO(user);
 
-        return articleDTOConverter.convertToArticleDisplayDTO(article,topics,userDTO);
+        return articleDTOConverter
+            .convertToArticleDisplayDTO(article, topics, userDTO);
+    }
+
+    /**
+     * Get all articles.
+     * @return
+     * List of displayable articles.
+     */
+    @Override
+    public List<ArticleDisplayDTO> getAllDisplayableArticles() {
+        UserDTOConverter userDTOConverter = new UserDTOConverter();
+        ArticleDTOConverter articleDTOConverter = new ArticleDTOConverter();
+
+        List<Article> articles = articleDao.getAllArticles();
+        List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
+
+        for (Article article: articles){
+            User user = userDao.findUserById(article.getAuthorID());
+            UserDTO userDTO = userDTOConverter.convertToUserDTO(user);
+            List<Topic> topics = articleDao.getArticleTopics(article.getId());
+            displayableArticles.add(articleDTOConverter.convertToArticleDisplayDTO(
+                article,
+                topics,
+                userDTO));
+        }
+        return displayableArticles;
     }
 }
