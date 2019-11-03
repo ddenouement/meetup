@@ -3,6 +3,7 @@ package com.meetup.service;
 import com.meetup.entities.Feedback;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
@@ -38,12 +39,11 @@ public interface IUserService {
     void upgradeToSpeaker(UserRegistrationDTO user, Integer userId);
 
     /**
-     * .
+     * Update user general info.
      *
-     * @param user User
-     * @return User
+     * @param profileDTO User profile info.
      */
-    User updateProfile(User user);
+    void updateProfile(ProfileDTO profileDTO);
 
     /**
      * Get user's profile info.

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 /**.
  * Class to convert a Meetup exemplar to MeetupDisplayDTO exemplar
  */
+//TODO rewrite to utility class.
 @Component
 public class MeetupDTOConverter {
 
@@ -48,9 +49,8 @@ public class MeetupDTOConverter {
      */
     public MeetupDisplayDTO convertToMeetupDTO(final Meetup meetup) {
 
-        UserDTOConverter userDTOConverter = new UserDTOConverter();
         User speaker = userDao.findUserById(meetup.getSpeakerId());
-        UserDTO speakerDTO = userDTOConverter.convertToUserDTO(speaker);
+        UserDTO speakerDTO = UserDTOConverter.convertToUserDTO(speaker);
         speakerDTO.setLanguages(userDao.getUsersLanguages(speakerDTO.getId()));
         MeetupDisplayDTO newMeetup = new MeetupDisplayDTO();
 

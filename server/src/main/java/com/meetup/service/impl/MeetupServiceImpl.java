@@ -104,9 +104,6 @@ public class MeetupServiceImpl implements IMeetupService {
     @Override
     public List<MeetupDisplayDTO> getAllMeetups() {
         List<Meetup> meetups = meetupDao.getAllMeetups();
-        if (meetups.isEmpty()) {
-            throw new MeetupNotFoundException();
-        }
         return meetupDTOConverter.convertToMeetupDTO(meetups);
     }
 
