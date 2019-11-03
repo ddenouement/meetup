@@ -81,6 +81,13 @@ public interface IUserService {
     boolean deactivateUser(int id);
 
     /**
+     * Activate user.
+     * @param id id of user to activate
+     * @return true iff successful
+     */
+    boolean activateUser(int id);
+
+    /**
      * .
      * @return List of all complaints
      */

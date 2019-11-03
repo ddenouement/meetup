@@ -1,6 +1,8 @@
 package com.meetup.service;
 
+import com.meetup.entities.Meetup;
 import com.meetup.entities.Notification;
+import com.meetup.entities.User;
 import java.util.List;
 
 /**
@@ -44,4 +46,68 @@ public interface INotificationService {
      * @return inserted notification
      */
     Notification insert(Notification notification);
+
+    /**
+     * Send a notification of type MEETUP_BOOKED given the corresponding meetup
+     * to the meetup's speaker.
+     *
+     * @param meetup meetup to create notification for
+     */
+    void sendMeetupBookedNotification(Meetup meetup);
+
+    /**
+     * Send a notification of type HOSTED_MEETUP_STARTS_SOON given the
+     * corresponding meetup to the meetup's speaker.
+     *
+     * @param meetup meetup to create notification for
+     */
+    void sendHostedMeetupStartsSoonNotification(Meetup meetup);
+
+    /**
+     * Send notification of type JOINED_MEETUP_STARTS_SOON given the
+     * corresponding meetup to all of the meetup's listeners.
+     *
+     * @param meetup meetup to create notification for
+     */
+    void sendJoinedMeetupStartsSoonNotifications(Meetup meetup);
+
+    /**
+     * Send notification of type MEETUP_INFO_CHANGED given the corresponding
+     * meetup and string with change description to all of the meetup's
+     * listeners.
+     *
+     * @param meetup meetup to create notification for
+     * @param changes a textual representation of changes
+     */
+    void sendMeetupInfoChangedNotifications(Meetup meetup, String changes);
+
+    /**
+     * Send notification of type NEW_SUBSCRIBED_MEETUP given the corresponding
+     * meetup to all of the meetup's speaker subscribers.
+     *
+     * @param meetup meetup to create notification for
+     */
+    void sendNewSubscribedMeetupNotifications(Meetup meetup);
+
+    /**
+     * Send notification of type LEAVE_FEEDBACK given the corresponding meetup
+     * to all of the meetup's listeners.
+     *
+     * @param meetup meetup to create notification for
+     */
+    void sendLeaveFeedbackNotifications(Meetup meetup);
+
+    /**
+     * Send notification of type PROFILE_DEACTIVATED to the user with given id.
+     *
+     * @param userId id of user to send notification to
+     */
+    void sendProfileDeactivatedNotification(Integer userId);
+
+    /**
+     * Send notification of type PROFILE_ACTIVATED to the user with given id.
+     *
+     * @param userId id of user to send notification to
+     */
+    void sendProfileActivatedNotification(Integer userId);
 }

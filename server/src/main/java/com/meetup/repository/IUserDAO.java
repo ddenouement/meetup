@@ -105,6 +105,14 @@ public interface IUserDAO {
     boolean deactivateUser(int id);
 
     /**
+     * Activate user in DB.
+     *
+     * @param id int, id of user
+     * @return boolean , isSuccessful
+     */
+    boolean activateUser(int id);
+
+    /**
      * .
      *
      * @return List of all not read complaints

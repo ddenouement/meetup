@@ -101,6 +101,11 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${deactivate_by_user_id}")
     private String deactivateUser;
     /**
+     * SQL query to activate user.
+     */
+    @Value("${activate_by_user_id}")
+    private String activateUser;
+    /**
      * sql for finding all not read complaints from DB.
      */
     @Value("${get_all_complaints_not_read}")
@@ -413,6 +418,21 @@ public class UserDaoImpl implements IUserDAO {
             .addValue(DbQueryConstants.user_id_param.name(), id);
         ResultSet rs = null;
         template.update(deactivateUser, param);
+        return true;
+    }
+
+    /**
+     * Activate user in DB.
+     *
+     * @param id int, id of user
+     * @return boolean, isSuccessful
+     */
+    @Override
+    public boolean activateUser(final int id) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.user_id_param.name(), id);
+        ResultSet rs = null;
+        template.update(activateUser, param);
         return true;
     }
 

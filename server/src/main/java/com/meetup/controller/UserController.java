@@ -42,18 +42,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * . Operations used to manage user functionality
+ * Operations used to manage user functionality.
  */
 @RestController
 @Api(value = "meetup-application")
 public class UserController {
 
     /**
-     * . Operations with meetups
+     * Operations with meetups.
      */
     private IMeetupService meetupService;
     /**
-     * . Operations with users
+     * Operations with users.
      */
     private IUserService userService;
     /**
@@ -65,14 +65,16 @@ public class UserController {
      */
     private IBadgeService badgeService;
     /**
-     * . Operations with user profile
+     * Operations with user profile.
      */
     private IProfileService profileService;
     /**
      * Article operations service.
      */
     private IArticleService articleService;
-
+    /**
+     * Notification operations.
+     */
     private INotificationService notificationService;
 
     private  ISearchService searchService;
@@ -108,7 +110,7 @@ public class UserController {
     }
 
     /**
-     * . get info about current User.
+     * Get info about current User.
      *
      * @param token JWT from client
      * @return ResponseEntity
@@ -200,7 +202,7 @@ public class UserController {
     }
 
     /**
-     * Remove user from meeetup.     *
+     * Remove user from meeetup.
      *
      * @param token JSON web token.
      * @param meetupID Meetup, that user should leave.
@@ -225,16 +227,30 @@ public class UserController {
      * @return ResponseEntity
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @PostMapping(value = "/api/v1/user/deactivateUser")
-    public ResponseEntity deactivateUser(final @RequestParam int id) {
+    @PostMapping(value = "/api/v1/users/{id}/deactivate")
+    public ResponseEntity deactivateUser(final @PathVariable("id") int id) {
         userService.deactivateUser(id);
-        return new ResponseEntity<>("Done", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    /**
+     * Admin can activate user by his Id.
+     *
+     * @param id user's id
+     * @return status
+     */
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PostMapping(value = "/api/v1/users/{id}/activate")
+    public ResponseEntity activateUser(final @PathVariable("id") int id) {
+        userService.activateUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     /**
      * Every user can post a complaint on other. Convert login -> id, convert
-     * date in long format -> Date exemplar and pass it to DAO
+     * date in long format -> Date exemplar and pass it to DAO.
      *
      * @param compl complaint entity
      * @return ResponseEntity
@@ -309,7 +325,7 @@ public class UserController {
     }
 
     /**
-     * Get simplified users who are active & are subscribed on given speaker
+     * Get simplified users who are active & are subscribed on given speaker.
      *
      * @return ResponseEntity
      */
@@ -352,14 +368,11 @@ public class UserController {
 
     /**
      * Rate specific meetup.
-     * @param feedback
-     * Feedback of user.
-     * @param token
-     * JSON web token.
-     * @param meetupID
-     * Meetup ID.
-     * @return
-     * Response entity with status code.
+     *
+     * @param feedback Feedback of user.
+     * @param token JSON web token.
+     * @param meetupID Meetup ID.
+     * @return Response entity with status code.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
@@ -373,6 +386,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
     /**
      * Get user's id.
      *
@@ -424,6 +438,7 @@ public class UserController {
 
     /**
      * Mark a notification with specified id as read.
+     *
      * @param id id of notification to mark
      * @param token cookie with JWT
      * @return status
