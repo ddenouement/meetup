@@ -15,6 +15,7 @@ export class Commentsectionservice {
 
   //TODO
   private commentsURL = '/api/v1/comments';
+  private usersURL = 'api/v1/users/';
 
   getComments(): Observable<CommentDto[]> {
     return this.http.get<CommentDto[]>(this.commentsURL).pipe(map((response: Response) => response));
@@ -24,6 +25,9 @@ export class Commentsectionservice {
     return this.http.post(this.commentsURL, l);
   }
 
+  getUserRole(id: number){
+    return this.http.get(this.usersURL+id+"/role",  {responseType: 'text'});
+  }
  //todo
   /*deleteComment(id: number) {
     return this.http.delete(this.languagesURL + '/' + id);

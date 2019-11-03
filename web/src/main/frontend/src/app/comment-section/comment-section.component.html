@@ -15,7 +15,7 @@
   <mat-list-item *ngFor="let comm of comments" class="comment-card">
 
 <div class="meta">
-  <p [ngClass]="(article_author_id===comm.id_author)?'user-name-author':'user-name'"><a class="link_person" [routerLink]="['/speaker-profile',comm.id_author]" >{{comm.login}}</a></p>
+  <p [ngClass]="(article_author_id1===comm.id_author)?'user-name-author':'user-name'"><a class="link_person" (click)="redirectToProfile(comm.id_author)" >{{comm.login}}</a></p>
     <span class="time">
       {{comm.time_posted | fromNow}}  <!-- for exapmle, month ago-->
     </span>

@@ -325,6 +325,21 @@ public class UserServiceImpl implements IUserService {
         updateUserRate(speakerOfMeetup, feedback);
     }
 
+    @Override
+    public String userPrimaryRole(int userId) {
+        List<  Role> roles = userDao.findUserById(userId).getRoles();
+        for(Role r : roles){
+            if(r.getAuthority().equals("SPEAKER")) {
+                return "SPEAKER";
+            }
+            if(r.getAuthority().equals("ADMIN")) {
+                return "ADMIN";
+            }
+        }
+
+      return "LISTENER";
+    }
+
     /**
      * Update speaker rate after rating meetup.
      *

@@ -1,6 +1,14 @@
-import {Component, TemplateRef, ViewChild} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit, SimpleChange, SimpleChanges,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {Commentsectionservice} from "./commentsectionservice";
 import {CommentDto} from "../models/commentDto";
+import {ActivatedRoute, Router} from '@angular/router';
 import {PickerModule} from '@ctrl/ngx-emoji-mart';
 
 
@@ -10,12 +18,11 @@ import {PickerModule} from '@ctrl/ngx-emoji-mart';
   styleUrls: ['./comment-section.component.scss'],
   providers: [Commentsectionservice]
 })
-export class CommentSectionComponent {
+export class CommentSectionComponent implements OnChanges, OnInit{
   articleId:number;
   authorId: number;
-  article_author_id:number;
   authorLogin: string;
-  //@Input ( ) articleId:number;
+  @Input ( ) article_author_id1:number;
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
 
    comments: Array<CommentDto>;
@@ -25,16 +32,20 @@ export class CommentSectionComponent {
 showEmojiPicker:boolean;
 
 
-  constructor(private serv: Commentsectionservice) {
+  constructor(private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
     this.comments = new Array<CommentDto>();
   }
 
   ngOnInit() {
     this.loadComments();
     this.authorLogin="ksddddd";
-    //this.refreshData();
-    this.articleId=2;
-    this.article_author_id=4;
+     this.refreshData();
+      this.route.params.subscribe(params => {
+
+      this.articleId = +params['id'];//from this route
+
+    });
+
   }
   public openPopup: Function;
 
@@ -80,9 +91,9 @@ showEmojiPicker:boolean;
   }
   //charset : 'utf8mb4'
   addComment() {
+    alert(this.articleId);
     this.comments.unshift(new CommentDto(0,this.authorId, this.articleId, this.authorLogin, this.text,  +new Date()));
-    alert(this.text.toString());
-    alert(+new Date());
+
   /*   const editedComment = new Comment(0,this.authorId, this.articleId, this.text,  +new Date());
     this.serv.createComment(editedComment).subscribe(data => {
 
@@ -100,4 +111,18 @@ showEmojiPicker:boolean;
       return this.readOnlyTemplate;
     }
 
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    const a: SimpleChange = changes.article_author_id1;
+    this.article_author_id1 = a.currentValue;
+  }
+
+  redirectToProfile(id: number) {
+    this.serv.getUserRole(id).subscribe(data => {
+      if(data=='LISTENER') this.router.navigate(['/listener-profile',id]);
+      else
+        if(data=='SPEAKER') this.router.navigate(['/speaker-profile', id]);
+    });
+  }
 }

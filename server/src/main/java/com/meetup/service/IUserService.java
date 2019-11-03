@@ -146,5 +146,7 @@ public interface IUserService {
      * Feedback object.
      */
     void rateMeetup(int meetupID, String userLogin, Feedback feedback);
+
+    String userPrimaryRole(int userId);
 }
 

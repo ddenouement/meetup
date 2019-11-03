@@ -486,7 +486,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/users/search")
+    @GetMapping(value = "/users/search")
     public ResponseEntity<List<Meetup>> searchWithFilter(
 
     ) {
@@ -508,7 +508,7 @@ public class UserController {
     }
 
     //only for testing, to see how JSON looks like
-    @GetMapping(value = "/api/v1/users/filter")
+    @GetMapping(value = "/users/filter")
     public ResponseEntity<Filter> getSampleFilter(
     ) {
         Filter filter = new Filter();
@@ -535,7 +535,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @PostMapping(value = "/api/v1/users/current/filters")
+    @PostMapping(value = "/users/current/filters")
     public ResponseEntity<Filter> saveFilter(
             @CookieValue("token") final String token,
             @RequestBody final Filter filter
@@ -552,12 +552,26 @@ public class UserController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/api/v1/users/current/filters")
+    @GetMapping(value = "/users/current/filters")
     public ResponseEntity<List<Filter>> savedFilters(
             @CookieValue("token") final String token
     ) {
         int id = loginValidatorService.extractId(token);
         return ok(searchService.getUserFilters(id));
+    }
+
+    /**
+     * Return Role based on id.
+     * @return role as String
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/users/{id}/role")
+    public ResponseEntity<String> getUserRole(
+@PathVariable("id") final int userId
+    ) {
+        return new ResponseEntity<>(userService.userPrimaryRole(userId), HttpStatus.OK);
     }
 
 }
