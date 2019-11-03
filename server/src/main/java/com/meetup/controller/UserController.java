@@ -585,4 +585,19 @@ public class UserController {
         int id = loginValidatorService.extractId(token);
         return ok(searchService.getUserFilters(id));
     }
+
+    /**
+     * Return Role based on id.
+     * @return role as String
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/users/{id}/role")
+    public ResponseEntity<String> getUserRole(
+@PathVariable("id") final int userId
+    ) {
+        return new ResponseEntity<>(userService.userPrimaryRole(userId), HttpStatus.OK);
+    }
+
 }

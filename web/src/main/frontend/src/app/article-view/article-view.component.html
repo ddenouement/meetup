@@ -13,7 +13,7 @@
       <h3>Author: <a [routerLink]="['/speaker-profile',author.id]">
         {{author.firstName}} {{author.lastName}}</a></h3>
     <!--</form>-->
-    <app-comment-section></app-comment-section>
+    <app-comment-section [article_author_id1]="author.id"></app-comment-section>
   </div>
 
 </main>

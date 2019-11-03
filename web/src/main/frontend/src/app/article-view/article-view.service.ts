@@ -14,7 +14,7 @@ export class ArticleViewService {
   //TODO with id
 // - Type: GET
 // - /api/v1/user/articles/{id}
-  private articleURL = '/api/v1/user/articles/{id}';
+  private articleURL = '/api/v1/user/articles/9';
 
   constructor(private http: HttpClient, private router: Router) {
   }
