@@ -1,27 +1,30 @@
 package com.meetup.meeting;
 
+import com.meetup.entities.Filter;
 import com.meetup.entities.Meetup;
+import com.meetup.repository.impl.SearchDaoImpl;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+@Component
+public class MeetupTest   {
 
-public class MeetupTest {
     @Test
     public void equalsTest() {
-        Meetup meetup = Meetup.builder()
-                .durationMinutes(30)
-                .startDate(LocalDateTime.of(2019, 10, 6, 12, 0))
-                .build();
+        SearchDaoImpl dao = new SearchDaoImpl();
+        Filter f = new Filter();
+                f.setTopics_ids(Arrays.asList(1,2));
 
-        Meetup meetup2 = Meetup.builder()
-                .durationMinutes(30)
-                .startDate(LocalDateTime.of(2019, 10, 6, 12, 0))
-                .build();
+        dao.constructValuesAndSqlFromFilter(f);
 
-        Assert.assertEquals(meetup, meetup2);
     }
 
     @Test

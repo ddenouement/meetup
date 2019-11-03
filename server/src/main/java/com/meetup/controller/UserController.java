@@ -2,24 +2,19 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.meetup.entities.Feedback;
-import com.meetup.entities.Meetup;
-import com.meetup.entities.Notification;
-import com.meetup.entities.User;
+import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.service.IArticleService;
-import com.meetup.service.IBadgeService;
-import com.meetup.service.ILoginValidatorService;
-import com.meetup.service.IMeetupService;
-import com.meetup.service.INotificationService;
-import com.meetup.service.IProfileService;
-import com.meetup.service.IUserService;
+import com.meetup.service.*;
 import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.FileHandler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +63,8 @@ public class UserController {
 
     private INotificationService notificationService;
 
+    private  ISearchService searchService;
+
     /**
      * Constructor.
      *
@@ -85,6 +82,7 @@ public class UserController {
         final ILoginValidatorService loginValidatorService,
         final IBadgeService badgeService,
         final IProfileService profileService,
+        final ISearchService searchService,
         final IArticleService articleService,
         final INotificationService notificationService) {
         this.meetupService = meetupService;
@@ -94,6 +92,7 @@ public class UserController {
         this.profileService = profileService;
         this.articleService = articleService;
         this.notificationService = notificationService;
+        this.searchService= searchService;
     }
 
     /**
@@ -426,5 +425,20 @@ public class UserController {
         Integer userId = loginValidatorService.extractId(token);
         notificationService.markAsRead(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/api/v1/users/search")
+    public ResponseEntity<List<Meetup>> searchWithFilter(
+
+    ) {
+        Filter filter = new Filter();
+        filter.setRate_to(5);
+        filter.setTopics_ids(Arrays.asList(1,2));
+
+        return ok(searchService.searchWithFilter(filter));
     }
 }
