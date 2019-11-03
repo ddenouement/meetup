@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
-import {StarRatingComponent} from "ng-starrating";
 import {LanguagesList} from "../models/languagesList";
-import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {ListenerProfileToUsersService} from "../listener-profile-to-users/listener-profile-to-users.service";
 import {SpeakerProfileToUsersService} from "./speaker-profile-to-users.service";
 
 @Component({
@@ -27,6 +23,7 @@ export class SpeakerProfileToUsersComponent implements OnInit {
   subscribe = true;
   unsubscribe = false;
   subscribeText = 'SUBSCRIBE';
+  loading= false;
 
   constructor(public speakerService: SpeakerProfileToUsersService, public route: ActivatedRoute) {
   }
@@ -66,17 +63,20 @@ export class SpeakerProfileToUsersComponent implements OnInit {
   }
 
   onSubscribe() {
+    this.loading = true;
     if (this.subscribe) {
       this.speakerService.subscribeTo(+this.speakerId).subscribe(res => {
         this.subscribe = false;
         this.unsubscribe = true;
         this.subscribeText = 'UNSUBSCRIBE';
+        this.loading = false;
       });
     } else {
       this.speakerService.unsubscribeTo(+this.speakerId).subscribe(res => {
         this.subscribe = true;
         this.unsubscribe = false;
         this.subscribeText = 'SUBSCRIBE';
+        this.loading = false;
       });
     }
   }

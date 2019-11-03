@@ -60,6 +60,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FooterComponent} from "./footer/footer.component";
 import { SubscribeComponent } from './subscribe/subscribe.component';
+import { AdminBagesComponent } from './admin-bages/admin-bages.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { SubscribeComponent } from './subscribe/subscribe.component';
     MeetupProfileComponent,
     FooterComponent,
     FromNowPipe,
-    SubscribeComponent
+    SubscribeComponent,
+    AdminBagesComponent
   ],
   imports: [
     //for smiles

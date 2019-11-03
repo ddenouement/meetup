@@ -15,20 +15,14 @@
             </mat-form-field>
           </div>
           <div class="form__user">
-            <mat-form-field class="form__input">
-              <input matInput formControlName="login" type="text" placeholder="Login">
-            </mat-form-field>
-            <mat-form-field class="form__input">
-              <input matInput placeholder="Email" formControlName="email"
-                     [errorStateMatcher]="matcher">
-              <mat-error
-                *ngIf="changeForm.get('email').hasError('email') && !changeForm.get('email').hasError('required')">
-                Please enter a valid email address
-              </mat-error>
-              <mat-error *ngIf="changeForm.get('email').hasError('required')">
-                Email is <strong>required</strong>
-              </mat-error>
-            </mat-form-field>
+            <div class="change__form">
+              <p class="change__form--text">Login:</p>
+              <p class="form--text">{{login}}</p>
+            </div>
+            <div class="change__form">
+              <p class="change__form--text">Email:</p>
+              <p class="form--text" >{{email}}</p>
+            </div>
           </div>
           <mat-form-field class="form__input area">
             <textarea class="form__textarea" formControlName="about" matInput placeholder="About"></textarea>

@@ -80,13 +80,14 @@ export class ApproveToSpeakerComponent implements OnInit {
     this.approveForm.controls['about'].disable();
     this.approveForm.controls['languages'].disable();
     this.approveForm.controls['email'].disable();
-    this.httpClient.post("/api/v1/user/register/speaker", user).subscribe(data => {
-        this.router.navigate(['/verify']);
+    this.httpClient.post("/api/v1/users/upgrade", user).subscribe(data => {
+        this.router.navigate(['/login']);
       },
       error => {
         this.loading = false;
         this.error = error.error;
-        console.log(error);
+        console.log('error in PROMOTE' );
+        console.warn(error);
         this.approveForm.controls['firstName'].enable();
         this.approveForm.controls['lastName'].enable();
         this.approveForm.controls['login'].enable();

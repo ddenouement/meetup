@@ -11,7 +11,7 @@ import {MatSort} from "@angular/material/sort";
 })
 export class AdminTableComponent implements OnInit {
   public ELEMENT_DATA: UsersToAdmin[] = [];
-  displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName', 'complaint'];
+  displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName', 'complaint', 'deactivate'];
   dataSource;
 
   constructor(public adminService: AdminTableService) {
@@ -24,7 +24,9 @@ export class AdminTableComponent implements OnInit {
     this.adminService.getAllSpeakers().subscribe(res => {
       for (let element in res) {
         this.ELEMENT_DATA[element] = {
-          id: res[element]['id'], login: res[element]['login'], email: res[element]['email'],
+          id: res[element]['id'],
+          login: res[element]['login'],
+          email: res[element]['email'],
           firstName: res[element]['firstName'],
           lastName: res[element]['lastName'],
           complaint: res[element]['complaint']
@@ -34,6 +36,10 @@ export class AdminTableComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  deactivate() {
+
   }
 }
 

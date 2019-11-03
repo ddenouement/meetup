@@ -63,6 +63,7 @@ export class SpeakerProfileComponent implements OnInit {
       about: this.changeForm.get('about').value
     };
     this.loading = true;
+
   }
 
   ngOnInit() {
