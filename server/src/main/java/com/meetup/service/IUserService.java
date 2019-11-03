@@ -47,34 +47,38 @@ public interface IUserService {
 
     /**
      * Get user's profile info.
-     * @param id   of user to get
+     *
+     * @param id of user to get
      * @return UserDTO with info
      * @throws UserNotFoundException throws if user does not exist
      */
     UserDTO getProfileUserDTO(int id) throws UserNotFoundException;
 
     /**
-     *
      * Get all active speakers.
+     *
      * @return List<User> of speakers
      */
     List<User> getAllSpeakers();
 
     /**
-     *
      * Get all active users.
+     *
      * @return List<User> of users.
      */
     List<User> getAllUsers();
 
-    /**.
+    /**
+     * .
      *
      * @param id id
      * @return List<User> of Speakers
      */
-    List<User>  getUsersSubscriptionsToSpeakers(int id);
+    List<User> getUsersSubscriptionsToSpeakers(int id);
+
     /**
      * .
+     *
      * @param id user id
      * @return boolean whether successful operation or not
      */
@@ -82,6 +86,7 @@ public interface IUserService {
 
     /**
      * Activate user.
+     *
      * @param id id of user to activate
      * @return true iff successful
      */
@@ -89,27 +94,38 @@ public interface IUserService {
 
     /**
      * .
+     *
      * @return List of all complaints
      */
-    List <ComplaintDTO>  getAllNotReadComplaints( );
+    List<ComplaintDTO> getAllNotReadComplaints();
+
     /**
-     * Convert login -> id, convert date in long format -> Date exemplar and pass it to DAO
+     * Convert login -> id, convert date in long format -> Date exemplar and
+     * pass it to DAO
+     *
      * @param compl ComplaintDTO
      */
-    void postComplaintOn(ComplaintDTO compl, String login) throws UserNotFoundException;
+    void postComplaintOn(ComplaintDTO compl, String login)
+        throws UserNotFoundException;
+
     /**
      * mark complain as read.
+     *
      * @param id Complaint id
      */
     boolean markAsReadComplaint(int id);
+
     /**
      * for user to subscribe on speaker.
+     *
      * @param userId who is subscriber
      * @param speakerId on whom user subscribes
      */
     void subscribeToSpeaker(int userId, int speakerId);
+
     /**
      * unsubscribe from speaker.
+     *
      * @param userId who is subscriber
      * @param speakerId on whom user was subscribed
      */
@@ -117,6 +133,7 @@ public interface IUserService {
 
     /**
      * Get users who are subscribed on speaker.
+     *
      * @param speakerId speaker
      * @return users (subscribers)
      */
@@ -124,6 +141,7 @@ public interface IUserService {
 
     /**
      * Get basic info about users who are subscribed on speaker.
+     *
      * @param speakerId speaker
      * @return users (subscribers)
      */
@@ -131,6 +149,7 @@ public interface IUserService {
 
     /**
      * Change user's password.
+     *
      * @param userId id of user to change password for
      * @param newPassword the password to change to
      */
@@ -138,12 +157,10 @@ public interface IUserService {
 
     /**
      * Rate specific meetup.
-     * @param meetupID
-     * Meetup ID.
-     * @param userLogin
-     * User login
-     * @param feedback
-     * Feedback object.
+     *
+     * @param meetupID Meetup ID.
+     * @param userLogin User login
+     * @param feedback Feedback object.
      */
     void rateMeetup(int meetupID, String userLogin, Feedback feedback);
 

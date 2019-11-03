@@ -7,30 +7,27 @@ import com.meetup.entities.dto.UserDTO;
 import java.util.List;
 
 /**
- * Utility class used to convert Article object
- * to displayable DTO.
+ * Utility class used to convert Article object to displayable DTO.
  */
 public final class ArticleDTOConverter {
 
     /**
      * Private utility class constructor.
      */
-    private ArticleDTOConverter(){
+    private ArticleDTOConverter() {
 
     }
 
     /**
      * Convert Article object to displayable DTO.
-     * @param article
-     * Article.
-     * @param topics
-     * Topics of article;
-     * @param userDTO
-     * User DTO.
-     * @return
-     * ArticleDisplayDTO.
+     *
+     * @param article Article.
+     * @param topics Topics of article;
+     * @param userDTO User DTO.
+     * @return ArticleDisplayDTO.
      */
-    public static ArticleDisplayDTO convertToArticleDisplayDTO(final Article article,
+    public static ArticleDisplayDTO convertToArticleDisplayDTO(
+        final Article article,
         final List<Topic> topics,
         final UserDTO userDTO) {
         ArticleDisplayDTO articleDisplayDTO = new ArticleDisplayDTO();

@@ -12,53 +12,49 @@ public interface IArticleDAO {
 
     /**
      * Insert new Article into DB.
-     * @param articleCreationDTO
-     * Article, that should be inserted.
-     * @param authorId
-     * Author id, that creates an article.
+     *
+     * @param articleCreationDTO Article, that should be inserted.
+     * @param authorId Author id, that creates an article.
      */
     void insertNewArticle(ArticleCreationDTO articleCreationDTO,
         int authorId);
 
-    /**.
-     * Add topic to article in DB.
-     * @param articleID
-     * Article, that should have topic
-     * @param topicID
-     * Topic to be added to article.
+    /**
+     * . Add topic to article in DB.
+     *
+     * @param articleID Article, that should have topic
+     * @param topicID Topic to be added to article.
      */
     void addTopicToArticle(int articleID, int topicID);
 
 
     /**
      * Find article by ID.
-     * @param articleID
-     * Article ID.
-     * @return
-     * Article object.
+     *
+     * @param articleID Article ID.
+     * @return Article object.
      */
     Article findArticleByID(int articleID);
 
     /**
      * Get topics of article.
-     * @param articleID
-     * Article ID.
-     * @return
-     * List of topics.
+     *
+     * @param articleID Article ID.
+     * @return List of topics.
      */
     List<Topic> getArticleTopics(int articleID);
 
     /**
      * Remove article by ID.
-     * @param articleID
-     * Article ID.
+     *
+     * @param articleID Article ID.
      */
     void removeArticle(int articleID);
 
     /**
      * Get all articles.
-     * @return
-     * List of articles.
+     *
+     * @return List of articles.
      */
     List<Article> getAllArticles();
 

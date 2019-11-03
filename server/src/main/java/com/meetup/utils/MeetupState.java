@@ -53,7 +53,7 @@ public enum MeetupState {
      * @param id ID of state.
      * @return MeetupState enum instance.
      */
-    public static MeetupState getStateByID(int id) {
+    public static MeetupState getStateByID(final int id) {
         for (MeetupState state : values()) {
             if (state.code == id) {
                 return state;

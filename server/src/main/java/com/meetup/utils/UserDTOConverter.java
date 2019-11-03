@@ -4,15 +4,15 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 
-/**.
- * Class to convert a User exemplar to UserDTO exemplar
+/**
+ * . Class to convert a User exemplar to UserDTO exemplar
  */
 public final class UserDTOConverter {
 
     /**
      * Private utility class constructor.
      */
-    private UserDTOConverter(){
+    private UserDTOConverter() {
 
     }
 
@@ -36,8 +36,10 @@ public final class UserDTOConverter {
         newUser.setNumRates(us.getNumRates());
         return newUser;
     }
+
     /**
      * . Convert a User exemplar to SimpleUserDTO exemplar     *
+     *
      * @param us User
      * @return UserDTO
      */

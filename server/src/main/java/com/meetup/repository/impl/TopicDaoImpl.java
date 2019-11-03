@@ -112,6 +112,14 @@ public class TopicDaoImpl implements ITopicDAO {
         template.update(removeTopic, param);
     }
 
+    /**
+     * Update topic.
+     * @param topicID Topic ID to be updated.
+     * @param updatedTopic
+     * Updated topic.
+     * @return
+     * Updated topic.
+     */
     @Override
     public Topic updateTopic(final int topicID, final Topic updatedTopic) {
         SqlParameterSource param = new MapSqlParameterSource()

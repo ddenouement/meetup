@@ -6,7 +6,9 @@ import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IArticleDAO;
+
 import static com.meetup.utils.DbQueryConstants.*;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,8 +26,8 @@ import org.springframework.stereotype.Repository;
 
 
 /**
- * Article repository class.
- * Used to communicate with database, to perform operations with Articles.
+ * Article repository class. Used to communicate with database, to perform
+ * operations with Articles.
  */
 @Repository
 @PropertySource("classpath:sql/article_queries.properties")
@@ -37,55 +39,48 @@ public class ArticleDaoImpl implements IArticleDAO {
     @Autowired
     private NamedParameterJdbcTemplate template;
     /**
-     * SQL reference script.
-     * Insert new Article.
+     * SQL reference script. Insert new Article.
      */
     @Value("${insert_new_article}")
     private String insertNewArticle;
     /**
-     * SQL reference script.
-     * Add topic to article.
+     * SQL reference script. Add topic to article.
      */
     @Value("${add_topic_to_article}")
     private String addTopicToArticle;
     /**
-     * SQL reference script.
-     * Get article by ID.
+     * SQL reference script. Get article by ID.
      */
     @Value("${find_article_by_id}")
     private String findArticleByID;
     /**
-     * SQL reference script.
-     * Get article topics.
+     * SQL reference script. Get article topics.
      */
     @Value("${get_article_topics}")
     private String findArticleTopics;
     /**
-     * SQL reference script.
-     * Remove article by ID.
+     * SQL reference script. Remove article by ID.
      */
     @Value("${remove_article}")
     private String removeArticle;
     /**
-     * SQL reference script.
-     * Get all articles.
+     * SQL reference script. Get all articles.
      */
     @Value("${find_all_articles}")
     private String findAllArticles;
 
     /**
      * Insert new Article into DB.
-     * @param articleCreationDTO
-     * Article, that should be inserted.
-     * @param authorId
-     * Author ID, that creates an article.
+     *
+     * @param articleCreationDTO Article, that should be inserted.
+     * @param authorId Author ID, that creates an article.
      */
     @Override
     public void insertNewArticle(final ArticleCreationDTO articleCreationDTO,
         final int authorId) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue( id_author.name(), authorId)
+            .addValue(id_author.name(), authorId)
             .addValue(id_title.name(), articleCreationDTO.getTitle())
             .addValue(contents.name(), articleCreationDTO.getContent())
             .addValue(time_posted.name(), getCurrentTimestamp());
@@ -102,10 +97,9 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Add topic to article in DB.
-     * @param articleID
-     * Article, that should have topic
-     * @param topicID
-     * Topic to be added to article.
+     *
+     * @param articleID Article, that should have topic
+     * @param topicID Topic to be added to article.
      */
     @Override
     public void addTopicToArticle(final int articleID, final int topicID) {
@@ -117,10 +111,9 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Find article by ID.
-     * @param articleID
-     * Article ID.
-     * @return
-     * Article.
+     *
+     * @param articleID Article ID.
+     * @return Article.
      */
     @Override
     public Article findArticleByID(final int articleID) {
@@ -132,10 +125,9 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Get topics of article.
-     * @param articleID
-     * Article ID.
-     * @return
-     * List of topics.
+     *
+     * @param articleID Article ID.
+     * @return List of topics.
      */
     @Override
     public List<Topic> getArticleTopics(final int articleID) {
@@ -146,8 +138,8 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Remove article by ID.
-     * @param articleID
-     * Article ID.
+     *
+     * @param articleID Article ID.
      */
     @Override
     public void removeArticle(final int articleID) {
@@ -158,8 +150,8 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Get all articles.
-     * @return
-     * List of articles.
+     *
+     * @return List of articles.
      */
     @Override
     public List<Article> getAllArticles() {
@@ -169,8 +161,8 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Get current date.
-     * @return
-     * SQL Timestamp date format.
+     *
+     * @return SQL Timestamp date format.
      */
     public Timestamp getCurrentTimestamp() {
         return new Timestamp(new Date().getTime());

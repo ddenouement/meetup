@@ -110,7 +110,7 @@ public class MeetupController {
 
     /**
      * Create topic.
-     * @param topic edited topic.
+     * @param topic Created topic.
      * @return Response entity with topic.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "

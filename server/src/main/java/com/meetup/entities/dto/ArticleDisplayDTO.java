@@ -11,10 +11,25 @@ import lombok.Data;
 @Data
 public class ArticleDisplayDTO {
 
+    /**
+     * Title of article.
+     */
     private String title;
+    /**
+     * Content of article.
+     */
     private String content;
+    /**
+     * List of topics of article.
+     */
     private List<Topic> topics;
+    /**
+     * Date and time posted.
+     */
     private String dateTimePosted;
+    /**
+     * Author of article.
+     */
     private UserDTO author;
 
     /**

@@ -328,8 +328,17 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 .query(getSpeakerMeetups, param, new MeetupMapper());
     }
 
+    /**
+     * Rate specific meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @param userID
+     * User ID.
+     * @param feedback
+     * Feedback.
+     */
     @Override
-    public void rateMeetup(int meetupID, int userID, Feedback feedback) {
+    public void rateMeetup(final int meetupID, final int userID, final Feedback feedback) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id_meetup", meetupID)
             .addValue("id_user", userID)

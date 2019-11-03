@@ -4,7 +4,6 @@ import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
-import com.meetup.utils.Pair;
 import java.time.LocalDateTime;
 import java.util.List;
 

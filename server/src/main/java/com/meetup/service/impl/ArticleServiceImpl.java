@@ -147,12 +147,12 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     /**
-     * Remove article by admin
+     * Remove article by admin.
      *
      * @param articleID Article ID.
      */
     @Override
-    public void removeArticleByAdmin(int articleID) {
+    public void removeArticleByAdmin(final int articleID) {
         articleDao.removeArticle(articleID);
     }
 }

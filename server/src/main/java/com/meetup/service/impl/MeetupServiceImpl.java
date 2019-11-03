@@ -101,12 +101,19 @@ public class MeetupServiceImpl implements IMeetupService {
      * Topic.
      */
     @Override
-    public Topic getTopic(int topicID) {
+    public Topic getTopic(final int topicID) {
         return topicDao.findTopicByID(topicID);
     }
 
+    /**
+     * Add topic.
+     * @param topic
+     * Created topic.
+     * @return
+     * Created topic.
+     */
     @Override
-    public Topic createTopic(Topic topic) {
+    public Topic createTopic(final Topic topic) {
         return topicDao.insertTopic(topic);
     }
 
@@ -120,7 +127,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * Updated topic.
      */
     @Override
-    public Topic updateTopic(int topicID, Topic topic) {
+    public Topic updateTopic(final int topicID, final Topic topic) {
         Topic edited = topicDao.updateTopic(topicID, topic);
         edited.setId(topicID);
         return edited;
@@ -132,7 +139,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * Topic ID.
      */
     @Override
-    public void removeTopic(int topicID) {
+    public void removeTopic(final int topicID) {
         topicDao.removeTopic(topicID);
     }
 
