@@ -162,7 +162,7 @@ public class AuthorizationController {
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).LISTENER) "
         + "AND !hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @PutMapping(value = "/api/v1/users/upgrade")
+    @PutMapping(value = "/users/upgrade")
     public ResponseEntity registerSpeaker(
         @CookieValue("token") final String token,
         @RequestBody final UserRegistrationDTO user,
