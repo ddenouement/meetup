@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "meetup-application", description = "Operations used to manage speaker functionality")
+@RequestMapping("/api/v1")
 public class SpeakerController {
 
     /**
@@ -63,7 +65,7 @@ public class SpeakerController {
      * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @PostMapping(value = "/api/v1/user/speaker/meetups")
+    @PostMapping(value = "/user/speaker/meetups")
     public ResponseEntity<Meetup> createMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup meetup) {
@@ -81,7 +83,7 @@ public class SpeakerController {
      * @return Response entity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @PutMapping(value = "/api/v1/user/speaker/meetups/{id}")
+    @PutMapping(value = "/user/speaker/meetups/{id}")
     public ResponseEntity<Meetup> updateMeetup(
         @CookieValue("token") final String token,
         @RequestBody final Meetup updatedMeetup,
@@ -100,7 +102,7 @@ public class SpeakerController {
      * @return Response entity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @DeleteMapping(value = "/api/v1/user/speaker/meetups/{id}")
+    @DeleteMapping(value = "/user/speaker/meetups/{id}")
     public ResponseEntity<Meetup> cancelMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
@@ -117,7 +119,7 @@ public class SpeakerController {
      * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @PostMapping(value = "api/v1/user/speaker/meetups/{id}/start")
+    @PostMapping(value = "/user/speaker/meetups/{id}/start")
     public ResponseEntity<Meetup> startMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
@@ -134,7 +136,7 @@ public class SpeakerController {
      * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @PostMapping(value = "api/v1/user/speaker/meetups/{id}/terminate")
+    @PostMapping(value = "/user/speaker/meetups/{id}/terminate")
     public ResponseEntity<Meetup> terminateMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
@@ -151,7 +153,7 @@ public class SpeakerController {
      * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @PostMapping(value = "api/v1/user/speaker/articles")
+    @PostMapping(value = "/user/speaker/articles")
     public ResponseEntity postArticle(
         @CookieValue("token") final String token,
         @RequestBody final ArticleCreationDTO articleCreationDTO) {
@@ -168,7 +170,7 @@ public class SpeakerController {
      * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
-    @DeleteMapping(value = "api/v1/user/speaker/articles/{id}")
+    @DeleteMapping(value = "/user/speaker/articles/{id}")
     public ResponseEntity removeArticle(
         @CookieValue("token") final String token,
         @PathVariable("id") final int articleID) {

@@ -15,6 +15,7 @@ export class ListenerProfileToUsersComponent implements OnInit {
   private login;
   private email;
   private listenerId: string;
+  public star: number;
 
   constructor(public listenerService: ListenerProfileToUsersService, private httpClient: HttpClient, public route: ActivatedRoute) {
   }
@@ -27,6 +28,7 @@ export class ListenerProfileToUsersComponent implements OnInit {
           this.badgeList = res['badges'];
           this.login = res['userDTO'].login;
           this.email = res['userDTO'].email;
+          this.star =res['userDTO'].rate;
         });
       }
     });

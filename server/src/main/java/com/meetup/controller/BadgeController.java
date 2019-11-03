@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "meetup-application")
+@RequestMapping("/api/v1")
 public class BadgeController {
 
     /**
@@ -45,7 +47,7 @@ public class BadgeController {
      * @return a list of badges
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @GetMapping("/api/v1/badges")
+    @GetMapping("/badges")
     public ResponseEntity<List<Badge>> getBadges() {
         return ok(badgeService.getAll());
     }
@@ -57,7 +59,7 @@ public class BadgeController {
      * @return a badge
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @GetMapping("/api/v1/badge/{id}")
+    @GetMapping("/badges/{id}")
     public ResponseEntity<Badge> getBadgeById(
         @PathVariable("id") final Integer id) {
         Badge badge = badgeService.getById(id);
@@ -74,7 +76,7 @@ public class BadgeController {
      * @return inserted badge
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @PostMapping("/api/v1/badge")
+    @PostMapping("/badges")
     public ResponseEntity<Badge> insertBadge(@RequestBody final Badge badge) {
         return new ResponseEntity<>(badgeService.insert(badge),
             HttpStatus.CREATED);
@@ -88,7 +90,7 @@ public class BadgeController {
      * @return updated badge
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @PutMapping("/api/v1/badge/{id}")
+    @PutMapping("/badges/{id}")
     public ResponseEntity<Badge> updateBadge(
         @PathVariable("id") final Integer id,
         @RequestBody final Badge badge) {
@@ -103,7 +105,7 @@ public class BadgeController {
      * @return status
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @DeleteMapping("/api/v1/badge/{id}")
+    @DeleteMapping("/badges/{id}")
     public ResponseEntity deleteBadge(@PathVariable("id") final Integer id) {
         badgeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
@@ -118,7 +120,7 @@ public class BadgeController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping("/api/v1/user/{id}/badges")
+    @GetMapping("/users/{id}/badges")
     public ResponseEntity<List<String>> getUserBadges(
         @PathVariable("id") final Integer id) {
         return ok(badgeService.getUserBadges(id));
@@ -132,7 +134,7 @@ public class BadgeController {
      * @return a list of badges for user
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @PostMapping("/api/v1/badge/check")
+    @PostMapping("/badge/check")
     public ResponseEntity<List<User>> checkBadgeScript(
         @RequestBody final String script) {
         return ok(badgeService.getUsersWithBadge(script));

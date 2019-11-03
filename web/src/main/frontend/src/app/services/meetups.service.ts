@@ -49,7 +49,7 @@ export class MeetupsService {
     };
     this.http
       .post<{ meetup: Meetup }>(
-        "http://localhost:9990/api/v1/user/speaker/meetups",
+        "/api/v1/user/speaker/meetups",
         meetup,{headers: new HttpHeaders({'Accept':'application/json', 'Content-Type':'application/json'})
         }
       )
@@ -81,7 +81,7 @@ export class MeetupsService {
       description: description,
       topics: []
     };
-    this.http.put("http://localhost:9990/api/v1/user/speaker/meetups/"+ id, meetup)
+    this.http.put("/api/v1/user/speaker/meetups/"+ id, meetup)
       .subscribe(responce => {
         const updatedMeetups = [...this.meetups];
         const oldMeetupIndex = updatedMeetups.findIndex(m => m.id === meetup.id);
@@ -96,7 +96,7 @@ export class MeetupsService {
   getMeetups() {
     this.http
       .get<Meetup[]>(
-        "http://localhost:9990/api/v1/meetups"
+        "/api/v1/meetups"
       )
       .pipe(
         map(meetupData => {
@@ -129,7 +129,7 @@ export class MeetupsService {
   getSpeakerMeetups(id: number) {
     this.http
       .get<Meetup[]>(
-        "http://localhost:9990/api/v1/meetups/speaker/"+id)
+        "/api/v1/meetups/speakers/"+id)
       .pipe(
         map(meetupData => {
           return {
@@ -161,7 +161,7 @@ export class MeetupsService {
 
 
   getMeetup(id:number){
-    return this.http.get<Meetup>("http://localhost:9990/api/v1/meetups/"+ id);
+    return this.http.get<Meetup>("/api/v1/meetups/"+ id);
   }
 
 

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Api(value = "meetup-application")
+@RequestMapping("/api/v1")
 public class DictionaryController {
 
     /**
@@ -42,12 +43,12 @@ public class DictionaryController {
      * order
      * @return a ResponseEntity with a list of all languages
      */
-    @GetMapping(value = "/api/v1/languages")
+    @GetMapping(value = "/languages")
     public ResponseEntity<List<Language>> getLanguagesWithIds(
         @RequestParam final Optional<Boolean> sorted) {
         return ok(dictionaryService.getAllLanguages(sorted.orElse(false)));
     }
-    @PostMapping(value = "/api/v1/languages")
+    @PostMapping(value = "/languages")
     public ResponseEntity postNewLang(
             @RequestBody Language language){
         language.setId(new Random().nextInt());
@@ -55,7 +56,7 @@ public class DictionaryController {
         model.put("language", language);
         return ok(model);
     }
-    @DeleteMapping(value = "/api/v1/languages/{id}")
+    @DeleteMapping(value = "/languages/{id}")
     public ResponseEntity delLang(
             @PathVariable int id ){
         HashMap model  = new HashMap();
@@ -63,7 +64,7 @@ public class DictionaryController {
         //   throw new UserNotFoundException();
         return   ok(model);
     }
-    @PutMapping(value = "/api/v1/languages")
+    @PutMapping(value = "/languages")
     public ResponseEntity editLang(
             @RequestBody Language l){
         HashMap model  = new HashMap();

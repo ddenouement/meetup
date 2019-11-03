@@ -191,5 +191,12 @@ public interface IUserDAO {
      * @param newPassword the password to change to
      */
     void changePassword(Integer userId, String newPassword);
+
+    /**
+     * Update user rate.
+     * @param user
+     * User.
+     */
+    void updateRate(User user);
 }
 

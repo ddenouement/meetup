@@ -34,10 +34,13 @@
               <p class="form--text" *ngFor="let item of langList" >{{item}}</p>
             </div>
           </div>
+          <div class="form__group">
+            <button [ngClass]="{subscribe:subscribe,unsubscribe:unsubscribe}" (click)="onSubscribe()" type="button">{{subscribeText}}</button>
+          </div>
         </div>
         <div class="user__badges">
-          <star-rating class="user__img--change" value="3.3" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
-                       readonly="false" (rate)="onRate($event)"></star-rating>
+          <star-rating class="user__img--change" [value]="star" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
+                       readonly="true"></star-rating>
           <div class="badges--header">
             <img class="header--img" src="../../assets/images/crown.svg">
             <span class="header--text">BADGES</span>

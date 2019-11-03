@@ -13,6 +13,7 @@ export class ListenerProfileComponent implements OnInit {
   private userURL = '/api/v1/user/profile';
   private login;
   private email;
+  public star: number;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -21,6 +22,7 @@ export class ListenerProfileComponent implements OnInit {
       this.badgeList = res['badges'];
       this.login = res['userDTO'].login;
       this.email = res['userDTO'].email;
+      this.star =res['userDTO'].rate;
     });
   }
 

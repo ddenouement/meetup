@@ -62,10 +62,16 @@ public class ArticleDaoImpl implements IArticleDAO {
     private String findArticleTopics;
     /**
      * SQL reference script.
-     * Get article by ID.
+     * Remove article by ID.
      */
     @Value("${remove_article}")
     private String removeArticle;
+    /**
+     * SQL reference script.
+     * Get all articles.
+     */
+    @Value("${find_all_articles}")
+    private String findAllArticles;
 
     /**
      * Insert new Article into DB.
@@ -148,6 +154,17 @@ public class ArticleDaoImpl implements IArticleDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id.name(), articleID);
         template.update(removeArticle, param);
+    }
+
+    /**
+     * Get all articles.
+     * @return
+     * List of articles.
+     */
+    @Override
+    public List<Article> getAllArticles() {
+        return this.template
+            .query(findAllArticles, new ArticleMapper());
     }
 
     /**
