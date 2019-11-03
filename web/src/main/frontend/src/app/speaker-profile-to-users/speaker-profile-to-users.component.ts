@@ -63,18 +63,17 @@ export class SpeakerProfileToUsersComponent implements OnInit {
         });
       }
     });
-
   }
 
   onSubscribe() {
     if (this.subscribe) {
-      this.speakerService.unsubscribeTo(+this.speakerId).subscribe(res => {
+      this.speakerService.subscribeTo(+this.speakerId).subscribe(res => {
         this.subscribe = false;
         this.unsubscribe = true;
         this.subscribeText = 'UNSUBSCRIBE';
       });
     } else {
-      this.speakerService.subscribeTo(+this.speakerId).subscribe(res => {
+      this.speakerService.unsubscribeTo(+this.speakerId).subscribe(res => {
         this.subscribe = true;
         this.unsubscribe = false;
         this.subscribeText = 'SUBSCRIBE';
