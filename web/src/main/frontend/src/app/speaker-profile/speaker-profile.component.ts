@@ -10,6 +10,8 @@ import {MustMatch} from "../register-speaker/register-speaker.component";
 import {Meetup} from "../models/meetup.model";
 import {Subscription} from "rxjs";
 import {MeetupsService} from "../services/meetups.service";
+import {SpeakerProfileService} from "./speaker-profile.service";
+import {Router} from "@angular/router";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,24 +32,27 @@ export class SpeakerProfileComponent implements OnInit {
   public loading = false;
   matcher = new MyErrorStateMatcher();
   languages: LanguagesList [];
-  public speakerId : number;
+  public speakerId: number;
   public badgeList: string[] = [];
+  public langListNames: string[] = [];
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
   public about: string;
-  private userURL = '/api/v1/user/profile';
-  speakerMeetups : Meetup[] = [];
+
+  speakerMeetups: Meetup[] = [];
   private meetingsSub: Subscription;
   star: number;
-  edited = true;
+  edited = false;
 
   constructor(
     private httpClient: HttpClient,
-    public meetupsService: MeetupsService,
+    private meetupsService: MeetupsService,
     private formBuilder: FormBuilder,
     private registerService: RegisterService,
+    private speakerService: SpeakerProfileService,
+    private router: Router,
   ) {
   }
 
@@ -56,19 +61,29 @@ export class SpeakerProfileComponent implements OnInit {
   }
 
   private changeProfile() {
+    let langList: number[] = [];
+    for (let i in this.changeForm.get('languages').value) {
+      langList[i] = this.changeForm.get('languages').value[i].id;
+    }
     const user = <User>{
       firstName: this.changeForm.get('firstName').value,
       lastName: this.changeForm.get('lastName').value,
       login: this.changeForm.get('login').value,
       email: this.changeForm.get('email').value,
-      about: this.changeForm.get('about').value
+      about: this.changeForm.get('about').value,
+      languageIds: langList,
     };
     this.loading = true;
-
+    this.speakerService.updateUser(user).subscribe(res => {
+      this.router.navigate(['/speaker-profile']);
+    }, error => {
+      this.loading = false;
+      console.warn('ERROR in speaker profile UPDATE(put)');
+      console.warn(error);
+    });
   }
 
   ngOnInit() {
-
     this.changeForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -77,14 +92,12 @@ export class SpeakerProfileComponent implements OnInit {
       about: [''],
       languages: ['', Validators.required]
     });
-    let langList: string[] = [];
-    this.httpClient.get(this.userURL).subscribe(res => {
+    this.speakerService.getSpeaker().subscribe(res => {
       for (let i in res['userDTO'].languages) {
-        langList[i] = res['userDTO'].languages[i].name;
+        this.langListNames[i] = res['userDTO'].languages[i].name;
       }
-      this.star =res['userDTO'].rate;
+      this.star = res['userDTO'].rate;
       this.speakerId = res['userDTO'].id;
-      // console.log("SPEAKER ID" + this.speakerId);
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
         firstName: [res['userDTO'].firstName, Validators.required],
@@ -94,15 +107,20 @@ export class SpeakerProfileComponent implements OnInit {
         about: [res['userDTO'].about],
         languages: ['', Validators.required]
       });
+      this.firstName = res['userDTO'].firstName;
+      this.lastName = res['userDTO'].lastName;
+      this.login = res['userDTO'].login;
+      this.email = res['userDTO'].email;
+      this.about = res['userDTO'].about;
     });
 
     this.registerService.getLanguages().subscribe(
       res => {
-          this.languages = res;
-        },
-        err => {
-          console.log(err);
-        });
+        this.languages = res;
+      },
+      err => {
+        console.log(err);
+      });
 
     // this.meetupsService.getSpeakerMeetups(this.speakerId);
     // //set up listener to subject

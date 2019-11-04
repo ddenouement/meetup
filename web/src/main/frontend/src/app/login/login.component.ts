@@ -31,8 +31,6 @@ export class LoginComponent implements OnInit {
     this.do_login();
   }
 
-
-
   public do_login(): void {
     const user = <Authentificationrequest>{
       login: this.loginForm.get('login').value,
@@ -43,16 +41,14 @@ export class LoginComponent implements OnInit {
     this.loginForm.controls['password'].disable();
     this.httpClient.post(this.logInURL, user)
       .subscribe(data => {
+          this.loginService._logInUser = true;
           if (data['role'] === "SPEAKER") {
             this.router.navigate(['/speaker-profile']);
-          } else if(data['role'] === "ADMIN") {
+          } else if (data['role'] === "ADMIN") {
             this.router.navigate(['/admin-table']);
-           // this.router.navigate(['/speaker-profile',2]);
-
-          }else {
+          } else {
             this.router.navigate(['/listener-profile']);
           }
-          this.loginService.logInUserBool = true;
         },
         error => {
           this.error = error.error;
