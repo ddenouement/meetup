@@ -10,7 +10,7 @@ import {Sidebar} from "../models/sidebar";
 })
 export class SidebarComponent implements OnInit {
   public admin = false;
-  public speaker = true;
+  public speaker = false;
   public listener = false;
   private userURL = '/api/v1/user/profile';
   public href: string = "";

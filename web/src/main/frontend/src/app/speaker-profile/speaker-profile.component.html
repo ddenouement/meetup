@@ -5,16 +5,6 @@
       <div class="user__personal personal-active">
         <div class="user__change">
           <div class="form__user">
-            <mat-form-field class="form__input">
-              <input matInput type="text" formControlName="firstName" pattern="[A-Z]{1}[a-z]{2,20}"
-                     placeholder="First name"/>
-            </mat-form-field>
-            <mat-form-field class="form__input">
-              <input matInput type="text" formControlName="lastName" pattern="[A-Z]{1}[a-z]{2,20}"
-                     placeholder="Last name"/>
-            </mat-form-field>
-          </div>
-          <div class="form__user">
             <div class="change__form">
               <p class="change__form--text">Login:</p>
               <p class="form--text">{{login}}</p>
@@ -24,10 +14,38 @@
               <p class="form--text" >{{email}}</p>
             </div>
           </div>
-          <mat-form-field class="form__input area">
+          <div class="form__user">
+            <mat-form-field *ngIf="edited" class="form__input">
+              <input matInput type="text" formControlName="firstName" pattern="[A-Z]{1}[a-z]{2,20}"
+                     placeholder="First name"/>
+            </mat-form-field>
+            <mat-form-field *ngIf="edited" class="form__input">
+              <input matInput type="text" formControlName="lastName" pattern="[A-Z]{1}[a-z]{2,20}"
+                     placeholder="Last name"/>
+            </mat-form-field>
+            <div *ngIf="!edited" class="change__form">
+              <p class="change__form--text">First Name:</p>
+              <p class="form--text">{{firstName}}</p>
+            </div>
+            <div *ngIf="!edited" class="change__form">
+              <p class="change__form--text">Last Name:</p>
+              <p class="form--text">{{lastName}}</p>
+            </div>
+          </div>
+          <div *ngIf="!edited" class="change__form">
+            <p class="change__form--text">about:</p>
+            <p class="form--text" >{{about}}</p>
+          </div>
+          <div *ngIf="!edited" class="form__user">
+            <div class="change__form">
+              <p class="change__form--text">languages:</p>
+              <p class="form--text" *ngFor="let item of languages" >{{item.name}}</p>
+            </div>
+          </div>
+          <mat-form-field *ngIf="edited"  class="form__input area">
             <textarea class="form__textarea" formControlName="about" matInput placeholder="About"></textarea>
           </mat-form-field>
-          <div class="form__user">
+          <div *ngIf="edited"  class="form__user">
             <mat-form-field class="form__input">
               <mat-select placeholder="Languages" formControlName="languages" multiple>
                 <mat-select-trigger>{{changeForm.get('languages').value ? (changeForm.get('languages').value[0] ? changeForm.get('languages').value[0].name : '') : ''}}
@@ -46,9 +64,8 @@
               </button>
             </div>
           </div>
-          <!--Remove this-->
-          <button routerLink="/article-view"></button>
-          <!--           -->
+          <button *ngIf="!edited" class="edit__button" (click)="onEdit()" type="button">EDIT PROFILE</button>
+          <button *ngIf="edited" class="cancel__button" (click)="onCancel()" type="button">CANCEL</button>
         </div>
         <div class="user__badges">
           <star-rating class="user__img--change" [value]="star" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"

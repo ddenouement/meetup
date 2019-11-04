@@ -41,6 +41,7 @@ export class SpeakerProfileComponent implements OnInit {
   speakerMeetups : Meetup[] = [];
   private meetingsSub: Subscription;
   star: number;
+  edited = true;
 
   constructor(
     private httpClient: HttpClient,
@@ -112,4 +113,11 @@ export class SpeakerProfileComponent implements OnInit {
 
   }
 
+  onEdit() {
+    this.edited = true;
+  }
+
+  onCancel() {
+    this.edited = false;
+  }
 }
