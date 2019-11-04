@@ -3,8 +3,8 @@ package com.meetup.repository;
 import com.meetup.entities.Language;
 import java.util.List;
 
-/**.
- * Interface for working with DB considering languages
+/**
+ * . Interface for working with DB considering languages
  */
 public interface ILanguageDAO {
 
@@ -24,10 +24,9 @@ public interface ILanguageDAO {
 
     /**
      * Find language by ID.
-     * @param languageID
-     * Language ID.
-     * @return
-     * Language object.
+     *
+     * @param languageID Language ID.
+     * @return Language object.
      */
     Language findLanguageByID(int languageID);
 }

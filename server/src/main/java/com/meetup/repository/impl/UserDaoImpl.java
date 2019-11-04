@@ -149,10 +149,16 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${find_all_speakers}")
     private String findAllSpeakers;
     /**
-     * SQL reference script. Get all users.
+     * SQL reference script. Get all active users.
      */
     @Value("${find_all_users}")
     private String findAllUsers;
+
+    /**
+     * SQL reference script. Get all users.
+     */
+    @Value("${find_users}")
+    private String findUsers;
 
     /**
      * SQL reference script. Change password for specific user.
@@ -501,7 +507,7 @@ public class UserDaoImpl implements IUserDAO {
      * @param speakerId on whom user subscribes
      */
     @Override
-    public void subscribeToSpeaker(int userId, int speakerId) {
+    public void subscribeToSpeaker(final int userId, final int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id_user.name(), userId)
             .addValue(DbQueryConstants.id_speak.name(), speakerId);
@@ -515,7 +521,7 @@ public class UserDaoImpl implements IUserDAO {
      * @param speakerId on whom user was subscribed
      */
     @Override
-    public void unSubscribeFromSpeaker(int userId, int speakerId) {
+    public void unSubscribeFromSpeaker(final int userId, final int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id_user.name(), userId)
             .addValue(DbQueryConstants.id_speak.name(), speakerId);
@@ -529,7 +535,7 @@ public class UserDaoImpl implements IUserDAO {
      * @return List of users-subscribers
      */
     @Override
-    public List<User> getSubscribersOfSpeaker(int speakerId) {
+    public List<User> getSubscribersOfSpeaker(final int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
@@ -538,7 +544,7 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     @Override
-    public User findUserById(int userId) {
+    public User findUserById(final int userId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id_param.name(), userId);
         List<User> foundUsers =
@@ -558,7 +564,7 @@ public class UserDaoImpl implements IUserDAO {
      * @return List<SimpleUserDTO>
      */
     @Override
-    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
+    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(final int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
@@ -577,13 +583,23 @@ public class UserDaoImpl implements IUserDAO {
     }
 
     /**
-     * Get all users.
+     * Get all active users.
      *
      * @return List of users.
      */
     @Override
     public List<User> getAllUsers() {
         return template.query(findAllUsers, new UserMapper());
+    }
+
+    /**
+     * Get all users.
+     *
+     * @return List of users.
+     */
+    @Override
+    public List<User> getUsers() {
+        return template.query(findUsers, new UserMapper());
     }
 
     /**
@@ -606,7 +622,7 @@ public class UserDaoImpl implements IUserDAO {
      * @param user User.
      */
     @Override
-    public void updateRate(User user) {
+    public void updateRate(final User user) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id.name(), user.getId())
             .addValue(DbQueryConstants.rate.name(), user.getRate())
@@ -621,7 +637,7 @@ public class UserDaoImpl implements IUserDAO {
      * @param profileDTO Edited info.
      */
     @Override
-    public void updateInfo(User user, ProfileDTO profileDTO) {
+    public void updateInfo(final User user, final ProfileDTO profileDTO) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id.name(),
                 user.getId())

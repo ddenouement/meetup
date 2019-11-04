@@ -4,7 +4,6 @@ import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.service.INotificationService;
-import com.meetup.utils.MeetupState;
 import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
@@ -159,6 +158,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * Get all users.
+     *
+     * @return List<User> of users.
+     */
+    @Override
+    public List<User> getUsers() {
+        return userDao.getUsers();
+    }
+
+    /**
      * .
      *
      * @param id id
@@ -262,7 +271,7 @@ public class UserServiceImpl implements IUserService {
      * @param speakerId on whom user subscribes
      */
     @Override
-    public void unSubscribeFromSpeaker(int userId, int speakerId) {
+    public void unSubscribeFromSpeaker(final int userId, final int speakerId) {
         User u = userDao.findUserById(userId);
         if (u == null) {
             throw new UserNotFoundException();
@@ -277,7 +286,7 @@ public class UserServiceImpl implements IUserService {
      * @return list of subscribers
      */
     @Override
-    public List<User> getSubscribersOfSpeaker(int speakerId) {
+    public List<User> getSubscribersOfSpeaker(final int speakerId) {
         return userDao.getSubscribersOfSpeaker(speakerId);
     }
 
@@ -288,7 +297,8 @@ public class UserServiceImpl implements IUserService {
      * @return List of SimpleUserDTO
      */
     @Override
-    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId) {
+    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(
+        final int speakerId) {
         return userDao.getSimpleSubscribersOfSpeaker(speakerId);
     }
 
@@ -326,6 +336,21 @@ public class UserServiceImpl implements IUserService {
         updateUserRate(speakerOfMeetup, feedback);
     }
 
+    @Override
+    public String userPrimaryRole(final int userId) {
+        List<Role> roles = userDao.findUserById(userId).getRoles();
+        for (Role r : roles) {
+            if (r.getAuthority().equals("SPEAKER")) {
+                return "SPEAKER";
+            }
+            if (r.getAuthority().equals("ADMIN")) {
+                return "ADMIN";
+            }
+        }
+
+        return "LISTENER";
+    }
+
     /**
      * Update speaker rate after rating meetup.
      *
@@ -335,8 +360,8 @@ public class UserServiceImpl implements IUserService {
     private void updateUserRate(final User user,
         final Feedback feedback) {
         float rate =
-            (user.getRate() * user.getNumRates() + feedback.getRate()) /
-                (user.getNumRates() + 1);
+            (user.getRate() * user.getNumRates() + feedback.getRate())
+                / (user.getNumRates() + 1);
         user.setRate(rate);
         user.setNumRates(user.getNumRates() + 1);
         userDao.updateRate(user);

@@ -93,6 +93,56 @@ public class MeetupServiceImpl implements IMeetupService {
         return allTopics;
     }
 
+    /**
+     * Get topic by ID.
+     * @param topicID
+     * Topic ID.
+     * @return
+     * Topic.
+     */
+    @Override
+    public Topic getTopic(final int topicID) {
+        return topicDao.findTopicByID(topicID);
+    }
+
+    /**
+     * Add topic.
+     * @param topic
+     * Created topic.
+     * @return
+     * Created topic.
+     */
+    @Override
+    public Topic createTopic(final Topic topic) {
+        return topicDao.insertTopic(topic);
+    }
+
+    /**
+     * Update topic.
+     * @param topicID
+     * Topic ID to be updated.
+     * @param topic
+     * Updated topic.
+     * @return
+     * Updated topic.
+     */
+    @Override
+    public Topic updateTopic(final int topicID, final Topic topic) {
+        Topic edited = topicDao.updateTopic(topicID, topic);
+        edited.setId(topicID);
+        return edited;
+    }
+
+    /**
+     * Remove topic by ID.
+     * @param topicID
+     * Topic ID.
+     */
+    @Override
+    public void removeTopic(final int topicID) {
+        topicDao.removeTopic(topicID);
+    }
+
     //TODO pagination
 
     /**

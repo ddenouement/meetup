@@ -8,7 +8,6 @@ import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 
-import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
@@ -26,7 +25,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.FileHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +38,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -80,7 +77,7 @@ public class UserController {
      */
     private INotificationService notificationService;
 
-    private  ISearchService searchService;
+    private ISearchService searchService;
 
     /**
      * Constructor.
@@ -109,7 +106,7 @@ public class UserController {
         this.profileService = profileService;
         this.articleService = articleService;
         this.notificationService = notificationService;
-        this.searchService= searchService;
+        this.searchService = searchService;
     }
 
     /**
@@ -143,7 +140,7 @@ public class UserController {
     @PutMapping(value = "/user/profile")
     public ResponseEntity updateProfile(
         @CookieValue("token") final String token,
-        final @RequestBody ProfileDTO profileDTO){
+        final @RequestBody ProfileDTO profileDTO) {
         userService.updateProfile(profileDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -173,6 +170,21 @@ public class UserController {
     @GetMapping(value = "user/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(),
+            HttpStatus.OK);
+    }
+
+    /**
+     * Return all users.
+     *
+     * @return List of Users
+     */
+    //TODO edit endpoint name
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "user/users/all")
+    public ResponseEntity<List<User>> getUsers() {
+        return new ResponseEntity<>(userService.getUsers(),
             HttpStatus.OK);
     }
 
@@ -266,8 +278,9 @@ public class UserController {
      * Every user can post a complaint on other. Convert login -> id, convert
      * date in long format -> Date exemplar and pass it to DAO.
      *
-     * @param compl complaint entity
-     * @return ResponseEntity
+     * @param token JSON web token.
+     * @param compl complaint entity.
+     * @return ResponseEntity.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
@@ -296,6 +309,7 @@ public class UserController {
     /**
      * Admin can mark complaint as read.
      *
+     * @param complaintID ID of complaint.
      * @return ResponseEntity
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
@@ -309,6 +323,8 @@ public class UserController {
     /**
      * User can subscribe to speaker.
      *
+     * @param speakerID Speaker ID.
+     * @param token JSON web token.
      * @return ResponseEntity
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
@@ -325,6 +341,8 @@ public class UserController {
     /**
      * User can unsubscribe from speaker.
      *
+     * @param speakerID Speaker ID.
+     * @param token JSON web token.
      * @return ResponseEntity
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
@@ -341,6 +359,7 @@ public class UserController {
     /**
      * Get simplified users who are active & are subscribed on given speaker.
      *
+     * @param speakerID Speaker ID.
      * @return ResponseEntity
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
@@ -355,25 +374,24 @@ public class UserController {
 
     /**
      * Get displayable article
-     * @param articleID
-     * Article ID.
-     * @return
-     * Article.
+     *
+     * @param articleID Article ID.
+     * @return Article.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles/{id}")
     public ResponseEntity<ArticleDisplayDTO> getArticle(
         @PathVariable("id") final int articleID) {
-        return new ResponseEntity<>(articleService.getDisplayableArticle(articleID),
+        return new ResponseEntity<>(
+            articleService.getDisplayableArticle(articleID),
             HttpStatus.OK);
     }
 
     /**
-     * Get all displayable articles
-     * Article ID.
-     * @return
-     * Article list.
+     * Get all displayable articles Article ID.
+     *
+     * @return Article list.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
@@ -506,23 +524,24 @@ public class UserController {
 
     /**
      * Perform filtered search.
+     *
      * @return list of matched meetups
-     * */
+     */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/search")
     public ResponseEntity<List<Meetup>> searchWithFilter(
 
     ) {
         Filter filter = new Filter();
-      //  filter.setRate_to(5);
+        //  filter.setRate_to(5);
         filter.setTitle_substring("pt");
-        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setTopics_ids(Arrays.asList(2, 3));
         filter.setId_language(2);
-         filter.setId_user(2);//petrenko (needed only for saving filter)
+        filter.setId_user(2);//petrenko (needed only for saving filter)
         Date d = null;
-        try{
+        try {
             d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/13");
         } catch (ParseException e) {
             e.printStackTrace();
@@ -538,11 +557,11 @@ public class UserController {
     ) {
         Filter filter = new Filter();
         filter.setRate_to(5);
-        filter.setTopics_ids(Arrays.asList(2,3));
+        filter.setTopics_ids(Arrays.asList(2, 3));
         filter.setId_language(2);
-         filter.setId_user(2);//petrenko
+        filter.setId_user(2);//petrenko
         Date d = null;
-        try{
+        try {
             d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/14");
         } catch (ParseException e) {
             e.printStackTrace();
@@ -553,17 +572,18 @@ public class UserController {
 
     /**
      * user can save filter.
+     *
      * @param token cookie value
      * @param filter Filter to save
      * @return saved Filter
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/current/filters")
     public ResponseEntity<Filter> saveFilter(
-            @CookieValue("token") final String token,
-            @RequestBody final Filter filter
+        @CookieValue("token") final String token,
+        @RequestBody final Filter filter
     ) {
         int id = loginValidatorService.extractId(token);
         return ok(searchService.insertFilter(filter, id));
@@ -571,17 +591,35 @@ public class UserController {
 
     /**
      * Return saved user`s filters.
+     *
      * @param token cookie value
      * @return saved Filters list
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/current/filters")
     public ResponseEntity<List<Filter>> savedFilters(
-            @CookieValue("token") final String token
+        @CookieValue("token") final String token
     ) {
         int id = loginValidatorService.extractId(token);
         return ok(searchService.getUserFilters(id));
     }
+
+    /**
+     * Return Role based on id.
+     *
+     * @return role as String
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/users/{id}/role")
+    public ResponseEntity<String> getUserRole(
+        @PathVariable("id") final int userId
+    ) {
+        return new ResponseEntity<>(userService.userPrimaryRole(userId),
+            HttpStatus.OK);
+    }
+
 }

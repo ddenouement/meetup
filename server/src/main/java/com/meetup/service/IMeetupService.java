@@ -4,7 +4,6 @@ import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
-import com.meetup.utils.Pair;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -88,6 +87,42 @@ public interface IMeetupService {
      * @return List of all topics
      */
     List<Topic> getAllTopics();
+
+    /**
+     * Get topic by ID.
+     * @param topicID
+     * Topic ID.
+     * @return
+     * Topic.
+     */
+    Topic getTopic(int topicID);
+
+    /**
+     * Add topic.
+     * @param topic
+     * Created topic.
+     * @return
+     * Created topic.
+     */
+    Topic createTopic(Topic topic);
+
+    /**
+     * Update topic.
+     * @param topicID
+     * Topic ID to be updated.
+     * @param topic
+     * Updated topic.
+     * @return
+     * Updated topic.
+     */
+    Topic updateTopic(int topicID, Topic topic);
+
+    /**
+     * Remove topic by ID.
+     * @param topicID
+     * Topic ID.
+     */
+    void removeTopic(int topicID);
 
     /**
      * Retrieve all available meetups.

@@ -180,11 +180,18 @@ public interface IUserDAO {
     List<User> getAllSpeakers();
 
     /**
-     * Get all users.
+     * Get all active users.
      * @return
      * List of users.
      */
     List<User> getAllUsers();
+
+    /**
+     * Get all users.
+     * @return
+     * List of users.
+     */
+    List<User> getUsers();
 
     /**
      * Change user's password.

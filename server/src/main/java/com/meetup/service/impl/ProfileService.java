@@ -59,17 +59,17 @@ public class ProfileService implements IProfileService {
             userService.getUsersSubscriptionsToSpeakers(
                 user.getId()));
         List<Meetup> hostedMeetupsPast =
-                meetupService.getHostedMeetupsPast(user.getId());
+            meetupService.getHostedMeetupsPast(user.getId());
         List<Meetup> hostedMeetupsFuture =
-                meetupService.getHostedMeetupsFuture(user.getId());
+            meetupService.getHostedMeetupsFuture(user.getId());
         model.put(ModelConstants.hostedMeetupsFuture, hostedMeetupsFuture);
-        model.put(ModelConstants.hostedMeetupsPast,hostedMeetupsPast);
+        model.put(ModelConstants.hostedMeetupsPast, hostedMeetupsPast);
         //we don`t send future joined, as part of privacy
         List<Meetup> userJoinedMeetupsPast =
-                meetupService.getJoinedMeetupsPast(user.getId());
+            meetupService.getJoinedMeetupsPast(user.getId());
         model.put(ModelConstants.joinedMeetupsPast, userJoinedMeetupsPast);
         List<String> badges = badgeService.getUserBadges(user.getId());
-        model.put(ModelConstants.badges , badges);
+        model.put(ModelConstants.badges, badges);
         return model;
     }
 

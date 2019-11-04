@@ -16,6 +16,24 @@ ____________________________________
 - Type: GET
 - /api/v1/meetups/topics
 
+##### Get topic
+- Type: GET
+- /api/v1/meetups/topics/{id}
+
+##### Create topic
+- Type: POST
+- RequestBody: Topic
+- /api/v1/meetups/topics
+
+##### Update topic
+- Type: PUT
+- RequestBody: Topic
+- /api/v1/meetups/topics/{id}
+
+##### Delete topic
+- Type: DELETE
+- /api/v1/meetups/topics/{id}
+
 ##### Get meetups of speaker
 - Type: GET
 - /api/v1/meetups/speakers/{id}
@@ -36,10 +54,14 @@ ____________________________________
 - RequestParam: String login
 - /api/v1/user/speakers
 
-##### Get all users
+##### Get all active users
 - Type: GET
 - RequestParam: String login
 - /api/v1/user/users
+
+##### Get all users
+- Type: GET
+- /api/v1/user/users/all
 
 ##### Get other user profile
 - Type: GET

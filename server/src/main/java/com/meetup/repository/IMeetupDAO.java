@@ -59,6 +59,7 @@ public interface IMeetupDAO {
      * @return List of meetups of specified speaker
      */
     List<Meetup> getSpeakerMeetupsPast(int speakerID);
+
     /**
      * Retrieve past hosted meetups of specified speaker.
      *
@@ -66,6 +67,7 @@ public interface IMeetupDAO {
      * @return List of meetups of specified speaker
      */
     List<Meetup> getSpeakerMeetupsFuture(int speakerID);
+
     /**
      * Retrieve past attended meetups of specified user.
      *
@@ -73,6 +75,7 @@ public interface IMeetupDAO {
      * @return List of meetups of specified user
      */
     List<Meetup> getUsersJoinedMeetupsPast(int userID);
+
     /**
      * Retrieve future attended meetups of specified user.
      *
@@ -91,10 +94,9 @@ public interface IMeetupDAO {
 
     /**
      * Get topics of meetup.
-     * @param meetupID
-     * Meetup ID.
-     * @return
-     * List of topics.
+     *
+     * @param meetupID Meetup ID.
+     * @return List of topics.
      */
     List<Topic> getMeetupTopics(int meetupID);
 
@@ -128,16 +130,15 @@ public interface IMeetupDAO {
      * @return List of users
      */
     List<User> getUsersOnMeetup(int meetupId);
-    List<Meetup> getSpeakerMeetupsAllHosted(  int speakerID) ;
+
+    List<Meetup> getSpeakerMeetupsAllHosted(int speakerID);
 
     /**
      * Rate specific meetup.
-     * @param meetupID
-     * Meetup ID.
-     * @param userID
-     * User ID.
-     * @param feedback
-     * Feedback object.
+     *
+     * @param meetupID Meetup ID.
+     * @param userID User ID.
+     * @param feedback Feedback object.
      */
     void rateMeetup(int meetupID, int userID, Feedback feedback);
 
