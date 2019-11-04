@@ -4,6 +4,8 @@ import {ArticleDTO} from "../models/article-dto";
 import {Validators} from "@angular/forms";
 import {Topic} from "../models/topic";
 import {User} from "../models/user";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {Meetup} from "../models/meetup.model";
 
 @Component({
   selector: 'app-article-view',
@@ -19,28 +21,33 @@ export class ArticleViewComponent implements OnInit {
   author: User;
   dateTimePosted: string;
   topics: Topic[];
+  meetup: Meetup;
+  private articleId: string;
 
-  constructor(
-    public articleViewService: ArticleViewService,
-
-  ) {
+  constructor(public articleViewService: ArticleViewService,public route: ActivatedRoute ) {
   }
 
   ngOnInit() {
-    this.articleViewService.getArticleDTO()
-    .subscribe(
-      article => {
-        this.articleDTO = article;
-        this.title = this.articleDTO.title;
-        this.content = this.articleDTO.content;
-        this.author = this.articleDTO.author;
-        this.dateTimePosted = this.articleDTO.dateTimePosted;
-        this.topics = this.articleDTO.topics;
-        console.log(this.topics);
-      },
-      err => {
-        console.log(err);
-      });
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('articleId')) {
+        this.articleId = paramMap.get('articleId');
+        this.articleViewService.getArticleDTO(+this.articleId)
+          .subscribe(
+            article => {
+              this.articleDTO = article;
+              this.title = this.articleDTO.title;
+              this.content = this.articleDTO.content;
+              this.author = this.articleDTO.author;
+              this.dateTimePosted = this.articleDTO.dateTimePosted;
+              this.topics = this.articleDTO.topics;
+              console.log(this.topics);
+            },
+            err => {
+              console.log(err);
+            });
+      }
+    });
+
 
 
   }

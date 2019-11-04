@@ -3,17 +3,19 @@ package com.meetup.repository.impl;
 import com.meetup.entities.Language;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.repository.ILanguageDAO;
-import java.util.List;
 
-import com.meetup.utils.DbQueryConstants;
+import java.util.List;
+import java.util.Objects;
+import com.meetup.utils.DbQueryConstants ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 /**.
  * Implemetation of ILanguageDAO
  */
@@ -52,6 +54,36 @@ public class LanguageDaoImpl implements ILanguageDAO {
      */
     @Value("${find_language_by_id}")
     private String findLanguageByID;
+    /**
+     * SQL script to select language by ID.
+     */
+    @Value("${find_language_by_name}")
+    private String findLanguageByName;
+
+    /**
+     * SQL script to insert a row in table languages.
+     */
+    @Value("${insert_language}")
+    private String insertLanguage;
+
+    /**
+     * SQL script to update a row in table languages.
+     */
+    @Value("${update_language}")
+    private String updateLanguage;
+
+
+    /**
+     * SQL script to delete a rows with specified id in table languages.
+     */
+    @Value("${delete_language}")
+    private String deleteLanguage;
+
+    /**
+     * SQL script to select all languages that a specified speaker has.
+     */
+    @Value("${get_speaker_languages}")
+    private String getSpeakerLanguages;
 
     /**.
      * Retrieve all instances of a type.
@@ -75,17 +107,85 @@ public class LanguageDaoImpl implements ILanguageDAO {
 
     /**
      * Get language by ID.
-     * @param languageID
+     * @param language_id
      * Language ID.
      * @return
      * Language object.
      */
     @Override
-    public Language findLanguageByID(final int languageID) {
+    public Language findLanguageByID(final Integer language_id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue(DbQueryConstants.id.name(), languageID);
+            .addValue(DbQueryConstants.id.name(), language_id);
         return this.template
             .queryForObject(findLanguageByID, param, new LanguageMapper());
     }
+
+    @Override
+    public Language findLanguageByName(final String name) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.name.name(), name);
+        return this.template
+                .queryForObject(findLanguageByName, param, new LanguageMapper());
+    }
+
+    /**
+     * Update a language to a new one.
+     *  @param language new field values for language
+     * @param language_id id of language to update
+     * @return updated language
+     */
+    @Override
+    public Language update(final Language language, final Integer language_id){
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.id.name(), language_id)
+                .addValue(DbQueryConstants.name.name(), language.getName());
+        template.update(updateLanguage, param, holder, new String[]
+                {DbQueryConstants.id.name()});
+        language.setId(Objects.requireNonNull(holder.getKey()).intValue());
+        return language;
+    }
+    /**
+     * Insert a language in the database.
+     *
+     * @param language language to insert
+     * @return inserted language
+     */
+    @Override
+    public Language insert(final Language language) {
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.name.name(), language.getName());
+        template.update(insertLanguage, param, holder, new String[]
+                {DbQueryConstants.id.name()});
+        language.setId(Objects.requireNonNull(holder.getKey()).intValue());
+        return language;
+    }
+
+    /**
+     * Delete a language with specified ID from the database.
+     *
+     * @param id_language ID of language to delete
+     */
+    @Override
+    public void delete(final Integer id_language) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.id.name(), id_language);
+        template.update(deleteLanguage, param);
+    }
+
+    /**
+     * Find all speaker's languages.
+     *
+     * @param speakerId the id of speaker to compute languages for
+     * @return list of speaker's languages
+     */
+    @Override
+    public List<Language> getSpeakerLanguages(final Integer speakerId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.id.name(), speakerId);
+        return template.query(getSpeakerLanguages, param, new LanguageMapper());
+    }
+
 
 }

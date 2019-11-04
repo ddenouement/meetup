@@ -21,6 +21,7 @@ import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
 import {MeetupListComponent} from "./meetup-list/meetup-list.component";
 import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
 import {SubscribeComponent} from "./subscribe/subscribe.component";
+import {ActicleListComponent} from "./acticle-list/acticle-list.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -35,7 +36,7 @@ const routes: Routes = [
   {path: 'speaker-profile/:speakerId', component: SpeakerProfileToUsersComponent},
   {path: 'dictionaries', component:DictionariesComponent},
   {path: 'comment-section', component:CommentSectionComponent},
-  {path: 'article-view', component: ArticleViewComponent},
+  {path: 'article-view/:articleId', component: ArticleViewComponent},
   {path: 'listener-profile', component: ListenerProfileComponent},
   {path: 'listener-profile/:listenerId', component: ListenerProfileToUsersComponent},
   {path: 'approve-to-speaker', component: ApproveToSpeakerComponent},
@@ -44,6 +45,7 @@ const routes: Routes = [
   {path: 'meetup-create', component: MeetupCreateComponent},
   {path: 'meetup-edit/:meetupId', component: MeetupCreateComponent},
   {path: 'meetup-list', component: MeetupListComponent},
+  {path: 'article-list', component: ActicleListComponent},
   {path: 'meetup-profile/:meetupId', component: MeetupProfileComponent},
   {path: 'subscriptions', component: SubscribeComponent},
 

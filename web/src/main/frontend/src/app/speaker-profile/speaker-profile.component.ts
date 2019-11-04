@@ -122,12 +122,12 @@ export class SpeakerProfileComponent implements OnInit {
         console.log(err);
       });
 
-    // this.meetupsService.getSpeakerMeetups(this.speakerId);
-    // //set up listener to subject
-    // this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
-    //   .subscribe((meetupData: { meetups: Meetup[] })=>{
-    //     this.speakerMeetups = meetupData.meetups;
-    //   });
+    this.meetupsService.getSpeakerMeetups(this.speakerId);
+    //set up listener to subject
+    this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
+      .subscribe((meetupData: { meetups: Meetup[] })=>{
+        this.speakerMeetups = meetupData.meetups;
+      });
 
   }
 

@@ -41,4 +41,30 @@ public class DictionaryServiceImpl implements IDictionaryService {
             return  languageDao.findAll();
         }
     }
+
+    @Override
+    public Language getLanguageByID(Integer id) {
+        return languageDao.findLanguageByID(id);
+    }
+
+    @Override
+    public Language update(Language language, Integer id) {
+        return languageDao.update(language, id);
+    }
+
+    @Override
+    public Language insert(Language language) {
+        return languageDao.insert(language);
+
+    }
+
+    @Override
+    public void delete(Integer id) {
+        languageDao.delete(id);
+    }
+
+    @Override
+    public List<Language> getSpeakerLanguages(Integer speakerId) {
+        return languageDao.getSpeakerLanguages(speakerId);
+    }
 }
