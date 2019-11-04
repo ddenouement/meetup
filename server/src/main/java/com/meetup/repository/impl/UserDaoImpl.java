@@ -184,6 +184,18 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${update_user_profile}")
     private String updateUserProfile;
 
+    /**
+     * SQL reference script. Remove user languages.
+     */
+    @Value("${remove_user_languages}")
+    private String removeUserLanguages;
+
+    /**
+     * SQL reference script. Add user language.
+     */
+    @Value("${insert_user_language}")
+    private String addUserLanguage;
+
 
     /**
      * . .
@@ -564,7 +576,8 @@ public class UserDaoImpl implements IUserDAO {
      * @return List<SimpleUserDTO>
      */
     @Override
-    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(final int speakerId) {
+    public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(
+        final int speakerId) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.speaker_id_param.name(), speakerId);
         return
@@ -648,6 +661,31 @@ public class UserDaoImpl implements IUserDAO {
             .addValue(DbQueryConstants.about.name(),
                 profileDTO.getAbout());
         template.update(updateUserProfile, param);
+    }
+
+    /**
+     * Remove user languages.
+     *
+     * @param userID User ID.
+     */
+    @Override
+    public void removeUserLanguages(final int userID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id_user.name(), userID);
+        template.update(removeUserLanguages, param);
+    }
+
+    /**
+     * Add user language.
+     *
+     * @param languageID Language ID.
+     */
+    @Override
+    public void addUserLanguage(final int userID, final int languageID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id_user.name(), userID)
+            .addValue(DbQueryConstants.id_language.name(),languageID);
+        template.update(addUserLanguage, param);
     }
 }
 

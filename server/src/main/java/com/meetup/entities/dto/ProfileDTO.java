@@ -1,6 +1,5 @@
 package com.meetup.entities.dto;
 
-import com.meetup.entities.Language;
 import java.util.List;
 import lombok.Data;
 
@@ -29,5 +28,5 @@ public class ProfileDTO {
     /**
      * Languages of user.
      */
-    private List<Language> languages;
+    private List<Integer> languageIds;
 }

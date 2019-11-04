@@ -215,5 +215,21 @@ public interface IUserDAO {
      * Edited profile info.
      */
     void updateInfo(User user, ProfileDTO profileDTO);
+
+    /**
+     * Remove user languages.
+     * @param userID
+     * User ID.
+     */
+    void removeUserLanguages(int userID);
+
+    /**
+     * Add language to user.
+     * @param userID
+     * User ID.
+     * @param languageID
+     * Language ID.
+     */
+    void addUserLanguage(int userID, int languageID);
 }
 
