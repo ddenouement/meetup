@@ -246,7 +246,6 @@ public class UserController {
         @PathVariable("id") final int id) {
         userService.deactivateUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     /**

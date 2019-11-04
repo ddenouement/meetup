@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           if (data['role'] === "SPEAKER") {
             this.router.navigate(['/speaker-profile']);
           } else if(data['role'] === "ADMIN") {
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/admin-table']);
            // this.router.navigate(['/speaker-profile',2]);
 
           }else {

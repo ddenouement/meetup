@@ -31,7 +31,7 @@ const routes: Routes = [
   {path: 'verify', component: VerificationComponent},
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
-  {path: 'admin', component: AdminTableComponent},
+  {path: 'admin-table', component: AdminTableComponent},
   {path: 'speaker-profile/:speakerId', component: SpeakerProfileToUsersComponent},
   {path: 'dictionaries', component:DictionariesComponent},
   {path: 'comment-section', component:CommentSectionComponent},

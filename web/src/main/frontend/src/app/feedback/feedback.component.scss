@@ -7,20 +7,10 @@ $font_family_2: "Exo 2", sans-serif;
 $background_color_1: #0AD69C;
 $background_color_2: #fbb1b1;
 
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-}
+
 
 .content {
-  margin-top: 60px;
-  margin-bottom: 60px;
-  width: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 62px 64px 0 148px;
   background: #FFFFFF;
   box-shadow: 0px 5px 40px rgba(0, 45, 113, 0.06);
   border-radius: 10px;
@@ -29,9 +19,11 @@ main {
 }
 
 form {
-  width: 90%;
   display: flex;
   flex-direction: column;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top: 10px;
 }
 
 .form__input {

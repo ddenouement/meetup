@@ -27,10 +27,9 @@ export class SpeakerProfileToUsersService {
   unsubscribeTo(id:number){
     return this.http.delete(this.subscribeURL + id + '/subscribe');
   }
-//TODO
   subscribeTo(id:number){
-    this.currURL = this.subscribeURL + id + '/subscribe';
-    return this.http.post(this.currURL, id);
+    // @ts-ignore
+    return this.http.post(this.subscribeURL + id + '/subscribe');
   }
 
   getSpeaker(id:number){

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../models/user";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {Sidebar} from "../models/sidebar";
 
 @Component({
   selector: 'app-sidebar',
@@ -9,21 +9,37 @@ import {Router} from "@angular/router";
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  private admin = false;
-  private speaker = false;
-  private listener = false;
+  public admin = false;
+  public speaker = true;
+  public listener = false;
   private userURL = '/api/v1/user/profile';
+  public href: string = "";
+  public SIDEBAR_DATA: Sidebar[] = [
+    {activeSRC: '../../assets/images/teamActive.svg', noActiveSRC: '../../assets/images/teamNoActive.svg', routerLink: '/admin-table', alt: 'admin-table', role: this.admin, active:false},
+    {activeSRC: '../../assets/images/notification.svg', noActiveSRC: '../../assets/images/notification.svg', routerLink: '/create-article', alt: 'create-article', role: this.admin, active:false},
+    {activeSRC: '../../assets/images/teamActive.svg', noActiveSRC: '../../assets/images/teamNoActive.svg', routerLink: '/subscriptions', alt: 'subscriptions', role: this.speaker, active:false},
+    {activeSRC: '../../assets/images/searchActive.svg', noActiveSRC: '../../assets/images/searchNoActive.svg', routerLink: '/create-article', alt: 'create-article', role: this.speaker, active:false},
+    {activeSRC: '../../assets/images/myProfileActive.svg', noActiveSRC: '../../assets/images/myProfileNoActive.svg', routerLink: '/speaker-profile', alt: 'speaker-profile', role: this.speaker, active:false},
+    {activeSRC: '../../assets/images/messagesNoActive.svg', noActiveSRC: '../../assets/images/messagesNoActive.svg', routerLink: '/feedback', alt: 'feedback', role: this.speaker, active:false},
+    {activeSRC: '../../assets/images/myProfileActive.svg', noActiveSRC: '../../assets/images/myProfileNoActive.svg', routerLink: '/listener-profile', alt: 'listener-profile', role: this.listener, active:false},
+  ];
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private  router: Router) {
   }
 
   ngOnInit() {
+    this.href = this.router.url;
+    for(let bar in this.SIDEBAR_DATA){
+      if(this.href.includes(this.SIDEBAR_DATA[bar].routerLink)){
+        console.log('href'+this.href);
+        console.log("data"+this.SIDEBAR_DATA[bar].routerLink);
+        this.SIDEBAR_DATA[bar].active=true;
+      }
+    }
     this.httpClient.get(this.userURL).subscribe(res => {
         if (res['userDTO'].roles.includes("SPEAKER")) {
-
           this.speaker = true;
         } else if (res['userDTO'].roles.includes("ADMIN") ) {
-
           this.admin = true;
         } else {
           this.listener = true;
@@ -44,4 +60,7 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  hamburger() {
+
+  }
 }

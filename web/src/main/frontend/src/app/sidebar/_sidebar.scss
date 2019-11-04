@@ -25,6 +25,7 @@
 }
 
 .sidebar__icons {
+
   display: flex;
   cursor: pointer;
   margin-top: 45%;
@@ -38,7 +39,11 @@
   }
 }
 
-.sidebar__icons--active {
+.icon{
+  outline: none;
+}
+
+.sidebar__icons__active {
   border-left: 4px solid #0ad69c;
   box-sizing: border-box;
 }

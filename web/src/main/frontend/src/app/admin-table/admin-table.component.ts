@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {AdminTableService} from "./admin-table.service";
-import {MatSort} from "@angular/material/sort";
+import {UsersToAdmin} from "../models/userToAdmin";
 
 @Component({
   selector: 'app-admin-table',
@@ -13,12 +13,13 @@ export class AdminTableComponent implements OnInit {
   public ELEMENT_DATA: UsersToAdmin[] = [];
   displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName', 'complaint', 'deactivate'];
   dataSource;
+  loading= false;
 
   constructor(public adminService: AdminTableService) {
   }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
 
   ngOnInit() {
     this.adminService.getAllSpeakers().subscribe(res => {
@@ -29,25 +30,28 @@ export class AdminTableComponent implements OnInit {
           email: res[element]['email'],
           firstName: res[element]['firstName'],
           lastName: res[element]['lastName'],
-          complaint: res[element]['complaint']
+          complaint: res[element]['complaint'],
+          active: res[element]['active']
         };
       }
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
     });
   }
 
-  deactivate() {
+  onDeactivate(id: number) {
+    this.adminService.deactivateUser(id).subscribe(res=>{
+      this.ngOnInit();
+    });
+  }
 
+  onActivate(id: number) {
+    this.adminService.activateUser(id).subscribe(res=>{
+      this.ngOnInit();
+    });
   }
 }
 
-export interface UsersToAdmin {
-  id: number;
-  login: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  complaint: number;
-}
+
+
+
