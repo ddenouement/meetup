@@ -39,7 +39,7 @@
           <div *ngIf="!edited" class="form__user">
             <div class="change__form">
               <p class="change__form--text">languages:</p>
-              <p class="form--text" *ngFor="let item of languages" >{{item.name}}</p>
+              <p class="form--text" *ngFor="let item of langListNames" >{{item}}</p>
             </div>
           </div>
           <mat-form-field *ngIf="edited"  class="form__input area">

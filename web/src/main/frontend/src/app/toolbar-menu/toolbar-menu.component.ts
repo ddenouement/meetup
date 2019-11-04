@@ -11,8 +11,7 @@ import {Router} from "@angular/router";
 
 export class ToolbarMenuComponent implements OnInit {
   private _authService: LoginService;
-
-  constructor(authService: LoginService) {
+  constructor(private authService: LoginService, private httpClient: HttpClient,) {
     this._authService = authService;
   }
 

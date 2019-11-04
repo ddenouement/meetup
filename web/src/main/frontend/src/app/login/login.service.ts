@@ -19,7 +19,7 @@ export class LoginService {
 
   logoutUser() {
     this.http.get(this.logoutURL);
-    this._logInUser = false;
+      this._logInUser = false;
   }
 
   set logInUserBool(logInUser: boolean) {
