@@ -6,6 +6,7 @@ import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.error.ArticleNotFoundException;
 import com.meetup.error.SpeakerOperationNotAllowedException;
@@ -18,6 +19,7 @@ import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IArticleService;
 import com.meetup.utils.ArticleDTOConverter;
+import com.meetup.utils.CommentaryDTOConverter;
 import com.meetup.utils.RoleProcessor;
 import com.meetup.utils.UserDTOConverter;
 import java.util.ArrayList;
@@ -157,8 +159,42 @@ public class ArticleServiceImpl implements IArticleService {
         articleDao.removeArticle(articleID);
     }
 
+    /**
+     * Get commentaries of given article/
+     *
+     * @param articleID Article ID.
+     * @return List of displayable commentaries.
+     */
     @Override
-    public List<Commentary> getCommentaries(int articleID) {
-        return null;
+    public List<CommentaryDisplayDTO> getCommentaries(int articleID) {
+        List<Commentary> commentaries = articleDao
+            .getArticleCommentaries(articleID);
+        List<CommentaryDisplayDTO> displayableCommentaries = new ArrayList<>();
+
+        for (Commentary commentary : commentaries) {
+            User user = userDao.findUserById(commentary.getAuthorID());
+            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
+            displayableCommentaries.add
+                (CommentaryDTOConverter.convertToCommentaryDisplayDTO(
+                    commentary,
+                    userDTO
+                ));
+        }
+        return displayableCommentaries;
+    }
+
+    /**
+     * Post commentary on article.
+     *
+     * @param articleID Article ID.
+     * @param userLogin User login.
+     * @param commentary Commentary.
+     */
+    @Override
+    public void postCommentary(int articleID, String userLogin,
+        Commentary commentary) {
+        User user = userDao.findUserByLogin(userLogin);
+        int userID = user.getId();
+        articleDao.addCommentary(articleID, userID, commentary);
     }
 }

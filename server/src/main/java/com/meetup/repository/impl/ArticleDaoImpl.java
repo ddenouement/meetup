@@ -1,9 +1,11 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Article;
+import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.model.mapper.ArticleMapper;
+import com.meetup.model.mapper.CommentaryMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IArticleDAO;
 
@@ -68,6 +70,16 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${find_all_articles}")
     private String findAllArticles;
+    /**
+     * SQL reference script. Find article commentaries.
+     */
+    @Value("${find_article_commentaries}")
+    private String findArticleCommentaries;
+    /**
+     * SQL reference script. Insert new commentary.
+     */
+    @Value("${insert_new_commentary}")
+    private String insertNewCommentary;
 
     /**
      * Insert new Article into DB.
@@ -157,6 +169,32 @@ public class ArticleDaoImpl implements IArticleDAO {
     public List<Article> getAllArticles() {
         return this.template
             .query(findAllArticles, new ArticleMapper());
+    }
+
+    @Override
+    public List<Commentary> getArticleCommentaries(int articleID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(id_article.name(), articleID);
+        return this.template
+            .query(findArticleCommentaries, param, new CommentaryMapper());
+    }
+
+    /**
+     * Insert commentary to DB.
+     *
+     * @param articleID Article ID.
+     * @param authorID Author ID.
+     * @param commentary Commentary.
+     */
+    @Override
+    public void addCommentary(int articleID, int authorID,
+        Commentary commentary) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(id_author.name(), authorID)
+            .addValue(id_article.name(), articleID)
+            .addValue(contents.name(), commentary.getContents())
+            .addValue(time_posted.name(), getCurrentTimestamp());
+        template.update(insertNewCommentary, param);
     }
 
     /**
