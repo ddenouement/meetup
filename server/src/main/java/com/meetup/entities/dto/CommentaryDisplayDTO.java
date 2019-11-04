@@ -1,23 +1,21 @@
-package com.meetup.entities;
+package com.meetup.entities.dto;
 
-import java.time.LocalDateTime;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * Commentary class.
+ * CommentaryDisplayDTO class.
  */
 @Data
-public class Commentary {
+public class CommentaryDisplayDTO {
 
     /**
      * ID of commentary.
      */
     private int id;
     /**
-     * Author ID.
+     * Author.
      */
-    private int authorID;
+    private UserDTO author;
     /**
      * Article ID.
      */
@@ -29,6 +27,5 @@ public class Commentary {
     /**
      * Date and time of posting commentary.
      */
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime timePosted;
+    private String timePosted;
 }

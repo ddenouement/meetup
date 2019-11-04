@@ -1,0 +1,45 @@
+package com.meetup.utils;
+
+import com.meetup.entities.Article;
+import com.meetup.entities.Commentary;
+import com.meetup.entities.Meetup;
+import com.meetup.entities.Topic;
+import com.meetup.entities.dto.ArticleDisplayDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
+import com.meetup.entities.dto.MeetupDisplayDTO;
+import com.meetup.entities.dto.UserDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Commentary DTO converter class.
+ */
+public final class CommentaryDTOConverter {
+
+    /**
+     * Private utility class constructor.
+     */
+    private CommentaryDTOConverter() {
+
+    }
+
+    /**
+     * Convert Commentary object to displayable DTO.
+     *
+     * @param commentary Commentary.
+     * @param userDTO User DTO.
+     * @return CommentaryDisplayDTO.
+     */
+    public static CommentaryDisplayDTO convertToCommentaryDisplayDTO(
+        final Commentary commentary,
+        final UserDTO userDTO) {
+        CommentaryDisplayDTO commentaryDisplayDTO = new CommentaryDisplayDTO();
+        commentaryDisplayDTO.setId(commentary.getId());
+        commentaryDisplayDTO.setAuthor(userDTO);
+        commentaryDisplayDTO.setArticleID(commentary.getArticleID());
+        commentaryDisplayDTO.setContents(commentary.getContents());
+        commentaryDisplayDTO
+            .setTimePosted(commentary.getTimePosted().toString());
+        return commentaryDisplayDTO;
+    }
+}
