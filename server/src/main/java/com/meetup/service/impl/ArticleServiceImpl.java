@@ -1,6 +1,7 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.Article;
+import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
@@ -154,5 +155,10 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public void removeArticleByAdmin(final int articleID) {
         articleDao.removeArticle(articleID);
+    }
+
+    @Override
+    public List<Commentary> getCommentaries(int articleID) {
+        return null;
     }
 }

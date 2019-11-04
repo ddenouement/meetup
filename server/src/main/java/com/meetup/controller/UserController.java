@@ -401,6 +401,17 @@ public class UserController {
             HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "user/articles/{id}/comments")
+    public ResponseEntity<List<Commentary>> getCommentsOfArticle(
+        @PathVariable("id") final int articleID) {
+        return new ResponseEntity<>(articleService.getCommentaries(articleID),
+            HttpStatus.OK);
+    }
+
     /**
      * Admin can remove article by Id.
      *
@@ -621,5 +632,6 @@ public class UserController {
         return new ResponseEntity<>(userService.userPrimaryRole(userId),
             HttpStatus.OK);
     }
+
 
 }

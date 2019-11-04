@@ -31,6 +31,7 @@ public final class ArticleDTOConverter {
         final List<Topic> topics,
         final UserDTO userDTO) {
         ArticleDisplayDTO articleDisplayDTO = new ArticleDisplayDTO();
+        articleDisplayDTO.setId(article.getId());
         articleDisplayDTO.setAuthor(userDTO);
         articleDisplayDTO.setTitle(article.getTitle());
         articleDisplayDTO.setContent(article.getContent());

@@ -1,5 +1,6 @@
 package com.meetup.service;
 
+import com.meetup.entities.Commentary;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import java.util.List;
@@ -47,4 +48,13 @@ public interface IArticleService {
      * @param articleID Article ID.
      */
     void removeArticleByAdmin(int articleID);
+
+    /**
+     * Get commentaries of specific article.
+     * @param articleID
+     * Article ID.
+     * @return
+     * List of commentaries.
+     */
+    List<Commentary> getCommentaries(int articleID);
 }
