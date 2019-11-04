@@ -404,10 +404,9 @@ public class UserController {
 
     /**
      * Get comments of specific articles.
-     * @param articleID
-     * Article ID.
-     * @return
-     * List of commentaries of article.
+     *
+     * @param articleID Article ID.
+     * @return List of commentaries of article.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
@@ -421,14 +420,11 @@ public class UserController {
 
     /**
      * Post commentary on article.
-     * @param commentary
-     * Commentary.
-     * @param token
-     * JSON web token.
-     * @param articleID
-     * Article ID.
-     * @return
-     * Response entity with status code.
+     *
+     * @param commentary Commentary.
+     * @param token JSON web token.
+     * @param articleID Article ID.
+     * @return Response entity with status code.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
@@ -663,6 +659,4 @@ public class UserController {
         return new ResponseEntity<>(userService.userPrimaryRole(userId),
             HttpStatus.OK);
     }
-
-
 }
