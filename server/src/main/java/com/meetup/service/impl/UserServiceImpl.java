@@ -116,7 +116,21 @@ public class UserServiceImpl implements IUserService {
     public void updateProfile(final ProfileDTO profileDTO) {
         User user = userDao.findUserByLogin(profileDTO.getLogin());
         userDao.updateInfo(user, profileDTO);
-        //TODO update languages
+        updateLanguages(user, profileDTO);
+    }
+
+    /**
+     * Update user languages.
+     *
+     * @param user User, to update languages.
+     * @param profileDTO Updated profile.
+     */
+    private void updateLanguages(final User user,
+        final ProfileDTO profileDTO) {
+        userDao.removeUserLanguages(user.getId());
+        for (Integer langID : profileDTO.getLanguageIds()) {
+            userDao.addUserLanguage(user.getId(), langID);
+        }
     }
 
     /**
