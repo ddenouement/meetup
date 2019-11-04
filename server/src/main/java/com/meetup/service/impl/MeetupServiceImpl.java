@@ -230,7 +230,6 @@ public class MeetupServiceImpl implements IMeetupService {
     private Meetup updateMeetup(final int meetupID,
         final Meetup editedMeetup,
         final User user) {
-        //TODO null meetup handling
         Meetup existingMeetup = meetupDao.findMeetupByID(meetupID);
         if (isSpeaker(user) && user.getId() == existingMeetup.getSpeakerId()) {
             editedMeetup.setSpeakerId(user.getId());
