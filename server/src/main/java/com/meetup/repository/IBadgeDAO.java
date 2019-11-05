@@ -18,6 +18,14 @@ public interface IBadgeDAO {
     Badge findById(Integer id);
 
     /**
+     * Return a badge with specified name in the database (case insensitive).
+     *
+     * @param name name of badge to return (case insensitive)
+     * @return a badge with specified ID
+     */
+    Badge findByName(String name);
+
+    /**
      * Return all badges in database.
      *
      * @return a list of all badges
