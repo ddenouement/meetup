@@ -439,6 +439,22 @@ public class UserController {
     }
 
     /**
+     * Post commentary on article.
+     *
+     * @param commentID Commentary ID.
+     * @return Response entity with status code.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @DeleteMapping(value = "user/articles/comments/{id}")
+    public ResponseEntity removeCommentary(
+        @PathVariable("id") final int commentID) {
+        articleService.removeCommentary(commentID);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
      * Admin can remove article by Id.
      *
      * @param articleID Article ID.

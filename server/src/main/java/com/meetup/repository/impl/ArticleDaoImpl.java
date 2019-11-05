@@ -80,6 +80,12 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${insert_new_commentary}")
     private String insertNewCommentary;
+    /**
+     * SQL reference script. Insert new commentary.
+     */
+    @Value("${remove_commentary}")
+    private String removeCommentary;
+
 
     /**
      * Insert new Article into DB.
@@ -195,6 +201,18 @@ public class ArticleDaoImpl implements IArticleDAO {
             .addValue(contents.name(), commentary.getContents())
             .addValue(time_posted.name(), getCurrentTimestamp());
         template.update(insertNewCommentary, param);
+    }
+
+    /**
+     * Remove commentary from DB.
+     * @param commentID
+     * Commentary ID.
+     */
+    @Override
+    public void removeCommentary(int commentID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(id.name(), commentID);
+        template.update(removeCommentary, param);
     }
 
     /**

@@ -75,4 +75,11 @@ public interface IArticleDAO {
      * @param commentary Commentary.
      */
     void addCommentary(int articleID, int userID, Commentary commentary);
+
+    /**
+     * Remove commentary from DB.
+     * @param commentID
+     * Commentary ID.
+     */
+    void removeCommentary(int commentID);
 }
