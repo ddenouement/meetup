@@ -1,1 +1,50 @@
 <app-sidebar></app-sidebar>
+<main>
+  <div class="content">
+    <form [formGroup]="badgeForm">
+      <div class="badge__group">
+        <mat-form-field>
+          <mat-label>BADGES</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="onSelect()" formControlName="badge">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let badge of allBadges" [value]="badge">
+              {{badge.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div  class="badge__group">
+        <mat-form-field class="form__input">
+          <input matInput type="text" required formControlName="name" pattern="[A-Z]{1}[a-z]{2,20}"
+                 placeholder="Name" [value]="selected !== undefined ? selected['name'] : ''"/>
+        </mat-form-field>
+        <p class="form__text">Write an SQL script which returns boolean. It should be true if user with id $1 gets this
+          badge</p>
+        <mat-form-field class="form__input area">
+          <textarea class="form__textarea" required formControlName="script" [value]="selected !== undefined ? selected['script'] : ''" matInput
+                    placeholder="Script"></textarea>
+        </mat-form-field>
+        <div class="btn__group">
+          <button [disabled]="!badgeForm.valid" class="form__button__save" (click)="onSave(selected['id'])"
+                  type="submit">
+            <p *ngIf="!loadingSave">Save</p>
+            <img *ngIf="loadingSave"
+                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+          </button>
+          <button [disabled]="!badgeForm.valid" class="form__button__test" (click)="onTest(selected['script'])" type="submit">
+            <p *ngIf="!loadingTest">Test</p>
+            <img *ngIf="loadingTest"
+                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+          </button>
+        </div>
+        <div *ngIf="test" class="test">
+          <p *ngIf="testCorrect" class="form__text">{{users.length}} users will receive this badge</p>
+          <div class="users" *ngIf="testCorrect">
+            <p *ngFor="let user of users"><a class="form__text" [routerLink]="[user.roles[0]==='SPEAKER' ? '/speaker-profile' : '/listener-profile', user.id]">{{user.login}}</a></p>
+          </div>
+          <p *ngIf="!testCorrect" class="form__text">SQL script is incorrect.</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
