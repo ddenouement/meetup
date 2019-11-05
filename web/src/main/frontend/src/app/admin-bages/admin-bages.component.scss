@@ -91,6 +91,18 @@ form {
     background: #dddddd;
   }
 }
+.error {
+  padding-top: 5px;
+  background-color: $background_color_7;
+  color: $color_4;
+  margin-top: 10px;
+  height: auto;
+  text-align: center;
+  font-family: $font_family_1;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: none;
+}
 
 .form__button__delete{
   outline: none;

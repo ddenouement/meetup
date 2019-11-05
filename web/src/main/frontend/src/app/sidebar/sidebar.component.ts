@@ -23,7 +23,6 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.httpClient.get(this.userURL).subscribe(res => {
         if (res['userDTO'].roles.includes("SPEAKER")) {
           this.speaker = true;
@@ -38,6 +37,14 @@ export class SidebarComponent implements OnInit {
             noActiveSRC: '../../assets/images/teamNoActive.svg',
             routerLink: '/admin-table',
             alt: 'admin-table',
+            role: this.admin,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/teamActive.svg',
+            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            routerLink: '/admin-badges',
+            alt: 'admin-badges',
             role: this.admin,
             active: false
           },

@@ -7,12 +7,12 @@
           <mat-label>BADGES</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="onSelect()" formControlName="badge">
             <mat-option>None</mat-option>
-            <mat-option *ngFor="let badge of baaaaadge" [value]="badge">
+            <mat-option *ngFor="let badge of allBadges" [value]="badge">
               {{badge.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button [disabled]="selected === undefined" class="form__button__delete" (click)="onDelete(selected['id'])" type="submit">
+        <button [disabled]="selected === undefined || delete" class="form__button__delete" (click)="onDelete(selected['id'])" type="submit">
           <p *ngIf="!loadingDelete">Delete</p>
           <img *ngIf="loadingDelete"
                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
@@ -43,11 +43,11 @@
           </button>
         </div>
         <div *ngIf="test" class="test">
+          <mat-error *ngIf="!testCorrect" class="error">SQL script is incorrect.</mat-error>
           <p *ngIf="testCorrect" class="form__text">{{users.length}} users will receive this badge</p>
           <div *ngIf="testCorrect" class="users" >
-            <p *ngFor="let user of users"><a class="form__text" [routerLink]="[user.roles[0]==='SPEAKER' ? '/speaker-profile' : '/listener-profile', user.id]">{{user.login}}</a></p>
+            <p *ngFor="let user of users"><a class="form__text" [routerLink]="[user.roles.includes('SPEAKER') ? '/speaker-profile' : '/listener-profile', user.id]">{{user.login}}</a></p>
           </div>
-          <p *ngIf="!testCorrect" class="form__text">SQL script is incorrect.</p>
         </div>
       </div>
     </form>

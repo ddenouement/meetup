@@ -77,8 +77,9 @@ export class SpeakerProfileComponent implements OnInit {
     };
     this.loading = true;
     this.speakerService.updateUser(user).subscribe(res => {
-      this.router.navigate(['/speaker-profile']);
+      this.ngOnInit();
       this.loading = false;
+      this.edited = false;
     }, error => {
       this.loading = false;
       console.warn('ERROR in speaker profile UPDATE(put)');

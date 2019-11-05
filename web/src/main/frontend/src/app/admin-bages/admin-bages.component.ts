@@ -18,28 +18,11 @@ export class AdminBagesComponent implements OnInit {
   loadingSave = false;
   loadingTest = false;
   loadingDelete = false;
+  delete = false;
   scriptToTest: string;
-  baaaaadge: Badge [] = [
-    {
-      id: 6,
-      name: "Polyglot",
-      script: "SELECT count(*) > 1 FROM users_languages WHERE id_user = $1;"
-    },
-    {
-      id: 7,
-      name: "Star",
-      script: "SELECT count(*) >= 5 FROM subscriptions WHERE id_speaker = $1;"
-    },
-    {
-      id: 43,
-      name: "Megastar",
-      script: "SELECT count(*) >= 5 FROM subscriptions WHERE id_speaker = $1;"
-    }
-  ];
   test = false;
   testCorrect = false;
   users: UserToSubscribe [] = [];
-
 
 
   constructor(private formBuilder: FormBuilder, private  adminService: AdminBagesService) {
@@ -81,6 +64,7 @@ export class AdminBagesComponent implements OnInit {
       console.warn(error);
       this.loadingTest = false;
       this.testCorrect = false;
+      this.test = true;
     });
   }
 
@@ -98,6 +82,8 @@ export class AdminBagesComponent implements OnInit {
         console.warn('ERROR in updateScript');
         console.warn(error);
         this.loadingSave = false;
+        this.testCorrect = false;
+        this.test = true;
       });
     }else {
       const badge = <Badge>{
@@ -118,6 +104,7 @@ export class AdminBagesComponent implements OnInit {
 
   onSelect() {
     this.test = false;
+    this.delete = false;
   }
 
   onDelete(id: number) {
@@ -125,6 +112,7 @@ export class AdminBagesComponent implements OnInit {
     this.adminService.deleteBadge(id).subscribe(res=>{
       this.ngOnInit();
       this.loadingDelete = false;
+      this.delete = true;
     },error => {
       console.warn(error);
       this.loadingSave = false;
