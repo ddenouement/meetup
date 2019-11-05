@@ -2,6 +2,8 @@
 <h1>All topics</h1>
 <p></p>
 <input type="button" value="Add" class="addbtn btn_my" (click)="addTopic()" />
+
+<div class="message_or_error">{{statusMessageT}}</div>
 <table>
   <tbody>
   <tr *ngFor="let topic of topics">
@@ -11,7 +13,6 @@
   </tr>
   </tbody>
 </table>
-<div>{{statusMessageT}}</div>
 <ng-template #readOnlyTemplate let-topic>
   <td>{{topic.name}}</td>
   <td>

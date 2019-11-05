@@ -2,6 +2,10 @@ package com.meetup.entities.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 /**
  * CommentaryDisplayDTO class.
  */
@@ -15,7 +19,8 @@ public class CommentaryDisplayDTO {
     /**
      * Author.
      */
-    private UserDTO author;
+    private int authorID;
+    private String authorLogin;
     /**
      * Article ID.
      */
@@ -25,7 +30,7 @@ public class CommentaryDisplayDTO {
      */
     private String contents;
     /**
-     * Date and time of posting commentary.
+     * Date and time of posting commentary .
      */
-    private String timePosted;
+    private LocalDateTime timePosted;
 }

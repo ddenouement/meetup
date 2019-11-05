@@ -17,11 +17,10 @@ export class Topicsservice {
     return this.http.get<TopicClass[]>(this.topicsURL).pipe(map((response:Response)=>response));
   }
   createTopic(l: TopicClass){
-    return this.http.post(this.topicsURL, l);
+    return this.http.post<TopicClass>(this.topicsURL, l).pipe(map((response:Response) =>response));
   }
   updateTopic(id: number, l: TopicClass) {
-    const urlParams = new HttpParams().set("id", id.toString());
-    return this.http.put(this.topicsURL, l, { params: urlParams});
+    return this.http.put<TopicClass>(this.topicsURL+'/'+id, l).pipe(map((response:Response) =>response));;//, { params: urlParams});
   }
   deleteTopic(id: number){
     return this.http.delete(this.topicsURL + '/' + id);

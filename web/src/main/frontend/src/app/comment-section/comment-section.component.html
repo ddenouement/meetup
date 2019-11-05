@@ -15,9 +15,11 @@
   <mat-list-item *ngFor="let comm of comments" class="comment-card">
 
 <div class="meta">
-  <p [ngClass]="(article_author_id1===comm.id_author)?'user-name-author':'user-name'"><a class="link_person" (click)="redirectToProfile(comm.id_author)" >{{comm.login}}</a></p>
+  <p [ngClass]="(article_author_id1===comm.authorID)?'user-name-author':'user-name'"><a class="link_person" (click)="redirectToProfile(comm.authorID)" >{{comm.authorLogin}}</a></p>
     <span class="time">
-      {{comm.time_posted | fromNow}}  <!-- for exapmle, month ago-->
+     <!-- {{comm.timePostedAsDateTime      }}
+      {{comm.timePosted | fromNow}}  -->
+      {{comm.timePosted | date: 'dd/MM/yyyy h:mm'}}
     </span>
 </div>
     <div class="comment_text-wrp">

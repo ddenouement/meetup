@@ -26,6 +26,11 @@ public class Commentary {
      * Contents of commentary.
      */
     private String contents;
+
+    /**
+     * Date and time in number format (from front)
+     */
+    private long timePostedNumeric;
     /**
      * Date and time of posting commentary.
      */
