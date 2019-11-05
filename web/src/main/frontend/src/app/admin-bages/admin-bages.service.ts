@@ -13,6 +13,10 @@ export class AdminBagesService {
   constructor(private http: HttpClient) {
   }
 
+  deleteBadge(id:number){
+    return this.http.delete(this.updateURL+id);
+  }
+
   createBadge(badge:Badge){
     return this.http.post(this.updateURL, badge);
   }

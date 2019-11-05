@@ -1,0 +1,38 @@
+<app-sidebar></app-sidebar>
+<main>
+  <div class="content">
+    <form>
+      <p class="form__headline">Notifications</p>
+      <div class="cardList">
+        <ng-container *ngFor="let notification of notifications">
+          <mat-card class="cardListItem">
+            <div fxLayout="row">
+              <div class="block" [innerHTML]=notification.message></div>
+              <button mat-icon-button class="close-button">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </mat-card>
+        </ng-container>
+      </div>
+    </form>
+  </div>
+</main>
+
+<!--<main>-->
+<!--  <div class="content">-->
+<!--    <form>-->
+<!--      <p class="form__headline">Notifications</p>-->
+<!--      <div class="cardList">-->
+<!--        <mat-card class="cardListItem">-->
+<!--          <div fxLayout="row">-->
+<!--            <div class="block" [innerHTML]=message></div>-->
+<!--            <button mat-icon-button class="close-button">-->
+<!--              <mat-icon>close</mat-icon>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </mat-card>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</main>-->

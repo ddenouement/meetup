@@ -13,7 +13,8 @@ import {
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatBadgeModule
 } from "@angular/material";
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -63,6 +64,7 @@ import {FooterComponent} from "./footer/footer.component";
 import { ActicleListComponent } from './acticle-list/acticle-list.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { AdminBagesComponent } from './admin-bages/admin-bages.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,8 @@ import { AdminBagesComponent } from './admin-bages/admin-bages.component';
     AdminBagesComponent,
     SubscribeComponent,
     FooterComponent,
-    ActicleListComponent
+    ActicleListComponent,
+    NotificationsComponent
   ],
   imports: [
     //for smiles
@@ -133,8 +136,10 @@ import { AdminBagesComponent } from './admin-bages/admin-bages.component';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
+    MatBadgeModule,
     NgbModule
   ],
+  exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent]
