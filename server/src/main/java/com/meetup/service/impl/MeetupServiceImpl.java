@@ -157,6 +157,11 @@ public class MeetupServiceImpl implements IMeetupService {
         return meetupDTOConverter.convertToMeetupDTO(meetups);
     }
 
+    @Override
+    public List<MeetupDisplayDTO> getMeetupsByPages(final Integer offset, final Integer limit) {
+        List<Meetup> meetups = meetupDao.getAllMeetupsByPages(offset, limit);
+        return meetupDTOConverter.convertToMeetupDTO(meetups);    }
+
     /**
      * Retrieve all meetups from database that start at the specified time.
      *

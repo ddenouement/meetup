@@ -18,6 +18,12 @@ public interface IMeetupDAO {
      * @return List of all meetups
      */
     List<Meetup> getAllMeetups();
+    /**
+     * Retrieve all available meetups from database.
+     *
+     * @return List of all meetups
+     */
+    List<Meetup> getAllMeetupsByPages(Integer offset, Integer limit);
 
     /**
      * Retrieve all meetups from database that start at the specified time.

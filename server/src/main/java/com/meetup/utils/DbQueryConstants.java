@@ -1,5 +1,7 @@
 package com.meetup.utils;
 
+import java.util.prefs.AbstractPreferences;
+
 public enum DbQueryConstants {
 
     id_author,
@@ -51,5 +53,7 @@ public enum DbQueryConstants {
     type,
     time_created,
     id_type,
-    count
+    count,
+    offset,
+    limit;
 }

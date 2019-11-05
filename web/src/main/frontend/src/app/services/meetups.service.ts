@@ -93,10 +93,12 @@ export class MeetupsService {
       });
   }
 
-  getMeetups() {
+  getMeetups(meetupsPerPage : number, currentPage: number) {
+  // getMeetups() {
+    const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
     this.http
       .get<Meetup[]>(
-        "/api/v1/meetups"
+        "/api/v1/meetups"+queryParams
       )
       .pipe(
         map(meetupData => {

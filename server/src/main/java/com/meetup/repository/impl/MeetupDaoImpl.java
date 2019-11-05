@@ -47,6 +47,12 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Value("${get_all_meetings}")
     private String getAllMeetups;
     /**
+     * . SQL reference script. Retrieve all meetups.
+     */
+    @Value("${get_all_meetups_by_pages}")
+    private String getAllMeetupsByPages;
+
+    /**
      * SQL reference script. Retrieve all meetups with specified start time.
      */
     @Value("${get_meetups_by_start_time}")
@@ -157,6 +163,19 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public List<Meetup> getAllMeetups() {
         List<Meetup> meetups = this.template.query(
             getAllMeetups, new MeetupMapper());
+        for (Meetup m : meetups) {
+            m.setTopics(getMeetupTopics(m.getId()));
+        }
+        return meetups;
+    }
+
+    @Override
+    public List<Meetup> getAllMeetupsByPages(final Integer offset, final Integer limit) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.offset.name(), offset)
+                .addValue(DbQueryConstants.limit.name(), limit);
+        List<Meetup> meetups = this.template.query(
+                getAllMeetupsByPages,param, new MeetupMapper());
         for (Meetup m : meetups) {
             m.setTopics(getMeetupTopics(m.getId()));
         }
