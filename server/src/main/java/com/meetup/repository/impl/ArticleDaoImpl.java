@@ -178,7 +178,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<Commentary> getArticleCommentaries(int articleID) {
+    public List<Commentary> getArticleCommentaries(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_article.name(), articleID);
         return this.template
@@ -193,7 +193,7 @@ public class ArticleDaoImpl implements IArticleDAO {
      * @param commentary Commentary.
      */
     @Override
-    public void addCommentary(int articleID, int authorID,
+    public void addCommentary(final int articleID, final int authorID,
         Commentary commentary) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_author.name(), authorID)
@@ -209,7 +209,7 @@ public class ArticleDaoImpl implements IArticleDAO {
      * Commentary ID.
      */
     @Override
-    public void removeCommentary(int commentID) {
+    public void removeCommentary(final int commentID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id.name(), commentID);
         template.update(removeCommentary, param);

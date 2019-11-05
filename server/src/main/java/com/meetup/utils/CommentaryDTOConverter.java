@@ -1,15 +1,8 @@
 package com.meetup.utils;
 
-import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
-import com.meetup.entities.Meetup;
-import com.meetup.entities.Topic;
-import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
-import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.entities.dto.UserDTO;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Commentary DTO converter class.

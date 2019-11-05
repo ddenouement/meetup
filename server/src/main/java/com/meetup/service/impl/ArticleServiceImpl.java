@@ -160,13 +160,13 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     /**
-     * Get commentaries of given article/
+     * Get commentaries of given article.
      *
      * @param articleID Article ID.
      * @return List of displayable commentaries.
      */
     @Override
-    public List<CommentaryDisplayDTO> getCommentaries(int articleID) {
+    public List<CommentaryDisplayDTO> getCommentaries(final int articleID) {
         List<Commentary> commentaries = articleDao
             .getArticleCommentaries(articleID);
         List<CommentaryDisplayDTO> displayableCommentaries = new ArrayList<>();
@@ -200,8 +200,8 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * Remove commentary on article.
-     * @param commentID
-     * Commentary ID.
+     *
+     * @param commentID Commentary ID.
      */
     @Override
     public void removeCommentary(final int commentID) {
