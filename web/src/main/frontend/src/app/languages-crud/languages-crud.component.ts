@@ -34,7 +34,7 @@ export class LanguagesCrudComponent  implements OnInit {
           this.languages = languages;
         },
         err => {
-          console.log(err);
+          this.statusMessageL = err.error;
         });
   }
   addLanguage() {
@@ -61,10 +61,10 @@ export class LanguagesCrudComponent  implements OnInit {
       this.serv.createLanguage(this.editedLanguage).subscribe(data => {
 
           this.statusMessageL = 'Saved',
-            this.languages.unshift(data['language']);
+            this.languages.unshift(data);
         },
         err => {
-          alert(err);
+          this.statusMessageL = err.error;
         });
       this.isNewRecordL = false;
       this.languages.splice(this.languages.indexOf(this.editedLanguage), 1),
@@ -73,12 +73,12 @@ export class LanguagesCrudComponent  implements OnInit {
     else {
       const index = this.languages.findIndex(x => x.id == this.editedLanguage.id);
       const nl = <Language>{id: this.editedLanguage.id, name:this.editedLanguage.name };
-      this.serv.updateLanguage(nl).subscribe(data => {
+      this.serv.updateLanguage(nl.id, nl).subscribe(data => {
           this.statusMessageL = 'Edited',
-            this.languages[index] =  data['language'];
+            this.languages[index] =  data;
         },
         err => {
-          alert(err);
+          this.statusMessageL = err.error;
         });
       this.editedLanguage = null;
     }
@@ -93,13 +93,12 @@ export class LanguagesCrudComponent  implements OnInit {
   }
   deleteLanguage(l: Language) {
     this.serv.deleteLanguage(l.id).subscribe(data => {
-        this.statusMessageL = 'Deletd',
+        this.statusMessageL = 'Deleted',
           this.languages.splice(this.languages.indexOf(l),1);
         //  this.loadLanguages();
       },
       err => {
-        // alert(err),
-        this.statusMessageL = err;
+        this.statusMessageL = err.error;
       });
   }
 

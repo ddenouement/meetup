@@ -37,7 +37,8 @@ export class SidebarComponent implements OnInit {
           {activeSRC: '../../assets/images/myProfileActive.svg', noActiveSRC: '../../assets/images/myProfileNoActive.svg', routerLink: '/speaker-profile', alt: 'speaker-profile', role: this.speaker, active:false},
           {activeSRC: '../../assets/images/messagesNoActive.svg', noActiveSRC: '../../assets/images/messagesNoActive.svg', routerLink: '/feedback', alt: 'feedback', role: this.speaker, active:false},
           {activeSRC: '../../assets/images/myProfileActive.svg', noActiveSRC: '../../assets/images/myProfileNoActive.svg', routerLink: '/listener-profile', alt: 'listener-profile', role: this.listener, active:false},
-        ];
+          {activeSRC: '../../assets/images/notification.svg', noActiveSRC: '../../assets/images/notification.svg', routerLink: '/dictionaries', alt: 'dictionaries', role: this.admin, active:false},
+           ];
         this.href = this.router.url;
         for(let bar in this.SIDEBAR_DATA){
           if(this.href.includes(this.SIDEBAR_DATA[bar].routerLink)){

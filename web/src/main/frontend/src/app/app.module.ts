@@ -62,7 +62,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FooterComponent} from "./footer/footer.component";
 import { ActicleListComponent } from './acticle-list/acticle-list.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
-import { AdminBagesComponent } from './admin-bages/admin-bages.component';
+import { AdminBagesComponent } from './admin-bages/admin-bages.component'; 
 
 @NgModule({
   declarations: [

@@ -20,11 +20,11 @@ export class Languagesservice {
   }
 
   createLanguage(l: Language) {
-    return this.http.post(this.languagesURL, l);
+    return this.http.post<Language>(this.languagesURL, l).pipe(map((response:Response) =>response));;
   }
 
-  updateLanguage(l: Language) {
-    return this.http.put(this.languagesURL, l);
+  updateLanguage(id:number, l: Language) {
+    return this.http.put<Language>(this.languagesURL+'/' + id, l).pipe(map((response:Response) =>response));;
   }
 
   deleteLanguage(id: number) {

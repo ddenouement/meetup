@@ -9,8 +9,7 @@ import {
 import {Commentsectionservice} from "./commentsectionservice";
 import {CommentDto} from "../models/commentDto";
 import {ActivatedRoute, Router} from '@angular/router';
-import {PickerModule} from '@ctrl/ngx-emoji-mart';
-
+import {Comment} from '../models/comment'
 
 @Component({
   selector: 'app-comment-section',
@@ -21,7 +20,7 @@ import {PickerModule} from '@ctrl/ngx-emoji-mart';
 export class CommentSectionComponent implements OnChanges, OnInit{
   articleId:number;
   authorId: number;
-  authorLogin: string;
+  currentUserLogin: string;
   @Input ( ) article_author_id1:number;
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
 
@@ -37,13 +36,13 @@ showEmojiPicker:boolean;
   }
 
   ngOnInit() {
-    this.loadComments();
-    this.authorLogin="ksddddd";
-     this.refreshData();
+
+    this.getThisUserLogin();
       this.route.params.subscribe(params => {
 
-      this.articleId = +params['id'];//from this route
-
+      this.articleId = +params['articleId'];//from this route
+        this.loadComments();
+        this.refreshData();
     });
 
   }
@@ -52,7 +51,16 @@ showEmojiPicker:boolean;
   setPopupAction(fn: any) {
     this.openPopup = fn;
   }
-
+getThisUserLogin(){
+  this.serv.getUserLogin()
+    .subscribe(
+      data => {
+        this.currentUserLogin = data;
+      },
+      err => {
+        console.log(err.error);
+      });
+}
   toggleEmojiPicker(){
     this.showEmojiPicker=!this.showEmojiPicker;
   }
@@ -74,37 +82,38 @@ showEmojiPicker:boolean;
       }, 30000);
   }
   private loadComments() {
-    this.comments = [];
-    this.comments.push(new CommentDto(1,1, this.articleId, "katerine", "good article!",  +new Date()));
-    this.comments.push(new CommentDto(2,2, this.articleId, "ti-reks", "bad badbad bad d badbad bad bad badbadbadv bad badbadbadbad d badbad bad bad badbadbadv bad badbadbadbad bad badbad bad bad badbadbadv bad badbadbadbad article!",  +new Date()));
-    this.comments.push(new CommentDto(3,3, this.articleId, "helow", "ii really like the article!!",  +new Date()));
-    this.comments.push(new CommentDto(4,4, this.articleId, "gs", "its my article;) thanks",  +new Date()));
-    /*
-    this.serv.getComments()
+
+ // this.comments.push(new CommentDto(1,1, this.articleId, "katerine", "good article!",  +new Date()));
+ //   this.comments.push(new CommentDto(2,2, this.articleId, "ti-reks", "bad badbad bad d badbad bad bad badbadbadv bad badbadbadbad d badbad bad bad badbadbadv bad badbadbadbad bad badbad bad bad badbadbadv bad badbadbadbad article!",  +new Date()));
+  //  this.comments.push(new CommentDto(3,3, this.articleId, "helow", "ii really like the article!!",  +new Date()));
+ //   this.comments.push(new CommentDto(4,4, this.articleId, "gs", "its my article;) thanks",  +new Date()));
+
+    this.serv.getComments(this.articleId)
       .subscribe(
-        coms => {
-          this.comments = coms;
+        comments => {
+          this.comments = comments;
         },
         err => {
-          console.log(err);
-        });*/
+          console.log(err.error);
+        });
   }
   //charset : 'utf8mb4'
   addComment() {
-    alert(this.articleId);
-    this.comments.unshift(new CommentDto(0,this.authorId, this.articleId, this.authorLogin, this.text,  +new Date()));
+   // alert(this.articleId);
+  //  this.comments.unshift(new CommentDto(0,this.authorId, this.articleId, this.authorLogin, this.text,  +new Date()));
+const date =  new Date();
 
-  /*   const editedComment = new Comment(0,this.authorId, this.articleId, this.text,  +new Date());
-    this.serv.createComment(editedComment).subscribe(data => {
-
-        this.statusMessage  = 'Added',
-          this.comments.unshift(data['comment']);
+    const editedComment = new Comment( 0,this.authorId, this.articleId, this.text, date,0);
+    this.serv.createComment( this.articleId, editedComment).subscribe(data => {
+         const savedComment = new CommentDto(0, this.authorId, this.currentUserLogin, this.articleId, this.text,date,0);
+        this.statusMessage  = 'Added';
+          this.comments.unshift(savedComment);
 
       },
       err => {
         this.statusMessage = err.error;
       });
-*/
+
   }
   loadTemplate (c: CommentDto) {
 

@@ -173,11 +173,10 @@ public class ArticleServiceImpl implements IArticleService {
 
         for (Commentary commentary : commentaries) {
             User user = userDao.findUserById(commentary.getAuthorID());
-            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
             displayableCommentaries.add
                 (CommentaryDTOConverter.convertToCommentaryDisplayDTO(
                     commentary,
-                    userDTO
+                    user
                 ));
         }
         return displayableCommentaries;

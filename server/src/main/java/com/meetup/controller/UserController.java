@@ -659,4 +659,20 @@ public class UserController {
         return new ResponseEntity<>(userService.userPrimaryRole(userId),
             HttpStatus.OK);
     }
+    /**
+     * Return login based on id.
+     * @return role as String
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/users/current/login")
+    public ResponseEntity<String> getUserLogin(
+            @CookieValue("token") final String token
+    ) {
+        int userId = loginValidatorService.extractId(token);
+        return new ResponseEntity<>(
+                 userService.getProfileUserDTO(userId).getLogin(),
+                HttpStatus.OK);
+    }
 }

@@ -1,9 +1,6 @@
 package com.meetup.utils;
 
-import com.meetup.entities.Article;
-import com.meetup.entities.Commentary;
-import com.meetup.entities.Meetup;
-import com.meetup.entities.Topic;
+import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.entities.dto.MeetupDisplayDTO;
@@ -27,19 +24,20 @@ public final class CommentaryDTOConverter {
      * Convert Commentary object to displayable DTO.
      *
      * @param commentary Commentary.
-     * @param userDTO User DTO.
+     * @param user User  .
      * @return CommentaryDisplayDTO.
      */
     public static CommentaryDisplayDTO convertToCommentaryDisplayDTO(
         final Commentary commentary,
-        final UserDTO userDTO) {
+        final User user ) {
         CommentaryDisplayDTO commentaryDisplayDTO = new CommentaryDisplayDTO();
         commentaryDisplayDTO.setId(commentary.getId());
-        commentaryDisplayDTO.setAuthor(userDTO);
+        commentaryDisplayDTO.setAuthorID(user.getId());
+        commentaryDisplayDTO.setAuthorLogin(user.getLogin());
         commentaryDisplayDTO.setArticleID(commentary.getArticleID());
         commentaryDisplayDTO.setContents(commentary.getContents());
         commentaryDisplayDTO
-            .setTimePosted(commentary.getTimePosted().toString());
+            .setTimePosted(commentary.getTimePosted());
         return commentaryDisplayDTO;
     }
 }
