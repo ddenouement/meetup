@@ -1,6 +1,7 @@
 package com.meetup.controller;
 
 import com.meetup.error.ArticleNotFoundException;
+import com.meetup.error.BadgeNameExistsException;
 import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.error.BadgeScriptIsIncorrectException;
@@ -122,7 +123,7 @@ public class GlobalExceptionController {
     }
 
     /**
-     * AuthenticationException controller.
+     * BadgeScriptIsIncorrectException controller.
      * @return
      * Response entity with status code.
      */
@@ -132,6 +133,19 @@ public class GlobalExceptionController {
             "SQL script is incorrect.",
             HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     * BadgeNameExistsException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({BadgeNameExistsException.class})
+    public ResponseEntity<Object> badgeNameExistsException() {
+        return new ResponseEntity<>(
+            "Badge with such name already exists.",
+            HttpStatus.BAD_REQUEST);
+    }
+
     /**
      * AuthenticationException controller.
      * @return

@@ -1,0 +1,237 @@
+$color_1: #35373B;
+$color_2: #546087;
+$color_3: #fff;
+$color_4: inherit;
+$font_family_1: "Roboto", sans-serif;
+$font_family_2: "Exo 2", sans-serif;
+$background_color_1: #0AD69C;
+$background_color_2: #d7dce9;
+$background_color_3: #322b6b;
+$background_color_4: transparent;
+$background_color_5: #b3b4b6;
+$background_color_6: #fff;
+$background_color_7: #d6440c;
+$background_color_8: #ffea38;
+
+/*----------------------------------------header----------------------------------------*/
+.content {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 30px rgba(153, 163, 174, 0.06);
+  border-radius: 4px;
+  margin: 62px 64px 0 148px;
+  height: 75vh;
+  overflow-y: auto;
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+  background: #fdfeff;
+  mix-blend-mode: normal;
+  border-radius: 8px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #d7dce9;
+  border-radius: 6px;
+}
+
+form {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form__input {
+  width: 100%;
+  font-family: $font_family_1;
+  height: 40px;
+  margin-bottom: 24px;
+}
+
+.form__button {
+  outline: none;
+  align-self: flex-end;
+  width: 50%;
+  height: 42px;
+  background-color: #0AD69C;
+  font-size: 16px;
+  font-family: "Exo 2", sans-serif;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:disabled {
+    background: #dddddd;
+  }
+}
+
+.btn__group{
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.form__button__save{
+  outline: none;
+  width: 40%;
+  height: 32px;
+  background-color: #0AD69C;
+  font-size: 16px;
+  font-family: "Exo 2", sans-serif;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:disabled {
+    background: #dddddd;
+  }
+}
+.error {
+  padding-top: 5px;
+  background-color: $background_color_7;
+  color: $color_4;
+  margin-top: 10px;
+  height: auto;
+  text-align: center;
+  font-family: $font_family_1;
+  font-size: 15px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.form__button__delete{
+  outline: none;
+  width: 100%;
+  height: 32px;
+  background-color: $background_color_7;
+  font-size: 16px;
+  font-family: "Exo 2", sans-serif;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:disabled {
+    background: #dddddd;
+  }
+}
+ .mat-form-field {
+   display: inline-block;
+   position: relative;
+   text-align: left;
+   width: 100%;
+ }
+.form__button__test{
+  outline: none;
+  width: 40%;
+  height: 32px;
+  background-color: #d6b826;
+  font-size: 16px;
+  font-family: "Exo 2", sans-serif;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:disabled {
+    background: #dddddd;
+  }
+}
+
+.badge__group{
+ &:first-child{
+   margin-right: 10px;
+ }
+}
+
+.form__textarea {
+  min-height: 60px;
+  max-height: 141px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: #fdfeff;
+    mix-blend-mode: normal;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $background_color_2;
+    border-radius: 2px;
+  }
+}
+
+.area {
+  margin-bottom: 40px;
+}
+
+.form__group {
+  display: flex;
+  align-self: flex-end;
+  width: 50%;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.form__text{
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.28px;
+  color: #35373B;
+  margin-bottom: 24px;
+}
+
+.users {
+  height: 160px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: #fdfeff;
+    mix-blend-mode: normal;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d7dce9;
+    border-radius: 2px;
+  }
+}
+
+@media (max-width: 900px) {
+  .content {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+  form {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+
+@media (max-width: 620px) {
+  form {
+    padding-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    flex-direction: column;
+  }
+  .form__button__delete{
+    width: 50%;
+  }
+  .badge__group{
+    &:first-child{
+      display: flex;
+      justify-content: center;
+      flex-flow: wrap;
+    }
+  }
+}

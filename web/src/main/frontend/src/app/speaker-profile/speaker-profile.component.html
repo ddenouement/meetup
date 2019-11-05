@@ -47,7 +47,7 @@
           </mat-form-field>
           <div *ngIf="edited"  class="form__user last">
             <mat-form-field class="form__input">
-              <mat-select placeholder="Languages" formControlName="languages" multiple>
+              <mat-select placeholder="Languages" [(value)]="selectedLanguages" formControlName="languages" multiple>
                 <mat-select-trigger>{{changeForm.get('languages').value ? (changeForm.get('languages').value[0] ? changeForm.get('languages').value[0].name : '') : ''}}
                   <span *ngIf="changeForm.get('languages').value?.length > 1" class="example-additional-selection">
               (+{{changeForm.get('languages').value.length - 1}} {{changeForm.get('languages').value?.length === 2 ? 'other' : 'others'}}

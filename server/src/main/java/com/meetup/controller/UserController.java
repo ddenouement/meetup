@@ -2,13 +2,17 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.meetup.entities.*;
+import com.meetup.entities.Commentary;
+import com.meetup.entities.Feedback;
+import com.meetup.entities.Filter;
+import com.meetup.entities.Meetup;
+import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.NotificationDTO;
 import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
-
 import com.meetup.service.IArticleService;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.ILoginValidatorService;
@@ -18,15 +22,15 @@ import com.meetup.service.IProfileService;
 import com.meetup.service.ISearchService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.ModelConstants;
+import com.meetup.utils.NotificationDTOConverter;
 import io.swagger.annotations.Api;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -536,10 +540,15 @@ public class UserController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/notifications")
-    public ResponseEntity<List<Notification>> getNotifications(
+    public ResponseEntity<List<NotificationDTO>> getNotifications(
         @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);
-        return ok(notificationService.findUnread(userId));
+        List<NotificationDTO> notificationDTOs = notificationService
+            .findUnread(userId)
+            .stream()
+            .map(NotificationDTOConverter::convert)
+            .collect(Collectors.toList());
+        return ok(notificationDTOs);
     }
 
     /**

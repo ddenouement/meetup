@@ -32,6 +32,7 @@ export class SpeakerProfileComponent implements OnInit {
   public loading = false;
   matcher = new MyErrorStateMatcher();
   languages: LanguagesList [];
+  selectedLanguages: LanguagesList [];
   public speakerId: number;
   public badgeList: string[] = [];
   public langListNames: string[] = [];
@@ -45,6 +46,7 @@ export class SpeakerProfileComponent implements OnInit {
   private meetingsSub: Subscription;
   star: number;
   edited = false;
+  selected: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -75,8 +77,9 @@ export class SpeakerProfileComponent implements OnInit {
     };
     this.loading = true;
     this.speakerService.updateUser(user).subscribe(res => {
-      this.router.navigate(['/speaker-profile']);
+      this.ngOnInit();
       this.loading = false;
+      this.edited = false;
     }, error => {
       this.loading = false;
       console.warn('ERROR in speaker profile UPDATE(put)');
@@ -97,6 +100,7 @@ export class SpeakerProfileComponent implements OnInit {
       for (let i in res['userDTO'].languages) {
         this.langListNames[i] = res['userDTO'].languages[i].name;
       }
+      this.selectedLanguages = res['userDTO'].languages;
       this.star = res['userDTO'].rate;
       this.speakerId = res['userDTO'].id;
       this.badgeList = res['badges'];
@@ -108,6 +112,7 @@ export class SpeakerProfileComponent implements OnInit {
         about: [res['userDTO'].about],
         languages: ['', Validators.required]
       });
+      this.selected = this.selectedLanguages;
       this.firstName = res['userDTO'].firstName;
       this.lastName = res['userDTO'].lastName;
       this.login = res['userDTO'].login;
