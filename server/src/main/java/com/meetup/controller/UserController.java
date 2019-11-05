@@ -590,27 +590,8 @@ public class UserController {
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/search")
     public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
-
+           @RequestBody final Filter filter
     ) {
-        Filter filter = new Filter();
-     //   filter.setTitle_substring("for");
-      // filter.setTopics_ids(Arrays.asList(2));
-     //   filter.setId_language(2);
-     //   filter.setId_user(2);//petrenko (needed only for saving filter)
-    Date d = null;
-      try {
-            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/11");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date d2 = null;
-        try {
-            d2 = new SimpleDateFormat("yyyy/MM/dd").parse("2020/02/02");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-     //   filter.setTime_to(d2);
-        filter.setTime_from(d2);
         return ok(searchService.searchWithFilter(filter));
     }
 
@@ -646,7 +627,7 @@ public class UserController {
     @PostMapping(value = "/users/current/filters")
     public ResponseEntity<Filter> saveFilter(
         @CookieValue("token") final String token,
-        @RequestBody final Filter filter
+        @RequestBody Filter filter
     ) {
         int id = loginValidatorService.extractId(token);
         return ok(searchService.insertFilter(filter, id));
