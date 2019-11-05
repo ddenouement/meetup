@@ -22,13 +22,26 @@ ____________________________________
 
 ### ARTICLE CONTROLLER
 ____________________________________
-##### Get article
-- Type: GET
+##### Create article (speaker only)
+- Type: POST
+- RequestBody: Article article
+- /api/v1/user/speaker/articles
+
+##### Remove article (speaker only)
+- Type: DELETE
+- /api/v1/user/speaker/articles/{id}
+
+##### Remove article (admin only)
+- Type: DELETE
 - /api/v1/user/articles/{id}
 
 ##### Get all articles
 - Type: GET
 - /api/v1/user/articles
+
+##### Get article
+- Type: GET
+- /api/v1/user/articles/{id}
 
 ##### Get all comments of article
 - Type: GET
@@ -39,14 +52,62 @@ ____________________________________
 - RequestBody: Commentary commentary
 - /api/v1/user/articles/{id}/comments
 
-##### Create article (speaker only)
-- Type: POST
-- RequestBody: Article article
-- /api/v1/user/speaker/articles
-
-##### Remove article (speaker only)
+##### Remove comment on article
 - Type: DELETE
-- /api/v1/user/speaker/articles/{id}
+- /api/v1/user/articles/comments/{id}
+
+### BADGE CONTROLLER
+____________________________________
+##### Get all badges (admin only)
+- Type: GET
+- /api/v1/badges
+
+##### Get badge by id (admin only)
+- Type: GET
+- /api/v1/badges/{id}
+
+##### Create badge (admin only)
+- Type: POST
+- RequestBody: Badge badge
+- /api/v1/badges
+
+##### Update badge (admin only)
+- Type: PUT
+- RequestBody: Badge badge
+- /api/v1/badges/{id}
+
+##### Delete badge (admin only)
+- Type: DELETE
+- /api/v1/badges/{id}
+
+##### Get badges for user with id
+- Type: GET
+- /api/v1/users/{id}/badges
+
+##### Check badge script (admin only)
+- Type: POST
+- RequestBody: String script
+- /api/v1/badge/check
+
+### DICTIONARY CONTROLLER
+____________________________________
+##### Get all languages
+- Type: GET
+- /api/v1/languages
+
+##### Create new language
+- Type: POST
+- RequestBody: Language
+- /api/v1/languages
+
+##### Delete language
+- Type: DELETE
+- /api/v1/languages/{id}
+
+##### Edit language
+- Type: PUT
+- RequestBody: Language
+- /api/v1/languages
 
 ### TOPIC CONTROLLER
 ____________________________________
@@ -192,57 +253,4 @@ ____________________________________
 #### Get user's ID
 - Type: GET
 - /api/v1/user/id
-
-### BADGE CONTROLLER
-____________________________________
-##### Get all badges (admin only)
-- Type: GET
-- /api/v1/badges
-
-##### Get badge by id (admin only)
-- Type: GET
-- /api/v1/badges/{id}
-
-##### Create badge (admin only)
-- Type: POST
-- RequestBody: Badge badge
-- /api/v1/badges
-
-##### Update badge (admin only)
-- Type: PUT
-- RequestBody: Badge badge
-- /api/v1/badges/{id}
-
-##### Delete badge (admin only)
-- Type: DELETE
-- /api/v1/badges/{id}
-
-##### Get badges for user with id
-- Type: GET
-- /api/v1/users/{id}/badges
-
-##### Check badge script (admin only)
-- Type: POST
-- RequestBody: String script
-- /api/v1/badge/check
-
-### DICTIONARY CONTROLLER
-____________________________________
-##### Get all languages
-- Type: GET
-- /api/v1/languages
-
-##### Create new language
-- Type: POST
-- RequestBody: Language
-- /api/v1/languages
-
-##### Delete language
-- Type: DELETE
-- /api/v1/languages/{id}
-
-##### Edit language
-- Type: PUT
-- RequestBody: Language
-- /api/v1/languages
 
