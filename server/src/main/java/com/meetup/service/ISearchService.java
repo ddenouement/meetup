@@ -1,7 +1,6 @@
 package com.meetup.service;
 
 import com.meetup.entities.Filter;
-import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 
 import java.util.List;

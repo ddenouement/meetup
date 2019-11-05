@@ -8,14 +8,20 @@ import java.util.Map;
  * Custom  data holder class.
  */
 @Data
-public class SqlAndParamsHolder  {
-    /** Sql string. */
+public class SqlAndParamsHolder {
+
+    /**
+     * Sql string.
+     */
     private String sql;
-    /** Parameters map for query. */
+    /**
+     * Parameters map for query.
+     */
     private Map<String, ?> params;
 
     /**
      * Construct data holder.
+     *
      * @param first sql query
      * @param second parameters needed
      */

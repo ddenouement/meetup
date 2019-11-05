@@ -168,8 +168,8 @@ public class UserServiceImpl implements IUserService {
      * @return List<User> of users.
      */
     @Override
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+    public List<User> getAllActiveUsers() {
+        return userDao.getAllActiveUsers();
     }
 
     /**
@@ -178,8 +178,8 @@ public class UserServiceImpl implements IUserService {
      * @return List<User> of users.
      */
     @Override
-    public List<User> getUsers() {
-        return userDao.getUsers();
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     /**

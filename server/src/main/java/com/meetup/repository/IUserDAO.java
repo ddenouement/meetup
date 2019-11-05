@@ -184,14 +184,14 @@ public interface IUserDAO {
      * @return
      * List of users.
      */
-    List<User> getAllUsers();
+    List<User> getAllActiveUsers();
 
     /**
      * Get all users.
      * @return
      * List of users.
      */
-    List<User> getUsers();
+    List<User> getAllUsers();
 
     /**
      * Change user's password.

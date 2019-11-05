@@ -38,10 +38,6 @@ import org.springframework.stereotype.Component;
 public class MeetupServiceImpl implements IMeetupService {
 
     /**
-     * Topic repository.
-     */
-    private ITopicDAO topicDao;
-    /**
      * Meetup repository.
      */
     private IMeetupDAO meetupDao;
@@ -61,92 +57,20 @@ public class MeetupServiceImpl implements IMeetupService {
     /**
      * Meetup service constructor.
      *
-     * @param topicDao Topic repository
      * @param meetupDao Meetup repository
      * @param userDao User repository
      * @param meetupDTOConverter MeetupDTO converter.
      * @param notificationService notification operations
      */
-    MeetupServiceImpl(@Autowired final TopicDaoImpl topicDao,
-        @Autowired final MeetupDaoImpl meetupDao,
+    MeetupServiceImpl(@Autowired final MeetupDaoImpl meetupDao,
         @Autowired final UserDaoImpl userDao,
         @Autowired final MeetupDTOConverter meetupDTOConverter,
         @Autowired final INotificationService notificationService) {
-        this.topicDao = topicDao;
         this.meetupDao = meetupDao;
         this.userDao = userDao;
         this.meetupDTOConverter = meetupDTOConverter;
         this.notificationService = notificationService;
     }
-
-    /**
-     * Method used to get topics list from database, using topic.ts repository
-     * (TopicDao).
-     *
-     * @return List of "Topic" objects
-     */
-    @Override
-    public List<Topic> getAllTopics() {
-        List<Topic> allTopics = topicDao.getAllTopics();
-        if (allTopics.isEmpty()) {
-            throw new TopicNotFoundException();
-        }
-        return allTopics;
-    }
-
-    /**
-     * Get topic by ID.
-     *
-     * @param topicID Topic ID.
-     * @return Topic.
-     */
-    @Override
-    public Topic getTopic(final int topicID) {
-        return topicDao.findTopicByID(topicID);
-    }
-
-    /**
-     * Add topic.
-     *
-     * @param topic Created topic.
-     * @return Created topic.
-     */
-    @Override
-    public Topic createTopic(final Topic topic) {
-        Topic created;
-        if (topicDao.findTopicByName(topic.getName()) != null) {
-            throw new TopicIsUsedException();
-        } else {
-            created = topicDao.insertTopic(topic);
-        }
-        return created;
-    }
-
-    /**
-     * Update topic.
-     *
-     * @param topicID Topic ID to be updated.
-     * @param topic Updated topic.
-     * @return Updated topic.
-     */
-    @Override
-    public Topic updateTopic(final int topicID, final Topic topic) {
-        Topic edited = topicDao.updateTopic(topicID, topic);
-        edited.setId(topicID);
-        return edited;
-    }
-
-    /**
-     * Remove topic by ID.
-     *
-     * @param topicID Topic ID.
-     */
-    @Override
-    public void removeTopic(final int topicID) {
-        topicDao.removeTopic(topicID);
-    }
-
-    //TODO pagination
 
     /**
      * Method used to get meetups list from database, using meetup repository

@@ -66,14 +66,14 @@ public interface IUserService {
      *
      * @return List<User> of users.
      */
-    List<User> getAllUsers();
+    List<User> getAllActiveUsers();
 
     /**
      * Get all users.
      *
      * @return List<User> of users.
      */
-    List<User> getUsers();
+    List<User> getAllUsers();
 
     /**
      * .
