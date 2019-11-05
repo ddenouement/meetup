@@ -55,10 +55,12 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
 import {MeetupListComponent} from "./meetup-list/meetup-list.component";
 import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
+import {MeetupsService} from "./services/meetups.service";
 import {FromNowPipe} from "./pipes/from_now_pipe";
 import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FooterComponent} from "./footer/footer.component";
+import { ActicleListComponent } from './acticle-list/acticle-list.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { AdminBagesComponent } from './admin-bages/admin-bages.component';
 
@@ -94,7 +96,10 @@ import { AdminBagesComponent } from './admin-bages/admin-bages.component';
     FooterComponent,
     FromNowPipe,
     SubscribeComponent,
-    AdminBagesComponent
+    AdminBagesComponent,
+    SubscribeComponent,
+    FooterComponent,
+    ActicleListComponent
   ],
   imports: [
     //for smiles

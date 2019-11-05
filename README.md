@@ -113,6 +113,15 @@ ____________________________________
 - Type: GET
 - /api/v1/user/articles
 
+##### Get all comments of article
+- Type: GET
+- /api/v1/user/articles/{id}/comments
+
+##### Post comment on article
+- Type: POST
+- RequestBody: Commentary commentary
+- /api/v1/user/articles/{id}/comments
+
 #### Change user's password
 - Type: PUT
 - RequestBody: String password

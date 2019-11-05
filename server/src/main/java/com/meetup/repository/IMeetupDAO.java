@@ -142,4 +142,20 @@ public interface IMeetupDAO {
      */
     void rateMeetup(int meetupID, int userID, Feedback feedback);
 
+    /**
+     * Remove user languages.
+     * @param meetupID
+     * User ID.
+     */
+    void removeMeetupTopics(int meetupID);
+
+    /**
+     * Add topic to meetup.
+     * @param meetupID
+     * Meetup ID.
+     * @param topicID
+     * Topic ID.
+     */
+    void addMeetupTopic(int meetupID, int topicID);
+
 }

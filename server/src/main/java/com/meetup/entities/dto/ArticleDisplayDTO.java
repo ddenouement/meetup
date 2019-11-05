@@ -12,6 +12,10 @@ import lombok.Data;
 public class ArticleDisplayDTO {
 
     /**
+     * ID of article.
+     */
+    private int id;
+    /**
      * Title of article.
      */
     private String title;

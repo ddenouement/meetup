@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.*;
 import com.meetup.entities.dto.ArticleDisplayDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.entities.dto.ComplaintDTO;
 import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
@@ -402,6 +403,43 @@ public class UserController {
     }
 
     /**
+     * Get comments of specific articles.
+     *
+     * @param articleID Article ID.
+     * @return List of commentaries of article.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "user/articles/{id}/comments")
+    public ResponseEntity<List<CommentaryDisplayDTO>> getCommentsOfArticle(
+        @PathVariable("id") final int articleID) {
+        return new ResponseEntity<>(articleService.getCommentaries(articleID),
+            HttpStatus.OK);
+    }
+
+    /**
+     * Post commentary on article.
+     *
+     * @param commentary Commentary.
+     * @param token JSON web token.
+     * @param articleID Article ID.
+     * @return Response entity with status code.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping(value = "user/articles/{id}/comments")
+    public ResponseEntity postCommentary(
+        @RequestBody final Commentary commentary,
+        @CookieValue("token") final String token,
+        @PathVariable("id") final int articleID) {
+        String userLogin = loginValidatorService.extractLogin(token);
+        articleService.postCommentary(articleID, userLogin, commentary);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /**
      * Admin can remove article by Id.
      *
      * @param articleID Article ID.
@@ -621,5 +659,4 @@ public class UserController {
         return new ResponseEntity<>(userService.userPrimaryRole(userId),
             HttpStatus.OK);
     }
-
 }

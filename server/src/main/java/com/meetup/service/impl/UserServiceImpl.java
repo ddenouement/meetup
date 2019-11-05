@@ -2,11 +2,9 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
-import com.meetup.entities.dto.ProfileDTO;
-import com.meetup.service.INotificationService;
-import com.meetup.utils.Role;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.ComplaintDTO;
+import com.meetup.entities.dto.ProfileDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
 import com.meetup.entities.dto.UserDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
@@ -16,13 +14,13 @@ import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IMeetupService;
+import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
+import com.meetup.utils.Role;
 import com.meetup.utils.UserDTOConverter;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -98,9 +96,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void upgradeToSpeaker(final UserRegistrationDTO user,
         final Integer userId) {
-        if (userDao.isLoginUsed(user.getLogin())) {
+        User oldUser = userDao.findUserById(userId);
+        if (!oldUser.getLogin().equals(user.getLogin()) && userDao
+            .isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
-        } else if (userDao.isEmailUsed(user.getEmail())) {
+        } else if (!oldUser.getEmail().equals(user.getEmail()) && userDao
+            .isEmailUsed(user.getEmail())) {
             throw new EmailIsUsedException();
         } else {
             userDao.upgradeToSpeaker(user, userId);
