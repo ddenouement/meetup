@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {TopicClass} from "../models/topic_class";
-import {Topicsservice} from "./Topicsservice";
+import {Topicsservice} from "../services/Topicsservice";
 import {Language} from "../models/language";
 
 @Component({

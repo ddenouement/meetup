@@ -7,12 +7,14 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class Languagesservice {
   constructor(private http: HttpClient) {
   }
 
-  private languagesURL = '/api/v1/languages';
+  private languagesURL = 'http://localhost:9990/api/v1/languages';
   private topicsURL = '/api/v1/languages?sorted=true';
 
   getLanguages(): Observable<Language[]> {
@@ -29,6 +31,9 @@ export class Languagesservice {
 
   deleteLanguage(id: number) {
     return this.http.delete(this.languagesURL + '/' + id);
+  }
+  getSpeakerLanguages(id: number){
+    return this.http.get<Language[]>("/api/v1/user/"+id+"/languages").pipe(map((response: Response) => response));
   }
 }
 

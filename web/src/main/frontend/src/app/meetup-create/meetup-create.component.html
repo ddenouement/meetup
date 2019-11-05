@@ -49,6 +49,31 @@
         </mat-option>
       </mat-select>
       <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>
+
+    <mat-label>Language</mat-label>
+    <mat-select
+      formControlName="language"
+      required >
+      <mat-option
+        *ngFor="let language of languagesList"
+        [value]="language">
+        {{language.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('language').invalid">Please choose a language of meetup</mat-error>
+<!--    <mat-label>Topics</mat-label>-->
+<!--    <mat-select-->
+<!--      formControlName="topics"-->
+<!--      required-->
+<!--      multiple>-->
+<!--      <mat-option-->
+<!--        *ngFor="let topic of topicList"-->
+<!--        [value]="topic">-->
+<!--        {{topic.name}}-->
+<!--      </mat-option>-->
+<!--    </mat-select>-->
+<!--    <mat-error *ngIf="form.get('topics').invalid">Please choose a topics of meetup</mat-error>-->
+
     <div
       fxLayout="row wrap"
       fxLayout.lt-sm="column"

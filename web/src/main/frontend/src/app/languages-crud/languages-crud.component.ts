@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Languagesservice} from "./languagessservice";
+import {Languagesservice} from "../services/languagessservice";
 import {Language} from '../models/language';
 
 @Component({

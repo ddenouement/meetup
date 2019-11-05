@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
 // @ts-ignore
-import {HttpClient, HttpHeaders, Responce} from "@angular/common/http";
+import {HttpClient, HttpHeaders, Responce, Response} from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
@@ -9,6 +9,9 @@ import { Router } from "@angular/router";
 import { Meetup } from "./../models/meetup.model";
 import DateTimeFormat = Intl.DateTimeFormat;
 import {User} from "../models/user";
+import {Language} from "../models/language";
+import {TopicClass} from "../models/topic_class";
+import {LanguagesList} from "../models/languagesList";
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +19,12 @@ import {User} from "../models/user";
 
 export class MeetupsService {
   private meetups: Meetup[] = [];
+  private languages: LanguagesList[] = [];
   private speakerMeetups: Meetup[] = [];
   private meetupsUpdated = new Subject<{ meetups: Meetup[] }>();
+  private languagesUpdated = new Subject<{ languages: LanguagesList[] }>();
   private speakerMeetupsUpdated = new Subject<{ meetups: Meetup[] }>();
+  private languagesURL = 'http://localhost:9990/api/v1/languages?sorted=true';
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -29,27 +35,31 @@ export class MeetupsService {
   getSpeakerMeetupUpdateListener() {
     return this.speakerMeetupsUpdated.asObservable();
   }
+  getLanguageUpdateListener() {
+    return this.languagesUpdated.asObservable();
+  }
 
-
-  addMeetup(title: string,
+  addMeetup(language: Language,
+            title: string,
             startDate: Date,
             durationMinutes: number,
             minAttendees: number,
             maxAttendees: number,
-            description: string){
+            description: string,
+            topics: TopicClass[] ){
     const meetup = {
       title: title,
-      languageId: 1,
+      language: language,
       startDate: startDate,
       durationMinutes: durationMinutes,
       minAttendees: minAttendees,
       maxAttendees: maxAttendees,
       description: description,
-      topics: []
+      topics: topics
     };
     this.http
       .post<{ meetup: Meetup }>(
-        "/api/v1/user/speaker/meetups",
+        "http://localhost:9990/api/v1/user/speaker/meetups",
         meetup,{headers: new HttpHeaders({'Accept':'application/json', 'Content-Type':'application/json'})
         }
       )
@@ -62,16 +72,18 @@ export class MeetupsService {
   updateMeetup(id: number,
                title: string,
                speaker: User,
+               language: Language,
                state: string,
                startDate: DateTimeFormat,
                durationMinutes: number,
                minAttendees: number,
                maxAttendees: number,
-               description: string){
+               description: string,
+               topics: TopicClass[]){
     const meetup = {
       id: id,
       title: title,
-      languageId: 1,
+      language: language,
       speaker: speaker,
       state: state,
       startDate: startDate,
@@ -79,9 +91,9 @@ export class MeetupsService {
       minAttendees: minAttendees,
       maxAttendees: maxAttendees,
       description: description,
-      topics: []
+      topics: topics
     };
-    this.http.put("/api/v1/user/speaker/meetups/"+ id, meetup)
+    this.http.put("http://localhost:9990/api/v1/user/speaker/meetups/"+ id, meetup)
       .subscribe(responce => {
         const updatedMeetups = [...this.meetups];
         const oldMeetupIndex = updatedMeetups.findIndex(m => m.id === meetup.id);
@@ -108,6 +120,7 @@ export class MeetupsService {
                   id: meetup.id,
                   title: meetup.title,
                   speaker: meetup.speaker,
+                  language: meetup.language,
                   state: meetup.state,
                   startDate: meetup.startDate,
                   durationMinutes: meetup.durationMinutes,
@@ -140,6 +153,7 @@ export class MeetupsService {
                   id: meetup.id,
                   title: meetup.title,
                   speaker: meetup.speaker,
+                  language: meetup.language,
                   state: meetup.state,
                   startDate: meetup.startDate,
                   durationMinutes: meetup.durationMinutes,
@@ -163,8 +177,33 @@ export class MeetupsService {
 
 
   getMeetup(id:number){
-    return this.http.get<Meetup>("/api/v1/meetups/"+ id);
+    return this.http.get<Meetup>("http://localhost:9990/api/v1/meetups/"+ id);
   }
 
+  getLanguages() {
+    this.http
+      .get<LanguagesList[]>(
+        this.languagesURL
+      )
+      .pipe(
+        map(langData => {
+          return {
+            languages: langData.map( lang => {
+                return {
+                  id: lang.id,
+                  name: lang.name
+                }
+              }
+            )
+          };
+        })
+      )
+      .subscribe(transformedLangData => {
+        this.languages = transformedLangData.languages;
+        this.languagesUpdated.next({
+          languages: [...this.languages]
+        });
+      });
+  }
 
 }

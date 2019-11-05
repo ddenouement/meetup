@@ -5,14 +5,17 @@ import { Response} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {TopicClass} from "../models/topic_class";
+import {Language} from "../models/language";
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class Topicsservice {
   constructor(private http: HttpClient) {
   }
 
-  private topicsURL = '/api/v1/meetups/topics';
+  private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
   getTopics(): Observable<TopicClass[]>{
     return this.http.get<TopicClass[]>(this.topicsURL).pipe(map((response:Response)=>response));
   }
