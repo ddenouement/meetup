@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserToSubscribe} from "../models/userToSubscribe";
-import {SpeakerProfileToUsersService} from "../speaker-profile-to-users/speaker-profile-to-users.service";
 import {SubscribeService} from "./subscribe.service";
 
 @Component({

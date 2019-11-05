@@ -1,4 +1,4 @@
-package com.meetup.service;
+package com.meetup.service.impl;
 
 import com.meetup.utils.Role;
 import com.meetup.repository.impl.UserDaoImpl;
@@ -40,10 +40,7 @@ public class AuthenticationService implements UserDetailsService {
             authorities.add(a);
         }
 
-    /*    UserDetails userDetails = new User(userInfo.getLogin(),
-            userInfo.getPassword(), authorities);*/
-    //todo maybe we don`t need userInfo.getPassword() here
-        return new User(userInfo.getLogin(),
+          return new User(userInfo.getLogin(),
             userInfo.getPassword(), authorities);
 
 

@@ -7,7 +7,7 @@ import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.ISearchDAO;
-import com.meetup.utils.Pair;
+import com.meetup.utils.SqlAndParamsHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -76,29 +76,28 @@ public class SearchDaoImpl implements ISearchDAO {
     @Value("${add_topic_to_filter}")
     private String addTopicToFilter;
 
-
     @Autowired
     IMeetupDAO meetupDAO;
 
-
-
     /**
      * .
-     * @param f Filter to save.
+     *
+     * @param f      Filter to save.
      * @param userId user whose filter it is
      * @return Filter
      */
     @Override
     public Filter saveFilterToCurrentUser(Filter f, int userId) {
+        f.setId_user(userId);
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", f.getId_user())
+                .addValue("id_user",  userId)
                 .addValue("id_language", f.getId_language())
                 .addValue("name", f.getName())
                 .addValue("rate_from", f.getRate_from())
                 .addValue("rate_to", f.getRate_to())
-                .addValue("date_from", f.getRate_from())
-                .addValue("date_to", f.getRate_to())
+                .addValue("time_from", f.getTime_from())
+                .addValue("time_to", f.getTime_to())
                 .addValue("title_substring", f.getTitle_substring());
         template.update(addFilter, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
@@ -119,15 +118,17 @@ public class SearchDaoImpl implements ISearchDAO {
 
     /**
      * .
+     *
      * @param userId user whose filters we access
      * @return List of Filters
      */
     @Override
     public List<Filter> getUserFiltersSaved(int userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", userId);
+                .addValue("id_user_param", userId);
         return this.template
-                .query(getSavedFiltersForUser, param,   (resultSet, i) -> toFilter(resultSet));
+                .query(getSavedFiltersForUser, param,
+                        (resultSet, i) -> toFilter(resultSet));
     }
 
 
@@ -149,7 +150,7 @@ public class SearchDaoImpl implements ISearchDAO {
     }
 
     private void fillFilterTopicsIds(Filter fil) {
-        for (Topic topic: fil.getTopics()) {
+        for (Topic topic : fil.getTopics()) {
             fil.getTopics_ids().add(topic.getId());
         }
     }
@@ -162,27 +163,29 @@ public class SearchDaoImpl implements ISearchDAO {
         return
                 template.query(getFilterTopics, param, new TopicMapper());
     }
+
     /**
      * @param filter custom Filter from frontend.
      * @return List of matched meetups
      */
     @Override
     public List<Meetup> searchWithFilter(final Filter filter) {
-        Pair<String, Map<String, ?>> vals = constructValuesAndSqlFromFilter(filter);
+        SqlAndParamsHolder values = constructValuesAndSqlFromFilter(filter);
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValues(vals.getSecond());
+                .addValues(values.getParams());
 
         List<Meetup> foundmeetups =
-                template.query(vals.getFirst(), param, new MeetupMapper());
+                template.query(values.getSql(), param, new MeetupMapper());
 
-        for (Meetup m : foundmeetups){
+        for (Meetup m : foundmeetups) {
             m.setTopics(meetupDAO.getMeetupTopics(m.getId()));
 
         }
         return foundmeetups;
     }
 
-    public Pair<String, Map<String, ?>> constructValuesAndSqlFromFilter(final Filter filter) {
+    public SqlAndParamsHolder constructValuesAndSqlFromFilter(
+            final Filter filter) {
 
         HashMap model = new HashMap();
         String sql = beginSql;
@@ -227,27 +230,34 @@ public class SearchDaoImpl implements ISearchDAO {
             sql += dateToSql + " and ";
             hasWhere = true;
         }
-        //process speakers rate range if it is not default(0-5)
-        if ((filter.getRate_from() != 0.0 && filter.getRate_to() != 0.0)
-                &&
-                (filter.getRate_from() != 0.0 && filter.getRate_to() != 5.0)) {
+      boolean isNotSprecifiedRateRange =   (filter.getRate_from() == 0.0 && filter.getRate_to() == 0.0);
+        boolean isDefaultRateRange = (filter.getRate_from() == 0.0 && filter.getRate_to() == 5.0);
+        boolean isFullRateRange =
+            //    (filter.getRate_from() != 0.0 && filter.getRate_to() != 0.0)
+            //    &&
+                (!isDefaultRateRange);
+        boolean isOnlyRateToSpecified = (filter.getRate_from() == 0.0 && filter.getRate_to() != 0.0);
+        boolean isOnlyRateFromSpecified = (filter.getRate_from() != 0.0 && filter.getRate_to() != 0.0);
+          if(isNotSprecifiedRateRange){
+
+            }
+           else if (isFullRateRange) {
             model.put("rate_from", filter.getRate_from());
             model.put("rate_to", filter.getRate_to());
             if (!hasWhere) sql += " where ";
             sql += byRateRangeSql + " and ";
             hasWhere = true;
-        }
-        else if (filter.getRate_from() == 0.0 && filter.getRate_to()!=0.0) {
+        } else if (isOnlyRateToSpecified) {
             model.put("rate_to", filter.getRate_to());
             if (!hasWhere) sql += " where ";
             sql += byRateRangeFirstNullSql + " and ";
             hasWhere = true;
         }
-        if (!hasWhere) sql += " where ";
-   //     sql += onlyScheduledOrBookedSql;
-           sql = sql.substring(0, sql.length() - 5);//remove the last _AND_ (needed only if no onlyScheduledOrBookedSql)
-System.out.println(sql);
-        return new Pair<>(sql, model);
+    /* if (!hasWhere) sql += " where ";
+          sql += onlyScheduledOrBookedSql;*/
+      if(hasWhere)  sql = sql.substring(0, sql.length() - 5);//remove the last _AND_
+        System.out.println(sql);
+        return new SqlAndParamsHolder(sql, model);
     }
 
 }

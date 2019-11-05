@@ -13,6 +13,7 @@ export class Languagesservice {
   }
 
   private languagesURL = '/api/v1/languages';
+  private languageURL = '/api/v1/language';
   private topicsURL = '/api/v1/languages?sorted=true';
 
   getLanguages(): Observable<Language[]> {
@@ -20,15 +21,15 @@ export class Languagesservice {
   }
 
   createLanguage(l: Language) {
-    return this.http.post<Language>(this.languagesURL, l).pipe(map((response:Response) =>response));;
+    return this.http.post<Language>(this.languageURL, l).pipe(map((response:Response) =>response));;
   }
 
   updateLanguage(id:number, l: Language) {
-    return this.http.put<Language>(this.languagesURL+'/' + id, l).pipe(map((response:Response) =>response));;
+    return this.http.put<Language>(this.languageURL+'/' + id, l).pipe(map((response:Response) =>response));;
   }
 
   deleteLanguage(id: number) {
-    return this.http.delete(this.languagesURL + '/' + id);
+    return this.http.delete(this.languageURL + '/' + id);
   }
 }
 

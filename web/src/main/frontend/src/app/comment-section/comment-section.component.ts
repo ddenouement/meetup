@@ -82,13 +82,7 @@ getThisUserLogin(){
       }, 30000);
   }
   private loadComments() {
-
- // this.comments.push(new CommentDto(1,1, this.articleId, "katerine", "good article!",  +new Date()));
- //   this.comments.push(new CommentDto(2,2, this.articleId, "ti-reks", "bad badbad bad d badbad bad bad badbadbadv bad badbadbadbad d badbad bad bad badbadbadv bad badbadbadbad bad badbad bad bad badbadbadv bad badbadbadbad article!",  +new Date()));
-  //  this.comments.push(new CommentDto(3,3, this.articleId, "helow", "ii really like the article!!",  +new Date()));
- //   this.comments.push(new CommentDto(4,4, this.articleId, "gs", "its my article;) thanks",  +new Date()));
-
-    this.serv.getComments(this.articleId)
+ this.serv.getComments(this.articleId)
       .subscribe(
         comments => {
           this.comments = comments;
@@ -99,8 +93,6 @@ getThisUserLogin(){
   }
   //charset : 'utf8mb4'
   addComment() {
-   // alert(this.articleId);
-  //  this.comments.unshift(new CommentDto(0,this.authorId, this.articleId, this.authorLogin, this.text,  +new Date()));
 const date =  new Date();
 
     const editedComment = new Comment( 0,this.authorId, this.articleId, this.text, date,0);

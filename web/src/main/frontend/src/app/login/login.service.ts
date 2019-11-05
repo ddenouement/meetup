@@ -20,6 +20,7 @@ export class LoginService {
   logoutUser() {
     this.http.get(this.logoutURL);
       this._logInUser = false;
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 
   set logInUserBool(logInUser: boolean) {

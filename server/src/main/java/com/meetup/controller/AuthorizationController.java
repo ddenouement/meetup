@@ -186,7 +186,6 @@ public class AuthorizationController {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/"); // global cookie accessible everywhere
         cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }
 

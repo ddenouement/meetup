@@ -1,4 +1,4 @@
-package com.meetup.entities;
+package com.meetup.entities.dto;
 
 import com.meetup.utils.NotificationType;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @Data
 @Builder
-public class Notification {
+public class NotificationDTO {
 
     /**
      * Notification's ID in database.
@@ -33,17 +33,10 @@ public class Notification {
     /**
      * Type of notification.
      */
-    private NotificationType type;
+    private String type;
     /**
      * When was this notification created.
      */
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime timeCreated;
-
-    public Notification(final String message, final NotificationType type) {
-        this.message = message;
-        this.read = false;
-        this.type = type;
-        this.timeCreated = LocalDateTime.now();
-    }
 }
