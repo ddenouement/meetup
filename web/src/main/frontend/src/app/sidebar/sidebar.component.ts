@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Sidebar} from "../models/sidebar";
-import {Notification} from "../models/notification";
 import {NotificationsService} from "../notifications/notifications.service";
 
 @Component({
@@ -33,26 +32,19 @@ export class SidebarComponent implements OnInit {
         }
         this.SIDEBAR_DATA = [
           {
-            activeSRC: '../../assets/images/teamActive.svg',
-            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            activeSRC: '../../assets/images/admTableActive.svg',
+            noActiveSRC: '../../assets/images/admTableNoActive.svg',
             routerLink: '/admin-table',
-            alt: 'admin-table',
+            alt: 'table-users',
             role: this.admin,
             active: false
           },
           {
+            //nema
             activeSRC: '../../assets/images/teamActive.svg',
             noActiveSRC: '../../assets/images/teamNoActive.svg',
             routerLink: '/admin-badges',
-            alt: 'admin-badges',
-            role: this.admin,
-            active: false
-          },
-          {
-            activeSRC: '../../assets/images/notification.svg',
-            noActiveSRC: '../../assets/images/notification.svg',
-            routerLink: '/create-article',
-            alt: 'create-article',
+            alt: 'edit-badges',
             role: this.admin,
             active: false
           },
@@ -65,8 +57,8 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/searchActive.svg',
-            noActiveSRC: '../../assets/images/searchNoActive.svg',
+            activeSRC: '../../assets/images/createArticleActive.svg',
+            noActiveSRC: '../../assets/images/createArticleNoActive.svg',
             routerLink: '/create-article',
             alt: 'create-article',
             role: this.speaker,
@@ -81,11 +73,43 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/messagesNoActive.svg',
-            noActiveSRC: '../../assets/images/messagesNoActive.svg',
+            activeSRC: '../../assets/images/feedbackActive.svg',
+            noActiveSRC: '../../assets/images/feedbackNoActive.svg',
             routerLink: '/feedback',
             alt: 'feedback',
             role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/notificationActive.svg',
+            noActiveSRC: '../../assets/images/notificationNoActive.svg',
+            routerLink: '/notifications',
+            alt: 'notifications',
+            role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/meetupCreateActive.svg',
+            noActiveSRC: '../../assets/images/myProfileNoActive.svg',
+            routerLink: '/meetup-create',
+            alt: 'meetup-create',
+            role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/meetupListActive.svg',
+            noActiveSRC: '../../assets/images/meetupListNoActive.svg',
+            routerLink: '/meetup-list',
+            alt: 'meetup-list',
+            role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/notificationsActive.svg',
+            noActiveSRC: '../../assets/images/notificationsNoActive.svg',
+            routerLink: '/notifications',
+            alt: 'notifications',
+            role: this.listener,
             active: false
           },
           {
@@ -94,6 +118,14 @@ export class SidebarComponent implements OnInit {
             routerLink: '/listener-profile',
             alt: 'listener-profile',
             role: this.listener,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/articleActive.svg',
+            noActiveSRC: '../../assets/images/articleNoActive.svg',
+            routerLink: '/article-list',
+            alt: 'article-list',
+            role: true,
             active: false
           },
         ];
