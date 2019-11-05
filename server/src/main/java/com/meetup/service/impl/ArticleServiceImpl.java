@@ -191,10 +191,20 @@ public class ArticleServiceImpl implements IArticleService {
      * @param commentary Commentary.
      */
     @Override
-    public void postCommentary(int articleID, String userLogin,
-        Commentary commentary) {
+    public void postCommentary(final int articleID, final String userLogin,
+        final Commentary commentary) {
         User user = userDao.findUserByLogin(userLogin);
         int userID = user.getId();
         articleDao.addCommentary(articleID, userID, commentary);
+    }
+
+    /**
+     * Remove commentary on article.
+     * @param commentID
+     * Commentary ID.
+     */
+    @Override
+    public void removeCommentary(final int commentID) {
+        articleDao.removeCommentary(commentID);
     }
 }
