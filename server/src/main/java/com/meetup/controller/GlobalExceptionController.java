@@ -2,7 +2,9 @@ package com.meetup.controller;
 
 import com.meetup.error.ArticleNotFoundException;
 import com.meetup.error.BadgeNameExistsException;
+import com.meetup.error.LanguageIsUsedException;
 import com.meetup.error.MeetupNotFoundException;
+import com.meetup.error.TopicIsUsedException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.error.EmailIsUsedException;
@@ -107,6 +109,30 @@ public class GlobalExceptionController {
     public ResponseEntity<Object> loginIsUsedException() {
         return new ResponseEntity<>(
             "Login is already used!",
+            HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * TopicIsUsedException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(TopicIsUsedException.class)
+    public ResponseEntity<Object> topicIsUsedException() {
+        return new ResponseEntity<>(
+            "Topic with this name already exists!",
+            HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * LanguageIsUsedException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(LanguageIsUsedException.class)
+    public ResponseEntity<Object> languageIsUsedException() {
+        return new ResponseEntity<>(
+            "Language with this name already exists!",
             HttpStatus.FORBIDDEN);
     }
 

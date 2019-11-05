@@ -160,24 +160,23 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     /**
-     * Get commentaries of given article/
+     * Get commentaries of given article.
      *
      * @param articleID Article ID.
      * @return List of displayable commentaries.
      */
     @Override
-    public List<CommentaryDisplayDTO> getCommentaries(int articleID) {
+    public List<CommentaryDisplayDTO> getCommentaries(final int articleID) {
         List<Commentary> commentaries = articleDao
             .getArticleCommentaries(articleID);
         List<CommentaryDisplayDTO> displayableCommentaries = new ArrayList<>();
 
         for (Commentary commentary : commentaries) {
             User user = userDao.findUserById(commentary.getAuthorID());
-            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
             displayableCommentaries.add
                 (CommentaryDTOConverter.convertToCommentaryDisplayDTO(
                     commentary,
-                    userDTO
+                    user
                 ));
         }
         return displayableCommentaries;
@@ -191,10 +190,20 @@ public class ArticleServiceImpl implements IArticleService {
      * @param commentary Commentary.
      */
     @Override
-    public void postCommentary(int articleID, String userLogin,
-        Commentary commentary) {
+    public void postCommentary(final int articleID, final String userLogin,
+        final Commentary commentary) {
         User user = userDao.findUserByLogin(userLogin);
         int userID = user.getId();
         articleDao.addCommentary(articleID, userID, commentary);
+    }
+
+    /**
+     * Remove commentary on article.
+     *
+     * @param commentID Commentary ID.
+     */
+    @Override
+    public void removeCommentary(final int commentID) {
+        articleDao.removeCommentary(commentID);
     }
 }

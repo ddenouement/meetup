@@ -14,22 +14,26 @@ export class Commentsectionservice {
   }
 
   //TODO
-  private commentsURL = '/api/v1/comments';
+  private articlesURL = 'api/v1/user/articles/';
   private usersURL = 'api/v1/users/';
 
-  getComments(): Observable<CommentDto[]> {
-    return this.http.get<CommentDto[]>(this.commentsURL).pipe(map((response: Response) => response));
+  getComments(idArticle:number): Observable<CommentDto[]> {
+    return this.http.get<CommentDto[]>(this.articlesURL+idArticle+"/comments").pipe(
+      map((response: Response) => response) );
   }
 
-  createComment(l: Comment) {
-    return this.http.post(this.commentsURL, l);
+  createComment( idArticle:number, l: Comment) {
+    return this.http.post(this.articlesURL+idArticle+"/comments", l);
   }
 
   getUserRole(id: number){
     return this.http.get(this.usersURL+id+"/role",  {responseType: 'text'});
   }
+  getUserLogin( ){
+    return this.http.get(this.usersURL+"current"+"/login",  {responseType: 'text'});
+  }
  //todo
   /*deleteComment(id: number) {
-    return this.http.delete(this.languagesURL + '/' + id);
+    return this.http.delete(this.url + '/' + id);
   }*/
 }

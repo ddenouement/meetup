@@ -2,14 +2,12 @@ package com.meetup.service.impl;
 
 import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.UserDTO;
-import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IUserDAO;
 import com.meetup.service.IBadgeService;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IProfileService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.ModelConstants;
-import com.meetup.utils.Pair;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

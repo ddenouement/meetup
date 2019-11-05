@@ -3,7 +3,7 @@ package com.meetup.controller.jwtsecurity;
 import static com.meetup.controller.jwtsecurity.JwtSecurityConstants.SECRET;
 import static com.meetup.controller.jwtsecurity.JwtSecurityConstants.VALIDITY_IN_MS;
 
-import com.meetup.service.AuthenticationService;
+import com.meetup.service.impl.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

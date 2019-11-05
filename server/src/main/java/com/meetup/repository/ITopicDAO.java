@@ -25,6 +25,15 @@ public interface ITopicDAO {
     Topic findTopicByID(int id);
 
     /**
+     * Find topic by ID.
+     * @param name
+     * Name of topic.
+     * @return
+     * Topic.
+     */
+    Topic findTopicByName(String name);
+
+    /**
      * Insert new topic to DB.
      * @param topic
      * Topic to be added to DB.

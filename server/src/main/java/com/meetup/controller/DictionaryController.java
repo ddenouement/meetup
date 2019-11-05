@@ -95,7 +95,7 @@ public class DictionaryController {
      * @param id ID of language to delete
      */
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
-    @DeleteMapping("/api/v1/language/{id}")
+    @DeleteMapping("/language/{id}")
     public ResponseEntity deleteLanguage(@PathVariable("id") final Integer id) {
         dictionaryService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
@@ -109,7 +109,7 @@ public class DictionaryController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping("/api/v1/user/{id}/languages")
+    @GetMapping("/user/{id}/languages")
     public ResponseEntity<List<Language>> getSpeakerLanguages(
             @PathVariable("id") final Integer id) {
         return ok(dictionaryService.getSpeakerLanguages(id));

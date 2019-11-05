@@ -31,6 +31,7 @@ export class SidebarComponent implements OnInit {
           this.listener = true;
         }
         this.SIDEBAR_DATA = [
+
           {
             activeSRC: '../../assets/images/admTableActive.svg',
             noActiveSRC: '../../assets/images/admTableNoActive.svg',
@@ -126,6 +127,14 @@ export class SidebarComponent implements OnInit {
             routerLink: '/article-list',
             alt: 'article-list',
             role: true,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/teamActive.svg',
+            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            routerLink: '/dictionaries',
+            alt: 'dictionaries',
+            role: this.admin,
             active: false
           },
         ];

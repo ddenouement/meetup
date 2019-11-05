@@ -80,6 +80,12 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${insert_new_commentary}")
     private String insertNewCommentary;
+    /**
+     * SQL reference script. Insert new commentary.
+     */
+    @Value("${remove_commentary}")
+    private String removeCommentary;
+
 
     /**
      * Insert new Article into DB.
@@ -172,7 +178,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<Commentary> getArticleCommentaries(int articleID) {
+    public List<Commentary> getArticleCommentaries(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_article.name(), articleID);
         return this.template
@@ -187,7 +193,7 @@ public class ArticleDaoImpl implements IArticleDAO {
      * @param commentary Commentary.
      */
     @Override
-    public void addCommentary(int articleID, int authorID,
+    public void addCommentary(final int articleID, final int authorID,
         Commentary commentary) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_author.name(), authorID)
@@ -195,6 +201,18 @@ public class ArticleDaoImpl implements IArticleDAO {
             .addValue(contents.name(), commentary.getContents())
             .addValue(time_posted.name(), getCurrentTimestamp());
         template.update(insertNewCommentary, param);
+    }
+
+    /**
+     * Remove commentary from DB.
+     * @param commentID
+     * Commentary ID.
+     */
+    @Override
+    public void removeCommentary(final int commentID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(id.name(), commentID);
+        template.update(removeCommentary, param);
     }
 
     /**

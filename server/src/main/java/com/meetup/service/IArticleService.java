@@ -66,4 +66,11 @@ public interface IArticleService {
      * @param commentary Commentary.
      */
     void postCommentary(int articleID, String userLogin, Commentary commentary);
+
+    /**
+     * Remove commentary from article.
+     * @param commentID
+     * Commentary ID.
+     */
+    void removeCommentary(int commentID);
 }
