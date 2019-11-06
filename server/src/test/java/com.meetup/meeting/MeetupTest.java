@@ -17,15 +17,6 @@ import java.util.Arrays;
 @Component
 public class MeetupTest   {
 
-    @Test
-    public void equalsTest() {
-        SearchDaoImpl dao = new SearchDaoImpl();
-        Filter f = new Filter();
-                f.setTopics_ids(Arrays.asList(1,2));
-
-        dao.constructValuesAndSqlFromFilter(f);
-
-    }
 
     @Test
     public void hashCodeTest() {

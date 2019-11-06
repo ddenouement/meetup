@@ -173,7 +173,9 @@ CREATE TABLE filters
     rate_to     NUMERIC(1, 1) NULL,
     time_from   TIMESTAMP     NULL,
     time_to     TIMESTAMP     NULL,
-    FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    id_topic BIGINT NOT NULL DEFAULT 1,
+
+FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_language) REFERENCES languages (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id)
 );

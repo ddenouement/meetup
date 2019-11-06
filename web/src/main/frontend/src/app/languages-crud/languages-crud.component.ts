@@ -44,6 +44,7 @@ export class LanguagesCrudComponent  implements OnInit {
   }
 
   editLanguage(l: Language) {
+    this.cancelL();
     this.editedLanguage = new Language( l.id,l.name);
   }
   loadTemplateL(l: Language) {
