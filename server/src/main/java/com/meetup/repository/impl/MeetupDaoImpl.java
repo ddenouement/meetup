@@ -51,6 +51,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${get_all_meetups_by_pages}")
     private String getAllMeetupsByPages;
+/**
+     * . SQL reference script. Get number of all meetups.
+     */
+    @Value("${get_all_meetups_count}")
+    private String getMeetupsCount;
 
     /**
      * SQL reference script. Retrieve all meetups with specified start time.
@@ -182,6 +187,10 @@ public class MeetupDaoImpl implements IMeetupDAO {
         return meetups;
     }
 
+    @Override
+    public Integer getMeetupsCount() {
+        return this.template.queryForObject(getMeetupsCount,new HashMap(), Integer.class);
+    }
     /**
      * Retrieve all meetups from database that start at the specified time.
      *

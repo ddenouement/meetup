@@ -20,3 +20,9 @@
     </mat-card>
   </ng-container>
 </div>
+<mat-paginator *ngIf="articles.length > 0 && !isLoading"
+               [length]="totalArticles"
+               [pageSize]="articlesPerPage"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onChangePage($event)"></mat-paginator>
+

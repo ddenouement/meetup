@@ -13,6 +13,7 @@ export class MeetupProfileComponent implements OnInit {
 
   meetup: MeetupDto;
   private meetupId: string;
+  isLoading = false;
 
   constructor(public meetupService: MeetupsService,  public route: ActivatedRoute) {
   }
@@ -25,6 +26,10 @@ export class MeetupProfileComponent implements OnInit {
         });
       }
     });
+  }
+  onJoin(){
+    this.isLoading = true;
+
   }
 
 }

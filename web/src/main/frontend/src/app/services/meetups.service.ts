@@ -30,11 +30,12 @@ export class MeetupsService {
   private languagesUpdated = new Subject<{ languages: LanguagesList[] }>();
   private topicsUpdated = new Subject<{ topics: Topic[] }>();
   private speakerMeetupsUpdated = new Subject<{ meetups: Meetup[] }>();
-  private languagesURL = 'http://localhost:9990/api/v1/languages?sorted=true';
+  private speakerLanguagesURL = 'http://localhost:9990/api/v1//user/languages';
   private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
   private meetupUrl = "http://localhost:9990/api/v1/meetups/";
   private addMeetupUrl = "http://localhost:9990/api/v1/user/speaker/meetups";
   private meetupsUrl = "http://localhost:9990/api/v1/meetups";
+  private joinUrl = "http://localhost:9990/api/v1/user/meetups/";
 
 
 
@@ -202,7 +203,7 @@ export class MeetupsService {
   }
 
   getLanguages() {
-    this.http.get<LanguagesList[]>(this.languagesURL)
+    this.http.get<LanguagesList[]>(this.speakerLanguagesURL)
       .pipe(map(langData => {
           return {
             languages: langData.map( lang => {
@@ -242,5 +243,15 @@ export class MeetupsService {
           topics: [...this.topics]
         });
       });
+  }
+
+  joinMeetup(id:number){
+    // @ts-ignore
+    return this.http.post(this.joinUrl + id);
+  }
+
+  leaveMeetup(id:number){
+    // @ts-ignore
+    return this.http.delete(this.joinUrl + id);
   }
 }

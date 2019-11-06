@@ -26,6 +26,12 @@ public interface IMeetupDAO {
     List<Meetup> getAllMeetupsByPages(Integer offset, Integer limit);
 
     /**
+     * Find the number of meetups in DB
+     *
+     * @return number of all meetups
+     */
+    Integer getMeetupsCount();
+    /**
      * Retrieve all meetups from database that start at the specified time.
      *
      * @param startTime start of meetup

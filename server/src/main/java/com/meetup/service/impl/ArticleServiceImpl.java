@@ -148,6 +148,28 @@ public class ArticleServiceImpl implements IArticleService {
         }
         return displayableArticles;
     }
+    /**
+     * Get articles by page.
+     *
+     * @return List of limited displayable articles.
+     */
+    @Override
+    public List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(Integer offset, Integer limit) {
+        List<Article> articles = articleDao.getAllArticlesByPages(offset,limit);
+        Integer maxArticles = articleDao.getArticlesCount();
+        List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
+        for (Article article : articles) {
+            User user = userDao.findUserById(article.getAuthorID());
+            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
+            List<Topic> topics = articleDao.getArticleTopics(article.getId());
+            displayableArticles
+                    .add(ArticleDTOConverter.convertToArticleDisplayDTO(
+                            article,
+                            topics,
+                            userDTO));
+        }
+        return displayableArticles;
+    }
 
     /**
      * Remove article by admin.

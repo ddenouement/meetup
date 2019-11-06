@@ -86,6 +86,7 @@ public class MeetupServiceImpl implements IMeetupService {
 
     @Override
     public List<MeetupDisplayDTO> getMeetupsByPages(final Integer offset, final Integer limit) {
+        Integer maxMeetups = meetupDao.getMeetupsCount();
         List<Meetup> meetups = meetupDao.getAllMeetupsByPages(offset, limit);
         return meetupDTOConverter.convertToMeetupDTO(meetups);    }
 

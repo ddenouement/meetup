@@ -23,7 +23,7 @@ import {
   BsDatepickerModule,
   TimepickerConfig,
   DatepickerConfig,
-  BsDatepickerConfig
+  BsDatepickerConfig, PaginationModule
 } from 'ngx-bootstrap';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -122,7 +122,7 @@ import {CommonModule} from "@angular/common";
     PickerModule,
     //ne
     //   EmojiPickerModule,
-    BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
     MatTabsModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
@@ -156,7 +156,8 @@ import {CommonModule} from "@angular/common";
     NgbModule,
     MatDatepickerModule,
     OwlDateTimeModule,
-    TimepickerModule
+    TimepickerModule,
+    PaginationModule
   ],
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],

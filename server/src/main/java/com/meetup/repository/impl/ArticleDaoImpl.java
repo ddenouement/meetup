@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -70,6 +72,17 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${find_all_articles}")
     private String findAllArticles;
+    /**
+     * SQL reference script. Get all articles by pages.
+     */
+    @Value("${find_all_articles_by_pages}")
+    private String findAllArticlesByPages;
+    /**
+     * SQL reference script. Get all articles count.
+     */
+    @Value("${find_all_articles_count}")
+    private String findAllArticlesCount;
+
     /**
      * SQL reference script. Find article commentaries.
      */
@@ -175,6 +188,21 @@ public class ArticleDaoImpl implements IArticleDAO {
     public List<Article> getAllArticles() {
         return this.template
             .query(findAllArticles, new ArticleMapper());
+    }
+
+    @Override
+    public List<Article> getAllArticlesByPages(Integer offset, Integer limit) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.offset.name(), offset)
+                .addValue(DbQueryConstants.limit.name(), limit);
+        return this.template
+                .query(findAllArticlesByPages,param, new ArticleMapper());
+    }
+
+    @Override
+    public Integer getArticlesCount() {
+        return this.template.queryForObject(findAllArticlesCount,new HashMap(), Integer.class);
+
     }
 
     @Override

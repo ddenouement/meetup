@@ -31,6 +31,7 @@ public interface IMeetupService {
      */
     Meetup updateMeetup(int meetupID, Meetup editedMeetup, String login);
 
+
     /**
      * Updates an existing meetup.
      *
@@ -93,7 +94,6 @@ public interface IMeetupService {
      * @return List of all meetups
      */
     List<MeetupDisplayDTO> getMeetupsByPages(Integer offset, Integer limit);
-
 
     /**
      * Retrieve all meetups from database that start at the specified time.

@@ -14,6 +14,7 @@ export class ArticlesService {
 
   private articles: ArticleDTO[] = [];
   private articlesUpdated = new Subject<{ articles: ArticleDTO[] }>();
+  private articlesUrl = "http://localhost:9990/api/v1/user/articles";
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -22,10 +23,12 @@ export class ArticlesService {
   }
 
 
-  getArticles() {
+
+  getArticles(articlesPerPage : number, currentPage: number) {
+    const queryParams = `?pagesize=${articlesPerPage}&page=${currentPage}`;
     this.http
       .get<ArticleDTO[]>(
-        "http://localhost:9990/api/v1/user/articles"
+        this.articlesUrl + queryParams
       )
       .pipe(
         map(articlesData => {

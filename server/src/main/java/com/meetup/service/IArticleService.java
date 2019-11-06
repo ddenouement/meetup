@@ -43,6 +43,14 @@ public interface IArticleService {
      */
     List<ArticleDisplayDTO> getAllDisplayableArticles();
 
+/**
+     * Get all displayable articles by pages.
+     *
+     * @return List of limited articles.
+     */
+    List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(Integer offset, Integer limit);
+
+
     /**
      * Remove article by admin.
      *

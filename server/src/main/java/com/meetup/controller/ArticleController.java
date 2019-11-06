@@ -12,14 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * API Rest Controller for Articles.
@@ -110,6 +103,20 @@ public class ArticleController {
     public ResponseEntity<List<ArticleDisplayDTO>> getAllArticles() {
         return new ResponseEntity<>(articleService.getAllDisplayableArticles(),
             HttpStatus.OK);
+    }
+    /**
+     * Get all displayable articles Article ID.
+     *
+     * @return Article list.
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/user/articles",params = {"pagesize", "page"})
+    public ResponseEntity<List<ArticleDisplayDTO>> getAllArticlesByPages(@RequestParam("pagesize") int pageSize,
+                                                                         @RequestParam("page") int currentPage) {
+        int offset = pageSize*(currentPage -1);
+        return new ResponseEntity<>(articleService.getAllDisplayableArticlesByPages(offset, pageSize),
+                HttpStatus.OK);
     }
 
     /**

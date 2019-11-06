@@ -58,6 +58,19 @@ public interface IArticleDAO {
      * @return List of articles.
      */
     List<Article> getAllArticles();
+    /**
+     * Get all articles by pages.
+     *
+     * @return List of limited articles.
+     */
+    List<Article> getAllArticlesByPages(Integer offset, Integer limit);
+
+    /**
+     * Find the number of articles in DB
+     *
+     * @return number of all articles
+     */
+    Integer getArticlesCount();
 
     /**
      * Get commentaries of specific article.
