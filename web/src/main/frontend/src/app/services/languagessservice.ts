@@ -23,7 +23,7 @@ export class Languagesservice {
   }
 
   createLanguage(l: Language) {
-    return this.http.post<Language>(this.languageURL, l).pipe(map((response:Response) =>response));;
+    return this.http.post<Language>(this.languageURL, l).pipe(map((response:Response) =>response));
   }
 
   updateLanguage(id:number, l: Language) {
