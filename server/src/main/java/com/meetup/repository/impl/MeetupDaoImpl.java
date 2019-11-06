@@ -5,6 +5,7 @@ import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
+import com.meetup.model.mapper.IntegerMapper;
 import com.meetup.model.mapper.MeetupDisplayDtoMapper;
 import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.model.mapper.UserMapper;
@@ -46,6 +47,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${get_all_meetings}")
     private String getAllMeetups;
+    /**
+     * . SQL reference script. Retrieve the number of meetups.
+     */
+    @Value("${get_all_meetups_count}")
+    private String getAllMeetupsCount;
     /**
      * . SQL reference script. Retrieve all meetups.
      */
@@ -163,6 +169,21 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.limit.name(), limit);
         return this.template
             .query(getAllMeetupsByPages, param, new MeetupDisplayDtoMapper());
+    }
+
+    /**
+     * Count the number of meetups in database.
+     *
+     * @return List of all meetups
+     */
+    @Override
+    public int getAllMeetupsCount() {
+        List<Integer> res = this.template.query(getAllMeetupsCount, new IntegerMapper());
+        if (res.isEmpty()) {
+            return 0;
+        } else {
+            return res.get(0);
+        }
     }
 
     /**

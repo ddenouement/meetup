@@ -8,8 +8,11 @@ import com.meetup.service.IUserService;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import com.meetup.service.impl.UserServiceImpl;
+import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,13 +87,16 @@ public class MeetupController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups", params = {"pagesize", "page"})
-    public ResponseEntity<List<MeetupDisplayDTO>> getMeetupsByPages(
+    public ResponseEntity getMeetupsByPages(
         @RequestParam("pagesize") final int pageSize,
         @RequestParam("page") final int currentPage) {
         int offset = pageSize * (currentPage - 1);
-        return new ResponseEntity<>(
-            meetupService.getMeetupsByPages(offset, pageSize),
-            HttpStatus.OK);
+        int count = meetupService.getAllMeetupsCount();
+        List<MeetupDisplayDTO> meetups = meetupService.getMeetupsByPages(offset, pageSize);
+        Map<Object, Object> model = new HashMap<>();
+        model.put(ModelConstants.meetupCount, count);
+        model.put(ModelConstants.meetups, meetups);
+        return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     /**

@@ -460,4 +460,14 @@ public class MeetupServiceImpl implements IMeetupService {
         }
         return result;
     }
+
+    /**
+     * Count the number of meetups in database.
+     *
+     * @return List of all meetups
+     */
+    @Override
+    public int getAllMeetupsCount() {
+        return meetupDao.getAllMeetupsCount();
+    }
 }

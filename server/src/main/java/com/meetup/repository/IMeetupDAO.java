@@ -21,6 +21,13 @@ public interface IMeetupDAO {
     List<MeetupDisplayDTO> getAllMeetups();
 
     /**
+     * Count the number of meetups in database.
+     *
+     * @return List of all meetups
+     */
+    int getAllMeetupsCount();
+
+    /**
      * Return all meetups with display using pagination parameters.
      * @param offset offset for paging
      * @param limit limit for paging
