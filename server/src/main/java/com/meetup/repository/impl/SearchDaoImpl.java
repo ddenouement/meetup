@@ -98,13 +98,13 @@ public class SearchDaoImpl implements ISearchDAO {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id_user", userId)
-                .addValue("id_language", f.getId_language())
+                .addValue("id_language", f.null_or_idLanguage())
                 .addValue("name", f.getName())
                 .addValue("rate_from", f.getRate_from())
                 .addValue("rate_to", f.getRate_to())
                 .addValue("time_from", f.getTime_from())
                 .addValue("time_to", f.getTime_to())
-                .addValue("id_topic", f.getTopic_id())
+                .addValue("id_topic", f.null_or_idTopic())
                 .addValue("title_substring", f.getTitle_substring());
         template.update(addFilter, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {

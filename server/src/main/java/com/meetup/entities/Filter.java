@@ -38,4 +38,14 @@ public class Filter {
         // topics_ids = new ArrayList<>()   ;
         //topics = new ArrayList<>();
     }
+
+    public Integer null_or_idLanguage() {
+if(id_language==0) return null;
+else return id_language;
+    }
+
+    public Integer null_or_idTopic() {
+        if(topic_id==0) return null;
+        else return topic_id;
+    }
 }
