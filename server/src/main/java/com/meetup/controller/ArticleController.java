@@ -156,13 +156,15 @@ public class ArticleController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "user/articles/{id}/comments")
-    public ResponseEntity postCommentaryOnArticle(
+    public ResponseEntity<CommentaryDisplayDTO> postCommentaryOnArticle(
         @RequestBody final Commentary commentary,
         @CookieValue("token") final String token,
         @PathVariable("id") final int articleID) {
         String userLogin = loginValidatorService.extractLogin(token);
-        articleService.postCommentary(articleID, userLogin, commentary);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+        return new ResponseEntity<>(
+                articleService.postCommentary(articleID, userLogin, commentary),
+                HttpStatus.CREATED);
     }
 
     /**

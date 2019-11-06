@@ -124,8 +124,12 @@ public class LanguageDaoImpl implements ILanguageDAO {
     public Language findLanguageByName(final String name) {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue(DbQueryConstants.name.name(), name);
-        return this.template
-                .queryForObject(findLanguageByName, param, new LanguageMapper());
+
+        List<Language> languagesSameName =
+                template.query(findLanguageByName, param, new LanguageMapper());
+        if(languagesSameName==null||languagesSameName.isEmpty())
+             return null;
+        else return languagesSameName.get(0);
     }
 
     /**

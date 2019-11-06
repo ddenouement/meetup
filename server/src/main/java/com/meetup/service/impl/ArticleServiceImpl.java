@@ -190,11 +190,14 @@ public class ArticleServiceImpl implements IArticleService {
      * @param commentary Commentary.
      */
     @Override
-    public void postCommentary(final int articleID, final String userLogin,
+    public CommentaryDisplayDTO postCommentary(final int articleID, final String userLogin,
         final Commentary commentary) {
         User user = userDao.findUserByLogin(userLogin);
         int userID = user.getId();
-        articleDao.addCommentary(articleID, userID, commentary);
+        Commentary commentCreated =
+                articleDao.addCommentary(articleID, userID, commentary);
+        return CommentaryDTOConverter
+                .convertToCommentaryDisplayDTO(commentCreated, user);
     }
 
     /**
