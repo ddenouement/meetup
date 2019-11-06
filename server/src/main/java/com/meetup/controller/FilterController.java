@@ -5,6 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.entities.Filter;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.MeetupDisplayDTO;
+import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.ISearchService;
 import io.swagger.annotations.Api;
@@ -61,7 +62,7 @@ public class FilterController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/search")
-    public ResponseEntity<List<Meetup>> searchWithFilter(
+    public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
          @RequestBody final Filter filter
     ) {
 
