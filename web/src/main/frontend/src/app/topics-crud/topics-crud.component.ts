@@ -83,7 +83,7 @@ export class TopicsCrudComponent implements OnInit {
             this.topics[index] =  data;
         },
         err => {
-          this.statusMessageT = "Error";
+          this.statusMessageT = err.error;
         });
       this.editedTopic = null;
     }
@@ -104,8 +104,5 @@ export class TopicsCrudComponent implements OnInit {
       err => {
         this.statusMessageT = err.error;
       });
-  }
-  isDisabledAddButton() {
-    if (this.editedTopic!=null) return true;
   }
 }

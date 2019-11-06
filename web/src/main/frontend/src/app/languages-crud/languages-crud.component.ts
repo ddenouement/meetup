@@ -79,7 +79,7 @@ export class LanguagesCrudComponent  implements OnInit {
             this.languages[index] =  data;
         },
         err => {
-          this.statusMessageL ='Error!';
+          this.statusMessageL = err.error;
         });
       this.editedLanguage = null;
     }
@@ -103,7 +103,4 @@ export class LanguagesCrudComponent  implements OnInit {
       });
   }
 
-  isDisabledAddButton() {
-    if (this.editedLanguage!=null) return true;
-  }
 }

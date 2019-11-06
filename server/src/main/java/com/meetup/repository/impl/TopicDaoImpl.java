@@ -1,8 +1,6 @@
 package com.meetup.repository.impl;
 
-import com.meetup.entities.Language;
 import com.meetup.entities.Topic;
-import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.ITopicDAO;
 import com.meetup.utils.DbQueryConstants;
@@ -102,11 +100,8 @@ public class TopicDaoImpl implements ITopicDAO {
     public Topic findTopicByName(final String name) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.name.name(), name);
-        List<Topic>topicsSameName =
-                template.query(findTopicByName, param, new TopicMapper());
-        if(topicsSameName==null||topicsSameName.isEmpty())
-            return null;
-        else return topicsSameName.get(0);
+        return this.template
+            .queryForObject(findTopicByName, param, new TopicMapper());
     }
 
     /**
