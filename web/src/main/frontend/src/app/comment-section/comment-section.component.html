@@ -17,6 +17,8 @@
 <div class="meta">
   <p [ngClass]="(article_author_id1===comm.authorID)?'user-name-author':'user-name'"><a class="link_person" (click)="redirectToProfile(comm.authorID)" >{{comm.authorLogin}}</a></p>
     <span class="time">
+     <!-- {{comm.timePostedAsDateTime      }}
+      {{comm.timePosted | fromNow}}  -->
       {{comm.timePosted | date: 'dd/MM/yyyy h:mm'}}
     </span>
 </div>
