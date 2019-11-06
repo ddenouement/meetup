@@ -1,5 +1,6 @@
 <app-sidebar></app-sidebar>
-<div class="cardList">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="cardList" *ngIf="!isLoading">
   <ng-container *ngFor="let meetup of meetups">
     <mat-card class="cardListItem">
       <mat-card-title fxLayout = "row">
@@ -11,7 +12,7 @@
         {{meetup.speaker.firstName}} {{meetup.speaker.lastName}}
       </mat-card-subtitle>
       <mat-card-subtitle fxLayout = "row">
-        {{meetup.startDate}}
+        {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
       </mat-card-subtitle>
       <div fxLayout = "row">
            <mat-chip-list *ngFor="let l of meetup.topics">
@@ -20,13 +21,15 @@
       </div>
     </mat-card>
   </ng-container>
+
+  <button mat-fab routerLink="/meetup-create" class="create_button">
+    <mat-icon>add_circle</mat-icon>
+  </button>
 </div>
-<mat-paginator *ngIf="meetups.length > 0"
+<mat-paginator *ngIf="meetups.length > 0 && !isLoading"
                [length]="totalMeetups"
                [pageSize]="meetupsPerPage"
                [pageSizeOptions]="pageSizeOptions"
                (page)="onChangePage($event)"></mat-paginator>
-<p *ngIf="meetups.length <= 0">No Meetings Yet</p>
-<button mat-fab routerLink="/meetup-create" class="create_button">
-  <mat-icon>add_circle</mat-icon>
-</button>
+<p class="info-text mat-body-2" *ngIf="meetups.length <= 0 || isLoading">No Meetings Yet</p>
+

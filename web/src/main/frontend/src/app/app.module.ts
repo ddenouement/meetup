@@ -13,9 +13,18 @@ import {
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
+  MatBadgeModule,
   MatToolbarModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatProgressSpinnerModule,MatNativeDateModule
 } from "@angular/material";
+import {
+  TimepickerModule,
+  BsDatepickerModule,
+  TimepickerConfig,
+  DatepickerConfig,
+  BsDatepickerConfig
+} from 'ngx-bootstrap';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login/login.component';
@@ -63,6 +72,11 @@ import {FooterComponent} from "./footer/footer.component";
 import { ActicleListComponent } from './acticle-list/acticle-list.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { AdminBagesComponent } from './admin-bages/admin-bages.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from "ng-pick-datetime";
+import {TimepickerActions} from "ngx-bootstrap/timepicker";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -99,17 +113,22 @@ import { AdminBagesComponent } from './admin-bages/admin-bages.component';
     AdminBagesComponent,
     SubscribeComponent,
     FooterComponent,
-    ActicleListComponent
+    ActicleListComponent,
+    NotificationsComponent
   ],
   imports: [
     //for smiles
-     IconsModule,
-     PickerModule,
+    IconsModule,
+    PickerModule,
     //ne
- //   EmojiPickerModule,
-
+    //   EmojiPickerModule,
+    BsDatepickerModule.forRoot(),
     MatTabsModule,
+    MatProgressSpinnerModule,
+    MatNativeDateModule,
+    OwlNativeDateTimeModule,
     MatExpansionModule,
+    CommonModule,
     MatListModule,
     BrowserModule,
     MatInputModule,
@@ -133,10 +152,15 @@ import { AdminBagesComponent } from './admin-bages/admin-bages.component';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    NgbModule
+    MatBadgeModule,
+    NgbModule,
+    MatDatepickerModule,
+    OwlDateTimeModule,
+    TimepickerModule
   ],
+  exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [],
+  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule {

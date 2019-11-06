@@ -1,6 +1,6 @@
 package com.meetup.controller.jwtsecurity;
 
-import com.meetup.service.AuthenticationService;
+import com.meetup.service.impl.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

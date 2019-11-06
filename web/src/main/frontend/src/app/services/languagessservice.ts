@@ -14,7 +14,8 @@ export class Languagesservice {
   constructor(private http: HttpClient) {
   }
 
-  private languagesURL = 'http://localhost:9990/api/v1/languages';
+  private languagesURL = '/api/v1/languages';
+  private languageURL = '/api/v1/language';
   private topicsURL = '/api/v1/languages?sorted=true';
 
   getLanguages(): Observable<Language[]> {
@@ -22,15 +23,15 @@ export class Languagesservice {
   }
 
   createLanguage(l: Language) {
-    return this.http.post(this.languagesURL, l);
+    return this.http.post<Language>(this.languageURL, l).pipe(map((response:Response) =>response));;
   }
 
-  updateLanguage(l: Language) {
-    return this.http.put(this.languagesURL, l);
+  updateLanguage(id:number, l: Language) {
+    return this.http.put<Language>(this.languageURL+'/' + id, l).pipe(map((response:Response) =>response));;
   }
 
   deleteLanguage(id: number) {
-    return this.http.delete(this.languagesURL + '/' + id);
+    return this.http.delete(this.languageURL + '/' + id);
   }
   getSpeakerLanguages(id: number){
     return this.http.get<Language[]>("/api/v1/user/"+id+"/languages").pipe(map((response: Response) => response));

@@ -1,6 +1,7 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.Language;
+import com.meetup.error.LanguageIsUsedException;
 import com.meetup.repository.ILanguageDAO;
 import com.meetup.service.IDictionaryService;
 import java.util.List;
@@ -54,7 +55,13 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     @Override
     public Language insert(Language language) {
-        return languageDao.insert(language);
+        Language created;
+        if (languageDao.findLanguageByName(language.getName()) != null) {
+            throw new LanguageIsUsedException();
+        } else {
+            created = languageDao.insert(language);
+        }
+        return created;
 
     }
 

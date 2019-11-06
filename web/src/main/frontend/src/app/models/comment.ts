@@ -1,11 +1,15 @@
+import DateTimeFormat = Intl.DateTimeFormat;
+
 export class Comment {
   constructor(
 
 
-  id:number,
-  id_author:number,
-  id_article:number,
+  public id:number,
+  public authorID:number,
+  public articleID:number,
 
-    contents: string,
-  time_posted: number){}
+  public   contents: string,
+  public timePosted : Date,
+  public timePostedNumeric: number,
+  ){}
 }

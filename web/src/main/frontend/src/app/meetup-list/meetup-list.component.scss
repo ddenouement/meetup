@@ -3,6 +3,13 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+
+  .create-button{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    z-index: 2;
+  }
 }
 /* Column Gap */
 .cardList > * {
@@ -27,6 +34,7 @@
   right: 0;
   position: absolute;
 }
+
 
 /* medium size viewport */
 @media screen and (max-width: 959px) {
@@ -55,9 +63,13 @@
   font-size: small;
   color: red;
 }
-.create-button{
-  top: 50%;
-  position: absolute;
-  z-index: 1000;
-  overflow: auto;
+
+mat-spinner{
+  margin: auto;
 }
+p{
+  position: center;
+  margin: auto;
+
+}
+

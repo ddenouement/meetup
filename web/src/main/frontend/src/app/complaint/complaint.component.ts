@@ -9,10 +9,7 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./complaint.component.scss']
 })
 export class ComplaintComponent implements OnInit {
-  /*@Input()
-  set userId(id: number){
-    this._userId = id;
-  }*/
+
   _userId:number;
   complaint:string;
   constructor(
@@ -22,22 +19,33 @@ export class ComplaintComponent implements OnInit {
 
   ngOnInit() {
    this._userId = Number(this.route.snapshot.paramMap.get('id'));
+   if(this._userId === 0) {
+     this._userId = Number(this.route.snapshot.paramMap.get('speakerId'));
+   }
+   if (this._userId === 0 ) {
+     this._userId = Number(this.route.snapshot.paramMap.get('listenerId'));
+   }
   }
   onSubmit() {
-    alert(this._userId);
     const  complaint_in_request_body = {
       id:0,
       id_user_from: 0,
       id_user_to: this._userId,
       content: this.complaint,
-      //in backnd we translate it to Date dormat
+      //in backnd we translate it to Date format
       postedDate: null,
       postedDateInNumFormat: new Date().getTime(),
       isRead:false
     };
-   alert(complaint_in_request_body.content);
-    alert(complaint_in_request_body.id_user_to);
-     this.httpClient.post("/api/v1/user/complaint", complaint_in_request_body).subscribe();
+     this.httpClient.post("/api/v1/user/complaint", complaint_in_request_body).subscribe(data=>
+       {
+this.complaint="";
+       }
+       ,err =>{
+
+       }
+
+     );
   }
 
 }

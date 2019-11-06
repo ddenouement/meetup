@@ -1,7 +1,10 @@
 package com.meetup.controller;
 
 import com.meetup.error.ArticleNotFoundException;
+import com.meetup.error.BadgeNameExistsException;
+import com.meetup.error.LanguageIsUsedException;
 import com.meetup.error.MeetupNotFoundException;
+import com.meetup.error.TopicIsUsedException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.error.EmailIsUsedException;
@@ -110,6 +113,30 @@ public class GlobalExceptionController {
     }
 
     /**
+     * TopicIsUsedException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(TopicIsUsedException.class)
+    public ResponseEntity<Object> topicIsUsedException() {
+        return new ResponseEntity<>(
+            "Topic with this name already exists!",
+            HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * LanguageIsUsedException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(LanguageIsUsedException.class)
+    public ResponseEntity<Object> languageIsUsedException() {
+        return new ResponseEntity<>(
+            "Language with this name already exists!",
+            HttpStatus.FORBIDDEN);
+    }
+
+    /**
      * AuthenticationException controller.
      * @return
      * Response entity with status code.
@@ -122,7 +149,7 @@ public class GlobalExceptionController {
     }
 
     /**
-     * AuthenticationException controller.
+     * BadgeScriptIsIncorrectException controller.
      * @return
      * Response entity with status code.
      */
@@ -132,6 +159,19 @@ public class GlobalExceptionController {
             "SQL script is incorrect.",
             HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     * BadgeNameExistsException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({BadgeNameExistsException.class})
+    public ResponseEntity<Object> badgeNameExistsException() {
+        return new ResponseEntity<>(
+            "Badge with such name already exists.",
+            HttpStatus.BAD_REQUEST);
+    }
+
     /**
      * AuthenticationException controller.
      * @return

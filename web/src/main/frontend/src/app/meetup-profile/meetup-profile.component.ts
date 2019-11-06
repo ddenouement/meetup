@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Meetup} from "../models/meetup.model";
 import {MeetupsService} from "../services/meetups.service";
 import {ActivatedRoute, ParamMap} from "@angular/router";
+import {MeetupDto} from "../models/meetupDto.model";
 
 @Component({
   selector: 'app-meetup-profile',
@@ -10,7 +11,7 @@ import {ActivatedRoute, ParamMap} from "@angular/router";
 })
 export class MeetupProfileComponent implements OnInit {
 
-  meetup: Meetup;
+  meetup: MeetupDto;
   private meetupId: string;
 
   constructor(public meetupService: MeetupsService,  public route: ActivatedRoute) {

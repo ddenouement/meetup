@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 import {ApproveToSpeakerService} from "./approve-to-speaker.service";
 import {LanguagesList} from "../models/languagesList";
 import {MustMatch} from "../register-speaker/register-speaker.component";
+import {LoginService} from "../login/login.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -49,6 +50,7 @@ export class ApproveToSpeakerComponent implements OnInit {
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private router: Router,
+    private authService: LoginService,
   ) {
   }
 
@@ -81,6 +83,7 @@ export class ApproveToSpeakerComponent implements OnInit {
     this.approveForm.controls['languages'].disable();
     this.approveForm.controls['email'].disable();
     this.httpClient.put("/api/v1/users/upgrade", user).subscribe(data => {
+        this.authService.logoutUser();
         this.router.navigate(['/login']);
       },
       error => {

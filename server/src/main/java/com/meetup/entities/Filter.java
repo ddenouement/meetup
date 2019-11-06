@@ -24,10 +24,12 @@ public class Filter {
    private Date time_from;
    private Date time_to;
    private List<Integer> topics_ids;
+   //used to transfer data to frontend in user-friendly way (with topic names)
+   //this List is filled only on retrieve from DB
    private List <Topic> topics;
    private String title_substring;
    public  Filter(){
-      topics_ids = new ArrayList<Integer>()   ;
-      topics = new ArrayList<Topic>();
+      topics_ids = new ArrayList<>()   ;
+      topics = new ArrayList<>();
    }
 }

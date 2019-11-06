@@ -38,7 +38,7 @@ export class TopicsCrudComponent implements OnInit {
           this.topics = topics;
         },
         err => {
-          console.log(err);
+         this.statusMessageT =   err.error ;
         });
   }
   addTopic() {
@@ -52,7 +52,7 @@ export class TopicsCrudComponent implements OnInit {
   }
   loadTemplateT(t: TopicClass) {
     if (this.editedTopic && this.editedTopic.id == t.id) {
-      return this.editTopic;
+      return this.editTemplate;
     } else {
       return this.readOnlyTemplate;
     }
@@ -61,14 +61,14 @@ export class TopicsCrudComponent implements OnInit {
     if(this.editedTopic.name.length==0){
       this.statusMessageT='Please enter valid name';
     }
-   /* if (this.isNewRecordT) {
+    if (this.isNewRecordT) {
       this.serv.createTopic(this.editedTopic).subscribe(data => {
 
           this.statusMessageT = 'Saved',
-            this.topics.unshift(data['topic']);
+            this.topics.unshift(data);
         },
         err => {
-          alert(err);
+          this.statusMessageT = err.error;
         });
       this.isNewRecordT = false;
       this.topics.splice(this.topics.indexOf(this.editedTopic), 1),
@@ -79,13 +79,13 @@ export class TopicsCrudComponent implements OnInit {
       const nl = <Language>{id: this.editedTopic.id, name:this.editedTopic.name };
       this.serv.updateTopic(nl.id,nl).subscribe(data => {
           this.statusMessageT = 'Edited',
-            this.topics[index] =  data['topic'];
+            this.topics[index] =  data;
         },
         err => {
-          alert(err);
+          this.statusMessageT = err.error;
         });
       this.editedTopic = null;
-    }*/
+    }
   }
   cancelT() {
     if (this.isNewRecordT) {
@@ -95,14 +95,13 @@ export class TopicsCrudComponent implements OnInit {
     this.editedTopic = null;
   }
   deleteTopic(t: TopicClass) {
-    /*this.serv.deleteTopic(t.id).subscribe(data => {
-        this.statusMessageT = 'Deletd',
+  this.serv.deleteTopic(t.id).subscribe(data => {
+        this.statusMessageT = 'Deleted',
           this.topics.splice(this.topics.indexOf(t),1);
 
       },
       err => {
-        // alert(err),
-        this.statusMessageT = err;
-      });*/
+        this.statusMessageT = err.error;
+      });
   }
 }

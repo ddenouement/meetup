@@ -3,6 +3,7 @@ package com.meetup.service;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import java.util.List;
 
 /**
@@ -51,10 +52,25 @@ public interface IArticleService {
 
     /**
      * Get commentaries of specific article.
-     * @param articleID
-     * Article ID.
-     * @return
-     * List of commentaries.
+     *
+     * @param articleID Article ID.
+     * @return List of commentaries.
      */
-    List<Commentary> getCommentaries(int articleID);
+    List<CommentaryDisplayDTO> getCommentaries(int articleID);
+
+    /**
+     * Post commentary on article.
+     *
+     * @param articleID Article ID.
+     * @param userLogin User login.
+     * @param commentary Commentary.
+     */
+    void postCommentary(int articleID, String userLogin, Commentary commentary);
+
+    /**
+     * Remove commentary from article.
+     * @param commentID
+     * Commentary ID.
+     */
+    void removeCommentary(int commentID);
 }

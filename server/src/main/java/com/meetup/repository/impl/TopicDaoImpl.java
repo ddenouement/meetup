@@ -42,6 +42,12 @@ public class TopicDaoImpl implements ITopicDAO {
     private String findTopicByID;
 
     /**
+     * SQL reference script. Retrieve topic by name.
+     */
+    @Value("${find_topic_by_name}")
+    private String findTopicByName;
+
+    /**
      * SQL reference script. Create topic.
      */
     @Value("${create_topic}")
@@ -78,9 +84,24 @@ public class TopicDaoImpl implements ITopicDAO {
     @Override
     public Topic findTopicByID(final int topicID) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", topicID);
+            .addValue(DbQueryConstants.id.name(), topicID);
         return this.template
             .queryForObject(findTopicByID, param, new TopicMapper());
+    }
+
+    /**
+     * Find topic by name.
+     * @param name
+     * Name of topic.
+     * @return
+     * Topic.
+     */
+    @Override
+    public Topic findTopicByName(final String name) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.name.name(), name);
+        return this.template
+            .queryForObject(findTopicByName, param, new TopicMapper());
     }
 
     /**

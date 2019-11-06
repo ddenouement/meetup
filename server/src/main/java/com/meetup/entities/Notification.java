@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class Notification {
     /**
      * Id of user who should receive this notification.
      */
-    private int idUser;
+    private Integer idUser;
     /**
      * Whether user have read this notification.
      */
@@ -34,8 +35,9 @@ public class Notification {
      */
     private NotificationType type;
     /**
-     * When was tjis notification created.
+     * When was this notification created.
      */
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime timeCreated;
 
     public Notification(final String message, final NotificationType type) {

@@ -9,10 +9,10 @@ import {Topic} from "./topic";
 export interface Meetup{
   id : number;
   speaker: User;
-  language: LanguagesList;
+  languageId: number;
   state: string;
   title : string;
-  startDate: DateTimeFormat;
+  startDate: Date;
   durationMinutes: number;
   minAttendees : number;
   maxAttendees : number;

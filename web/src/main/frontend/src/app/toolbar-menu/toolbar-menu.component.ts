@@ -16,5 +16,11 @@ export class ToolbarMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.httpClient.get('/api/v1/user/id').subscribe(res=>{
+      this.authService.logInUserBool = true;
+    },error => {
+      console.warn(error);
+    });
+
   }
 }

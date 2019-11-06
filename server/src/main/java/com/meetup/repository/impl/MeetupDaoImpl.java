@@ -390,7 +390,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Override
     public void removeMeetupTopics(final int meetupID) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue(DbQueryConstants.id_user.name(), meetupID);
+            .addValue(DbQueryConstants.id_meetup.name(), meetupID);
         template.update(removeMeetupTopics, param);
     }
 
