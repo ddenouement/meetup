@@ -41,6 +41,7 @@ public class SearchServiceImpl implements ISearchService {
     @Override
     public  List<MeetupDisplayDTO> searchWithFilter(final Filter filter) {
              List<Meetup> meetups =  searchDao.searchWithFilter(filter);
+           // return meetups;
         return   meetupDTOConverter.convertToMeetupDTO(meetups) ;
     }
 

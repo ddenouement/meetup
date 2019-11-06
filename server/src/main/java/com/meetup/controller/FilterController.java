@@ -3,7 +3,9 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Filter;
+import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.MeetupDisplayDTO;
+import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.ISearchService;
 import io.swagger.annotations.Api;
@@ -59,14 +61,12 @@ public class FilterController {
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/users/search")
+    @PostMapping(value = "/users/search")
     public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
-   //     @RequestBody final Filter filter
+         @RequestBody final Filter filter
     ) {
-        Filter f = new Filter();
-        f.setTopic_id(1);
 
-        return ok(searchService.searchWithFilter(f));
+        return ok(searchService.searchWithFilter(filter));
     }
 
     //only for testing, to see how JSON looks like
@@ -74,17 +74,7 @@ public class FilterController {
     public ResponseEntity<Filter> getSampleFilter(
     ) {
         Filter filter = new Filter();
-        filter.setRate_to(5);
         filter.setTopic_id(2);
-        filter.setId_language(2);
-        filter.setId_user(2);//petrenko
-        Date d = null;
-        try {
-            d = new SimpleDateFormat("yyyy/MM/dd").parse("2019/12/14");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        filter.setTime_to(d);
         return ok(filter);
     }
 
