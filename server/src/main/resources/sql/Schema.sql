@@ -81,6 +81,7 @@ CREATE TABLE meetups
     id                  BIGSERIAL NOT NULL,
     id_speaker          BIGINT    NOT NULL,
     id_language         INTEGER   NOT NULL,
+    id_topic            BIGINT    NOT NULL,
     id_state            INTEGER   NOT NULL DEFAULT 2,
     title               TEXT      NOT NULL,
     start_time          TIMESTAMP NOT NULL,
@@ -99,15 +100,6 @@ CREATE TABLE topics
     id   BIGSERIAL NOT NULL,
     name TEXT      NOT NULL UNIQUE,
     PRIMARY KEY (id)
-);
-
-CREATE TABLE meetups_topics
-(
-    id_meetup BIGINT NOT NULL,
-    id_topic  BIGINT NOT NULL,
-    FOREIGN KEY (id_meetup) REFERENCES meetups (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_topic) REFERENCES topics (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (id_meetup, id_topic)
 );
 
 CREATE TABLE meetups_users
@@ -181,7 +173,9 @@ CREATE TABLE filters
     rate_to     NUMERIC(1, 1) NULL,
     time_from   TIMESTAMP     NULL,
     time_to     TIMESTAMP     NULL,
-    FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    id_topic BIGINT NOT NULL DEFAULT 1,
+
+FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_language) REFERENCES languages (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id)
 );

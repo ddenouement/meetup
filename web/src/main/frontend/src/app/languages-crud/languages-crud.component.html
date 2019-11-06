@@ -1,7 +1,5 @@
 
-<h1>All languages</h1>
-<p></p>
-<input type="button" value="Add" class="addbtn btn_my" (click)="addLanguage()" />
+<input type="button" value="Add new language" [disabled]="isDisabledAddButton()" class="addbtn btn_my" (click)="addLanguage()" />
 <div class="message_or_error">{{statusMessageL}}</div>
 
 <table>
@@ -27,7 +25,7 @@
     <input type="text" [(ngModel)]="editedLanguage.name" class="form-control" />
   </td>
   <td>
-    <input type="button" value="Save" (click)="saveLanguage()" class="btn_good btn_my" />
+    <input type="button" value="Save"  [disabled] = "editedLanguage.name===''" (click)="saveLanguage()" class="btn_good btn_my" />
   </td>
   <td>
     <input type="button" value="Cancel changes" (click)="cancelL()" class="btn_my btn_warning" />

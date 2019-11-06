@@ -32,7 +32,15 @@ public enum ModelConstants {
     /**
      * Key for a list of user's badges.
      */
-    badges;
+    badges,
+    /**
+     * Key for a list of meetups.
+     */
+    meetups,
+    /**
+     * Key for the number of meetups in DB that satisfy the request.
+     */
+    meetupCount;
 
 
 }

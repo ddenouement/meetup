@@ -23,7 +23,8 @@ export class Commentsectionservice {
   }
 
   createComment( idArticle:number, l: Comment) {
-    return this.http.post(this.articlesURL+idArticle+"/comments", l);
+    return this.http.post<CommentDto>(this.articlesURL+idArticle+"/comments", l).pipe(
+      map((response: Response) => response) );
   }
 
   getUserRole(id: number){

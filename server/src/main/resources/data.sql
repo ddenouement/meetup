@@ -6,7 +6,7 @@ INSERT into languages (name) values ('English'), ('French'), ('German'), ('Ukrai
 INSERT into meetup_states (id, name) values (2, 'SCHEDULED'), (3, 'BOOKED'), (4, 'CANCELED'),
                                         (5, 'IN PROGRESS'), (6, 'TERMINATED'), (7, 'PASSED');
 
-INSERT into topics (name) values ('Business'), ('Technology'), ('Health'), ('Sports'), ('Politics'),
+INSERT into topics (name) values ('Other'), ('Business'), ('Technology'), ('Health'), ('Sports'), ('Politics'),
                                  ('Art');
 
 INSERT into badges (name, script) values

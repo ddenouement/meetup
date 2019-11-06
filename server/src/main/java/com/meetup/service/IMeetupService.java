@@ -168,4 +168,11 @@ public interface IMeetupService {
      * @return List of users.
      */
     List<User> getUsersOnMeetup(int meetupId);
+
+    /**
+     * Count the number of meetups in database.
+     *
+     * @return List of all meetups
+     */
+    int getAllMeetupsCount();
 }

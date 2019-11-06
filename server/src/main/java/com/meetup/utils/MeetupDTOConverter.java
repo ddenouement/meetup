@@ -47,15 +47,16 @@ public class MeetupDTOConverter {
      * @return
      * MeetupDisplayDTO.
      */
+    // TODO: remove
     public MeetupDisplayDTO convertToMeetupDTO(final Meetup meetup) {
 
         User speaker = userDao.findUserById(meetup.getSpeakerId());
-        UserDTO speakerDTO = UserDTOConverter.convertToUserDTO(speaker);
-        speakerDTO.setLanguages(userDao.getUsersLanguages(speakerDTO.getId()));
+//        UserDTO speakerDTO = UserDTOConverter.convertToUserDTO(speaker);
+//        speakerDTO.setLanguages(userDao.getUsersLanguages(speakerDTO.getId()));
         MeetupDisplayDTO newMeetup = new MeetupDisplayDTO();
 
         newMeetup.setId(meetup.getId());
-        newMeetup.setSpeaker(speakerDTO);
+//        newMeetup.setSpeaker(speakerDTO);
         newMeetup.setLanguage(languageDao.findLanguageByID(meetup.getLanguageId()));
         newMeetup.setState(MeetupState.getStateByID(meetup.getStateId()));
         newMeetup.setTitle(meetup.getTitle());
@@ -64,7 +65,7 @@ public class MeetupDTOConverter {
         newMeetup.setMinAttendees(meetup.getMinAttendees());
         newMeetup.setMaxAttendees(meetup.getMaxAttendees());
         newMeetup.setDescription(meetup.getDescription());
-        newMeetup.setTopics(meetup.getTopics());
+//        newMeetup.setTopic(meetup.getTopic());
         return newMeetup;
     }
 

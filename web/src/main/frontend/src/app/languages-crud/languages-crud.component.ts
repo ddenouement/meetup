@@ -44,6 +44,7 @@ export class LanguagesCrudComponent  implements OnInit {
   }
 
   editLanguage(l: Language) {
+    this.cancelL();
     this.editedLanguage = new Language( l.id,l.name);
   }
   loadTemplateL(l: Language) {
@@ -78,7 +79,7 @@ export class LanguagesCrudComponent  implements OnInit {
             this.languages[index] =  data;
         },
         err => {
-          this.statusMessageL = err.error;
+          this.statusMessageL ='Error!';
         });
       this.editedLanguage = null;
     }
@@ -102,4 +103,7 @@ export class LanguagesCrudComponent  implements OnInit {
       });
   }
 
+  isDisabledAddButton() {
+    if (this.editedLanguage!=null) return true;
+  }
 }

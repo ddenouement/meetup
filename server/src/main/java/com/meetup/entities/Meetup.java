@@ -1,11 +1,10 @@
 package com.meetup.entities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -14,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @Data
 @Builder
+@NoArgsConstructor
 public class Meetup {
 
     /**
@@ -28,6 +28,10 @@ public class Meetup {
      * Language ID of meetup.
      */
     private int languageId;
+    /**
+     * Topic ID of meetup.
+     */
+    private int topicId;
     /**
      * State ID of meetup.
      */
@@ -57,16 +61,5 @@ public class Meetup {
      * Description of meetup.
      */
     private String description;
-    /**
-     * Topics of meetup.
-     */
-    private List<Topic> topics;
-
-    /**
-     * Constructor.
-     */
-    public Meetup() {
-        this.topics = new ArrayList<>();
-    }
 
 }
