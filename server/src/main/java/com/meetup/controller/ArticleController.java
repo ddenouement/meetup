@@ -104,7 +104,8 @@ public class ArticleController {
      *
      * @return Article list.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles")
     public ResponseEntity<List<ArticleDisplayDTO>> getAllArticles() {
