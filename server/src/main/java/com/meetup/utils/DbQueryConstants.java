@@ -55,5 +55,12 @@ public enum DbQueryConstants {
     id_type,
     count,
     offset,
-    limit;
+    limit,
+    speaker_login,
+    speaker_first_name,
+    speaker_last_name,
+    speaker_rate,
+    speaker_num_rates,
+    language_name,
+    topic_name;
 }

@@ -3,20 +3,15 @@ package com.meetup.service.impl;
 import static com.meetup.utils.RoleProcessor.isSpeaker;
 
 import com.meetup.entities.Meetup;
-import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.error.IllegalMeetupStateException;
 import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.OutOfSlotsException;
 import com.meetup.error.SpeakerOperationNotAllowedException;
-import com.meetup.error.TopicIsUsedException;
-import com.meetup.error.TopicNotFoundException;
 import com.meetup.repository.IMeetupDAO;
-import com.meetup.repository.ITopicDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.MeetupDaoImpl;
-import com.meetup.repository.impl.TopicDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
@@ -80,14 +75,14 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public List<MeetupDisplayDTO> getAllMeetups() {
-        List<Meetup> meetups = meetupDao.getAllMeetups();
-        return meetupDTOConverter.convertToMeetupDTO(meetups);
+        return meetupDao.getAllMeetups();
     }
 
     @Override
-    public List<MeetupDisplayDTO> getMeetupsByPages(final Integer offset, final Integer limit) {
-        List<Meetup> meetups = meetupDao.getAllMeetupsByPages(offset, limit);
-        return meetupDTOConverter.convertToMeetupDTO(meetups);    }
+    public List<MeetupDisplayDTO> getMeetupsByPages(final Integer offset,
+        final Integer limit) {
+       return meetupDao.getAllMeetupsByPages(offset, limit);
+    }
 
     /**
      * Retrieve all meetups from database that start at the specified time.
@@ -235,8 +230,7 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public MeetupDisplayDTO getMeetup(final int meetupID) {
-        return meetupDTOConverter
-            .convertToMeetupDTO(meetupDao.findMeetupByID(meetupID));
+        return meetupDao.findDisplayMeetupByID(meetupID);
     }
 
     /**

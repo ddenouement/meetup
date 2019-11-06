@@ -4,6 +4,7 @@ import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.MeetupDisplayDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,13 +18,15 @@ public interface IMeetupDAO {
      *
      * @return List of all meetups
      */
-    List<Meetup> getAllMeetups();
+    List<MeetupDisplayDTO> getAllMeetups();
+
     /**
-     * Retrieve all available meetups from database.
-     *
-     * @return List of all meetups
+     * Return all meetups with display using pagination parameters.
+     * @param offset offset for paging
+     * @param limit limit for paging
+     * @return
      */
-    List<Meetup> getAllMeetupsByPages(Integer offset, Integer limit);
+    List<MeetupDisplayDTO> getAllMeetupsByPages(Integer offset, Integer limit);
 
     /**
      * Retrieve all meetups from database that start at the specified time.
@@ -57,6 +60,14 @@ public interface IMeetupDAO {
      * @return Existing meetup.
      */
     Meetup findMeetupByID(int meetupID);
+
+    /**
+     * Get display meetup from DB by ID.
+     *
+     * @param meetupID Meetup id.
+     * @return MeetupDisplayDTO object.
+     */
+    MeetupDisplayDTO findDisplayMeetupByID(int meetupID);
 
     /**
      * Retrieve future hosted meetups of specified speaker.
@@ -99,14 +110,6 @@ public interface IMeetupDAO {
     void addTopicToMeetup(Meetup meetup, Topic topic);
 
     /**
-     * Get topics of meetup.
-     *
-     * @param meetupID Meetup ID.
-     * @return List of topics.
-     */
-    List<Topic> getMeetupTopics(int meetupID);
-
-    /**
      * Add user to specific meetup.
      *
      * @param meetupID Meetup, that user should register to.
@@ -147,21 +150,5 @@ public interface IMeetupDAO {
      * @param feedback Feedback object.
      */
     void rateMeetup(int meetupID, int userID, Feedback feedback);
-
-    /**
-     * Remove user languages.
-     * @param meetupID
-     * User ID.
-     */
-    void removeMeetupTopics(int meetupID);
-
-    /**
-     * Add topic to meetup.
-     * @param meetupID
-     * Meetup ID.
-     * @param topicID
-     * Topic ID.
-     */
-    void addMeetupTopic(int meetupID, int topicID);
 
 }

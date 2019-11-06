@@ -177,10 +177,9 @@ public class SearchDaoImpl implements ISearchDAO {
         List<Meetup> foundmeetups =
                 template.query(values.getSql(), param, new MeetupMapper());
 
-        for (Meetup m : foundmeetups) {
-            m.setTopics(meetupDAO.getMeetupTopics(m.getId()));
-
-        }
+//        for (Meetup m : foundmeetups) {
+//            m.setTopics(meetupDAO.getMeetupTopics(m.getId()));
+//        }
         return foundmeetups;
     }
 

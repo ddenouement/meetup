@@ -14,7 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * . API Rest Controller for Meetups
@@ -55,8 +64,7 @@ public class MeetupController {
     /**
      * .
      *
-     * @return ResponseEntity<List <Meetup>>
-     * @return ResponseEntity<List<Meetup>>
+     * @return ResponseEntity<List < Meetup>>
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
@@ -66,21 +74,25 @@ public class MeetupController {
         return new ResponseEntity<>(meetupService.getAllMeetups(),
             HttpStatus.OK);
     }
+
     /**
      * .
      *
-     * @return ResponseEntity<List<Meetup>>
+     * @return ResponseEntity<List < Meetup>>
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups", params = {"pagesize", "page"})
-    public ResponseEntity<List<MeetupDisplayDTO>> getMeetupsByPages(@RequestParam("pagesize") int pageSize,
-                                                                    @RequestParam("page") int currentPage) {
-        int offset = pageSize*(currentPage -1);
-        return new ResponseEntity<>(meetupService.getMeetupsByPages(offset, pageSize),
-                HttpStatus.OK);
+    public ResponseEntity<List<MeetupDisplayDTO>> getMeetupsByPages(
+        @RequestParam("pagesize") final int pageSize,
+        @RequestParam("page") final int currentPage) {
+        int offset = pageSize * (currentPage - 1);
+        return new ResponseEntity<>(
+            meetupService.getMeetupsByPages(offset, pageSize),
+            HttpStatus.OK);
     }
+
     /**
      * Get existing meetup.
      *

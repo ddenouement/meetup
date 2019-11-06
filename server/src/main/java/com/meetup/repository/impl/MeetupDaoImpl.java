@@ -2,21 +2,21 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
-import com.meetup.utils.MeetupState;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.MeetupDisplayDTO;
+import com.meetup.model.mapper.MeetupDisplayDtoMapper;
 import com.meetup.model.mapper.MeetupMapper;
-import com.meetup.model.mapper.TopicMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IMeetupDAO;
+import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.MeetupState;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.meetup.utils.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -103,16 +103,6 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Value("${add_topic_to_meeting}")
     private String addTopicToMeetup;
     /**
-     * . SQL reference script. Add topic.ts to specific meetup.
-     */
-    @Value("${get_meetup_topics}")
-    private String findMeetupTopics;
-    /**
-     * . SQL reference script. Get users joined to meetup.
-     */
-    @Value("${get_joined_meetups_of_user}")
-    private String getUsersJoinedMeetups;
-    /**
      * . SQL reference script. Add user to meetup.
      */
     @Value("${add_user_to_meetup}")
@@ -138,48 +128,41 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Value("${find_meetup_by_id}")
     private String getMeetupByID;
     /**
+     * . SQL reference script. Get MeetupDisplayDTO by ID.
+     */
+    @Value("${get_display_meetup_by_id}")
+    private String getDisplayMeetupByID;
+    /**
      * SQL reference script. Rate meetup.
      */
     @Value("${rate_meetup}")
     private String rateMeetup;
-    /**
-     * SQL reference script. Remove meetup topics.
-     */
-    @Value("${remove_meetup_topics}")
-    private String removeMeetupTopics;
 
     /**
-     * SQL reference script. Insert meetup topic.
-     */
-    @Value("${insert_meetup_topic}")
-    private String insertMeetupTopic;
-
-    /**
-     * . Get all meetups from DB.
+     * Get all meetups from DB.
      *
      * @return List of all meetups.
      */
     @Override
-    public List<Meetup> getAllMeetups() {
-        List<Meetup> meetups = this.template.query(
-            getAllMeetups, new MeetupMapper());
-        for (Meetup m : meetups) {
-            m.setTopics(getMeetupTopics(m.getId()));
-        }
-        return meetups;
+    public List<MeetupDisplayDTO> getAllMeetups() {
+        return this.template.query(
+            getAllMeetups, new MeetupDisplayDtoMapper());
     }
 
+    /**
+     * Return all meetups with display using pagination parameters.
+     *
+     * @param offset offset for paging
+     * @param limit limit for paging
+     */
     @Override
-    public List<Meetup> getAllMeetupsByPages(final Integer offset, final Integer limit) {
+    public List<MeetupDisplayDTO> getAllMeetupsByPages(final Integer offset,
+        final Integer limit) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.offset.name(), offset)
-                .addValue(DbQueryConstants.limit.name(), limit);
-        List<Meetup> meetups = this.template.query(
-                getAllMeetupsByPages,param, new MeetupMapper());
-        for (Meetup m : meetups) {
-            m.setTopics(getMeetupTopics(m.getId()));
-        }
-        return meetups;
+            .addValue(DbQueryConstants.offset.name(), offset)
+            .addValue(DbQueryConstants.limit.name(), limit);
+        return this.template
+            .query(getAllMeetupsByPages, param, new MeetupDisplayDtoMapper());
     }
 
     /**
@@ -192,12 +175,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public List<Meetup> getMeetupsByStartTime(final LocalDateTime startTime) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.start_time.name(), startTime);
-        List<Meetup> meetups = this.template.query(
-            getMeetupsByStartTime, param, new MeetupMapper());
-        for (Meetup m : meetups) {
-            m.setTopics(getMeetupTopics(m.getId()));
-        }
-        return meetups;
+        return this.template
+            .query(getMeetupsByStartTime, param, new MeetupMapper());
     }
 
     /**
@@ -213,6 +192,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.id_speaker.name(), meetup.getSpeakerId())
             .addValue(DbQueryConstants.id_language.name(),
                 meetup.getLanguageId())
+            .addValue(DbQueryConstants.id_topic.name(), meetup.getTopicId())
             .addValue(DbQueryConstants.id_state.name(),
                 MeetupState.SCHEDULED.getCode())
             .addValue(DbQueryConstants.title.name(), meetup.getTitle())
@@ -228,11 +208,6 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(insertNewMeetup, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             meetup.setId(holder.getKey().intValue());
-            //adding topics to DB
-            //TODOo rewrite
-            for (Topic topic : meetup.getTopics()) {
-                addTopicToMeetup(meetup, topic);
-            }
         }
         return meetup;
     }
@@ -253,6 +228,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 editedMeetup.getSpeakerId())
             .addValue(DbQueryConstants.id_language.name(),
                 editedMeetup.getLanguageId())
+            .addValue(DbQueryConstants.id_topic.name(),
+                editedMeetup.getTopicId())
             .addValue(DbQueryConstants.id_state.name(),
                 MeetupState.SCHEDULED.getCode())
             .addValue(DbQueryConstants.title.name(), editedMeetup.getTitle())
@@ -269,10 +246,6 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(updateMeetup, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             editedMeetup.setId(holder.getKey().intValue());
-            removeMeetupTopics(editedMeetup.getId());
-            for (Topic topic : editedMeetup.getTopics()) {
-                addTopicToMeetup(editedMeetup, topic);
-            }
         }
         return editedMeetup;
     }
@@ -289,6 +262,20 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.id.name(), meetupID);
         return this.template
             .queryForObject(getMeetupByID, param, new MeetupMapper());
+    }
+
+    /**
+     * Get display meetup from DB by ID.
+     *
+     * @param meetupID Meetup id.
+     * @return MeetupDisplayDTO object.
+     */
+    @Override
+    public MeetupDisplayDTO findDisplayMeetupByID(final int meetupID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.id.name(), meetupID);
+        return this.template
+            .queryForObject(getDisplayMeetupByID, param, new MeetupDisplayDtoMapper());
     }
 
     /**
@@ -312,19 +299,6 @@ public class MeetupDaoImpl implements IMeetupDAO {
         parametersForAddingTopic.put(
             DbQueryConstants.id_topic.name(), topicId);
         template.update(addTopicToMeetup, parametersForAddingTopic);
-    }
-
-    /**
-     * Get topics of meetup.
-     *
-     * @param meetupID Meetup ID.
-     * @return List of topics.
-     */
-    @Override
-    public List<Topic> getMeetupTopics(final int meetupID) {
-        SqlParameterSource param = new MapSqlParameterSource()
-            .addValue(DbQueryConstants.id_meetup.name(), meetupID);
-        return template.query(findMeetupTopics, param, new TopicMapper());
     }
 
     /**
@@ -380,32 +354,6 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("speaker_feedback", feedback.getFeedback())
             .addValue("time_posted", getCurrentTimestamp());
         template.update(rateMeetup, param);
-    }
-
-    /**
-     * Remove meetup topics.
-     *
-     * @param meetupID Meetup ID.
-     */
-    @Override
-    public void removeMeetupTopics(final int meetupID) {
-        SqlParameterSource param = new MapSqlParameterSource()
-            .addValue(DbQueryConstants.id_meetup.name(), meetupID);
-        template.update(removeMeetupTopics, param);
-    }
-
-    /**
-     * Add topic to meetup.
-     *
-     * @param meetupID Meetup ID.
-     * @param topicID Topic ID.
-     */
-    @Override
-    public void addMeetupTopic(final int meetupID, final int topicID) {
-        SqlParameterSource param = new MapSqlParameterSource()
-            .addValue(DbQueryConstants.id_meetup.name(), meetupID)
-            .addValue(DbQueryConstants.id_topic.name(), topicID);
-        template.update(insertMeetupTopic, param);
     }
 
     /**

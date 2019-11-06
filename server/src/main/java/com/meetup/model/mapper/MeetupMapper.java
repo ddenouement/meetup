@@ -27,6 +27,7 @@ public final class MeetupMapper implements RowMapper<Meetup> {
         meetup.setId(rs.getInt(DbQueryConstants.id.name()));
         meetup.setSpeakerId(rs.getInt(DbQueryConstants.id_speaker.name()));
         meetup.setLanguageId(rs.getInt(DbQueryConstants.id_language.name()));
+        meetup.setTopicId(rs.getInt(DbQueryConstants.id_topic.name()));
         meetup.setStateId(rs.getInt(DbQueryConstants.id_state.name()));
         meetup.setTitle(rs.getString(DbQueryConstants.title.name()));
         meetup.setStartDate(

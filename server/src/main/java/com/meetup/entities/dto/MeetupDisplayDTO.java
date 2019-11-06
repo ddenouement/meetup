@@ -1,20 +1,20 @@
 package com.meetup.entities.dto;
 
 import com.meetup.entities.Language;
-import com.meetup.utils.MeetupState;
 import com.meetup.entities.Topic;
+import com.meetup.utils.MeetupState;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Model class of Meetup.
  */
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
 public class MeetupDisplayDTO {
@@ -26,11 +26,15 @@ public class MeetupDisplayDTO {
     /**
      * Speaker credentials of meetup.
      */
-    private UserDTO speaker;
+    private SimpleUserDTO speaker;
     /**
      * Language of meetup.
      */
     private Language language;
+    /**
+     * Topic of meetup.
+     */
+    private Topic topic;
     /**
      * State of meetup.
      */
@@ -60,16 +64,5 @@ public class MeetupDisplayDTO {
      * Description of meetup.
      */
     private String description;
-    /**
-     * Topics of meetup.
-     */
-    private List<Topic> topics;
-
-    /**
-     * Constructor.
-     */
-    public MeetupDisplayDTO() {
-        this.topics = new ArrayList<>();
-    }
 
 }
