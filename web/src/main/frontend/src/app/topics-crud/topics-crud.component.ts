@@ -48,6 +48,7 @@ export class TopicsCrudComponent implements OnInit {
   }
 
   editTopic(t: TopicClass) {
+    this.cancelT();
     this.editedTopic = new TopicClass( t.id,t.name);
   }
   loadTemplateT(t: TopicClass) {

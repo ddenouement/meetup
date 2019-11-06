@@ -61,9 +61,12 @@ public class FilterController {
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/search")
     public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
-        @RequestBody final Filter filter
+   //     @RequestBody final Filter filter
     ) {
-        return ok(searchService.searchWithFilter(filter));
+        Filter f = new Filter();
+        f.setTopic_id(1);
+
+        return ok(searchService.searchWithFilter(f));
     }
 
     //only for testing, to see how JSON looks like
@@ -72,7 +75,7 @@ public class FilterController {
     ) {
         Filter filter = new Filter();
         filter.setRate_to(5);
-        filter.setTopics_ids(Arrays.asList(2, 3));
+        filter.setTopic_id(2);
         filter.setId_language(2);
         filter.setId_user(2);//petrenko
         Date d = null;
