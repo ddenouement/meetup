@@ -2,88 +2,15 @@
 
 ## Rest api:
 
-### MEETUP CONTROLLER
+### ADMIN CONTROLLER
 ____________________________________
-##### Get all meetups
-- Type: GET
-- /api/v1/meetups
-
-##### Get meetup
-- Type: GET
-- /api/v1/meetups/{id}
-
-##### Get all topics
-- Type: GET
-- /api/v1/meetups/topics
-
-##### Get topic
-- Type: GET
-- /api/v1/meetups/topics/{id}
-
-##### Create topic
-- Type: POST
-- RequestBody: Topic
-- /api/v1/meetups/topics
-
-##### Update topic
-- Type: PUT
-- RequestBody: Topic
-- /api/v1/meetups/topics/{id}
-
-##### Delete topic
-- Type: DELETE
-- /api/v1/meetups/topics/{id}
-
-##### Get meetups of speaker
-- Type: GET
-- /api/v1/meetups/speakers/{id}
-
-
-### USER CONTROLLER
-____________________________________
-##### Get user profile
-- Type: GET
-- /api/v1/user/profile
-
-##### Update user profile
-- Type: PUT
-- /api/v1/user/profile
-
-##### Get all speakers
-- Type: GET
-- RequestParam: String login
-- /api/v1/user/speakers
-
-##### Get all active users
-- Type: GET
-- RequestParam: String login
-- /api/v1/user/users
-
-##### Get all users
-- Type: GET
-- /api/v1/user/users/all
-
-##### Get other user profile
-- Type: GET
-- RequestParam: String login
-- /api/v1/user/people/profile/{id}
-
-##### Join meetup
-- Type: POST
-- /api/v1/user/meetups/{id}
-
-##### Leave meetup
-- Type: DELETE
-- /api/v1/user/meetups/{id}
-
 ##### Deactivate user (admin only)
 - Type: POST
 - /api/v1/user/users/{id}/deactivate
 
-##### Complain on user
+##### Activate user (admin only)
 - Type: POST
-- RequestBody: ComplaintDTO
-- /api/v1/user/complaint
+- /api/v1/users/{id}/activate
 
 ##### Get all complaints (admin only)
 - Type: GET
@@ -93,25 +20,28 @@ ____________________________________
 - Type: POST
 - /api/v1/user/complaints/{id}/read
 
-##### Subscribe to user
+### ARTICLE CONTROLLER
+____________________________________
+##### Create article (speaker only)
 - Type: POST
-- /api/v1/user/speakers/{id}/subscribe
+- RequestBody: Article article
+- /api/v1/user/speaker/articles
 
-##### Unsubscribe from user
+##### Remove article (speaker only)
 - Type: DELETE
-- /api/v1/user/speakers/{id}/subscribe
+- /api/v1/user/speaker/articles/{id}
 
-##### Get subscribers of user
-- Type: GET
-- /api/v1/user/speakers/{id}/subscribers
-
-##### Get article
-- Type: GET
+##### Remove article (admin only)
+- Type: DELETE
 - /api/v1/user/articles/{id}
 
 ##### Get all articles
 - Type: GET
 - /api/v1/user/articles
+
+##### Get article
+- Type: GET
+- /api/v1/user/articles/{id}
 
 ##### Get all comments of article
 - Type: GET
@@ -122,67 +52,9 @@ ____________________________________
 - RequestBody: Commentary commentary
 - /api/v1/user/articles/{id}/comments
 
-#### Change user's password
-- Type: PUT
-- RequestBody: String password
-- /api/v1/user/password
-
-##### Rate meetup
-- Type: POST
-- RequestBody: Feedback
-- /api/v1/rate/meetups/{id}
-
-#### Get user's ID
-- Type: GET
-- /api/v1/user/id
-
-#### Get all unread notifications
-- Type: GET
-- /api/v1/user/notifications
-
-#### Get number of unread notifications
-- Type: GET
-- /api/v1/user/notifications/count
-
-#### Mark notification as read
-- Type: PUT
-- /api/v1/user/notifications/{id}/read
-
-
-
-### SPEAKER CONTROLLER
-____________________________________
-##### Create meetup (speaker only)
-- Type: POST
-- RequestBody: Meetup meetup
-- /api/v1/user/speaker/meetups
-
-##### Update meetup (speaker only)
-- Type: PUT
-- RequestBody: Meetup editedMeetup
-- /api/v1/user/speaker/meetups/{id}
-
-##### Cancel meetup (speaker only)
+##### Remove comment on article
 - Type: DELETE
-- /api/v1/user/speaker/meetups/{id}
-
-##### Start meetup (speaker only)
-- Type: POST
-- /api/v1/user/speaker/meetups/{id}/start
-
-##### Terminate meetup (speaker only)
-- Type: POST
-- /api/v1/user/speaker/meetups/{id}/terminate
-
-##### Create article (speaker only)
-- Type: POST
-- RequestBody: Article article
-- /api/v1/user/speaker/articles
-
-##### Remove article (speaker only)
-- Type: DELETE
-- /api/v1/user/speaker/articles/{id}
-
+- /api/v1/user/articles/comments/{id}
 
 ### BADGE CONTROLLER
 ____________________________________
@@ -236,4 +108,149 @@ ____________________________________
 - Type: PUT
 - RequestBody: Language
 - /api/v1/languages
+
+### TOPIC CONTROLLER
+____________________________________
+##### Get all topics
+- Type: GET
+- /api/v1/meetups/topics
+
+##### Get topic
+- Type: GET
+- /api/v1/meetups/topics/{id}
+
+##### Create topic
+- Type: POST
+- RequestBody: Topic
+- /api/v1/meetups/topics
+
+##### Update topic
+- Type: PUT
+- RequestBody: Topic
+- /api/v1/meetups/topics/{id}
+
+##### Delete topic
+- Type: DELETE
+- /api/v1/meetups/topics/{id}
+
+
+### MEETUP CONTROLLER
+____________________________________
+##### Get all meetups
+- Type: GET
+- /api/v1/meetups
+
+##### Get meetup
+- Type: GET
+- /api/v1/meetups/{id}
+
+##### Get meetups of speaker
+- Type: GET
+- /api/v1/meetups/speakers/{id}
+
+##### Join meetup
+- Type: POST
+- /api/v1/user/meetups/{id}
+
+##### Leave meetup
+- Type: DELETE
+- /api/v1/user/meetups/{id}
+
+##### Rate meetup
+- Type: POST
+- RequestBody: Feedback
+- /api/v1/rate/meetups/{id}
+
+##### Create meetup (speaker only)
+- Type: POST
+- RequestBody: Meetup meetup
+- /api/v1/user/speaker/meetups
+
+##### Update meetup (speaker only)
+- Type: PUT
+- RequestBody: Meetup editedMeetup
+- /api/v1/user/speaker/meetups/{id}
+
+##### Cancel meetup (speaker only)
+- Type: DELETE
+- /api/v1/user/speaker/meetups/{id}
+
+##### Start meetup (speaker only)
+- Type: POST
+- /api/v1/user/speaker/meetups/{id}/start
+
+##### Terminate meetup (speaker only)
+- Type: POST
+- /api/v1/user/speaker/meetups/{id}/terminate
+
+### PROFILE CONTROLLER
+____________________________________
+##### Get user profile
+- Type: GET
+- /api/v1/user/profile
+
+##### Update user profile
+- Type: PUT
+- /api/v1/user/profile
+
+##### Get other user profile
+- Type: GET
+- RequestParam: String login
+- /api/v1/user/people/profile/{id}
+
+### NOTIFICATION CONTROLLER
+____________________________________
+#### Get all unread notifications
+- Type: GET
+- /api/v1/user/notifications
+
+#### Get number of unread notifications
+- Type: GET
+- /api/v1/user/notifications/count
+
+#### Mark notification as read
+- Type: PUT
+- /api/v1/user/notifications/{id}/read
+
+### USER CONTROLLER
+____________________________________
+##### Get all speakers
+- Type: GET
+- RequestParam: String login
+- /api/v1/user/speakers
+
+##### Get all active users
+- Type: GET
+- RequestParam: String login
+- /api/v1/user/users
+
+##### Get all users
+- Type: GET
+- /api/v1/user/users/all
+
+##### Complain on user
+- Type: POST
+- RequestBody: ComplaintDTO
+- /api/v1/user/complaint
+
+##### Subscribe to user
+- Type: POST
+- /api/v1/user/speakers/{id}/subscribe
+
+##### Unsubscribe from user
+- Type: DELETE
+- /api/v1/user/speakers/{id}/subscribe
+
+##### Get subscribers of user
+- Type: GET
+- /api/v1/user/speakers/{id}/subscribers
+
+#### Change user's password
+- Type: PUT
+- RequestBody: String password
+- /api/v1/user/password
+
+#### Get user's ID
+- Type: GET
+- /api/v1/user/id
 

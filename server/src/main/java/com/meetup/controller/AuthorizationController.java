@@ -113,20 +113,6 @@ public class AuthorizationController {
     }
 
     /**
-     * . Helper method
-     *
-     * @param login String
-     * @return User
-     */
-    private User findByUsernameAmongAll(final String login) {
-        User a = userDao.findUserByLogin(login);
-        if (a == null) {
-            throw new BadCredentialsException("No such person");
-        }
-        return a;
-    }
-
-    /**
      * ,. sign as listener
      *
      * @param user User
@@ -163,7 +149,7 @@ public class AuthorizationController {
     @PreAuthorize("hasRole(T(com.meetup.utils.Role).LISTENER) "
         + "AND !hasRole(T(com.meetup.utils.Role).SPEAKER)")
     @PutMapping(value = "/users/upgrade")
-    public ResponseEntity registerSpeaker(
+    public ResponseEntity promoteToSpeaker(
         @CookieValue("token") final String token,
         @RequestBody final UserRegistrationDTO user,
         final HttpServletResponse response) {
@@ -171,6 +157,25 @@ public class AuthorizationController {
         userService.upgradeToSpeaker(user, userId);
         deleteToken(response);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * Change user's password.
+     *
+     * @param password new password
+     * @param token cookie with JWT
+     * @return status
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PutMapping(value = "/user/password")
+    public ResponseEntity changePassword(
+        @RequestBody final String password,
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        userService.changePassword(userId, password);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -208,5 +213,19 @@ public class AuthorizationController {
      */
     private void deleteToken(final HttpServletResponse response) {
         setCookie(response, "token", null, 0);
+    }
+
+    /**
+     * Helper method.
+     *
+     * @param login String
+     * @return User
+     */
+    private User findByUsernameAmongAll(final String login) {
+        User a = userDao.findUserByLogin(login);
+        if (a == null) {
+            throw new BadCredentialsException("No such person");
+        }
+        return a;
     }
 }

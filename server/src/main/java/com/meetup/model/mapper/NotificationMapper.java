@@ -3,6 +3,7 @@ package com.meetup.model.mapper;
 import com.meetup.entities.Notification;
 import com.meetup.utils.NotificationType;
 import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.TimeUtility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;

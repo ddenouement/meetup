@@ -1,6 +1,7 @@
 package com.meetup.model.mapper;
 
 import com.meetup.entities.Meetup;
+import com.meetup.utils.TimeUtility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

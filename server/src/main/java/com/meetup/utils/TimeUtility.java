@@ -1,4 +1,4 @@
-package com.meetup.model.mapper;
+package com.meetup.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
