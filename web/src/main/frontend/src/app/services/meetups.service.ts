@@ -128,13 +128,13 @@ export class MeetupsService {
   getMeetups(meetupsPerPage : number, currentPage: number) {
     const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
     this.http
-      .get<MeetupDto[]>(
+      .get<{meetups: MeetupDto[], meetupsCount : number}>(
         this.meetupsUrl+queryParams
       )
       .pipe(
         map(meetupData => {
           return {
-            meetupsDto: meetupData.map( meetup => {
+            meetupsDto: meetupData.meetups.map( meetup => {
                 return {
                   id: meetup.id,
                   title: meetup.title,

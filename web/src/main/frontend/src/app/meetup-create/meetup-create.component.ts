@@ -45,11 +45,6 @@ export class MeetupCreateComponent implements OnInit {
   minDate = new Date();
   time : Date;
   date : Date;
-  // month: string;
-  // day: string;
-  // hours: string;
-  // minutes: string;
-  // startDate : string;
   startDate : Date;
 
 
@@ -66,13 +61,12 @@ export class MeetupCreateComponent implements OnInit {
       title: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      // startDate: new FormControl(null, {validators: [Validators.required]}),
       durationMinutes: new FormControl('', [Validators.required]),
       language: new FormControl('',[Validators.required]),
       minAttendees: new FormControl(null, {validators: [Validators.required]}),
       maxAttendees: new FormControl(null, {validators: [Validators.required]}),
       description: new FormControl(null, {validators: [Validators.required]}),
-      topics: new FormControl('',[Validators.required]),
+      topic: new FormControl('',[Validators.required]),
       time: new FormControl(this.minDate, [Validators.required]),
       date: new FormControl( null ),
     });
@@ -137,7 +131,7 @@ export class MeetupCreateComponent implements OnInit {
         this.form.value.minAttendees,
         this.form.value.maxAttendees,
         this.form.value.description,
-        this.form.value.topics
+        this.form.value.topic
       );
     }else{
       this.meetupService.updateMeetup(
@@ -151,7 +145,7 @@ export class MeetupCreateComponent implements OnInit {
         this.form.value.minAttendees,
         this.form.value.maxAttendees,
         this.form.value.description,
-        this.form.value.topics
+        this.form.value.topic
       );
       this.isLoading = false;
     }

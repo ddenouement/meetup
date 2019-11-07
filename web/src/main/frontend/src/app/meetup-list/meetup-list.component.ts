@@ -28,9 +28,10 @@ export class MeetupListComponent implements OnInit, OnDestroy{
     this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage);
     //set up listener to subject
     this.meetingsSub = this.meetupsService.getMeetupDtoUpdateListener()
-      .subscribe((meetupData: { meetups: MeetupDto[] })=>{
+      .subscribe((meetupData: { meetups: MeetupDto[], meetupsCount: number })=>{
         this.isLoading=false;
         this.meetups = meetupData.meetups;
+        this.totalMeetups = meetupData.meetupsCount;
       });
   }
 

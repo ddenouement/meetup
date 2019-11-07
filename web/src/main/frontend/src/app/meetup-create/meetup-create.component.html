@@ -63,10 +63,9 @@
 
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <mat-select
-          placeholder="Topics"
-          formControlName="topics"
-          required
-          multiple>
+          placeholder="Topic"
+          formControlName="topic"
+          required>
           <mat-option
             *ngFor="let topic of topicsList"
             [value]="topic">
