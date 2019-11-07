@@ -1,10 +1,12 @@
 import {User} from "./user";import {Observable} from "rxjs";
 import {LanguagesList} from "./languagesList";
 import {Topic} from "./topic";
+import {SimpleUserDto} from "./simpleUserDto.model";
 
 export interface MeetupDto{
   id : number;
-  speaker: User;
+  // speaker: User;
+  speaker: SimpleUserDto;
   language: LanguagesList;
   state: string;
   title : string;
@@ -13,5 +15,6 @@ export interface MeetupDto{
   minAttendees : number;
   maxAttendees : number;
   description : string;
-  topics : Topic[];
+  // topics : Topic[];
+  topic : Topic;
 }

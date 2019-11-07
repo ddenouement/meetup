@@ -1,5 +1,6 @@
 <app-sidebar></app-sidebar>
-<div class="cardList">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="cardList" *ngIf="!isLoading">
   <ng-container *ngFor="let article of articles">
     <mat-card class="cardListItem">
       <mat-card-title fxLayout = "row">

@@ -156,7 +156,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(Integer offset, Integer limit) {
         List<Article> articles = articleDao.getAllArticlesByPages(offset,limit);
-        Integer maxArticles = articleDao.getArticlesCount();
+//        Integer maxArticles = articleDao.getArticlesCount();
         List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
         for (Article article : articles) {
             User user = userDao.findUserById(article.getAuthorID());

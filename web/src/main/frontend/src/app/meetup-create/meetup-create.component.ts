@@ -33,7 +33,8 @@ export class MeetupCreateComponent implements OnInit {
     {title: '1h 30min', minutes: 90},
     {title: '2 h', minutes: 120},
   ];
-  meetup: MeetupDto;
+  meetup: Meetup;
+  meetupDto: MeetupDto;
   form: FormGroup;
   private mode = 'create';
   isLoading = false;
@@ -49,8 +50,6 @@ export class MeetupCreateComponent implements OnInit {
 
 
   constructor(public meetupService: MeetupsService,
-              public langService: Languagesservice,
-              public topicService : Topicsservice,
               private router: Router,
               private route: ActivatedRoute) {  }
 
@@ -77,8 +76,9 @@ export class MeetupCreateComponent implements OnInit {
         this.isLoading = true;
         this.meetupService.getMeetup(+this.meetupId).subscribe(meetupData =>{
           this.isLoading = false;
-          this.meetup = meetupData;
+          this.meetupDto = meetupData;
           this.meetupLang = meetupData.language;
+          this.meetupTopic = meetupData.topic;
           this.meetupDurationMinutes = meetupData.durationMinutes;
           const toSelectDuration = this.durations.find(d => d.minutes == this.meetupDurationMinutes);
           this.form.get('durationMinutes').setValue(toSelectDuration);
@@ -93,6 +93,8 @@ export class MeetupCreateComponent implements OnInit {
           this.topicsSub = this.meetupService.getTopicUpdateListener()
             .subscribe((topicsData: { topics: LanguagesList[] })=>{
               this.topicsList = topicsData.topics;
+              const toSelectTopic = this.topicsList.find(t => t.name == this.meetupTopic.name);
+              this.form.get('topic').setValue(toSelectTopic);
             });
         });
       }else{
@@ -125,27 +127,27 @@ export class MeetupCreateComponent implements OnInit {
     if(this.mode === "create"){
       this.meetupService.addMeetup(
         this.form.value.language.id,
+        this.form.value.topic.id,
         this.form.value.title,
         this.startDate,
         this.form.value.durationMinutes.minutes,
         this.form.value.minAttendees,
         this.form.value.maxAttendees,
-        this.form.value.description,
-        this.form.value.topic
+        this.form.value.description
       );
     }else{
       this.meetupService.updateMeetup(
         +this.meetupId,
         this.form.value.title,
-        this.meetup.speaker,
+        this.meetup.speakerId,
         this.form.value.language.id,
+        this.form.value.topic.id,
         this.meetup.state,
         this.startDate,
         this.form.value.durationMinutes.minutes,
         this.form.value.minAttendees,
         this.form.value.maxAttendees,
         this.form.value.description,
-        this.form.value.topic
       );
       this.isLoading = false;
     }

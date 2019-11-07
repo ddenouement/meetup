@@ -5,11 +5,13 @@ import {TopicClass} from "./topic_class";
 import {Observable} from "rxjs";
 import {LanguagesList} from "./languagesList";
 import {Topic} from "./topic";
+import {SimpleUserDto} from "./simpleUserDto.model";
 
 export interface Meetup{
   id : number;
-  speaker: User;
+  speakerId: number;
   languageId: number;
+  topicId: number;
   state: string;
   title : string;
   startDate: Date;
@@ -17,5 +19,5 @@ export interface Meetup{
   minAttendees : number;
   maxAttendees : number;
   description : string;
-  topics : Topic[];
+  // topics : Topic[];
 }
