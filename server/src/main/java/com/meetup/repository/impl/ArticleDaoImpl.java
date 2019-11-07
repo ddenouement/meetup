@@ -221,17 +221,14 @@ public class ArticleDaoImpl implements IArticleDAO {
      * @param commentary Commentary.
      */
     @Override
-    public Commentary addCommentary(final int articleID, final int authorID,
+    public void addCommentary(final int articleID, final int authorID,
         Commentary commentary) {
-        commentary.setAuthorID(authorID);
-        commentary.setArticleID(articleID);
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_author.name(), authorID)
             .addValue(id_article.name(), articleID)
             .addValue(contents.name(), commentary.getContents())
             .addValue(time_posted.name(), getCurrentTimestamp());
         template.update(insertNewCommentary, param);
-        return commentary;
     }
 
     /**

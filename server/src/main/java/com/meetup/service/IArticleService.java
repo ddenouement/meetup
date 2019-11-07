@@ -73,7 +73,7 @@ public interface IArticleService {
      * @param userLogin User login.
      * @param commentary Commentary.
      */
-    CommentaryDisplayDTO postCommentary(int articleID, String userLogin, Commentary commentary);
+    void postCommentary(int articleID, String userLogin, Commentary commentary);
 
     /**
      * Remove commentary from article.
