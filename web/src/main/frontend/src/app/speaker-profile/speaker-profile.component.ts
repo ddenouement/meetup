@@ -6,6 +6,12 @@ import {ErrorStateMatcher} from "@angular/material/core";
 import {StarRatingComponent} from "ng-starrating";
 import {RegisterService} from "../register-speaker/register.service";
 import {LanguagesList} from "../models/languagesList";
+import {MustMatch} from "../register-speaker/register-speaker.component";
+import {Meetup} from "../models/meetup.model";
+import {Subscription} from "rxjs";
+import {MeetupsService} from "../services/meetups.service";
+import {SpeakerProfileService} from "./speaker-profile.service";
+import {Router} from "@angular/router";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -26,18 +32,29 @@ export class SpeakerProfileComponent implements OnInit {
   public loading = false;
   matcher = new MyErrorStateMatcher();
   languages: LanguagesList [];
+  selectedLanguages: LanguagesList [];
+  public speakerId: number;
+  public badgeList: string[] = [];
+  public langListNames: string[] = [];
   public firstName: string;
   public lastName: string;
   public login: string;
   public email: string;
   public about: string;
-  private userURL = '/api/v1/user/profile';
 
+  speakerMeetups: Meetup[] = [];
+  private meetingsSub: Subscription;
+  star: number;
+  edited = false;
+  selected: any;
 
   constructor(
     private httpClient: HttpClient,
+    private meetupsService: MeetupsService,
     private formBuilder: FormBuilder,
     private registerService: RegisterService,
+    private speakerService: SpeakerProfileService,
+    private router: Router,
   ) {
   }
 
@@ -46,67 +63,86 @@ export class SpeakerProfileComponent implements OnInit {
   }
 
   private changeProfile() {
+    let langList: number[] = [];
+    for (let i in this.changeForm.get('languages').value) {
+      langList[i] = this.changeForm.get('languages').value[i].id;
+    }
     const user = <User>{
       firstName: this.changeForm.get('firstName').value,
       lastName: this.changeForm.get('lastName').value,
       login: this.changeForm.get('login').value,
       email: this.changeForm.get('email').value,
-      about: this.changeForm.get('about').value
+      about: this.changeForm.get('about').value,
+      languageIds: langList,
     };
     this.loading = true;
+    this.speakerService.updateUser(user).subscribe(res => {
+      this.ngOnInit();
+      this.loading = false;
+      this.edited = false;
+    }, error => {
+      this.loading = false;
+      console.warn('ERROR in speaker profile UPDATE(put)');
+      console.warn(error);
+    });
   }
 
   ngOnInit() {
-    this.changeForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      login: new FormControl(),
-      email: new FormControl(),
-      about: new FormControl(),
-      languages: new FormControl()
+    this.changeForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      login: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      about: [''],
+      languages: ['', Validators.required]
     });
-    let langList: string[] = [];
-    this.httpClient.get(this.userURL).subscribe(res => {
-      for (let i in res['UserDTO'].languages) {
-        langList[i] = res['UserDTO'].languages[i].name;
+    this.speakerService.getSpeaker().subscribe(res => {
+      for (let i in res['userDTO'].languages) {
+        this.langListNames[i] = res['userDTO'].languages[i].name;
       }
-      this.changeForm = this.formBuilder.group({
-        firstName: [res['UserDTO'].firstName, Validators.required],
-        lastName: [res['UserDTO'].lastName, Validators.required],
-        login: [res['UserDTO'].login, Validators.required],
-        email: [res['UserDTO'].email, [Validators.required, Validators.email]],
-        about: [res['UserDTO'].about],
-        //rate: [res['UserDTO'].rate],
-        languages: [langList, Validators.required]
-      });
-    });
-
-    this.registerService.getLanguages()
-      .subscribe(
-        languages => {
-          this.languages = languages;
-        },
-        err => {
-          console.log(err);
+      this.selectedLanguages = res['userDTO'].languages;
+      this.star = res['userDTO'].rate;
+      this.speakerId = res['userDTO'].id;
+      this.meetupsService.getSpeakerMeetups(this.speakerId);
+      //set up listener to subject
+      this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
+        .subscribe((meetupData: { meetups: Meetup[] })=>{
+          this.speakerMeetups = meetupData.meetups;
         });
 
-    const hamburger = document.querySelector(".hamburger");
-    const bar = document.querySelector(".sidebar");
-// On click
-    hamburger.addEventListener("click", function () {
-      // Toggle class "is-active"
-      bar.classList.toggle("active");
-      hamburger.classList.toggle("is-active");
-      // Do something else, like open/close menu
+      this.badgeList = res['badges'];
+      this.changeForm = this.formBuilder.group({
+        firstName: [res['userDTO'].firstName, Validators.required],
+        lastName: [res['userDTO'].lastName, Validators.required],
+        login: [res['userDTO'].login, Validators.required],
+        email: [res['userDTO'].email, [Validators.required, Validators.email]],
+        about: [res['userDTO'].about],
+        languages: ['', Validators.required]
+      });
+      this.selected = this.selectedLanguages;
+      this.firstName = res['userDTO'].firstName;
+      this.lastName = res['userDTO'].lastName;
+      this.login = res['userDTO'].login;
+      this.email = res['userDTO'].email;
+      this.about = res['userDTO'].about;
     });
+
+    this.registerService.getLanguages().subscribe(
+      res => {
+        this.languages = res;
+      },
+      err => {
+        console.log(err);
+      });
+
+
   }
 
-  onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
-    alert(`Old Value:${$event.oldValue}, 
-      New Value: ${$event.newValue}, 
-      Checked Color: ${$event.starRating.checkedcolor}, 
-      Unchecked Color: ${$event.starRating.uncheckedcolor}`);
+  onEdit() {
+    this.edited = true;
   }
 
-
+  onCancel() {
+    this.edited = false;
+  }
 }

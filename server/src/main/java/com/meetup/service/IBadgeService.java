@@ -26,14 +26,16 @@ public interface IBadgeService {
      * Update a badge to a new one.
      * @param badge new field values for badge
      * @param id id of badge to update
+     * @return updated badge
      */
-    void update(Badge badge, Integer id);
+    Badge update(Badge badge, Integer id);
 
     /**
      * Insert a badge.
      * @param badge badge to insert
+     * @return inserted badge
      */
-    void insert(Badge badge);
+    Badge insert(Badge badge);
 
     /**
      * Delete a badge with specified ID.

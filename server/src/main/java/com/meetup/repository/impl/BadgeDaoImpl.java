@@ -6,13 +6,17 @@ import com.meetup.model.mapper.BadgeMapper;
 import com.meetup.model.mapper.StringMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IBadgeDAO;
+import com.meetup.utils.DbQueryConstants;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -48,6 +52,13 @@ public class BadgeDaoImpl implements IBadgeDAO {
      */
     @Value("${find_badge_by_id}")
     private String findBadgeById;
+
+    /**
+     * SQL script to select a row with specific name (case insensitive) in table
+     * badges.
+     */
+    @Value("${find_badge_by_name}")
+    private String findBadgeByName;
 
     /**
      * SQL script to insert a row in table badges.
@@ -98,9 +109,28 @@ public class BadgeDaoImpl implements IBadgeDAO {
     @Override
     public Badge findById(final Integer id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id);
+            .addValue(DbQueryConstants.id.name(), id);
         List<Badge> badges = template
             .query(findBadgeById, param, new BadgeMapper());
+        if (badges.isEmpty()) {
+            return null;
+        } else {
+            return badges.get(0);
+        }
+    }
+
+    /**
+     * Return a badge with specified name in the database (case insensitive).
+     *
+     * @param name name of badge to return (case insensitive)
+     * @return a badge with specified ID
+     */
+    @Override
+    public Badge findByName(final String name) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue(DbQueryConstants.name.name(), name);
+        List<Badge> badges = template
+            .query(findBadgeByName, param, new BadgeMapper());
         if (badges.isEmpty()) {
             return null;
         } else {
@@ -113,27 +143,37 @@ public class BadgeDaoImpl implements IBadgeDAO {
      *
      * @param badge new field values for badge
      * @param id id of badge to update
+     * @return updated badge
      */
     @Override
-    public void update(final Badge badge, final Integer id) {
+    public Badge update(final Badge badge, final Integer id) {
+        KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id)
-            .addValue("name", badge.getName())
-            .addValue("script", badge.getScript());
-        template.update(updateBadge, param);
+            .addValue(DbQueryConstants.id.name(), id)
+            .addValue(DbQueryConstants.name.name(), badge.getName())
+            .addValue(DbQueryConstants.script.name(), badge.getScript());
+        template.update(updateBadge, param, holder, new String[]
+            {DbQueryConstants.id.name()});
+        badge.setId(Objects.requireNonNull(holder.getKey()).intValue());
+        return badge;
     }
 
     /**
      * Insert a badge in the database.
      *
      * @param badge badge to insert
+     * @return inserted badge
      */
     @Override
-    public void insert(final Badge badge) {
+    public Badge insert(final Badge badge) {
+        KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("name", badge.getName())
-            .addValue("script", badge.getScript());
-        template.update(insertBadge, param);
+            .addValue(DbQueryConstants.name.name(), badge.getName())
+            .addValue(DbQueryConstants.script.name(), badge.getScript());
+        template.update(insertBadge, param, holder, new String[]
+            {DbQueryConstants.id.name()});
+        badge.setId(Objects.requireNonNull(holder.getKey()).intValue());
+        return badge;
     }
 
     /**
@@ -144,7 +184,7 @@ public class BadgeDaoImpl implements IBadgeDAO {
     @Override
     public void delete(final Integer id) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("id", id);
+            .addValue(DbQueryConstants.id.name(), id);
         template.update(deleteBadge, param);
     }
 
@@ -157,7 +197,7 @@ public class BadgeDaoImpl implements IBadgeDAO {
     @Override
     public List<String> getUserBadges(final Integer userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("user_id", userId);
+            .addValue(DbQueryConstants.user_id.name(), userId);
         return template.query(getUserBadges, param, new StringMapper());
     }
 
@@ -170,7 +210,7 @@ public class BadgeDaoImpl implements IBadgeDAO {
     @Override
     public List<User> getUsersWithBadge(final String script) {
         SqlParameterSource param = new MapSqlParameterSource()
-            .addValue("script", script);
+            .addValue(DbQueryConstants.script.name(), script);
         return template.query(getUsersWithBadge, param, new UserMapper());
     }
 

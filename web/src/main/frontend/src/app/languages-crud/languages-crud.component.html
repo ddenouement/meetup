@@ -1,0 +1,33 @@
+
+<input type="button" value="Add new language" [disabled]="isDisabledAddButton()" class="addbtn btn_my" (click)="addLanguage()" />
+<div class="message_or_error">{{statusMessageL}}</div>
+
+<table>
+  <tbody>
+  <tr *ngFor="let lang of languages">
+    <ng-template [ngTemplateOutlet]="loadTemplateL(lang)"
+                 [ngTemplateOutletContext]="{ $implicit: lang}">
+    </ng-template>
+  </tr>
+  </tbody>
+</table>
+<ng-template #readOnlyTemplate let-lang>
+  <td>{{lang.name}}</td>
+  <td>
+    <input type="button" value="Edit" class="btnedit btn_my" (click)="editLanguage(lang)" />
+  </td>
+  <td>
+    <input type="button" value="Delete" (click)="deleteLanguage(lang)" class="btn_delete btn_my" />
+  </td>
+</ng-template>
+<ng-template #editTemplate>
+  <td>
+    <input type="text" [(ngModel)]="editedLanguage.name" class="form-control" />
+  </td>
+  <td>
+    <input type="button" value="Save"  [disabled] = "editedLanguage.name===''" (click)="saveLanguage()" class="btn_good btn_my" />
+  </td>
+  <td>
+    <input type="button" value="Cancel changes" (click)="cancelL()" class="btn_my btn_warning" />
+  </td>
+</ng-template>

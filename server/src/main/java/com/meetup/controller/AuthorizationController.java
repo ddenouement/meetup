@@ -7,6 +7,7 @@ import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
+import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.RoleProcessor;
 import io.swagger.annotations.Api;
@@ -24,9 +25,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @Api(value = "meetup-application")
+@RequestMapping("/api/v1")
 public class AuthorizationController {
 
     /**
@@ -57,6 +62,11 @@ public class AuthorizationController {
      */
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    /**
+     * Login validation service.
+     */
+    @Autowired
+    private ILoginValidatorService loginValidatorService;
 
     /**
      * ,. SignIn   generates a token
@@ -65,7 +75,7 @@ public class AuthorizationController {
      * @param response HttpServletResponse
      * @return ResponseEntity
      **/
-    @PostMapping("/api/v1/user/login")
+    @PostMapping("/user/login")
     public ResponseEntity signIn(
         final @RequestBody AuthentificationRequest data,
         final HttpServletResponse response) {
@@ -89,30 +99,17 @@ public class AuthorizationController {
 
     /**
      * Delete token from cookies.
+     *
      * @param response HttpServletResponse
      * @return status of operation
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.entities.Role).ADMIN, "
-        + "T(com.meetup.entities.Role).SPEAKER, "
-        + "T(com.meetup.entities.Role).LISTENER)")
-    @GetMapping(value = "api/v1/user/logout")
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/user/logout")
     public ResponseEntity logout(final HttpServletResponse response) {
         deleteToken(response);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    /**
-     * . Helper method
-     *
-     * @param login String
-     * @return User
-     */
-    private User findByUsernameAmongAll(final String login) {
-        User a = userDao.findUserByLogin(login);
-        if (a == null) {
-            throw new BadCredentialsException("No such person");
-        }
-        return a;
     }
 
     /**
@@ -121,7 +118,7 @@ public class AuthorizationController {
      * @param user User
      * @return ResponseEntity
      */
-    @PostMapping(value = "/api/v1/user/register/listener")
+    @PostMapping(value = "/user/register/listener")
     public ResponseEntity registerListener(
         final @RequestBody UserRegistrationDTO user) {
         userService.registerAsListener(user);
@@ -134,11 +131,51 @@ public class AuthorizationController {
      * @param user User
      * @return ResponseEntity
      */
-    @PostMapping(value = "/api/v1/user/register/speaker")
+    @PostMapping(value = "/user/register/speaker")
     public ResponseEntity registerSpeaker(
         final @RequestBody UserRegistrationDTO user) {
         userService.registerAsSpeaker(user);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    /**
+     * Upgrade listener to speaker and log out.
+     *
+     * @param token cookie with JWT
+     * @param user info about upgraded user
+     * @param response response to write deleted cookie with JWT to
+     * @return status
+     */
+    @PreAuthorize("hasRole(T(com.meetup.utils.Role).LISTENER) "
+        + "AND !hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PutMapping(value = "/users/upgrade")
+    public ResponseEntity promoteToSpeaker(
+        @CookieValue("token") final String token,
+        @RequestBody final UserRegistrationDTO user,
+        final HttpServletResponse response) {
+        Integer userId = loginValidatorService.extractId(token);
+        userService.upgradeToSpeaker(user, userId);
+        deleteToken(response);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * Change user's password.
+     *
+     * @param password new password
+     * @param token cookie with JWT
+     * @return status
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PutMapping(value = "/user/password")
+    public ResponseEntity changePassword(
+        @RequestBody final String password,
+        @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        userService.changePassword(userId, password);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -154,12 +191,12 @@ public class AuthorizationController {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/"); // global cookie accessible everywhere
         cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }
 
     /**
      * Save a token to cookie and add it to response.
+     *
      * @param response where to add cookie
      * @param token token to save
      */
@@ -171,9 +208,24 @@ public class AuthorizationController {
 
     /**
      * Delete a token from cookie through response.
+     *
      * @param response where to overwrite cookie
      */
     private void deleteToken(final HttpServletResponse response) {
         setCookie(response, "token", null, 0);
+    }
+
+    /**
+     * Helper method.
+     *
+     * @param login String
+     * @return User
+     */
+    private User findByUsernameAmongAll(final String login) {
+        User a = userDao.findUserByLogin(login);
+        if (a == null) {
+            throw new BadCredentialsException("No such person");
+        }
+        return a;
     }
 }

@@ -1,12 +1,18 @@
 package com.meetup.controller;
 
+import com.meetup.error.ArticleNotFoundException;
+import com.meetup.error.BadgeNameExistsException;
+import com.meetup.error.LanguageIsUsedException;
+import com.meetup.error.MeetupNotFoundException;
+import com.meetup.error.TopicIsUsedException;
+import com.meetup.error.UserNotFoundException;
 import com.meetup.error.BadgeScriptIsIncorrectException;
 import com.meetup.error.EmailIsUsedException;
+import com.meetup.error.IllegalMeetupStateException;
 import com.meetup.error.LoginIsUsedException;
-import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.OutOfSlotsException;
-import com.meetup.error.SpeakerOperationNotAllowedException;
 import com.meetup.error.TopicNotFoundException;
+import com.meetup.error.SpeakerOperationNotAllowedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +23,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * Exception controller class.
  * Returns ResponseEntity object with status code.
  */
+
+//TODO constants, logger
 @ControllerAdvice
 public class GlobalExceptionController {
 
@@ -41,6 +49,18 @@ public class GlobalExceptionController {
     public ResponseEntity<Object> topicNotFoundException() {
         return new ResponseEntity<>(
             "Topic not found!",
+            HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * ArticleNotFoundException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(ArticleNotFoundException.class)
+    public ResponseEntity<Object> articleNotFoundException() {
+        return new ResponseEntity<>(
+            "Article not found!",
             HttpStatus.NOT_FOUND);
     }
 
@@ -93,6 +113,30 @@ public class GlobalExceptionController {
     }
 
     /**
+     * TopicIsUsedException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(TopicIsUsedException.class)
+    public ResponseEntity<Object> topicIsUsedException() {
+        return new ResponseEntity<>(
+            "Topic with this name already exists!",
+            HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * LanguageIsUsedException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler(LanguageIsUsedException.class)
+    public ResponseEntity<Object> languageIsUsedException() {
+        return new ResponseEntity<>(
+            "Language with this name already exists!",
+            HttpStatus.FORBIDDEN);
+    }
+
+    /**
      * AuthenticationException controller.
      * @return
      * Response entity with status code.
@@ -105,7 +149,7 @@ public class GlobalExceptionController {
     }
 
     /**
-     * AuthenticationException controller.
+     * BadgeScriptIsIncorrectException controller.
      * @return
      * Response entity with status code.
      */
@@ -113,6 +157,42 @@ public class GlobalExceptionController {
     public ResponseEntity<Object> badgeScriptIsIncorrectException() {
         return new ResponseEntity<>(
             "SQL script is incorrect.",
+            HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * BadgeNameExistsException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({BadgeNameExistsException.class})
+    public ResponseEntity<Object> badgeNameExistsException() {
+        return new ResponseEntity<>(
+            "Badge with such name already exists.",
+            HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * AuthenticationException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({UserNotFoundException.class})
+    public ResponseEntity<Object> userNotFoundException() {
+        return new ResponseEntity<>(
+                "No user found",
+                HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * IllegalMeetupStateException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({IllegalMeetupStateException.class})
+    public ResponseEntity<Object> illegalMeetupStateException() {
+        return new ResponseEntity<>(
+            "Such meetup operation with this state is prohibited!",
             HttpStatus.BAD_REQUEST);
     }
 

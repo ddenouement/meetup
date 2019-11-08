@@ -1,0 +1,14 @@
+<app-sidebar></app-sidebar>
+<mat-card>
+<mat-card-header>
+  <mat-card-subtitle>{{meetup.startDate}}</mat-card-subtitle>
+  <mat-card-title>{{meetup.title}}</mat-card-title>
+  <mat-card-subtitle>{{meetup.speaker.firstName}} {{meetup.speaker.lastName}}</mat-card-subtitle>
+</mat-card-header>
+<mat-card-title>About</mat-card-title>
+  <mat-card-content>{{meetup.description}}</mat-card-content>
+  <mat-action-row>
+    <a mat-button color="primary" [routerLink]="['/meetup-edit', meetup.id]">EDIT</a>
+    <button mat-button color="warn">JOIN</button>
+  </mat-action-row>
+</mat-card>

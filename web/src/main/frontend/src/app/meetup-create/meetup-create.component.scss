@@ -1,0 +1,19 @@
+.pickers {
+  margin-right: 12px;
+}
+
+mat-form-field,
+textarea {
+  width: 100%;
+}
+mat-card{
+  width: 70%;
+  margin: auto;
+  display: block;
+}
+.filler {
+  flex: 1 1 auto;
+}
+.row{
+  padding: 1rem;
+}

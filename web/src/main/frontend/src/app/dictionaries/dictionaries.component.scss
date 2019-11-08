@@ -1,0 +1,71 @@
+tr:hover {background-color: #f5f5f5;}
+.content {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 30px rgba(153, 163, 174, 0.06);
+  border-radius: 4px;
+  margin: 62px 64px 0 148px;
+  height: 75vh;
+  overflow-y: auto;
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+  background: #fdfeff;
+  mix-blend-mode: normal;
+  border-radius: 8px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #d7dce9;
+  border-radius: 6px;
+}
+
+@media (max-width: 900px) {
+  .content {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
+table {
+  width: 100%;
+}
+td {
+  height: 30px;
+  vertical-align: center;
+  padding: 5px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+.btn_my {
+  background-color: grey;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 8px;
+}
+.btnedit{
+  background-color: orange;
+}
+.addbtn {
+  background-color: #4CAF50;
+  margin-left: 20% ;
+}
+.btn_delete{
+  background-color: #f44336;
+}
+.btn_good{
+  background-color: #4CAF50;
+}
+.btn_warning{
+  background-color: #008CBA;
+}
+.message_or_error{
+  background-color: #000066;
+  color: white;
+}

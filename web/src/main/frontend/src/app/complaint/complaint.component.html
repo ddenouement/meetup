@@ -1,0 +1,24 @@
+<mat-expansion-panel [expanded]="false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Complain
+    </mat-panel-title>
+    <mat-panel-description>
+      Report inappropriate behaviour
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="all_content_complaint">
+    <mat-form-field class="form__input" >
+
+      <input label="complaint" matInput type="text"
+             placeholder="Why do you complain?"    [(ngModel)]="complaint">
+    </mat-form-field>
+    <button  class="form__button"  [disabled]="!complaint" type="button"  (click)="onSubmit()">
+      Send
+    </button>
+  </div>
+</mat-expansion-panel>
+
+
+
+

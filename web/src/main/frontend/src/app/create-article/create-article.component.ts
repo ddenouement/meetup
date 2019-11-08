@@ -18,6 +18,7 @@ export class CreateArticleComponent implements OnInit {
   articleTopics: Topic [];
   public title: string;
   public content: string;
+  public loading = false;
 
   constructor(
     public createArticleService: CreateArticleService,
@@ -29,19 +30,19 @@ export class CreateArticleComponent implements OnInit {
 
   ngOnInit() {
     this.createArticleForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: ['', [Validators.required, Validators.minLength(10)]],
       content: ['', Validators.required],
       articleTopics: ['', Validators.required],
     });
 
     this.createArticleService.getTopics()
-    .subscribe(
-      topics => {
-        this.articleTopics = topics;
-      },
-      err => {
-        console.log(err);
-      });
+      .subscribe(
+        topics => {
+          this.articleTopics = topics;
+        },
+        err => {
+          console.log(err);
+        });
   }
 
   onSubmit() {
@@ -49,6 +50,7 @@ export class CreateArticleComponent implements OnInit {
   }
 
   public addArticle(): void {
+    this.loading = true;
     let topicListIds: number[] = [];
     for (let i in this.createArticleForm.get('articleTopics').value) {
       topicListIds[i] = this.createArticleForm.get('articleTopics').value[i].id;
@@ -62,8 +64,10 @@ export class CreateArticleComponent implements OnInit {
     this.createArticleForm.controls['content'].disable();
     this.createArticleForm.controls['articleTopics'].disable();
     this.httpClient.post("/api/v1/user/speaker/articles", article).subscribe(data => {
-
       this.router.navigate(['/speaker-profile']);
+    }, error => {
+      console.warn(error);
+      this.loading = false;
     });
 
   }

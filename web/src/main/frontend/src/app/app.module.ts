@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
-
+import {EmojiPickerModule} from 'ng-emoji-picker';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -9,12 +9,22 @@ import {ToolbarMenuComponent} from './toolbar-menu/toolbar-menu.component';
 
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatChip, MatChipsModule,
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
-  MatToolbarModule
+  MatBadgeModule,
+  MatToolbarModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,MatNativeDateModule
 } from "@angular/material";
+import {
+  TimepickerModule,
+  BsDatepickerModule,
+  TimepickerConfig,
+  DatepickerConfig,
+  BsDatepickerConfig
+} from 'ngx-bootstrap';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login/login.component';
@@ -33,6 +43,40 @@ import {RatingModule} from "ng-starrating";
 import { CreateArticleComponent } from './create-article/create-article.component';
 import { ListenerProfileComponent } from './listener-profile/listener-profile.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import {MatTableModule} from "@angular/material/table";
+import { LanguagesCrudComponent } from './languages-crud/languages-crud.component';
+import { TopicsCrudComponent } from './topics-crud/topics-crud.component';
+import {IconsModule} from "./icons/icons.module";
+import {CommentSectionComponent} from "./comment-section/comment-section.component";
+import {ComplaintComponent} from "./complaint/complaint.component";
+import {MatListModule} from "@angular/material/list";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {DictionariesComponent} from "./dictionaries/dictionaries.component";
+import {PickerModule} from '@ctrl/ngx-emoji-mart';
+import {MatTabsModule} from "@angular/material/tabs";
+import { ArticleViewComponent } from './article-view/article-view.component';
+import { AdminTableComponent } from './admin-table/admin-table.component';
+import { ApproveToSpeakerComponent } from './approve-to-speaker/approve-to-speaker.component';
+import { ListenerProfileToUsersComponent } from './listener-profile-to-users/listener-profile-to-users.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
+import {MeetupListComponent} from "./meetup-list/meetup-list.component";
+import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
+import {MeetupsService} from "./services/meetups.service";
+import {FromNowPipe} from "./pipes/from_now_pipe";
+import {MatIconModule} from "@angular/material/icon";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {FooterComponent} from "./footer/footer.component";
+import { ActicleListComponent } from './acticle-list/acticle-list.component';
+import { SubscribeComponent } from './subscribe/subscribe.component';
+import { AdminBagesComponent } from './admin-bages/admin-bages.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from "ng-pick-datetime";
+import {TimepickerActions} from "ngx-bootstrap/timepicker";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -46,9 +90,46 @@ import { FeedbackComponent } from './feedback/feedback.component';
     VerificationComponent,
     CreateArticleComponent,
     ListenerProfileComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    SpeakerProfileToUsersComponent,
+    SidebarComponent,
+    AdminTableComponent,
+    ApproveToSpeakerComponent,
+    ListenerProfileToUsersComponent,
+    ForgotPasswordComponent,
+    ArticleViewComponent,
+    AdminTableComponent,
+    DictionariesComponent,
+    LanguagesCrudComponent,
+    TopicsCrudComponent,
+    ComplaintComponent,
+    CommentSectionComponent,
+    MeetupCreateComponent,
+    MeetupListComponent,
+    MeetupProfileComponent,
+    FooterComponent,
+    FromNowPipe,
+    SubscribeComponent,
+    AdminBagesComponent,
+    SubscribeComponent,
+    FooterComponent,
+    ActicleListComponent,
+    NotificationsComponent
   ],
   imports: [
+    //for smiles
+    IconsModule,
+    PickerModule,
+    //ne
+    //   EmojiPickerModule,
+    BsDatepickerModule.forRoot(),
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatNativeDateModule,
+    OwlNativeDateTimeModule,
+    MatExpansionModule,
+    CommonModule,
+    MatListModule,
     BrowserModule,
     MatInputModule,
     AppRoutingModule,
@@ -66,9 +147,20 @@ import { FeedbackComponent } from './feedback/feedback.component';
     MatPasswordStrengthModule,
     MatSlideToggleModule,
     RatingModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatBadgeModule,
+    NgbModule,
+    MatDatepickerModule,
+    OwlDateTimeModule,
+    TimepickerModule
   ],
+  exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [],
+  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -5,12 +5,12 @@ package com.meetup.error;
  * Thrown in case if user tries to register with email,
  * that already exists.
  */
-public class EmailIsUsedException extends RuntimeException {
+public class EmailIsUsedException extends ElementIsUsedException {
 
     /**
      * Constructor.
      */
     public EmailIsUsedException() {
-        super("Email is already used!");
+        super();
     }
 }

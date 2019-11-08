@@ -1,8 +1,11 @@
 package com.meetup.repository;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.MeetupDisplayDTO;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,47 +18,95 @@ public interface IMeetupDAO {
      *
      * @return List of all meetups
      */
-    List<Meetup> getAllMeetups();
+    List<MeetupDisplayDTO> getAllMeetups();
+
+    /**
+     * Count the number of meetups in database.
+     *
+     * @return List of all meetups
+     */
+    int getAllMeetupsCount();
+
+    /**
+     * Return all meetups with display using pagination parameters.
+     * @param offset offset for paging
+     * @param limit limit for paging
+     * @return
+     */
+    List<MeetupDisplayDTO> getAllMeetupsByPages(Integer offset, Integer limit);
+
+    /**
+     * Retrieve all meetups from database that start at the specified time.
+     *
+     * @param startTime start of meetup
+     * @return List of meetups
+     */
+    List<Meetup> getMeetupsByStartTime(LocalDateTime startTime);
 
     /**
      * Add meetup to database.
      *
      * @param meetup Meetup object to be added
+     * @return added Meetup.
      */
-    void insertNewMeetup(Meetup meetup);
+    Meetup insertNewMeetup(Meetup meetup);
 
     /**
      * Update existing meetup.
      *
      * @param currentMeetup Meetup object (edited)
      * @param meetupID meetup ID to be updated
+     * @return updated meetup
      */
-    void updateMeetup(Meetup currentMeetup, int meetupID);
+    Meetup updateMeetup(Meetup currentMeetup, int meetupID);
 
     /**
      * Find meetup by id.
-     * @param meetupID
-     * Meetup id.
-     * @return
-     * Existing meetup.
+     *
+     * @param meetupID Meetup id.
+     * @return Existing meetup.
      */
     Meetup findMeetupByID(int meetupID);
 
     /**
-     * Retrieve meetups of specified speaker.
+     * Get display meetup from DB by ID.
+     *
+     * @param meetupID Meetup id.
+     * @return MeetupDisplayDTO object.
+     */
+    MeetupDisplayDTO findDisplayMeetupByID(int meetupID);
+
+    /**
+     * Retrieve future hosted meetups of specified speaker.
      *
      * @param speakerID Speaker ID
      * @return List of meetups of specified speaker
      */
-    List<Meetup> getSpeakerMeetups(int speakerID);
+    List<Meetup> getSpeakerMeetupsPast(int speakerID);
 
     /**
-     * Retrieve meetups of specified user.
+     * Retrieve past hosted meetups of specified speaker.
+     *
+     * @param speakerID Speaker ID
+     * @return List of meetups of specified speaker
+     */
+    List<Meetup> getSpeakerMeetupsFuture(int speakerID);
+
+    /**
+     * Retrieve past attended meetups of specified user.
      *
      * @param userID User ID
      * @return List of meetups of specified user
      */
-    List<Meetup> getUsersJoinedMeetups(int userID);
+    List<Meetup> getUsersJoinedMeetupsPast(int userID);
+
+    /**
+     * Retrieve future attended meetups of specified user.
+     *
+     * @param userID User ID
+     * @return List of meetups of specified user
+     */
+    List<Meetup> getUsersJoinedMeetupsFuture(int userID);
 
     /**
      * Add specific topic.ts to database for meetup.
@@ -90,11 +141,21 @@ public interface IMeetupDAO {
 
     /**
      * Get users on meetup.
-     * @param meetupId
-     * Meetup ID
-     * @return
-     * List of users
+     *
+     * @param meetupId Meetup ID
+     * @return List of users
      */
     List<User> getUsersOnMeetup(int meetupId);
+
+    List<Meetup> getSpeakerMeetupsAllHosted(int speakerID);
+
+    /**
+     * Rate specific meetup.
+     *
+     * @param meetupID Meetup ID.
+     * @param userID User ID.
+     * @param feedback Feedback object.
+     */
+    void rateMeetup(int meetupID, int userID, Feedback feedback);
 
 }

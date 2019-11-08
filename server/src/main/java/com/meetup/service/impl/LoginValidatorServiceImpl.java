@@ -54,7 +54,20 @@ public class LoginValidatorServiceImpl implements ILoginValidatorService {
             throw new NoSuchElementException();
         }
     }
-
+    /**.
+     * Extracting id from JSON web token.
+     *
+     * @param token Token, that used to extract id from
+     * @return Int representation of user id
+     */
+    @Override
+    public int extractId(final String token) {
+       Integer userId = jwtTokenProvider.getUserId(token);
+        if (userId == null) {
+            throw new NullPointerException();
+        }
+        return userId;
+    }
     /**.
      * Check if user exists in database.
      *
