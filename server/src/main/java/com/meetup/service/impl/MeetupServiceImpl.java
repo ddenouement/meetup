@@ -212,7 +212,6 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return cancelled meetup
      */
     private Meetup cancelMeetup(final int meetupID, final User user) {
-        //TODO null meetup handling
         Meetup existingMeetup = meetupDao.findMeetupByID(meetupID);
         if (isSpeaker(user)) {
             existingMeetup.setStateId(MeetupState.CANCELED.getCode());
