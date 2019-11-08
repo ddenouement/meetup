@@ -14,7 +14,7 @@ import {LanguagesList} from "../models/languagesList";
 import {Topic} from "../models/topic";
 import {MeetupDto} from "../models/meetupDto.model";
 import DateTimeFormat = Intl.DateTimeFormat;
-
+// TODO: validation of date, time;
 @Component({
   selector: 'app-meetup-create',
   templateUrl: './meetup-create.component.html',
@@ -45,17 +45,10 @@ export class MeetupCreateComponent implements OnInit {
   minDate = new Date();
   time : Date;
   date : Date;
-  // month: string;
-  // day: string;
-  // hours: string;
-  // minutes: string;
-  // startDate : string;
   startDate : Date;
 
 
   constructor(public meetupService: MeetupsService,
-              public langService: Languagesservice,
-              public topicService : Topicsservice,
               private router: Router,
               private route: ActivatedRoute) {  }
 
@@ -66,13 +59,12 @@ export class MeetupCreateComponent implements OnInit {
       title: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      // startDate: new FormControl(null, {validators: [Validators.required]}),
       durationMinutes: new FormControl('', [Validators.required]),
       language: new FormControl('',[Validators.required]),
       minAttendees: new FormControl(null, {validators: [Validators.required]}),
       maxAttendees: new FormControl(null, {validators: [Validators.required]}),
       description: new FormControl(null, {validators: [Validators.required]}),
-      topics: new FormControl('',[Validators.required]),
+      topic: new FormControl('',[Validators.required]),
       time: new FormControl(this.minDate, [Validators.required]),
       date: new FormControl( null ),
     });
@@ -131,27 +123,27 @@ export class MeetupCreateComponent implements OnInit {
     if(this.mode === "create"){
       this.meetupService.addMeetup(
         this.form.value.language.id,
+        this.form.value.topic.id,
         this.form.value.title,
         this.startDate,
         this.form.value.durationMinutes.minutes,
         this.form.value.minAttendees,
         this.form.value.maxAttendees,
         this.form.value.description,
-        this.form.value.topics
       );
     }else{
       this.meetupService.updateMeetup(
         +this.meetupId,
         this.form.value.title,
-        this.meetup.speaker,
         this.form.value.language.id,
+        this.meetup.speaker.id,
+        this.form.value.topic.id,
         this.meetup.state,
         this.startDate,
         this.form.value.durationMinutes.minutes,
         this.form.value.minAttendees,
         this.form.value.maxAttendees,
         this.form.value.description,
-        this.form.value.topics
       );
       this.isLoading = false;
     }

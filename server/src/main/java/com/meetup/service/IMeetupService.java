@@ -175,4 +175,12 @@ public interface IMeetupService {
      * @return List of all meetups
      */
     int getAllMeetupsCount();
+    /**
+     * Check if the number of meetup is in future user's meetups.
+     *
+     * @param meetupId id of meetup
+     * @return boolean if user joined meetup
+     */
+    boolean ifJoinedMeetup(int meetupId);
+
 }

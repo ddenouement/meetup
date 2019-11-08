@@ -469,4 +469,15 @@ public class MeetupServiceImpl implements IMeetupService {
     public int getAllMeetupsCount() {
         return meetupDao.getAllMeetupsCount();
     }
+
+    /**
+     * Check if the number of meetup is in future user's meetups.
+     *
+     * @param meetupId id of meetup
+     * @return boolean if user joined meetup
+     */
+    @Override
+    public boolean ifJoinedMeetup(final int meetupId) {
+        return meetupDao.ifJoinedMeetup(meetupId);
+    }
 }

@@ -12,6 +12,7 @@ import {Subscription} from "rxjs";
 import {MeetupsService} from "../services/meetups.service";
 import {SpeakerProfileService} from "./speaker-profile.service";
 import {Router} from "@angular/router";
+import {MeetupDto} from "../models/meetupDto.model";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -42,7 +43,7 @@ export class SpeakerProfileComponent implements OnInit {
   public email: string;
   public about: string;
 
-  speakerMeetups: Meetup[] = [];
+  speakerMeetups: MeetupDto[] = [];
   private meetingsSub: Subscription;
   star: number;
   edited = false;
@@ -106,7 +107,7 @@ export class SpeakerProfileComponent implements OnInit {
       this.meetupsService.getSpeakerMeetups(this.speakerId);
       //set up listener to subject
       this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
-        .subscribe((meetupData: { meetups: Meetup[] })=>{
+        .subscribe((meetupData: { meetups: MeetupDto[] })=>{
           this.speakerMeetups = meetupData.meetups;
         });
 

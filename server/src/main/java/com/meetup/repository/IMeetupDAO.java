@@ -157,5 +157,10 @@ public interface IMeetupDAO {
      * @param feedback Feedback object.
      */
     void rateMeetup(int meetupID, int userID, Feedback feedback);
-
+    /**
+     * Check if user joined specific meetup.
+     *
+     * @param meetupId Meetup ID.
+     * */
+    boolean ifJoinedMeetup(int meetupId);
 }

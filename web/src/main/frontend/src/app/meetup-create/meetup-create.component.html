@@ -1,3 +1,4 @@
+
 <app-sidebar></app-sidebar>
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
@@ -12,12 +13,12 @@
     </mat-form-field>
     <div class="row">
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
-<!--        <input type="text" class="form-control mb-3" placeholder="Datepicker" bsDatepicker formControlName="date" />-->
+        <!--        <input type="text" class="form-control mb-3" placeholder="Datepicker" bsDatepicker formControlName="date" />-->
         <mat-form-field>
-        <input matInput  [ngModel]="meetup?.startDate"
-               min="minDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+          <input matInput  [ngModel]="meetup?.startDate"
+                 min="minDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
       <span class="filler"></span>
@@ -25,13 +26,6 @@
         <timepicker  [ngModel]="meetup?.startDate" [minuteStep]="15" formControlName="time"></timepicker>
       </div>
     </div>
-<!--    <mat-form-field>-->
-<!--    <input matInput-->
-<!--           [ngModel]="meetup?.startDate"-->
-<!--           type="datetime-local"-->
-<!--           formControlName="startDate"-->
-<!--           placeholder="Datetime"/>-->
-<!--    </mat-form-field>-->
     <div class="row">
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <mat-select
@@ -44,7 +38,7 @@
             {{duration.title}}
           </mat-option>
         </mat-select>
-<!--        <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>-->
+        <!--        <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>-->
       </div>
 
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
@@ -58,24 +52,23 @@
             {{language.name}}
           </mat-option>
         </mat-select>
-<!--        <mat-error *ngIf="form.get('language').invalid">Please choose a language of meetup</mat-error>-->
+        <!--        <mat-error *ngIf="form.get('language').invalid">Please choose a language of meetup</mat-error>-->
       </div>
 
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <mat-select
-          placeholder="Topics"
-          formControlName="topics"
-          required
-          multiple>
+          placeholder="Topic"
+          formControlName="topic"
+          required>
           <mat-option
             *ngFor="let topic of topicsList"
             [value]="topic">
             {{topic.name}}
           </mat-option>
         </mat-select>
-<!--        <mat-error *ngIf="form.get('topics').invalid">Please choose a topics of meetup</mat-error>-->
+        <!--        <mat-error *ngIf="form.get('topics').invalid">Please choose a topics of meetup</mat-error>-->
       </div>
-      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <input matInput
@@ -88,7 +81,7 @@
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <input matInput
                [ngModel]="meetup?.maxAttendees"
-                type="number"
+               type="number"
                min="1"
                formControlName="maxAttendees" placeholder="Max attendees"/>
       </div>

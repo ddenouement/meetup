@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Language;
 import com.meetup.service.IDictionaryService;
+import com.meetup.service.impl.LoginValidatorServiceImpl;
 import io.swagger.annotations.Api;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,13 +32,23 @@ public class DictionaryController {
     private IDictionaryService dictionaryService;
 
     /**
+     * Login validator service service.
+     */
+    private LoginValidatorServiceImpl loginValidatorService;
+
+    /**
      * . constructor
      *
      * @param dictionaryService custom DictionaryService
+     * @param loginValidatorService custom LoginValidatorService
      */
-    public DictionaryController(final IDictionaryService dictionaryService) {
+    @Autowired
+    public DictionaryController(final IDictionaryService dictionaryService, final LoginValidatorServiceImpl loginValidatorService) {
         this.dictionaryService = dictionaryService;
+        this.loginValidatorService = loginValidatorService;
+
     }
+
 
     /**
      * Return a list of all languages.
@@ -103,16 +115,15 @@ public class DictionaryController {
 
     /**
      * Find all speaker's languages.
-     * @param id the id of speaker to compute languages for
      * @return list of speaker's languages
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping("/user/{id}/languages")
-    public ResponseEntity<List<Language>> getSpeakerLanguages(
-            @PathVariable("id") final Integer id) {
-        return ok(dictionaryService.getSpeakerLanguages(id));
-    }
+    @GetMapping("/user/languages")
+    public ResponseEntity<List<Language>> getSpeakerLanguages(@CookieValue("token") final String token) {
+        int idSpeaker = loginValidatorService.extractId(token);
 
+        return ok(dictionaryService.getSpeakerLanguages(idSpeaker));
+    }
 }

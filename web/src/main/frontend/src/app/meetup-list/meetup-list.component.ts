@@ -14,7 +14,7 @@ import {MeetupDto} from "../models/meetupDto.model";
 export class MeetupListComponent implements OnInit, OnDestroy{
 
   meetups : MeetupDto[] = [];
-  totalMeetups = 30;
+  totalMeetups: number;
   meetupsPerPage = 5;
   currentPage = 1;
   pageSizeOptions = [5,10,20,30];
@@ -28,10 +28,12 @@ export class MeetupListComponent implements OnInit, OnDestroy{
     this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage);
     //set up listener to subject
     this.meetingsSub = this.meetupsService.getMeetupDtoUpdateListener()
-      .subscribe((meetupData: { meetups: MeetupDto[] })=>{
+      .subscribe((meetupData: { meetups: MeetupDto[], meetupCount: number })=>{
         this.isLoading=false;
         this.meetups = meetupData.meetups;
+        this.totalMeetups = meetupData.meetupCount;
       });
+
   }
 
   onChangePage(pageData: PageEvent){
@@ -40,9 +42,10 @@ export class MeetupListComponent implements OnInit, OnDestroy{
     this.isLoading = true;
     this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage);
     this.meetingsSub = this.meetupsService.getMeetupDtoUpdateListener()
-      .subscribe((meetupData: { meetups: MeetupDto[] })=>{
+      .subscribe((meetupData: { meetups: MeetupDto[], meetupCount: number })=>{
         this.isLoading=false;
         this.meetups = meetupData.meetups;
+        this.totalMeetups = meetupData.meetupCount;
       });
   }
 
