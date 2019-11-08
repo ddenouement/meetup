@@ -1,14 +1,25 @@
 <app-sidebar></app-sidebar>
-<mat-card>
-<mat-card-header>
-  <mat-card-subtitle>{{meetup.startDate}}</mat-card-subtitle>
-  <mat-card-title>{{meetup.title}}</mat-card-title>
-  <mat-card-subtitle>{{meetup.speaker.firstName}} {{meetup.speaker.lastName}}</mat-card-subtitle>
-</mat-card-header>
-<mat-card-title>About</mat-card-title>
-  <mat-card-content>{{meetup.description}}</mat-card-content>
-  <mat-action-row>
-    <a mat-button color="primary" [routerLink]="['/meetup-edit', meetup.id]">EDIT</a>
-    <button mat-button color="warn">JOIN</button>
-  </mat-action-row>
-</mat-card>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<main *ngIf="!isLoading">
+  <mat-card class="header">
+    <mat-card-subtitle>{{meetup.startDate | date: 'fullDate'}}</mat-card-subtitle>
+    <mat-card-title class="mat-display-1 title">{{meetup.title}}</mat-card-title>
+    <mat-card-subtitle class="mat-h2 detailSpeaker">Created by </mat-card-subtitle>
+    <mat-card-subtitle class="mat-h2 speaker"> {{meetup.speaker.firstName}} {{meetup.speaker.lastName}}</mat-card-subtitle>
+  </mat-card>
+
+  <mat-card class="info">
+    <mat-icon>access_time</mat-icon> <mat-card-subtitle>{{meetup.startDate | date: 'fullDate'}} at {{meetup.startDate | date: 'shortTime'}}</mat-card-subtitle>
+    <p><mat-icon>language</mat-icon> <mat-card-subtitle>{{meetup.language.name}}</mat-card-subtitle></p>
+    <p><mat-icon>speaker_notes</mat-icon><mat-card-subtitle>{{meetup.topic.name}}</mat-card-subtitle></p>
+
+  </mat-card>
+  <mat-card class="details">
+    <mat-card-title>Details</mat-card-title>
+    <mat-card-content>{{meetup.description}}</mat-card-content>
+    <mat-action-row>
+      <a  *ngIf="isAutor" mat-button color="primary" [routerLink]="['/meetup-edit', meetup.id]">EDIT</a>
+      <button *ngIf="!isAutor" mat-button color="warn"(click)="onJoin()">{{joinText}}</button>
+    </mat-action-row>
+  </mat-card>
+</main>

@@ -5,10 +5,7 @@ import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
-import com.meetup.model.mapper.IntegerMapper;
-import com.meetup.model.mapper.MeetupDisplayDtoMapper;
-import com.meetup.model.mapper.MeetupMapper;
-import com.meetup.model.mapper.UserMapper;
+import com.meetup.model.mapper.*;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.utils.DbQueryConstants;
 import com.meetup.utils.MeetupState;
@@ -143,6 +140,12 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${rate_meetup}")
     private String rateMeetup;
+    /**
+     * SQL reference script. Rate meetup.
+     */
+    @Value("${find_if_user_joined_meetup}")
+    private String ifJoinedMeetup;
+
 
     /**
      * Get all meetups from DB.
@@ -375,6 +378,19 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue("speaker_feedback", feedback.getFeedback())
             .addValue("time_posted", getCurrentTimestamp());
         template.update(rateMeetup, param);
+    }
+
+    @Override
+    public boolean ifJoinedMeetup(final int meetupId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_meetup", meetupId);
+        List<Boolean> res = this.template.query(ifJoinedMeetup, param, new BooleanMapper());
+        if (res.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
     /**

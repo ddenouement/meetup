@@ -24,18 +24,26 @@ export class MeetupsService {
   private meetupsDto: MeetupDto[] = [];
   private languages: LanguagesList[] = [];
   private topics: Topic[] = [];
-  private speakerMeetups: Meetup[] = [];
+  private speakerMeetups: MeetupDto[] = [];
   private meetupsUpdated = new Subject<{ meetups: Meetup[] }>();
-  private meetupsDtoUpdated = new Subject<{ meetups: MeetupDto[] }>();
+  private meetupsDtoUpdated = new Subject<{ meetups: MeetupDto[], meetupCount: number }>();
   private languagesUpdated = new Subject<{ languages: LanguagesList[] }>();
   private topicsUpdated = new Subject<{ topics: Topic[] }>();
-  private speakerMeetupsUpdated = new Subject<{ meetups: Meetup[] }>();
-  private languagesURL = 'http://localhost:9990/api/v1/languages?sorted=true';
-  private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
-  private meetupUrl = "http://localhost:9990/api/v1/meetups/";
-  private addMeetupUrl = "http://localhost:9990/api/v1/user/speaker/meetups";
-  private meetupsUrl = "http://localhost:9990/api/v1/meetups";
-
+  private speakerMeetupsUpdated = new Subject<{ meetups: MeetupDto[] }>();
+  // private speakerLanguagesURL = 'http://localhost:9990/api/v1//user/languages';
+  // private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
+  // private meetupUrl = "http://localhost:9990/api/v1/meetups/";
+  // private addMeetupUrl = "http://localhost:9990/api/v1/user/speaker/meetups";
+  // private meetupsUrl = "http://localhost:9990/api/v1/meetups";
+  // private joinUrl = "http://localhost:9990/api/v1/user/meetups/";
+  // private userUrl = "http://localhost:9990/api/v1/user/id"
+  private speakerLanguagesURL = '/api/v1/user/languages';
+  private topicsURL = '/api/v1/meetups/topics';
+  private meetupUrl = "/api/v1/meetups/";
+  private addMeetupUrl = "/api/v1/user/speaker/meetups";
+  private meetupsUrl = "/api/v1/meetups";
+  private joinUrl = "/api/v1/user/meetups/";
+  private userUrl = "/api/v1/user/id"
 
 
   constructor(private http: HttpClient, private router: Router) {
@@ -45,7 +53,7 @@ export class MeetupsService {
     return this.meetupsUpdated.asObservable();
   }
   getMeetupDtoUpdateListener() {
-    return this.meetupsDtoUpdated.asObservable();
+    return  this.meetupsDtoUpdated.asObservable();
   }
   getSpeakerMeetupUpdateListener() {
     return this.speakerMeetupsUpdated.asObservable();
@@ -58,68 +66,56 @@ export class MeetupsService {
   }
 
   addMeetup(languageId: number,
+            topicId: number,
             title: string,
             startDate: Date,
             durationMinutes: number,
             minAttendees: number,
             maxAttendees: number,
-            description: string,
-            topics: TopicClass[] ){
+            description: string){
     const meetup = {
       title: title,
       languageId: languageId,
+      topicId: topicId,
       startDate: startDate,
       durationMinutes: durationMinutes,
       minAttendees: minAttendees,
       maxAttendees: maxAttendees,
-      description: description,
-      topics: topics
+      description: description
     };
-    this.http
-      .post<{ meetup: Meetup }>(
-        this.addMeetupUrl,
-        meetup,{headers: new HttpHeaders({'Accept':'application/json', 'Content-Type':'application/json'})
-        }
-      )
+    this.http.post<{ meetup: Meetup }>(
+        this.addMeetupUrl,meetup)
       .subscribe(responseData => {
-        console.log(responseData);
         this.router.navigate(["/"]);
       });
   }
   updateMeetup(id: number,
                title: string,
-               speaker: User,
+               speakerId: number,
                languageId: number,
+               topicId: number,
                state: string,
                startDate: Date,
                durationMinutes: number,
                minAttendees: number,
                maxAttendees: number,
-               description: string,
-               topics: TopicClass[]){
+               description: string){
     const meetup = {
       id: id,
       title: title,
       languageId: languageId,
-      speaker: speaker,
+      topicId: topicId,
+      speakerId: speakerId,
       state: state,
       startDate: startDate,
       durationMinutes: durationMinutes,
       minAttendees: minAttendees,
       maxAttendees: maxAttendees,
-      description: description,
-      topics: topics
+      description: description
     };
     this.http.put(this.addMeetupUrl+"/"+ id, meetup)
       .subscribe(responce => {
-        // const updatedMeetups = [...this.meetups];
-        // const oldMeetupIndex = updatedMeetups.findIndex(m => m.id === meetup.id);
-        // updatedMeetups[oldMeetupIndex] = meetup;
-        // this.meetups = updatedMeetups;
-        // this.meetupsUpdated.next({
-        //   meetups: [...this.meetups]
-        // });
-        console.log(responce);
+
       });
   }
 
@@ -127,13 +123,13 @@ export class MeetupsService {
   getMeetups(meetupsPerPage : number, currentPage: number) {
     const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
     this.http
-      .get<MeetupDto[]>(
+      .get<{meetups: MeetupDto[], meetupCount : number}>(
         this.meetupsUrl+queryParams
       )
       .pipe(
         map(meetupData => {
           return {
-            meetupsDto: meetupData.map( meetup => {
+            meetupsDto: meetupData.meetups.map( meetup => {
                 return {
                   id: meetup.id,
                   title: meetup.title,
@@ -145,25 +141,27 @@ export class MeetupsService {
                   minAttendees: meetup.minAttendees,
                   maxAttendees: meetup.maxAttendees,
                   description: meetup.description,
-                  topics: meetup.topics
+                  topic: meetup.topic
                 }
               }
-            )
+            ),
+            meetupCount: meetupData.meetupCount
           };
         })
       )
       .subscribe(
         transformedMeetupData => {
-        this.meetupsDto = transformedMeetupData.meetupsDto;
-        this.meetupsDtoUpdated.next({
-          meetups: [...this.meetupsDto]
-        });
-      }
+          this.meetupsDto = transformedMeetupData.meetupsDto;
+          this.meetupsDtoUpdated.next({
+            meetups: [...this.meetupsDto],
+            meetupCount: transformedMeetupData.meetupCount
+          });
+        }
       );
   }
   getSpeakerMeetups(id: number) {
     this.http
-      .get<Meetup[]>(
+      .get<MeetupDto[]>(
         "/api/v1/meetups/speakers/"+id)
       .pipe(
         map(meetupData => {
@@ -173,14 +171,14 @@ export class MeetupsService {
                   id: meetup.id,
                   title: meetup.title,
                   speaker: meetup.speaker,
-                  languageId: meetup.languageId,
+                  language: meetup.language,
                   state: meetup.state,
                   startDate: meetup.startDate,
                   durationMinutes: meetup.durationMinutes,
                   minAttendees: meetup.minAttendees,
                   maxAttendees: meetup.maxAttendees,
                   description: meetup.description,
-                  topics: meetup.topics
+                  topic: meetup.topic
                 }
               }
             )
@@ -202,7 +200,7 @@ export class MeetupsService {
   }
 
   getLanguages() {
-    this.http.get<LanguagesList[]>(this.languagesURL)
+    this.http.get<LanguagesList[]>(this.speakerLanguagesURL)
       .pipe(map(langData => {
           return {
             languages: langData.map( lang => {
@@ -242,5 +240,18 @@ export class MeetupsService {
           topics: [...this.topics]
         });
       });
+  }
+
+  joinMeetup(id:number){
+    // @ts-ignore
+    return this.http.post(this.joinUrl + id);
+  }
+
+  leaveMeetup(id:number){
+    // @ts-ignore
+    return this.http.delete(this.joinUrl + id);
+  }
+  getUserId(){
+    return this.http.get<any>(this.userUrl);
   }
 }
