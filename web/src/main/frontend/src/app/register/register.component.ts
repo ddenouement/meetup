@@ -1,10 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../models/user";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from "@angular/material/core";
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
+import {from, Observable, ObservedValueOf, pipe} from "rxjs";
+import {catchError, tap} from "rxjs/operators";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -34,6 +36,7 @@ export class RegisterComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   showDetails3: boolean;
 
+
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
@@ -53,16 +56,11 @@ export class RegisterComponent implements OnInit {
   onStrengthChanged(strength: number) {
   }
 
-  public rozsulka(): void{
+  public rozsulka(): void {
     const user = <Aachen>{
       login: this.registerForm.get('login').value,
       email: this.registerForm.get('password').value
     };
-    this.httpClient.post('https://events.sendpulse.com/events/id/63c05ac4961149dffbc76906bc2db760/7246374', user).subscribe(res=>{
-
-    },error1 => {
-      console.warn(error1);
-    })
   }
 
   public register(): void {
@@ -120,7 +118,10 @@ export function MustMatch(controlName: string, matchingControlName: string) {
     }
   }
 }
+
 export class Aachen {
   public login: string;
   public email: string;
 }
+
+
