@@ -25,11 +25,12 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Meetup service (implementation). Used to manage meetup functionality.
  */
-@Component
+@Service
 public class MeetupServiceImpl implements IMeetupService {
 
     /**

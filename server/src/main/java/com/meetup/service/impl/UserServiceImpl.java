@@ -20,12 +20,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * . Class for working with users
  */
-@Component
+@Service
 public class UserServiceImpl implements IUserService {
 
     /**
