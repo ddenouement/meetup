@@ -26,6 +26,8 @@ export class MeetupCreateComponent implements OnInit {
   topicsList: Topic[];
   private langsSub: Subscription;
   private topicsSub: Subscription;
+  private meetingsSub: Subscription;
+
 
   durations: Duration[] = [
     {title: '30 min', minutes: 30},
@@ -73,11 +75,12 @@ export class MeetupCreateComponent implements OnInit {
         this.mode = 'edit';
         this.meetupId = paramMap.get('meetupId');
         this.isLoading = true;
-        this.meetupService.getMeetup(+this.meetupId).subscribe(meetupData =>{
+        this.meetupService.getMeetup(+this.meetupId);
+        this.meetingsSub = this.meetupService.getMeetupJoinedUpdateListener().subscribe(meetupData =>{
           this.isLoading = false;
-          this.meetup = meetupData;
-          this.meetupLang = meetupData.language;
-          this.meetupDurationMinutes = meetupData.durationMinutes;
+          this.meetup = meetupData.meetup;
+          this.meetupLang = meetupData.meetup.language;
+          this.meetupDurationMinutes = meetupData.meetup.durationMinutes;
           const toSelectDuration = this.durations.find(d => d.minutes == this.meetupDurationMinutes);
           this.form.get('durationMinutes').setValue(toSelectDuration);
           this.meetupService.getLanguages();

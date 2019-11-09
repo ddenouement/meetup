@@ -40,7 +40,13 @@ public enum ModelConstants {
     /**
      * Key for the number of meetups in DB that satisfy the request.
      */
-    meetupCount;
-
-
+    meetupCount,
+    /**
+     * Key for the boolean if user joined meetup.
+     */
+    ifJoinedMeetup,
+    /**
+     * Key for a meetup.
+     */
+    meetup;
 }

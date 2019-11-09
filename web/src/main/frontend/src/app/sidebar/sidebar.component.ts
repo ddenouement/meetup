@@ -31,7 +31,6 @@ export class SidebarComponent implements OnInit {
           this.listener = true;
         }
         this.SIDEBAR_DATA = [
-
           {
             activeSRC: '../../assets/images/admTableActive.svg',
             noActiveSRC: '../../assets/images/admTableNoActive.svg',

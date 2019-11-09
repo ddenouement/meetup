@@ -102,17 +102,23 @@ public class MeetupController {
     /**
      * Get existing meetup.
      *
-     * @param meetupID Meetup ID.
+     * @param meetupId Meetup ID.
      * @return Response entity with meetup.
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups/{id}")
-    public ResponseEntity<MeetupDisplayDTO> getMeetup(
-        @PathVariable("id") final int meetupID) {
-        return new ResponseEntity<>(meetupService.getMeetup(meetupID),
-            HttpStatus.OK);
+    public ResponseEntity getMeetup(
+            @CookieValue("token") final String token,
+            @PathVariable("id") final int meetupId) {
+        int userId = loginValidatorService.extractId(token);
+        MeetupDisplayDTO meetup = meetupService.getMeetup(meetupId);
+        boolean ifJoinedMeetup = meetupService.ifJoinedMeetup(userId, meetupId);
+        Map<Object,Object> model = new HashMap<>();
+        model.put(ModelConstants.ifJoinedMeetup, ifJoinedMeetup);
+        model.put(ModelConstants.meetup, meetup);
+        return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     /**
@@ -277,4 +283,5 @@ public class MeetupController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
 }
