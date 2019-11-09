@@ -10,6 +10,7 @@ import {Commentsectionservice} from "./commentsectionservice";
 import {CommentDto} from "../models/commentDto";
 import {ActivatedRoute, Router} from '@angular/router';
 import {Comment} from '../models/comment'
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-comment-section',
@@ -17,100 +18,119 @@ import {Comment} from '../models/comment'
   styleUrls: ['./comment-section.component.scss'],
   providers: [Commentsectionservice]
 })
-export class CommentSectionComponent implements OnChanges, OnInit{
-  articleId:number;
+export class CommentSectionComponent implements OnChanges, OnInit {
+  articleId: number;
   authorId: number;
   currentUserLogin: string;
-  @Input ( ) article_author_id1:number;
+  @Input() article_author_id1: number;
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
 
-   comments: Array<CommentDto>;
+  comments: Array<CommentDto>;
   statusMessage: string;
   dataRefresher: any;
   text: string;
-showEmojiPicker:boolean;
+  showEmojiPicker: boolean;
 
 
-  constructor(private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
+  constructor(private snackBar: MatSnackBar, private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
     this.comments = new Array<CommentDto>();
   }
 
   ngOnInit() {
 
     this.getThisUserLogin();
-      this.route.params.subscribe(params => {
+    this.getThisUserId();
+    this.route.params.subscribe(params => {
 
       this.articleId = +params['articleId'];//from this route
-        this.loadComments();
-        this.refreshData();
+      this.loadComments();
+      this.refreshData();
     });
 
   }
+
   public openPopup: Function;
 
   setPopupAction(fn: any) {
     this.openPopup = fn;
   }
-getThisUserLogin(){
-  this.serv.getUserLogin()
-    .subscribe(
-      data => {
-        this.currentUserLogin = data;
-      },
-      err => {
-        console.log(err.error);
-      });
-}
-  toggleEmojiPicker(){
-    this.showEmojiPicker=!this.showEmojiPicker;
+  getThisUserId(){
+    this.serv.getUserId()
+      .subscribe(
+        data => {
+          this.authorId = Number( data);
+        },
+        err => {
+          this.snackBar.open(err.error);
+        });
   }
-  addEmoji(event){
-    if(this.text) {
-      const   txt = `${this.text}${event.emoji.native}`;
+
+  getThisUserLogin() {
+    this.serv.getUserLogin()
+      .subscribe(
+        data => {
+          this.currentUserLogin = data;
+        },
+        err => {
+          this.snackBar.open(err.error);
+        });
+  }
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event) {
+    if (this.text) {
+      const txt = `${this.text}${event.emoji.native}`;
+      this.text = txt;
+    } else {
+      const txt = `${event.emoji.native}`;
       this.text = txt;
     }
-    else {
-      const   txt = `${event.emoji.native}`;
-      this.text = txt;
-    }
-    this.showEmojiPicker=false;
+    this.showEmojiPicker = false;
   }
-  private refreshData(){
+
+  private refreshData() {
     this.dataRefresher =
       setInterval(() => {
         this.loadComments();
       }, 30000);
   }
+
   private loadComments() {
- this.serv.getComments(this.articleId)
+    this.serv.getComments(this.articleId)
       .subscribe(
         comments => {
           this.comments = comments;
         },
         err => {
-          console.log(err.error);
+          this.snackBar.open(err.error);
         });
   }
+
   //charset : 'utf8mb4'
   addComment() {
-const date =  new Date();
+    const date = new Date();
 
-    const editedComment = new Comment( 0,this.authorId, this.articleId, this.text, date,0);
-    this.serv.createComment( this.articleId, editedComment).subscribe(data => {
-      //   const savedComment = new CommentDto(0, this.authorId, this.currentUserLogin, this.articleId, this.text,date);
-        this.statusMessage  = '';
-         this.comments.unshift(data);
-         this.text="";
+    const editedComment = new Comment(0, this.authorId, this.articleId, this.text, date, 0);
+    this.serv.createComment(this.articleId, editedComment).subscribe(data => {
+        //   const savedComment = new CommentDto(0, this.authorId, this.currentUserLogin, this.articleId, this.text,date);
+        this.statusMessage = '';
+        this.comments.unshift(data);
+        this.text = "";
+        this.snackBar.open('Posted a comment');
       },
       err => {
-        this.statusMessage = err.error;
+        this.snackBar.open(err.error);
       });
 
   }
-  loadTemplate (c: CommentDto) {
 
-      return this.readOnlyTemplate;
-    }
+  loadTemplate(c: CommentDto) {
+
+    return this.readOnlyTemplate;
+  }
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -121,9 +141,19 @@ const date =  new Date();
 
   redirectToProfile(id: number) {
     this.serv.getUserRole(id).subscribe(data => {
-      if(data=='LISTENER') this.router.navigate(['/listener-profile',id]);
-      else
-        if(data=='SPEAKER') this.router.navigate(['/speaker-profile', id]);
+      if (data == 'LISTENER') this.router.navigate(['/listener-profile', id]);
+      else if (data == 'SPEAKER') this.router.navigate(['/speaker-profile', id]);
     });
+  }
+
+  deleteMyComment(comment: CommentDto) {
+    this.serv.deleteComment(comment.id).subscribe(data => {
+        this.comments.splice(this.comments.indexOf(comment),1);
+        this.snackBar.open('Deleted a comment');
+      },
+      error => {
+        this.snackBar.open('Error!');
+      }
+    )
   }
 }

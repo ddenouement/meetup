@@ -169,7 +169,7 @@ public class ArticleController {
     }
 
     /**
-     * Post commentary on article.
+     * Delete commentary on article.
      *
      * @param commentID Commentary ID.
      * @return Response entity with status code.

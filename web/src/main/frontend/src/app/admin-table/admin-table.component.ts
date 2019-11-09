@@ -4,6 +4,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {AdminTableService} from "./admin-table.service";
 import {UsersToAdmin} from "../models/userToAdmin";
 
+import { MatSnackBar } from "@angular/material";
+
 @Component({
   selector: 'app-admin-table',
   templateUrl: './admin-table.component.html',
@@ -15,7 +17,7 @@ export class AdminTableComponent implements OnInit {
   dataSource;
   loading= false;
 
-  constructor(public adminService: AdminTableService) {
+  constructor(public snackBar:MatSnackBar, public adminService: AdminTableService) {
   }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -40,14 +42,23 @@ export class AdminTableComponent implements OnInit {
   }
 
   onDeactivate(id: number) {
-    this.adminService.deactivateUser(id).subscribe(res=>{
+    this.adminService.deactivateUser(id).subscribe(res=> {
       this.ngOnInit();
-    });
-  }
+      let ref =   this.snackBar.open('User deactivated','', {
+        duration: 3000
+      });
+
+    })
+   }
 
   onActivate(id: number) {
     this.adminService.activateUser(id).subscribe(res=>{
       this.ngOnInit();
+
+    let ref =   this.snackBar.open('User activated','', {
+        duration: 3000
+      });
+
     });
   }
 }

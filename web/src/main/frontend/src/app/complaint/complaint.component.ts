@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, forwardRef} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
-// <app-complaint   [userLogin]="this.changeForm.get('login').value"    ></app-complaint>
 @Component({
   selector: 'app-complaint',
   templateUrl: './complaint.component.html',
@@ -12,9 +12,9 @@ export class ComplaintComponent implements OnInit {
 
   _userId:number;
   complaint:string;
-  constructor(
-    private httpClient: HttpClient,
-    private route:ActivatedRoute) {
+  constructor(private snackBar:MatSnackBar,
+              private httpClient: HttpClient,
+              private route:ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -40,9 +40,12 @@ export class ComplaintComponent implements OnInit {
      this.httpClient.post("/api/v1/user/complaint", complaint_in_request_body).subscribe(data=>
        {
 this.complaint="";
+
+         this.snackBar.open('Complaint sent');
        }
        ,err =>{
 
+         this.snackBar.open('Error!');
        }
 
      );

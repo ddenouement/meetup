@@ -64,7 +64,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
 import {MeetupListComponent} from "./meetup-list/meetup-list.component";
 import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
-import {MeetupsService} from "./services/meetups.service";
 import {FromNowPipe} from "./pipes/from_now_pipe";
 import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
@@ -77,6 +76,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from "ng-pick-datetime";
 import {TimepickerActions} from "ngx-bootstrap/timepicker";
 import {CommonModule} from "@angular/common";
+import { MatSnackBarModule} from '@angular/material'
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -156,11 +157,12 @@ import {CommonModule} from "@angular/common";
     NgbModule,
     MatDatepickerModule,
     OwlDateTimeModule,
-    TimepickerModule
+    TimepickerModule,
+   MatSnackBarModule,
   ],
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig],
+  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig,{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

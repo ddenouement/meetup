@@ -14,6 +14,21 @@
   width: 20%;
   margin: 5px;
 }
+.deleteButton {
+  background: transparent;
+  border: 2px solid #f00;
+  border-radius: 3px;
+  color: #f00;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 2px;
+  margin: 0 0 8px;
+  padding: 0;
+  text-align: center;
+  width: 20px;
+}
 
 .user-name{
   font-size: 16px;

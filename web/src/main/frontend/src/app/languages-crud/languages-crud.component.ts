@@ -1,6 +1,8 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Languagesservice} from "../services/languagessservice";
 import {Language} from '../models/language';
+import {MatSnackBar} from "@angular/material/snack-bar";
+
 
 @Component({
   selector: 'app-languages-crud',
@@ -17,7 +19,7 @@ export class LanguagesCrudComponent  implements OnInit {
   isNewRecordL: boolean;
   statusMessageL: string;
 
-  constructor(private serv: Languagesservice) {
+  constructor(private snackBar:MatSnackBar, private serv: Languagesservice) {
     this.languages = new Array<Language>();
     this.isNewRecordL=false;
 
@@ -34,7 +36,8 @@ export class LanguagesCrudComponent  implements OnInit {
           this.languages = languages;
         },
         err => {
-          this.statusMessageL = err.error;
+
+          this.snackBar.open(err.error);
         });
   }
   addLanguage() {
@@ -56,16 +59,19 @@ export class LanguagesCrudComponent  implements OnInit {
   }
   saveLanguage() {
     if(this.editedLanguage.name.length==0){
-      this.statusMessageL='Please enter valid name';
+
+      this.snackBar.open('Please enter valid name');
     }
     if (this.isNewRecordL) {
       this.serv.createLanguage(this.editedLanguage).subscribe(data => {
 
-          this.statusMessageL = 'Saved',
+
+          this.snackBar.open('Saved');
             this.languages.unshift(data);
         },
         err => {
-          this.statusMessageL = err.error;
+
+          this.snackBar.open(err.error);
         });
       this.isNewRecordL = false;
       this.languages.splice(this.languages.indexOf(this.editedLanguage), 1),
@@ -75,11 +81,13 @@ export class LanguagesCrudComponent  implements OnInit {
       const index = this.languages.findIndex(x => x.id == this.editedLanguage.id);
       const nl = <Language>{id: this.editedLanguage.id, name:this.editedLanguage.name };
       this.serv.updateLanguage(nl.id, nl).subscribe(data => {
-          this.statusMessageL = 'Edited',
+
+          this.snackBar.open('Edited');
             this.languages[index] =  data;
         },
         err => {
-          this.statusMessageL ='Error!';
+
+          this.snackBar.open(err.error);
         });
       this.editedLanguage = null;
     }
@@ -94,12 +102,14 @@ export class LanguagesCrudComponent  implements OnInit {
   }
   deleteLanguage(l: Language) {
     this.serv.deleteLanguage(l.id).subscribe(data => {
-        this.statusMessageL = 'Deleted',
+
+        this.snackBar.open('Deleted');
           this.languages.splice(this.languages.indexOf(l),1);
         //  this.loadLanguages();
       },
       err => {
-        this.statusMessageL = err.error;
+
+        this.snackBar.open(err.error);
       });
   }
 

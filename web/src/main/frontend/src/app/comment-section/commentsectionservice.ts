@@ -13,9 +13,9 @@ export class Commentsectionservice {
   constructor(private http: HttpClient) {
   }
 
-  //TODO
   private articlesURL = 'api/v1/user/articles/';
   private usersURL = 'api/v1/users/';
+  private userURL = 'api/v1/user/';
 
   getComments(idArticle:number): Observable<CommentDto[]> {
     return this.http.get<CommentDto[]>(this.articlesURL+idArticle+"/comments").pipe(
@@ -33,8 +33,11 @@ export class Commentsectionservice {
   getUserLogin( ){
     return this.http.get(this.usersURL+"current"+"/login",  {responseType: 'text'});
   }
- //todo
-  /*deleteComment(id: number) {
-    return this.http.delete(this.url + '/' + id);
-  }*/
+ deleteComment(idComment: number) {
+    return this.http.delete(this.articlesURL + 'comments/' + idComment);
+  }
+
+  getUserId() {
+    return this.http.get(this.userURL+'id', {responseType:'text'});
+  }
 }
