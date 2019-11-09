@@ -177,7 +177,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
     /**
      * Count the number of meetups in database.
      *
-     * @return List of all meetups
+     * @return int number of all meetups
      */
     @Override
     public int getAllMeetupsCount() {

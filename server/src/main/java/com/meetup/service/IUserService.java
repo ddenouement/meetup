@@ -2,11 +2,7 @@ package com.meetup.service;
 
 import com.meetup.entities.Feedback;
 import com.meetup.entities.User;
-import com.meetup.entities.dto.ComplaintDTO;
-import com.meetup.entities.dto.ProfileDTO;
-import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserDTO;
-import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.entities.dto.*;
 import com.meetup.error.UserNotFoundException;
 
 import java.util.List;
@@ -74,7 +70,19 @@ public interface IUserService {
      * @return List<User> of users.
      */
     List<User> getAllUsers();
-
+    /**
+     * Get all users with number of complaint for them.
+     * @param limit users per page
+     * @param offset offset of list
+     * @return List<UserComplaintsDTO> of users.
+     */
+    List<UserComplaintsDTO> getAllUsersWithComplaints(int limit, int offset);
+    /**
+     * Count the number of users in database.
+     *
+     * @return int number of all users
+     */
+    int getAllUsersCount();
     /**
      * .
      *

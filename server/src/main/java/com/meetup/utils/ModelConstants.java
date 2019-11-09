@@ -25,6 +25,7 @@ public enum ModelConstants {
      * Key for UserDTO.
      */
     userDTO,
+
     /**
      * Key for a list of user's subscriptions.
      */
@@ -41,6 +42,14 @@ public enum ModelConstants {
      * Key for the number of meetups in DB that satisfy the request.
      */
     meetupCount,
+    /**
+     * Key for a list of users.
+     */
+    users,
+    /**
+     * Key for the number of users in DB that satisfy the request.
+     */
+    usersCount,
     /**
      * Key for the boolean if user joined meetup.
      */

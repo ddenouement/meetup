@@ -3,11 +3,7 @@ package com.meetup.service.impl;
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
-import com.meetup.entities.dto.ComplaintDTO;
-import com.meetup.entities.dto.ProfileDTO;
-import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserDTO;
-import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.entities.dto.*;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.UserNotFoundException;
@@ -180,6 +176,20 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
+    }
+
+    @Override
+    public List<UserComplaintsDTO> getAllUsersWithComplaints(final int limit,final int offset) {
+        return userDao.getAllUsersWithComplaintsCount(limit,offset);
+    }
+    /**
+     * Count the number of users in database.
+     *
+     * @return int number of all users
+     */
+    @Override
+    public int getAllUsersCount() {
+        return userDao.getAllUsersCount();
     }
 
     /**
