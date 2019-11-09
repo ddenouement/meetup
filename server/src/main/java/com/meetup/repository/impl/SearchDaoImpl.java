@@ -8,7 +8,9 @@ import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.ITopicDAO;
+import com.meetup.utils.DbQueryConstants;
 import com.meetup.utils.SqlAndParamsHolder;
+import com.meetup.utils.TimeUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -19,11 +21,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * implementation of class for working with filters and meetups in DB.
@@ -32,55 +33,29 @@ import java.util.Map;
 @PropertySource("classpath:sql/search_queries.properties")
 public class SearchDaoImpl implements ISearchDAO {
     @Autowired
+    DataSource dataSource;
+
+    @Autowired
     ITopicDAO topicDAO;
     @Autowired
     private NamedParameterJdbcTemplate template;
 
-    @Value("${search_meetup_begin}")
-    private String beginSql;
-
-    @Value("${search_meetup_substring_title_add}")
-    private String titleSearchSql;
-
-    @Value("${search_meetup_in_dates_range_add}")
-    private String datesRangeSql;
-
-    @Value("${find_meetups_ids_by_topics}")
-    private String topicsListSql;
-
-    @Value("${search_meetup_by_language_add}")
-    private String byLanguageSql;
-
-    @Value("${search_meetup_speaker_rate_range_add}")
-    private String byRateRangeSql;
-
-    @Value("${search_meetup_speaker_rate_range_first_null_add}")
-    private String byRateRangeFirstNullSql;
-
-
-    @Value("${search_only_scheduled_booked_meetups}")
-    private String onlyScheduledOrBookedSql;
-
-    @Value("${search_meetup_date_from_add}")
-    private String dateFromSql;
-
-    @Value("${search_meetup_date_to_add}")
-    private String dateToSql;
 
     @Value("${get_user_filters_by_id}")
     private String getSavedFiltersForUser;
 
-    @Value("${get_filter_topics_by_id}")
-    private String getFilterTopics;
-
     @Value("${add_filter}")
     private String addFilter;
 
-    @Value("${add_topic_to_filter}")
-    private String addTopicToFilter;
 
     @Value("${search_meetups_by_topic_add}")
     private String searchbyTopic;
+
+    /**
+     * SQl function for filtering
+     */
+    @Value("${search_by_filter_using_function}")
+    private String searchMeetupsByFilterWithFunction;
 
     @Autowired
     IMeetupDAO meetupDAO;
@@ -151,89 +126,25 @@ public class SearchDaoImpl implements ISearchDAO {
         return topicDAO.findTopicByID(topic_id).getName();
     }
 
+
     /**
      * @param filter custom Filter from frontend.
      * @return List of matched meetups
      */
     @Override
-    public List<Meetup> searchWithFilter(final Filter filter) {
-        SqlAndParamsHolder values = constructValuesAndSqlFromFilter(filter);
-        SqlParameterSource param = new MapSqlParameterSource()
-                .addValues(values.getParams());
+    public List<Meetup> searchWithFilter(final Filter filter) throws SQLException {
+           SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.id_language_param.name(), filter.null_or_idLanguage())
+                .addValue(DbQueryConstants.title_param.name(), filter.null_or_titleSubstring())
+                .addValue(DbQueryConstants.topic_id_param.name(), filter.null_or_idTopic())
+                .addValue(DbQueryConstants.start_date_param.name(), filter.getTime_from())
+                .addValue(DbQueryConstants.end_date_param.name(), filter.getTime_to())
+                .addValue(DbQueryConstants.rate_from.name(), filter.null_or_rateFrom())
+                .addValue(DbQueryConstants.rate_to.name(), filter.null_or_rateTo());
+        List<Meetup> foundmeetups = template.query(searchMeetupsByFilterWithFunction, param, new MeetupMapper());
 
-        List<Meetup> foundmeetups =
-                template.query(values.getSql(), param, new MeetupMapper());
 
         return foundmeetups;
-    }
-
-    public SqlAndParamsHolder constructValuesAndSqlFromFilter(
-            final Filter filter) {
-
-        HashMap model = new HashMap();
-        String sql = beginSql;
-        boolean hasWhere = false;
-        if (filter.getTitle_substring() != null) {
-            model.put("title_param", filter.getTitle_substring());
-            if (!hasWhere) sql += " where ";
-            sql += titleSearchSql + " and ";
-            hasWhere = true;
-        }
-        if (filter.getId_language() != 0) {
-            model.put("id_language_param", filter.getId_language());
-            if (!hasWhere) sql += " where ";
-            sql += byLanguageSql + " and ";
-            hasWhere = true;
-        }
-        if (filter.getTopic_id() != 0) {
-            model.put("topic_id_param", filter.getTopic_id());
-            if (!hasWhere) sql += " where ";
-            sql += searchbyTopic + " and ";
-            hasWhere = true;
-        }
-        if (filter.getTime_from() != null && filter.getTime_to() != null) {
-            model.put("start_date_param", filter.getTime_from());
-            model.put("end_date_param", filter.getTime_to());
-            if (!hasWhere) sql += " where ";
-            sql += datesRangeSql + " and ";
-            hasWhere = true;
-        }
-        if (filter.getTime_from() != null && filter.getTime_to() == null) {
-            model.put("start_date_param", filter.getTime_from());
-            if (!hasWhere) sql += " where ";
-            sql += dateFromSql + " and ";
-            hasWhere = true;
-        }
-        if (filter.getTime_from() == null && filter.getTime_to() != null) {
-            model.put("end_date_param", filter.getTime_to());
-            if (!hasWhere) sql += " where ";
-            sql += dateToSql + " and ";
-            hasWhere = true;
-        }
-        boolean isNotSprecifiedRateRange = (filter.getRate_from() == 0.0 && filter.getRate_to() == 0.0);
-        boolean isDefaultRateRange = (filter.getRate_from() == 0.0 && filter.getRate_to() == 5.0);
-        boolean isFullRateRange = (!isDefaultRateRange);
-        boolean isOnlyRateToSpecified = (filter.getRate_from() == 0.0 && filter.getRate_to() != 0.0);
-        if (isNotSprecifiedRateRange) {
-
-        } else if (isFullRateRange) {
-            model.put("rate_from", filter.getRate_from());
-            model.put("rate_to", filter.getRate_to());
-            if (!hasWhere) sql += " where ";
-            sql += byRateRangeSql + " and ";
-            hasWhere = true;
-        } else if (isOnlyRateToSpecified) {
-            model.put("rate_to", filter.getRate_to());
-            if (!hasWhere) sql += " where ";
-            sql += byRateRangeFirstNullSql + " and ";
-            hasWhere = true;
-        }
-    /* if (!hasWhere) sql += " where ";
-          sql += onlyScheduledOrBookedSql;*/
-        if (hasWhere)
-            sql = sql.substring(0, sql.length() - 5);//remove the last _AND_
-        System.out.println(sql);
-        return new SqlAndParamsHolder(sql, model);
     }
 
 }

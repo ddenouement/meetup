@@ -62,5 +62,12 @@ public enum DbQueryConstants {
     speaker_rate,
     speaker_num_rates,
     language_name,
-    topic_name;
+    topic_name,
+    title_param,
+    id_language_param,
+    topic_id_param,
+    start_date_param,
+    end_date_param,
+    rate_from,
+    rate_to
 }

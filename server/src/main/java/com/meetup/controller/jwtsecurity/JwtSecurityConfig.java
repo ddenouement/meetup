@@ -11,6 +11,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * . set the security for rest api
@@ -47,7 +54,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     public void configAuthentication(final AuthenticationManagerBuilder auth)
-        throws Exception {
+            throws Exception {
         auth.userDetailsService(customUserDetailsService);
     }
 
@@ -61,15 +68,57 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
 
         http
-            .headers()
-            .frameOptions()
-            .disable()//this one to enable /h2 console in browser
-            .httpBasic().disable()
-            .csrf().disable()
-            .sessionManagement()
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .apply(new JwtConfigurer(jwtTokenProvider));
+                .headers()
+                .frameOptions()
+                .disable()//this one to enable /h2 console in browser
+                .and().httpBasic().disable()
+                .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .apply(new JwtConfigurer(jwtTokenProvider));
+        //TODO un-comment to enable CSRF
+        //            .and()
+        //            .csrf()
+        //         .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/api/v1/user/login","/api/v1/user/logout"))
+        //          .csrfTokenRepository (this.getCsrfTokenRepository());
+    }
+
+    private CsrfTokenRepository getCsrfTokenRepository() {
+        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        tokenRepository.setCookiePath("/");
+        return tokenRepository;
+    }
+
+    private static class AllExceptUrlStartedWith implements RequestMatcher {
+
+        private static final String[] ALLOWED_METHODS =
+                new String[]{"GET"};
+
+        private final String[] allowedUrls;
+
+        public AllExceptUrlStartedWith(String... allowedUrls) {
+            this.allowedUrls = allowedUrls;
+        }
+
+        @Override
+        public boolean matches(HttpServletRequest request) {
+            String method = request.getMethod();
+            for (String allowedMethod : ALLOWED_METHODS) {
+                if (allowedMethod.equals(method)) {
+                    return false;
+                }
+            }
+
+            String uri = request.getRequestURI();
+            for (String allowedUrl : allowedUrls) {
+                if (uri.startsWith(allowedUrl)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
     }
 
     /**

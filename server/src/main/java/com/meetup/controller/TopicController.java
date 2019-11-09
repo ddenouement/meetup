@@ -45,7 +45,7 @@ public class TopicController {
      *
      * @return Response entity with list of all topics.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping("/meetups/topics")
@@ -60,7 +60,7 @@ public class TopicController {
      * @param topicID topic ID.
      * @return Response entity with topic.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping("/meetups/topics/{id}")
@@ -76,7 +76,7 @@ public class TopicController {
      * @param topic Created topic.
      * @return Response entity with topic.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping("/meetups/topics")
@@ -93,7 +93,7 @@ public class TopicController {
      * @param topic edited topic.
      * @return Response entity with topic.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PutMapping("/meetups/topics/{id}")
@@ -110,7 +110,7 @@ public class TopicController {
      * @param topicID topic ID to be removed.
      * @return Response entity with status code.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping("/meetups/topics/{id}")

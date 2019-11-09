@@ -4,6 +4,7 @@ import com.meetup.entities.Filter;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public interface ISearchDAO {
      * @param filter custom Filter from frontend.
      * @return List of matched meetups
      */
-    List<Meetup> searchWithFilter(Filter filter);
+    List<Meetup> searchWithFilter(Filter filter) throws SQLException;
 
     /**
      * .

@@ -57,7 +57,7 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "user/users")
@@ -71,7 +71,7 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "user/users/all")
@@ -85,7 +85,7 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/speakers")
@@ -100,7 +100,7 @@ public class UserController {
      * @param token cookie with JWT
      * @return user's id
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/id")
@@ -115,7 +115,7 @@ public class UserController {
      *
      * @return role as String
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/{id}/role")
@@ -129,7 +129,7 @@ public class UserController {
      * Return login based on id.
      * @return role as String
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/current/login")
@@ -150,7 +150,7 @@ public class UserController {
      * @param compl complaint entity.
      * @return ResponseEntity.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/user/complaint")
@@ -169,7 +169,7 @@ public class UserController {
      * @param token JSON web token.
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/user/speakers/{id}/subscribe")
     public ResponseEntity subscribeToSpeaker(
@@ -187,7 +187,7 @@ public class UserController {
      * @param token JSON web token.
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping(value = "/user/speakers/{id}/subscribe")
     public ResponseEntity unsubscribeFromSpeaker(
@@ -204,7 +204,7 @@ public class UserController {
      * @param speakerID Speaker ID.
      * @return ResponseEntity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/speakers/{id}/subscribers")
     public ResponseEntity<List<SimpleUserDTO>> getSubscribersOfSpeaker(

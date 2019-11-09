@@ -58,7 +58,7 @@ public class ArticleController {
      * @param articleCreationDTO ArticleDTO that should be created
      * @return ResponseEntity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @PostMapping(value = "/user/speaker/articles")
     public ResponseEntity postArticleBySpeaker(
         @CookieValue("token") final String token,
@@ -75,7 +75,7 @@ public class ArticleController {
      * @param articleID Article ID that should be removed.
      * @return ResponseEntity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @DeleteMapping(value = "/user/speaker/articles/{id}")
     public ResponseEntity removeArticleBySpeaker(
         @CookieValue("token") final String token,
@@ -91,7 +91,7 @@ public class ArticleController {
      * @param articleID Article ID.
      * @return ResponseEntity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @DeleteMapping(value = "/user/articles/{id}")
     public ResponseEntity removeArticleByAdmin(
         @PathVariable("id") final int articleID) {
@@ -104,9 +104,9 @@ public class ArticleController {
      *
      * @return Article list.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles")
     public ResponseEntity<List<ArticleDisplayDTO>> getAllArticles() {
         return new ResponseEntity<>(articleService.getAllDisplayableArticles(),
@@ -119,7 +119,7 @@ public class ArticleController {
      * @param articleID Article ID.
      * @return Article.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles/{id}")
     public ResponseEntity<ArticleDisplayDTO> getArticle(
@@ -135,7 +135,7 @@ public class ArticleController {
      * @param articleID Article ID.
      * @return List of commentaries of article.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "user/articles/{id}/comments")
@@ -153,7 +153,7 @@ public class ArticleController {
      * @param articleID Article ID.
      * @return Response entity with status code.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "user/articles/{id}/comments")
@@ -174,7 +174,7 @@ public class ArticleController {
      * @param commentID Commentary ID.
      * @return Response entity with status code.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping(value = "user/articles/comments/{id}")

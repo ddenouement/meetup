@@ -39,7 +39,7 @@ public class AdminController {
      * @param id user's id
      * @return ResponseEntity
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping(value = "/user/users/{id}/deactivate")
     public ResponseEntity deactivateUser(
         @PathVariable("id") final int id) {
@@ -53,7 +53,7 @@ public class AdminController {
      * @param id user's id
      * @return status
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping(value = "/users/{id}/activate")
     public ResponseEntity activateUser(final @PathVariable("id") int id) {
         userService.activateUser(id);
@@ -66,7 +66,7 @@ public class AdminController {
      *
      * @return ResponseEntity with list
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping(value = "/user/complaints")
     public ResponseEntity getAllComplaints() {
         return new ResponseEntity<>(
@@ -79,7 +79,7 @@ public class AdminController {
      * @param complaintID ID of complaint.
      * @return ResponseEntity
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping(value = "/user/complaints/{id}/read")
     public ResponseEntity markAsReadComplaint(
         @PathVariable("id") final int complaintID) {

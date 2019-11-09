@@ -11,6 +11,7 @@ import com.meetup.utils.MeetupDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -39,10 +40,10 @@ public class SearchServiceImpl implements ISearchService {
 
     }
     @Override
-    public  List<MeetupDisplayDTO> searchWithFilter(final Filter filter) {
+    public  List<Meetup> searchWithFilter(final Filter filter) throws SQLException {
              List<Meetup> meetups =  searchDao.searchWithFilter(filter);
-           // return meetups;
-        return   meetupDTOConverter.convertToMeetupDTO(meetups) ;
+           return meetups;
+     //   return   meetupDTOConverter.convertToMeetupDTO(meetups) ;
     }
 
     @Override

@@ -9,6 +9,8 @@ import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.ISearchService;
 import io.swagger.annotations.Api;
+
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -58,13 +60,13 @@ public class FilterController {
      *
      * @return list of matched meetups
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/search")
-    public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
+    public ResponseEntity<List<Meetup>> searchWithFilter(
          @RequestBody final Filter filter
-    ) {
+    ) throws SQLException {
 
         return ok(searchService.searchWithFilter(filter));
     }
@@ -85,7 +87,7 @@ public class FilterController {
      * @param filter Filter to save
      * @return saved Filter
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/current/filters")
@@ -103,7 +105,7 @@ public class FilterController {
      * @param token cookie value
      * @return saved Filters list
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/current/filters")
