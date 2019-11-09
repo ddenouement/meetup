@@ -396,6 +396,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * Send email to user.
+     * @param email
+     * User email.
+     */
+    @Override
+    public void sendEmail(String email) {
+        //TODO send message.
+    }
+
+    /**
      * Update speaker rate after rating meetup.
      *
      * @param user User.
