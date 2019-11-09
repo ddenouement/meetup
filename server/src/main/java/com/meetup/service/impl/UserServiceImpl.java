@@ -9,6 +9,8 @@ import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
+import com.meetup.repository.impl.MeetupDaoImpl;
+import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
@@ -29,24 +31,41 @@ public class UserServiceImpl implements IUserService {
     /**
      * . methods to DB considering users.
      */
-    @Autowired
     private IUserDAO userDao;
     /**
      * .
      */
-    @Autowired
     private IMeetupDAO meetupDao;
     /**
      * .
      */
-    @Autowired
     private IMeetupService meetupService;
     /**
      * Notification operations.
      */
-    @Autowired
     private INotificationService notificationService;
 
+    /**
+     * Constructor.
+     * @param userDao
+     * User repository.
+     * @param meetupDao
+     * Meetup repository.
+     * @param meetupService
+     * Meetup service.
+     * @param notificationService
+     * Notification service.
+     */
+    @Autowired
+    UserServiceImpl(final UserDaoImpl userDao,
+        final MeetupDaoImpl meetupDao,
+        final MeetupServiceImpl meetupService,
+        final NotificationServiceImpl notificationService){
+        this.userDao = userDao;
+        this.meetupDao = meetupDao;
+        this.meetupService = meetupService;
+        this.notificationService = notificationService;
+    }
     /**
      * .
      *
