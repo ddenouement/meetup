@@ -167,19 +167,7 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public List<CommentaryDisplayDTO> getCommentaries(final int articleID) {
-        List<Commentary> commentaries = articleDao
-            .getArticleCommentaries(articleID);
-        List<CommentaryDisplayDTO> displayableCommentaries = new ArrayList<>();
-
-        for (Commentary commentary : commentaries) {
-            User user = userDao.findUserById(commentary.getAuthorID());
-            displayableCommentaries.add
-                (CommentaryDTOConverter.convertToCommentaryDisplayDTO(
-                    commentary,
-                    user
-                ));
-        }
-        return displayableCommentaries;
+        return articleDao.getArticleCommentaries(articleID);
     }
 
     /**

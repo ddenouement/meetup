@@ -1,6 +1,6 @@
 package com.meetup.model.mapper;
 
-import com.meetup.entities.Commentary;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.utils.DbQueryConstants;
 import com.meetup.utils.TimeUtility;
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 /**
  * Class, used to map ResultSet from DB to Commentary model.
  */
-public final class CommentaryMapper implements RowMapper<Commentary> {
+public final class CommentaryMapper implements RowMapper<CommentaryDisplayDTO> {
 
     /**
      * . Callback method of RowMapper interface.
@@ -20,11 +20,12 @@ public final class CommentaryMapper implements RowMapper<Commentary> {
      * @return Meetup object for the current row
      * @throws SQLException Exception due to SQL
      */
-    public Commentary mapRow(final ResultSet rs, final int rowNum)
+    public CommentaryDisplayDTO mapRow(final ResultSet rs, final int rowNum)
         throws SQLException {
-        Commentary commentary = new Commentary();
+        CommentaryDisplayDTO commentary = new CommentaryDisplayDTO();
         commentary.setId(rs.getInt(DbQueryConstants.id.name()));
         commentary.setAuthorID(rs.getInt(DbQueryConstants.id_author.name()));
+        commentary.setAuthorLogin(rs.getString(DbQueryConstants.author_login.name()));
         commentary.setArticleID(rs.getInt(DbQueryConstants.id_article.name()));
         commentary.setContents(rs.getString(DbQueryConstants.contents.name()));
         commentary.setTimePosted(
