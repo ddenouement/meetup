@@ -68,18 +68,16 @@ public interface IMeetupService {
     /**
      * Start meetup for fixed duration.
      *  @param meetupID Meetup ID.
-     * @param userLogin User login.
      * @return started meetup
      */
-    Meetup startMeetup(int meetupID, String userLogin);
+    Meetup startMeetup(int meetupID);
 
     /**
      * Terminate meetup .
      *  @param meetupID Meetup ID.
-     * @param userLogin User login.
      * @return terminated meetup
      */
-    Meetup terminateMeetup(int meetupID, String userLogin);
+    Meetup terminateMeetup(int meetupID);
 
     /**
      * Retrieve all available meetups.

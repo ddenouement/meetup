@@ -106,8 +106,6 @@ public class ArticleDaoImpl implements IArticleDAO {
         template.update(insertNewArticle, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             int articleID = holder.getKey().intValue();
-            //adding topics to DB
-            //TODOo rewrite
             for (int topicID : articleCreationDTO.getTopicIds()) {
                 addTopicToArticle(articleID, topicID);
             }

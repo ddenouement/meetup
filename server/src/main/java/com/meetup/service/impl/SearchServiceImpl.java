@@ -7,7 +7,6 @@ import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ISearchService;
-import com.meetup.utils.MeetupDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
