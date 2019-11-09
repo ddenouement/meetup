@@ -478,7 +478,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return boolean if user joined meetup
      */
     @Override
-    public boolean ifJoinedMeetup(final int meetupId) {
-        return meetupDao.ifJoinedMeetup(meetupId);
+    public boolean ifJoinedMeetup(final int userId,final int meetupId) {
+        return meetupDao.ifJoinedMeetup(userId,meetupId);
     }
 }

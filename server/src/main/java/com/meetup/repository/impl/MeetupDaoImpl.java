@@ -381,10 +381,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
     }
 
     @Override
-    public boolean ifJoinedMeetup(final int meetupId) {
+    public boolean ifJoinedMeetup(final int userId, final int meetupId) {
         SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id_user", userId)
                 .addValue("id_meetup", meetupId);
-        List<Boolean> res = this.template.query(ifJoinedMeetup, param, new BooleanMapper());
+        List<Integer> res = this.template.query(ifJoinedMeetup, param, new IntegerMapper());
         if (res.isEmpty()) {
             return false;
         } else {

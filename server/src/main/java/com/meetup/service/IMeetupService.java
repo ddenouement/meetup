@@ -178,9 +178,10 @@ public interface IMeetupService {
     /**
      * Check if the number of meetup is in future user's meetups.
      *
+     * @param userId id of user
      * @param meetupId id of meetup
      * @return boolean if user joined meetup
      */
-    boolean ifJoinedMeetup(int meetupId);
+    boolean ifJoinedMeetup(int userId, int meetupId);
 
 }

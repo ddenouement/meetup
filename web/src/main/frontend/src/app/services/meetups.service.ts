@@ -27,6 +27,7 @@ export class MeetupsService {
   private speakerMeetups: MeetupDto[] = [];
   private meetupsUpdated = new Subject<{ meetups: Meetup[] }>();
   private meetupsDtoUpdated = new Subject<{ meetups: MeetupDto[], meetupCount: number }>();
+  private meetupUpdated = new Subject<{meetup: MeetupDto, ifJoinedMeetup: boolean}>();
   private languagesUpdated = new Subject<{ languages: LanguagesList[] }>();
   private topicsUpdated = new Subject<{ topics: Topic[] }>();
   private speakerMeetupsUpdated = new Subject<{ meetups: MeetupDto[] }>();
@@ -55,6 +56,10 @@ export class MeetupsService {
   getMeetupDtoUpdateListener() {
     return  this.meetupsDtoUpdated.asObservable();
   }
+  getMeetupJoinedUpdateListener() {
+    return  this.meetupUpdated.asObservable();
+  }
+
   getSpeakerMeetupUpdateListener() {
     return this.speakerMeetupsUpdated.asObservable();
   }
@@ -196,7 +201,17 @@ export class MeetupsService {
 
 
   getMeetup(id:number){
-    return this.http.get<MeetupDto>(this.meetupUrl+ id);
+    this.http.get<{meetup:MeetupDto, ifJoinedMeetup: boolean}>(this.meetupUrl+ id).pipe(map(meetupData=>{
+      return{
+        meetup: meetupData.meetup,
+        ifJoinedMeetup: meetupData.ifJoinedMeetup
+      }
+    })).subscribe(transformedData=>{
+      this.meetupUpdated.next({
+        meetup : transformedData.meetup,
+        ifJoinedMeetup: transformedData.ifJoinedMeetup
+      })
+    });
   }
 
   getLanguages() {

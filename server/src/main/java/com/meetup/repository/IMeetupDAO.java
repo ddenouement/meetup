@@ -160,7 +160,8 @@ public interface IMeetupDAO {
     /**
      * Check if user joined specific meetup.
      *
+     * @param userId User ID.
      * @param meetupId Meetup ID.
      * */
-    boolean ifJoinedMeetup(int meetupId);
+    boolean ifJoinedMeetup(int userId, int meetupId);
 }
