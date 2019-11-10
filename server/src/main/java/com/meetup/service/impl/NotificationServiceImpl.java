@@ -41,8 +41,7 @@ public class NotificationServiceImpl implements INotificationService {
      */
     @Autowired
     public NotificationServiceImpl(final INotificationDAO notificationDAO,
-        @Lazy final IMeetupService meetupService,
-        @Lazy final IUserService userService) {
+        @Lazy final IMeetupService meetupService, final IUserService userService) {
         this.notificationDAO = notificationDAO;
         this.meetupService = meetupService;
         this.userService = userService;

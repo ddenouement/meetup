@@ -4,7 +4,6 @@ import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
-import com.meetup.entities.dto.CommentaryDisplayDTO;
 import java.util.List;
 
 /**
@@ -80,7 +79,7 @@ public interface IArticleDAO {
      * @param articleID Article ID.
      * @return List of commentaries.
      */
-    List<CommentaryDisplayDTO> getArticleCommentaries(int articleID);
+    List<Commentary> getArticleCommentaries(int articleID);
 
     /**
      * Insert commentary into DB.

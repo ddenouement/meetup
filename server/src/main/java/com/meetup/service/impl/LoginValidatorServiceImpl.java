@@ -7,13 +7,12 @@ import com.meetup.service.ILoginValidatorService;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**.
  * Login validator service (implementation). Used to manage validity of user
  * login.
  */
-@Service
+@Component
 public class LoginValidatorServiceImpl implements ILoginValidatorService {
 
     /**.

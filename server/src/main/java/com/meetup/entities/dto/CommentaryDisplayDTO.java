@@ -5,7 +5,6 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * CommentaryDisplayDTO class.
@@ -18,12 +17,9 @@ public class CommentaryDisplayDTO {
      */
     private int id;
     /**
-     * Author ID.
+     * Author.
      */
     private int authorID;
-    /**
-     * Author login.
-     */
     private String authorLogin;
     /**
      * Article ID.
@@ -36,6 +32,5 @@ public class CommentaryDisplayDTO {
     /**
      * Date and time of posting commentary .
      */
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime timePosted;
 }

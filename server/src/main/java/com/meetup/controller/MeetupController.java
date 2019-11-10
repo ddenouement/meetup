@@ -203,8 +203,9 @@ public class MeetupController {
     public ResponseEntity<Meetup> startMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
         return new ResponseEntity<>(
-            meetupService.startMeetup(meetupID), HttpStatus.OK);
+            meetupService.startMeetup(meetupID, userLogin), HttpStatus.OK);
     }
 
     /**
@@ -219,8 +220,9 @@ public class MeetupController {
     public ResponseEntity<Meetup> terminateMeetup(
         @CookieValue("token") final String token,
         @PathVariable("id") final int meetupID) {
+        String userLogin = loginValidatorService.extractLogin(token);
         return new ResponseEntity<>(
-            meetupService.terminateMeetup(meetupID), HttpStatus.OK);
+            meetupService.terminateMeetup(meetupID, userLogin), HttpStatus.OK);
     }
 
     /**
