@@ -4,8 +4,10 @@ import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.model.mapper.CommentaryMapper;
+import com.meetup.model.mapper.IntegerMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IArticleDAO;
 
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.meetup.utils.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -70,6 +74,16 @@ public class ArticleDaoImpl implements IArticleDAO {
      */
     @Value("${find_all_articles}")
     private String findAllArticles;
+    /**
+     * SQL reference script. Get articles by pages.
+     */
+    @Value("${find_all_articles_by_pages}")
+    private String findAllArticlesByPages;
+    /**
+     * SQL reference script. Count all articles.
+     */
+    @Value("${find_all_articles_count}")
+    private String findAllArticlesCount;
     /**
      * SQL reference script. Find article commentaries.
      */
@@ -178,7 +192,27 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<Commentary> getArticleCommentaries(final int articleID) {
+    public int getAllArticlesCount() {
+        List<Integer> res = this.template
+                .query(findAllArticlesCount, new IntegerMapper());
+        if (res.isEmpty()) {
+            return 0;
+        } else {
+            return res.get(0);
+        }
+    }
+
+    @Override
+    public List<Article> getAllArticlesByPages(int limit, int offset) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.limit.name(), limit)
+                .addValue(DbQueryConstants.offset.name(), offset);
+        return this.template
+                .query(findAllArticlesByPages,param, new ArticleMapper());
+    }
+
+    @Override
+    public List<CommentaryDisplayDTO> getArticleCommentaries(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_article.name(), articleID);
         return this.template

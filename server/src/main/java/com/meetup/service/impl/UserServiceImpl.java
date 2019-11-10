@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -66,6 +67,7 @@ public class UserServiceImpl implements IUserService {
         this.meetupService = meetupService;
         this.notificationService = notificationService;
     }
+
     /**
      * .
      *
@@ -394,6 +396,17 @@ public class UserServiceImpl implements IUserService {
 
         return "LISTENER";
     }
+
+    /**
+     * Send email to user.
+     * @param email
+     * User email.
+     */
+    @Override
+    public void sendEmail(String email) {
+        //TODO send message.
+    }
+
 
     /**
      * Update speaker rate after rating meetup.

@@ -6,20 +6,18 @@ import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.service.impl.ArticleServiceImpl;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
+import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * API Rest Controller for Articles.
@@ -112,7 +110,26 @@ public class ArticleController {
         return new ResponseEntity<>(articleService.getAllDisplayableArticles(),
             HttpStatus.OK);
     }
-
+    /**
+     * .
+     *
+     * @return ResponseEntity<HashMap<List<ArticleDisplayDTO>, int>>
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/user/articles", params = {"pagesize", "page"})
+    public ResponseEntity getArticlesByPages(
+            @RequestParam("pagesize") final int pageSize,
+            @RequestParam("page") final int currentPage) {
+        int offset = pageSize * (currentPage - 1);
+        int count = articleService.getAllArticlesCount();
+        List<ArticleDisplayDTO> articles = articleService.getAllDisplayableArticlesByPages(pageSize,offset);
+        Map<Object, Object> model = new HashMap<>();
+        model.put(ModelConstants.articlesCount, count);
+        model.put(ModelConstants.articles, articles);
+        return new ResponseEntity<>(model, HttpStatus.OK);
+    }
     /**
      * Get displayable article
      *

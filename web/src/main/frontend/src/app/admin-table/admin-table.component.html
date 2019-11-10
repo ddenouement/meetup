@@ -53,6 +53,7 @@
       <mat-paginator *ngIf="users.length > 0 && !loading"
                      [length]="totalUsers"
                      [pageSize]="usersPerPage"
+                     [pageIndex]="currentPage-1"
                      [pageSizeOptions]="pageSizeOptions"
                      (page)="onChangePage($event)"></mat-paginator>
       <p class="info-text mat-body-2" *ngIf="users.length <= 0">No Users Yet</p>

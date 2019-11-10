@@ -57,5 +57,13 @@ public enum ModelConstants {
     /**
      * Key for a meetup.
      */
-    meetup;
+    meetup,
+    /**
+     * Key for the number of articles in DB that satisfy the request.
+     */
+    articlesCount,
+    /**
+     * Key for a list of articles.
+     */
+    articles;
 }

@@ -68,7 +68,7 @@ import {FromNowPipe} from "./pipes/from_now_pipe";
 import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FooterComponent} from "./footer/footer.component";
-import { ActicleListComponent } from './acticle-list/acticle-list.component';
+import { ActicleListComponent } from './article-list/acticle-list.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { AdminBagesComponent } from './admin-bages/admin-bages.component';
 import { NotificationsComponent } from './notifications/notifications.component';
@@ -78,7 +78,7 @@ import {TimepickerActions} from "ngx-bootstrap/timepicker";
 import {CommonModule} from "@angular/common";
 import { MatSnackBarModule} from '@angular/material'
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
-import {HttpCustom} from "./services/HttpCustom";
+import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
 
 @NgModule({
   declarations: [
@@ -116,8 +116,8 @@ import {HttpCustom} from "./services/HttpCustom";
     SubscribeComponent,
     FooterComponent,
     ActicleListComponent,
-    NotificationsComponent
-
+    NotificationsComponent,
+    FiltersPanelComponent
   ],
   imports: [
     //for smiles

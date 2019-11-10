@@ -42,6 +42,18 @@ public interface IArticleService {
      * @return List of articles.
      */
     List<ArticleDisplayDTO> getAllDisplayableArticles();
+    /**
+     * Get displayable articles by pages.
+     *
+     * @return List of articles by pages.
+     */
+    List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(int limit, int offset);
+    /**
+     * Count the number of articles in database.
+     *
+     * @return int number of all articles
+     */
+    int getAllArticlesCount();
 
     /**
      * Remove article by admin.

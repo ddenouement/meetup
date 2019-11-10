@@ -82,7 +82,7 @@ public class MeetupServiceImpl implements IMeetupService {
     @Override
     public List<MeetupDisplayDTO> getMeetupsByPages(final Integer offset,
         final Integer limit) {
-       return meetupDao.getAllMeetupsByPages(offset, limit);
+        return meetupDao.getAllMeetupsByPages(offset, limit);
     }
 
     /**
@@ -105,17 +105,12 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public Meetup createMeetup(final Meetup meetup, final String userLogin) {
-        //TODO find out, if duration and start date should be managed on backend
         User user = userDao.findUserByLogin(userLogin);
-        if (isSpeaker(user)) {
-            meetup.setSpeakerId(user.getId());
-            meetup.setStateId(MeetupState.SCHEDULED.getCode());
-            Meetup inserted = meetupDao.insertNewMeetup(meetup);
-            notificationService.sendNewSubscribedMeetupNotifications(inserted);
-            return inserted;
-        } else {
-            throw new SpeakerOperationNotAllowedException();
-        }
+        meetup.setSpeakerId(user.getId());
+        meetup.setStateId(MeetupState.SCHEDULED.getCode());
+        Meetup inserted = meetupDao.insertNewMeetup(meetup);
+        notificationService.sendNewSubscribedMeetupNotifications(inserted);
+        return inserted;
     }
 
     /**
@@ -161,22 +156,16 @@ public class MeetupServiceImpl implements IMeetupService {
     private Meetup updateMeetup(final int meetupID,
         final Meetup editedMeetup,
         final User user) {
-        Meetup existingMeetup = meetupDao.findMeetupByID(meetupID);
-        if (isSpeaker(user) && user.getId() == existingMeetup.getSpeakerId()) {
-            editedMeetup.setSpeakerId(user.getId());
-            if (editedMeetup.getStateId() == 0) {
-                editedMeetup.setStateId(existingMeetup.getStateId());
-            }
-            Meetup updated = meetupDao.updateMeetup(editedMeetup, meetupID);
-            String changes = getMeetupChanges(existingMeetup, updated);
-            if (!changes.isEmpty()) {
-                notificationService
-                    .sendMeetupInfoChangedNotifications(updated, changes);
-            }
-            return updated;
-        } else {
-            throw new SpeakerOperationNotAllowedException();
+        Meetup oldMeetup = meetupDao.findMeetupByID(meetupID);
+        editedMeetup.setSpeakerId(user.getId());
+        editedMeetup.setStateId(oldMeetup.getStateId());
+        Meetup updated = meetupDao.updateMeetup(editedMeetup, meetupID);
+        String changes = getMeetupChanges(oldMeetup, updated);
+        if (!changes.isEmpty()) {
+            notificationService
+                .sendMeetupInfoChangedNotifications(updated, changes);
         }
+        return updated;
     }
 
     /**
@@ -214,15 +203,12 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     private Meetup cancelMeetup(final int meetupID, final User user) {
         Meetup existingMeetup = meetupDao.findMeetupByID(meetupID);
-        if (isSpeaker(user)) {
-            existingMeetup.setStateId(MeetupState.CANCELED.getCode());
-            Meetup updated = updateMeetup(meetupID, existingMeetup,
-                existingMeetup.getSpeakerId());
-            meetupDao.removeAllUsersFromMeetup(meetupID);
-            return updated;
-        } else {
-            throw new SpeakerOperationNotAllowedException();
-        }
+        existingMeetup.setStateId(MeetupState.CANCELED.getCode());
+        Meetup updated = updateMeetup(meetupID, existingMeetup,
+            existingMeetup.getSpeakerId());
+        meetupDao.removeAllUsersFromMeetup(meetupID);
+        return updated;
+
     }
 
     /**
@@ -242,17 +228,13 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public Meetup startMeetup(final int meetupID, final String userLogin) {
-        User user = userDao.findUserByLogin(userLogin);
         Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
-        if (isSpeaker(user)) {
-            currentMeetup.setStateId(MeetupState.IN_PROGRESS.getCode());
-            Meetup updated = updateMeetup(meetupID, currentMeetup,
-                currentMeetup.getSpeakerId());
-            runTimer(meetupID);
-            return updated;
-        } else {
-            throw new SpeakerOperationNotAllowedException();
-        }
+        currentMeetup.setStateId(MeetupState.IN_PROGRESS.getCode());
+        Meetup updated = updateMeetup(meetupID, currentMeetup,
+            currentMeetup.getSpeakerId());
+        runTimer(meetupID, currentMeetup.getDurationMinutes());
+        return updated;
+
     }
 
     /**
@@ -264,19 +246,13 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public Meetup terminateMeetup(final int meetupID, final String userLogin) {
-        User user = userDao.findUserByLogin(userLogin);
         Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
-        if (isSpeaker(user)) {
-            if (currentMeetup.getStateId()
-                == MeetupState.IN_PROGRESS.getCode()) {
-                currentMeetup.setStateId(MeetupState.TERMINATED.getCode());
-                return updateMeetup(meetupID, currentMeetup,
-                    currentMeetup.getSpeakerId());
-            } else {
-                throw new IllegalMeetupStateException();
-            }
+        if (currentMeetup.getStateId() == MeetupState.IN_PROGRESS.getCode()) {
+            currentMeetup.setStateId(MeetupState.TERMINATED.getCode());
+            return updateMeetup(meetupID, currentMeetup,
+                currentMeetup.getSpeakerId());
         } else {
-            throw new SpeakerOperationNotAllowedException();
+            throw new IllegalMeetupStateException();
         }
     }
 
@@ -285,29 +261,36 @@ public class MeetupServiceImpl implements IMeetupService {
      *
      * @param currentMeetupID Current meetup.
      */
-    private void runTimer(final int currentMeetupID) {
+    private void runTimer(final int currentMeetupID,
+        Integer durationMinutes) {
         new Timer().schedule(
             new TimerTask() {
                 @Override
                 public void run() {
-                    Meetup currentMeetup = meetupDao
-                        .findMeetupByID(currentMeetupID);
-                    if (currentMeetup.getStateId()
-                        == MeetupState.IN_PROGRESS.getCode()) {
-                        currentMeetup.setStateId(MeetupState.PASSED.getCode());
-                        Meetup updated = meetupDao
-                            .updateMeetup(currentMeetup, currentMeetup.getId());
-                        notificationService
-                            .sendLeaveFeedbackNotifications(updated);
-                    }
+                    setMeetupPassed(currentMeetupID);
                 }
             },
-            TimeUnit.
-                MINUTES.
-                toMillis(meetupDao.findMeetupByID(currentMeetupID)
-                    .getDurationMinutes())
+            TimeUnit.MINUTES.toMillis(durationMinutes)
         );
     }
+
+    /**
+     * Set meetup state "Passed" when the timer is over and meetup state is
+     * in progress.
+     * @param currentMeetupID
+     * Meetup ID.
+     */
+    private void setMeetupPassed(int currentMeetupID) {
+        Meetup currentMeetup = meetupDao.findMeetupByID(currentMeetupID);
+        if (currentMeetup.getStateId() == MeetupState.IN_PROGRESS.getCode()) {
+            currentMeetup.setStateId(MeetupState.PASSED.getCode());
+            Meetup updated = meetupDao
+                .updateMeetup(currentMeetup, currentMeetup.getId());
+            notificationService
+                .sendLeaveFeedbackNotifications(updated);
+        }
+    }
+
 
     /**
      * Method used to get specific speaker meetings list from database, using
@@ -478,7 +461,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return boolean if user joined meetup
      */
     @Override
-    public boolean ifJoinedMeetup(final int userId,final int meetupId) {
-        return meetupDao.ifJoinedMeetup(userId,meetupId);
+    public boolean ifJoinedMeetup(final int userId, final int meetupId) {
+        return meetupDao.ifJoinedMeetup(userId, meetupId);
     }
 }
