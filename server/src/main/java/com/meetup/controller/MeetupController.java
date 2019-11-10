@@ -79,7 +79,7 @@ public class MeetupController {
     }
 
     /**
-     * .
+     * Get meetups, depending on page size.
      *
      * @return ResponseEntity<List < Meetup>>
      */

@@ -1,3 +1,16 @@
 .filler {
   flex: 1 1 auto;
 }
+
+.vertical-line{
+  width: 2%;
+  margin: auto;
+  margin-top: 50%;
+  margin-bottom: 50%;
+  transform: rotate(90deg);
+  border-color: black;
+}
+
+p {
+  font-size: 16px;
+}

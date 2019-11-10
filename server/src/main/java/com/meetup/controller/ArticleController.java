@@ -43,7 +43,8 @@ public class ArticleController {
      * @param loginValidatorService LoginValidatorService.
      * @param articleService ArticleService.
      */
-    ArticleController(@Autowired final LoginValidatorServiceImpl loginValidatorService,
+    ArticleController(
+        @Autowired final LoginValidatorServiceImpl loginValidatorService,
         @Autowired final ArticleServiceImpl articleService) {
         this.loginValidatorService = loginValidatorService;
         this.articleService = articleService;
@@ -110,26 +111,29 @@ public class ArticleController {
         return new ResponseEntity<>(articleService.getAllDisplayableArticles(),
             HttpStatus.OK);
     }
+
     /**
-     * .
+     * Get articles, depending on page size.
      *
-     * @return ResponseEntity<HashMap<List<ArticleDisplayDTO>, int>>
+     * @return ResponseEntity<HashMap < List < ArticleDisplayDTO>, int>>
      */
     @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles", params = {"pagesize", "page"})
     public ResponseEntity getArticlesByPages(
-            @RequestParam("pagesize") final int pageSize,
-            @RequestParam("page") final int currentPage) {
+        @RequestParam("pagesize") final int pageSize,
+        @RequestParam("page") final int currentPage) {
         int offset = pageSize * (currentPage - 1);
         int count = articleService.getAllArticlesCount();
-        List<ArticleDisplayDTO> articles = articleService.getAllDisplayableArticlesByPages(pageSize,offset);
+        List<ArticleDisplayDTO> articles = articleService
+            .getAllDisplayableArticlesByPages(pageSize, offset);
         Map<Object, Object> model = new HashMap<>();
         model.put(ModelConstants.articlesCount, count);
         model.put(ModelConstants.articles, articles);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
+
     /**
      * Get displayable article
      *
@@ -181,8 +185,8 @@ public class ArticleController {
         String userLogin = loginValidatorService.extractLogin(token);
 
         return new ResponseEntity<>(
-                articleService.postCommentary(articleID, userLogin, commentary),
-                HttpStatus.CREATED);
+            articleService.postCommentary(articleID, userLogin, commentary),
+            HttpStatus.CREATED);
     }
 
     /**
