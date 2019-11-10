@@ -83,7 +83,7 @@ public class UserController {
      *
      * @return List of UsersComplaintsDTO
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping(value = "user/users/all",params = {"pagesize", "page"})
     public ResponseEntity getAllUsersWithComplaintsCount(
             @RequestParam("pagesize") final int pageSize,

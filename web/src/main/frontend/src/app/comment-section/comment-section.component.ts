@@ -28,6 +28,7 @@ export class CommentSectionComponent implements OnChanges, OnInit {
   comments: Array<CommentDto>;
   statusMessage: string;
   dataRefresher: any;
+  isAddDisabledButton:boolean;
   text: string;
   showEmojiPicker: boolean;
 
@@ -37,7 +38,7 @@ export class CommentSectionComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-
+this.isAddDisabledButton = false;
     this.getThisUserLogin();
     this.getThisUserId();
     this.route.params.subscribe(params => {
@@ -111,6 +112,7 @@ export class CommentSectionComponent implements OnChanges, OnInit {
 
   //charset : 'utf8mb4'
   addComment() {
+    this.isAddDisabledButton = true;
     const date = new Date();
 
     const editedComment = new Comment(0, this.authorId, this.articleId, this.text, date, 0);
@@ -120,9 +122,11 @@ export class CommentSectionComponent implements OnChanges, OnInit {
         this.comments.unshift(data);
         this.text = "";
         this.snackBar.open('Posted a comment');
+        this.isAddDisabledButton = false;
       },
       err => {
         this.snackBar.open(err.error);
+        this.isAddDisabledButton = false;
       });
 
   }

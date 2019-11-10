@@ -73,13 +73,13 @@ public class SearchDaoImpl implements ISearchDAO {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id_user", userId)
-                .addValue("id_language", f.null_or_idLanguage())
+                .addValue("id_language", f.nullOrIdLanguage())
                 .addValue("name", f.getName())
                 .addValue("rate_from", f.getRate_from())
                 .addValue("rate_to", f.getRate_to())
                 .addValue("time_from", f.getTime_from())
                 .addValue("time_to", f.getTime_to())
-                .addValue("id_topic", f.null_or_idTopic())
+                .addValue("id_topic", f.nullOrIdTopic())
                 .addValue("title_substring", f.getTitle_substring());
         template.update(addFilter, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
@@ -134,13 +134,13 @@ public class SearchDaoImpl implements ISearchDAO {
     @Override
     public List<Meetup> searchWithFilter(final Filter filter) throws SQLException {
            SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.id_language_param.name(), filter.null_or_idLanguage())
-                .addValue(DbQueryConstants.title_param.name(), filter.null_or_titleSubstring())
-                .addValue(DbQueryConstants.topic_id_param.name(), filter.null_or_idTopic())
+                .addValue(DbQueryConstants.id_language_param.name(), filter.nullOrIdLanguage())
+                .addValue(DbQueryConstants.title_param.name(), filter.getTitle_substring())
+                .addValue(DbQueryConstants.topic_id_param.name(), filter.nullOrIdTopic())
                 .addValue(DbQueryConstants.start_date_param.name(), filter.getTime_from())
                 .addValue(DbQueryConstants.end_date_param.name(), filter.getTime_to())
-                .addValue(DbQueryConstants.rate_from.name(), filter.null_or_rateFrom())
-                .addValue(DbQueryConstants.rate_to.name(), filter.null_or_rateTo());
+                .addValue(DbQueryConstants.rate_from.name(), filter.nullOrRateFrom())
+                .addValue(DbQueryConstants.rate_to.name(), filter.nullOrRateTo());
         List<Meetup> foundmeetups = template.query(searchMeetupsByFilterWithFunction, param, new MeetupMapper());
 
 

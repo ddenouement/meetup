@@ -115,7 +115,7 @@ public class ArticleController {
      *
      * @return ResponseEntity<HashMap<List<ArticleDisplayDTO>, int>>
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles", params = {"pagesize", "page"})

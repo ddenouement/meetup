@@ -79,6 +79,7 @@ import {CommonModule} from "@angular/common";
 import { MatSnackBarModule} from '@angular/material'
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
 import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
+import {HttpCustom} from "./services/HttpCustom";
 
 @NgModule({
   declarations: [
@@ -165,7 +166,7 @@ import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig,{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
- /*  ,
+  /*   ,
      {
     provide: HTTP_INTERCEPTORS,
     useClass: HttpCustom,

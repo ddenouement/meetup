@@ -16,6 +16,7 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,15 +73,15 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions()
                 .disable()//this one to enable /h2 console in browser
                 .and().httpBasic().disable()
-                .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
+                  .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
         //TODO un-comment to enable CSRF
-            //        .and()
-         /*            .csrf()
-                .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/","/login","/logout","/api/v1/user/login","/api/v1/user/logout"))
+         /*           .and()
+                     .csrf()
+                .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/","/login","/logout","/api/v1/user/login","/api/v1/user/logout","/api/v1/user/profile"))
                  .csrfTokenRepository (this.getCsrfTokenRepository());*/
     }
 
@@ -94,6 +95,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private static final String[] ALLOWED_METHODS =
                 new String[]{"GET"};
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
 
         private final String[] allowedUrls;
 
@@ -112,7 +114,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
             String uri = request.getRequestURI();
             for (String allowedUrl : allowedUrls) {
-                if (uri.startsWith(allowedUrl)) {
+                if (antPathMatcher.match(allowedUrl, uri)) {
                     return false;
                 }
             }

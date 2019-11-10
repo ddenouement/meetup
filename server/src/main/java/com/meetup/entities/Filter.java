@@ -36,12 +36,12 @@ public class Filter {
     private String topic_name;
 
 
-    public String null_or_titleSubstring() {
+    public String nullOrTitleSubstring() {
         if (title_substring.equals("")) return null;
         else return title_substring;
     }
 
-    public Integer null_or_idLanguage() {
+    public Integer nullOrIdLanguage() {
         if (id_language == 0) return null;
         else return id_language;
     }
@@ -55,18 +55,18 @@ public class Filter {
     }
 
 
-    public Integer null_or_idTopic() {
+    public Integer nullOrIdTopic() {
         if (topic_id == 0) return null;
         else return topic_id;
     }
 
-    public Float null_or_rateTo() {
+    public Float nullOrRateTo() {
         if (rate_to == 0) return null;
         if (isDefaultRateRange()) return null;
         else return rate_to;
     }
 
-    public Float null_or_rateFrom() {
+    public Float nullOrRateFrom() {
         if (rate_from == 0) return null;
         if (isDefaultRateRange()) return null;
         else return rate_from;
