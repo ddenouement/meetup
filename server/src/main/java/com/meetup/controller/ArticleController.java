@@ -119,7 +119,7 @@ public class ArticleController {
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles", params = {"pagesize", "page"})
-    public ResponseEntity getMeetupsByPages(
+    public ResponseEntity getArticlesByPages(
             @RequestParam("pagesize") final int pageSize,
             @RequestParam("page") final int currentPage) {
         int offset = pageSize * (currentPage - 1);

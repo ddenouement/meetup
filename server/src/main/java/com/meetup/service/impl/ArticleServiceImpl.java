@@ -70,14 +70,7 @@ public class ArticleServiceImpl implements IArticleService {
     public void postArticle(final ArticleCreationDTO articleCreationDTO,
         final String userLogin) {
         User user = userDao.findUserByLogin(userLogin);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        if (RoleProcessor.isSpeaker(user)) {
-            articleDao.insertNewArticle(articleCreationDTO, user.getId());
-        } else {
-            throw new SpeakerOperationNotAllowedException();
-        }
+        articleDao.insertNewArticle(articleCreationDTO, user.getId());
     }
 
     /**
@@ -89,23 +82,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public void removeArticle(final int articleID,
         final String userLogin) {
-        User user = userDao.findUserByLogin(userLogin);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        Article currentArticle = articleDao.findArticleByID(articleID);
-        if (currentArticle == null) {
-            throw new ArticleNotFoundException();
-        }
-        if (RoleProcessor.isSpeaker(user)) {
-            if (user.getId() == currentArticle.getAuthorID()) {
-                articleDao.removeArticle(articleID);
-            } else {
-                throw new SpeakerOperationNotAllowedException();
-            }
-        } else {
-            throw new SpeakerOperationNotAllowedException();
-        }
+        articleDao.removeArticle(articleID);
     }
 
     /**
@@ -182,19 +159,7 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public List<CommentaryDisplayDTO> getCommentaries(final int articleID) {
-        List<Commentary> commentaries = articleDao
-            .getArticleCommentaries(articleID);
-        List<CommentaryDisplayDTO> displayableCommentaries = new ArrayList<>();
-
-        for (Commentary commentary : commentaries) {
-            User user = userDao.findUserById(commentary.getAuthorID());
-            displayableCommentaries.add
-                (CommentaryDTOConverter.convertToCommentaryDisplayDTO(
-                    commentary,
-                    user
-                ));
-        }
-        return displayableCommentaries;
+        return articleDao.getArticleCommentaries(articleID);
     }
 
     /**

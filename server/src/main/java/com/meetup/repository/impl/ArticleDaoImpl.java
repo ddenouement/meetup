@@ -4,6 +4,7 @@ import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.model.mapper.CommentaryMapper;
 import com.meetup.model.mapper.IntegerMapper;
@@ -211,7 +212,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<Commentary> getArticleCommentaries(final int articleID) {
+    public List<CommentaryDisplayDTO> getArticleCommentaries(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_article.name(), articleID);
         return this.template
