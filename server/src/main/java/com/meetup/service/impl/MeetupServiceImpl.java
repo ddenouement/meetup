@@ -1,14 +1,11 @@
 package com.meetup.service.impl;
 
-import static com.meetup.utils.RoleProcessor.isSpeaker;
-
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.error.IllegalMeetupStateException;
 import com.meetup.error.MeetupNotFoundException;
 import com.meetup.error.OutOfSlotsException;
-import com.meetup.error.SpeakerOperationNotAllowedException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.MeetupDaoImpl;
@@ -24,7 +21,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -275,10 +271,10 @@ public class MeetupServiceImpl implements IMeetupService {
     }
 
     /**
-     * Set meetup state "Passed" when the timer is over and meetup state is
-     * in progress.
-     * @param currentMeetupID
-     * Meetup ID.
+     * Set meetup state "Passed" when the timer is over and meetup state is in
+     * progress.
+     *
+     * @param currentMeetupID Meetup ID.
      */
     private void setMeetupPassed(int currentMeetupID) {
         Meetup currentMeetup = meetupDao.findMeetupByID(currentMeetupID);

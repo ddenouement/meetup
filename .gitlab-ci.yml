@@ -22,6 +22,6 @@ deploy:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=fierce-depths-70875 --api-key=d6745144-16bd-43c4-b778-e65dacfe2490
+    - dpl --provider=heroku --app=app-meetup --api-key=d6745144-16bd-43c4-b778-e65dacfe2490
   only:
     - master

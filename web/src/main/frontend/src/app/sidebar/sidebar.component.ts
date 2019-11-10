@@ -40,28 +40,20 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
+            activeSRC: '../../assets/images/teamActive.svg',
+            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            routerLink: '/dictionaries',
+            alt: 'dictionaries',
+            role: this.admin,
+            active: false
+          },
+          {
             //nema
             activeSRC: '../../assets/images/teamActive.svg',
             noActiveSRC: '../../assets/images/teamNoActive.svg',
             routerLink: '/admin-badges',
             alt: 'edit-badges',
             role: this.admin,
-            active: false
-          },
-          {
-            activeSRC: '../../assets/images/teamActive.svg',
-            noActiveSRC: '../../assets/images/teamNoActive.svg',
-            routerLink: '/subscriptions',
-            alt: 'subscriptions',
-            role: this.speaker,
-            active: false
-          },
-          {
-            activeSRC: '../../assets/images/createArticleActive.svg',
-            noActiveSRC: '../../assets/images/createArticleNoActive.svg',
-            routerLink: '/create-article',
-            alt: 'create-article',
-            role: this.speaker,
             active: false
           },
           {
@@ -73,10 +65,10 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/feedbackActive.svg',
-            noActiveSRC: '../../assets/images/feedbackNoActive.svg',
-            routerLink: '/feedback',
-            alt: 'feedback',
+            activeSRC: '../../assets/images/teamActive.svg',
+            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            routerLink: '/subscriptions',
+            alt: 'subscriptions',
             role: this.speaker,
             active: false
           },
@@ -85,6 +77,14 @@ export class SidebarComponent implements OnInit {
             noActiveSRC: '../../assets/images/notificationNoActive.svg',
             routerLink: '/notifications',
             alt: 'notifications',
+            role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/createArticleActive.svg',
+            noActiveSRC: '../../assets/images/createArticleNoActive.svg',
+            routerLink: '/create-article',
+            alt: 'create-article',
             role: this.speaker,
             active: false
           },
@@ -105,18 +105,18 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/notificationsActive.svg',
-            noActiveSRC: '../../assets/images/notificationsNoActive.svg',
-            routerLink: '/notifications',
-            alt: 'notifications',
-            role: this.listener,
-            active: false
-          },
-          {
             activeSRC: '../../assets/images/myProfileActive.svg',
             noActiveSRC: '../../assets/images/myProfileNoActive.svg',
             routerLink: '/listener-profile',
             alt: 'listener-profile',
+            role: this.listener,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/notificationActive.svg',
+            noActiveSRC: '../../assets/images/notificationNoActive.svg',
+            routerLink: '/notifications',
+            alt: 'notifications',
             role: this.listener,
             active: false
           },
@@ -129,13 +129,14 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/teamActive.svg',
-            noActiveSRC: '../../assets/images/teamNoActive.svg',
-            routerLink: '/dictionaries',
-            alt: 'dictionaries',
-            role: this.admin,
+            activeSRC: '../../assets/images/feedbackActive.svg',
+            noActiveSRC: '../../assets/images/feedbackNoActive.svg',
+            routerLink: '/feedback',
+            alt: 'feedback',
+            role: this.speaker,
             active: false
           },
+
         ];
         this.href = this.router.url;
         for (let bar in this.SIDEBAR_DATA) {
