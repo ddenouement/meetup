@@ -4,6 +4,7 @@ import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.model.mapper.CommentaryMapper;
@@ -148,7 +149,7 @@ public class ArticleDaoImpl implements IArticleDAO {
      * @return Article.
      */
     @Override
-    public Article findArticleByID(final int articleID) {
+    public ArticleDisplayDTO findArticleByID(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id.name(), articleID);
         return this.template
@@ -186,7 +187,7 @@ public class ArticleDaoImpl implements IArticleDAO {
      * @return List of articles.
      */
     @Override
-    public List<Article> getAllArticles() {
+    public List<ArticleDisplayDTO> getAllArticles() {
         return this.template
             .query(findAllArticles, new ArticleMapper());
     }
@@ -203,7 +204,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<Article> getAllArticlesByPages(int limit, int offset) {
+    public List<ArticleDisplayDTO> getAllArticlesByPages(int limit, int offset) {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue(DbQueryConstants.limit.name(), limit)
                 .addValue(DbQueryConstants.offset.name(), offset);

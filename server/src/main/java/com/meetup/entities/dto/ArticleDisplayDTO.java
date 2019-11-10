@@ -34,7 +34,7 @@ public class ArticleDisplayDTO {
     /**
      * Author of article.
      */
-    private UserDTO author;
+    private SimpleUserDTO author;
 
     /**
      * Init with empty lists.
