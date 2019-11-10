@@ -70,19 +70,23 @@ public interface IUserService {
      * @return List<User> of users.
      */
     List<User> getAllUsers();
+
     /**
      * Get all users with number of complaint for them.
+     *
      * @param limit users per page
      * @param offset offset of list
      * @return List<UserComplaintsDTO> of users.
      */
     List<UserComplaintsDTO> getAllUsersWithComplaints(int limit, int offset);
+
     /**
      * Count the number of users in database.
      *
      * @return int number of all users
      */
     int getAllUsersCount();
+
     /**
      * .
      *
@@ -180,5 +184,14 @@ public interface IUserService {
     void rateMeetup(int meetupID, String userLogin, Feedback feedback);
 
     String userPrimaryRole(int userId);
+
+
+    /**
+     * Send email to user.
+     *
+     * @param email Email.
+     */
+
+    void sendEmail(String email);
 }
 

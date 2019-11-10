@@ -9,6 +9,8 @@ import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
+import com.meetup.repository.impl.MeetupDaoImpl;
+import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
@@ -19,33 +21,52 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * . Class for working with users
  */
-@Component
+@Service
 public class UserServiceImpl implements IUserService {
 
     /**
      * . methods to DB considering users.
      */
-    @Autowired
     private IUserDAO userDao;
     /**
      * .
      */
-    @Autowired
     private IMeetupDAO meetupDao;
     /**
      * .
      */
-    @Autowired
     private IMeetupService meetupService;
     /**
      * Notification operations.
      */
-    @Autowired
     private INotificationService notificationService;
+
+    /**
+     * Constructor.
+     * @param userDao
+     * User repository.
+     * @param meetupDao
+     * Meetup repository.
+     * @param meetupService
+     * Meetup service.
+     * @param notificationService
+     * Notification service.
+     */
+    @Autowired
+    UserServiceImpl(final UserDaoImpl userDao,
+        final MeetupDaoImpl meetupDao,
+        final MeetupServiceImpl meetupService,
+        final NotificationServiceImpl notificationService){
+        this.userDao = userDao;
+        this.meetupDao = meetupDao;
+        this.meetupService = meetupService;
+        this.notificationService = notificationService;
+    }
 
     /**
      * .
@@ -375,6 +396,17 @@ public class UserServiceImpl implements IUserService {
 
         return "LISTENER";
     }
+
+    /**
+     * Send email to user.
+     * @param email
+     * User email.
+     */
+    @Override
+    public void sendEmail(String email) {
+        //TODO send message.
+    }
+
 
     /**
      * Update speaker rate after rating meetup.
