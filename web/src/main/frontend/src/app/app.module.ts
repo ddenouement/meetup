@@ -1,15 +1,12 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
-import {EmojiPickerModule} from 'ng-emoji-picker';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ToolbarMenuComponent} from './toolbar-menu/toolbar-menu.component';
 
-
 import {
   MatButtonModule,
-  MatCardModule, MatChip, MatChipsModule,
+  MatCardModule, MatChipsModule,
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
@@ -22,7 +19,6 @@ import {
   TimepickerModule,
   BsDatepickerModule,
   TimepickerConfig,
-  DatepickerConfig,
   BsDatepickerConfig
 } from 'ngx-bootstrap';
 
@@ -64,7 +60,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
 import {MeetupListComponent} from "./meetup-list/meetup-list.component";
 import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
-import {MeetupsService} from "./services/meetups.service";
 import {FromNowPipe} from "./pipes/from_now_pipe";
 import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
@@ -117,11 +112,8 @@ import {CommonModule} from "@angular/common";
     NotificationsComponent
   ],
   imports: [
-    //for smiles
     IconsModule,
     PickerModule,
-    //ne
-    //   EmojiPickerModule,
     BsDatepickerModule.forRoot(),
     MatTabsModule,
     MatProgressSpinnerModule,

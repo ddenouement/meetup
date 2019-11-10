@@ -14,8 +14,6 @@ import {MatPasswordStrengthComponent} from '@angular-material-extensions/passwor
 import {Router} from "@angular/router";
 import {RegisterService} from "./register.service";
 import {LanguagesList} from "../models/languagesList";
-import {from, pipe} from "rxjs";
-import {tap} from "rxjs/operators";
 import {Aachen} from "../register/register.component";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -73,9 +71,9 @@ export class RegisterSpeakerComponent implements OnInit {
   public rozsulka(): void {
     const user = <Aachen>{
       login: this.registerForm.get('login').value,
-      email: this.registerForm.get('password').value
+      email: this.registerForm.get('email').value
     };
-    this.registerService.sendUser(user).subscribe(res=>{
+    this.registerService.sendUser(user).subscribe(res => {
 
     });
 

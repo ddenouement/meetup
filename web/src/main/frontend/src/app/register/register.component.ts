@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
   public rozsulka(): void {
     const user = <Aachen>{
       login: this.registerForm.get('login').value,
-      email: this.registerForm.get('password').value
+      email: this.registerForm.get('email').value
     };
   }
 

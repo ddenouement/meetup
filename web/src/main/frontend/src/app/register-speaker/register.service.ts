@@ -25,7 +25,11 @@ export class RegisterService {
         'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
       })
     };
-    return this.http.post('https://events.sendpulse.com/events/id/63c05ac4961149dffbc76906bc2db760/7246374', user, httpOptions);
+    // return this.http.post('https://events.sendpulse.com/events/id/63c05ac4961149dffbc76906bc2db760/7246374', user, httpOptions);
+    return this.http.post("https://events.sendpulse.com/events/id/63c05ac4961149dffbc76906bc2db760/7246374", user, {
+      headers:
+        {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+    });
   }
 
   getLanguages(): Observable<LanguagesList[]> {
