@@ -78,10 +78,10 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
         //TODO un-comment to enable CSRF
-        //            .and()
-        //            .csrf()
-        //         .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/api/v1/user/login","/api/v1/user/logout"))
-        //          .csrfTokenRepository (this.getCsrfTokenRepository());
+            //        .and()
+         /*            .csrf()
+                .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/","/login","/logout","/api/v1/user/login","/api/v1/user/logout"))
+                 .csrfTokenRepository (this.getCsrfTokenRepository());*/
     }
 
     private CsrfTokenRepository getCsrfTokenRepository() {

@@ -67,6 +67,9 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     @Override
     public void delete(Integer id) {
+        if (languageDao.findLanguageByID(id) != null) {
+            throw new LanguageIsUsedException();
+        }
         languageDao.delete(id);
     }
 

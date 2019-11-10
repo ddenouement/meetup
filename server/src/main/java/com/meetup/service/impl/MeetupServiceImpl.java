@@ -25,11 +25,12 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Meetup service (implementation). Used to manage meetup functionality.
  */
-@Component
+@Service
 public class MeetupServiceImpl implements IMeetupService {
 
     /**
@@ -212,7 +213,6 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return cancelled meetup
      */
     private Meetup cancelMeetup(final int meetupID, final User user) {
-        //TODO null meetup handling
         Meetup existingMeetup = meetupDao.findMeetupByID(meetupID);
         if (isSpeaker(user)) {
             existingMeetup.setStateId(MeetupState.CANCELED.getCode());
@@ -464,7 +464,7 @@ public class MeetupServiceImpl implements IMeetupService {
     /**
      * Count the number of meetups in database.
      *
-     * @return List of all meetups
+     * @return int number of all meetups
      */
     @Override
     public int getAllMeetupsCount() {
@@ -478,7 +478,7 @@ public class MeetupServiceImpl implements IMeetupService {
      * @return boolean if user joined meetup
      */
     @Override
-    public boolean ifJoinedMeetup(final int meetupId) {
-        return meetupDao.ifJoinedMeetup(meetupId);
+    public boolean ifJoinedMeetup(final int userId,final int meetupId) {
+        return meetupDao.ifJoinedMeetup(userId,meetupId);
     }
 }

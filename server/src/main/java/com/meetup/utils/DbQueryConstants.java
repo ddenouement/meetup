@@ -69,5 +69,7 @@ public enum DbQueryConstants {
     start_date_param,
     end_date_param,
     rate_from,
-    rate_to
+    rate_to,
+    complaints_count;
+
 }

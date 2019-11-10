@@ -213,6 +213,7 @@ public class AuthorizationController {
      */
     private void deleteToken(final HttpServletResponse response) {
         setCookie(response, "token", null, 0);
+
     }
 
     /**

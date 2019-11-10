@@ -1,12 +1,9 @@
 package com.meetup.repository;
 
 import com.meetup.entities.Language;
-import com.meetup.entities.dto.ProfileDTO;
+import com.meetup.entities.dto.*;
 import com.meetup.utils.Role;
 import com.meetup.entities.User;
-import com.meetup.entities.dto.ComplaintDTO;
-import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserRegistrationDTO;
 
 import java.util.List;
 
@@ -192,6 +189,18 @@ public interface IUserDAO {
      * List of users.
      */
     List<User> getAllUsers();
+    /**
+     * Get all users and number of complaints for them.
+     * @return
+     * List of users.
+     */
+    List<UserComplaintsDTO> getAllUsersWithComplaintsCount(int limit, int offset);
+    /**
+     * Count the number of users in database.
+     *
+     * @return int number of all users
+     */
+    int getAllUsersCount();
 
     /**
      * Change user's password.

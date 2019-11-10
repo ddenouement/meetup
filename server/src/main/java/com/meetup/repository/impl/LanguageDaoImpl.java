@@ -1,15 +1,19 @@
 package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
+import com.meetup.error.ElementIsUsedException;
+import com.meetup.error.LanguageIsUsedException;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.repository.ILanguageDAO;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import com.meetup.utils.DbQueryConstants ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -173,9 +177,15 @@ public class LanguageDaoImpl implements ILanguageDAO {
      */
     @Override
     public void delete(final Integer id_language) {
-        SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.id.name(), id_language);
-        template.update(deleteLanguage, param);
+        try {
+            SqlParameterSource param = new MapSqlParameterSource()
+                    .addValue(DbQueryConstants.id.name(), id_language);
+            template.update(deleteLanguage, param);
+        }
+catch (DataAccessException e)
+        {
+            throw new LanguageIsUsedException();
+        }
     }
 
     /**

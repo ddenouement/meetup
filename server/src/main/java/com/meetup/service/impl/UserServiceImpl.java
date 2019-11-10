@@ -3,16 +3,14 @@ package com.meetup.service.impl;
 import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
-import com.meetup.entities.dto.ComplaintDTO;
-import com.meetup.entities.dto.ProfileDTO;
-import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserDTO;
-import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.entities.dto.*;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
+import com.meetup.repository.impl.MeetupDaoImpl;
+import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
@@ -22,35 +20,52 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * . Class for working with users
  */
-@Component
+@Service
 public class UserServiceImpl implements IUserService {
 
     /**
      * . methods to DB considering users.
      */
-    @Autowired
     private IUserDAO userDao;
     /**
      * .
      */
-    @Autowired
     private IMeetupDAO meetupDao;
     /**
      * .
      */
-    @Autowired
     private IMeetupService meetupService;
     /**
      * Notification operations.
      */
-    @Autowired
     private INotificationService notificationService;
 
+    /**
+     * Constructor.
+     * @param userDao
+     * User repository.
+     * @param meetupDao
+     * Meetup repository.
+     * @param meetupService
+     * Meetup service.
+     * @param notificationService
+     * Notification service.
+     */
+    @Autowired
+    UserServiceImpl(final UserDaoImpl userDao,
+        final MeetupDaoImpl meetupDao,
+        final MeetupServiceImpl meetupService,
+        final NotificationServiceImpl notificationService){
+        this.userDao = userDao;
+        this.meetupDao = meetupDao;
+        this.meetupService = meetupService;
+        this.notificationService = notificationService;
+    }
     /**
      * .
      *
@@ -182,6 +197,20 @@ public class UserServiceImpl implements IUserService {
         return userDao.getAllUsers();
     }
 
+    @Override
+    public List<UserComplaintsDTO> getAllUsersWithComplaints(final int limit,final int offset) {
+        return userDao.getAllUsersWithComplaintsCount(limit,offset);
+    }
+    /**
+     * Count the number of users in database.
+     *
+     * @return int number of all users
+     */
+    @Override
+    public int getAllUsersCount() {
+        return userDao.getAllUsersCount();
+    }
+
     /**
      * .
      *
@@ -248,10 +277,10 @@ public class UserServiceImpl implements IUserService {
         if (u == null) {
             throw new UserNotFoundException();
         }
-        int id_source = u.getId();
+        int idSource = u.getId();
         complaintDTO
-            .setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
-        complaintDTO.setId_user_from(id_source);
+            .setPostedDate(complaintDTO.getPostedDate());
+        complaintDTO.setIdUserFrom(idSource);
         userDao.postComplaintOn(complaintDTO);
     }
 

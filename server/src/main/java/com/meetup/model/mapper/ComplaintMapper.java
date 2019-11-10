@@ -22,8 +22,8 @@ public class ComplaintMapper implements RowMapper<ComplaintDTO> {
         ComplaintDTO c = new ComplaintDTO();
         c.setId(rs.getInt(DbQueryConstants.id.name()));
         c.setContent(rs.getString(DbQueryConstants.reason.name()));
-        c.setId_user_from(rs.getInt(DbQueryConstants.id_source.name()));
-        c.setId_user_to(rs.getInt(DbQueryConstants.id_destination.name()));
+        c.setIdUserFrom(rs.getInt(DbQueryConstants.id_source.name()));
+        c.setIdUserTo(rs.getInt(DbQueryConstants.id_destination.name()));
         // TODO: do we need to get timestamp there?
         c.setPostedDate(rs.getDate(DbQueryConstants.time_posted.name()));
         c.setRead(rs.getBoolean(DbQueryConstants.read.name()));

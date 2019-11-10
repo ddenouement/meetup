@@ -6,20 +6,19 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.*;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IUserService;
+import com.meetup.utils.ModelConstants;
 import io.swagger.annotations.Api;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Operations used to manage user functionality.
@@ -79,7 +78,25 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(),
             HttpStatus.OK);
     }
+    /**
+     * Return all users with number of complaints.
+     *
+     * @return List of UsersComplaintsDTO
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN)")
+    @GetMapping(value = "user/users/all",params = {"pagesize", "page"})
+    public ResponseEntity getAllUsersWithComplaintsCount(
+            @RequestParam("pagesize") final int pageSize,
+            @RequestParam("page") final int currentPage) {
+        int offset = pageSize * (currentPage - 1);
+        int count = userService.getAllUsersCount();
+        Map<Object, Object> model = new HashMap<>();
+        List<UserComplaintsDTO> users_complaints = userService.getAllUsersWithComplaints(pageSize,offset);
+        model.put(ModelConstants.usersCount, count);
+        model.put(ModelConstants.users, users_complaints);
+        return new ResponseEntity<>(model, HttpStatus.OK);
 
+    }
     /**
      * Return all active speakers.
      *
@@ -158,6 +175,7 @@ public class UserController {
         @CookieValue("token") final String token,
         final @RequestBody ComplaintDTO compl) {
         String login = loginValidatorService.extractLogin(token);
+         System.out.println(login);
         userService.postComplaintOn(compl, login);
         return new ResponseEntity<>("Done", HttpStatus.OK);
     }

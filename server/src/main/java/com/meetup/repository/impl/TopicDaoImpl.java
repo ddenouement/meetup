@@ -2,6 +2,8 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
 import com.meetup.entities.Topic;
+import com.meetup.error.LanguageIsUsedException;
+import com.meetup.error.TopicIsUsedException;
 import com.meetup.model.mapper.LanguageMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.ITopicDAO;
@@ -10,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -116,6 +119,9 @@ public class TopicDaoImpl implements ITopicDAO {
      */
     @Override
     public Topic insertTopic(final Topic topic) {
+        if(findTopicByName(topic.getName())!=null){
+            throw  new TopicIsUsedException();
+        }
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.name.name(), topic.getName());
@@ -133,9 +139,15 @@ public class TopicDaoImpl implements ITopicDAO {
      */
     @Override
     public void removeTopic(final int topicID) {
-        SqlParameterSource param = new MapSqlParameterSource()
-            .addValue(DbQueryConstants.id.name(), topicID);
-        template.update(removeTopic, param);
+        try {
+            SqlParameterSource param = new MapSqlParameterSource()
+                    .addValue(DbQueryConstants.id.name(), topicID);
+            template.update(removeTopic, param);
+        }
+        catch (DataAccessException e)
+        {
+            throw new TopicIsUsedException();
+        }
     }
 
     /**

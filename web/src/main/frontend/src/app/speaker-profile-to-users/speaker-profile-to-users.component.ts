@@ -24,6 +24,7 @@ export class SpeakerProfileToUsersComponent implements OnInit {
   unsubscribe = false;
   subscribeText = 'SUBSCRIBE';
   loading= false;
+  load= false;
 
   constructor(public speakerService: SpeakerProfileToUsersService, public route: ActivatedRoute) {
   }
@@ -48,6 +49,7 @@ export class SpeakerProfileToUsersComponent implements OnInit {
             }
           });
           this.star = res['userDTO'].rate;
+          this.load = true;
           this.badgeList = res['badges'];
           for (let i in res['userDTO'].languages) {
             this.langList[i] = res['userDTO'].languages[i].name;

@@ -2,14 +2,8 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Language;
 import com.meetup.entities.User;
-import com.meetup.entities.dto.ComplaintDTO;
-import com.meetup.entities.dto.ProfileDTO;
-import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserRegistrationDTO;
-import com.meetup.model.mapper.ComplaintMapper;
-import com.meetup.model.mapper.LanguageMapper;
-import com.meetup.model.mapper.SimpleUserDTOMapper;
-import com.meetup.model.mapper.UserMapper;
+import com.meetup.entities.dto.*;
+import com.meetup.model.mapper.*;
 import com.meetup.repository.IUserDAO;
 import com.meetup.utils.DbQueryConstants;
 import com.meetup.utils.Role;
@@ -20,6 +14,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -159,6 +155,17 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${find_users}")
     private String findAllUsers;
+
+    /**
+     * SQL reference script. Get all users with complaints count.
+     */
+    @Value("${find_users_with_complaints_count}")
+    private String findAllUsersWithComplaintsCount;
+    /**
+     * SQL reference script. Get all users with complaints count.
+     */
+    @Value("${find_users_count}")
+    private String findAllUsersCount;
 
     /**
      * SQL reference script. Change password for specific user.
@@ -485,15 +492,15 @@ public class UserDaoImpl implements IUserDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.reason.name(), compl.getContent())
             .addValue(DbQueryConstants.id_destination.name(),
-                compl.getId_user_to())
+                compl.getIdUserTo())
             .addValue(DbQueryConstants.time_posted.name(),
                 compl.getPostedDate())
             .addValue(DbQueryConstants.id_source.name(),
-                compl.getId_user_from());
+                compl.getIdUserFrom());
         ResultSet rs = null;
         template.update(postComplaint, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
-            compl.setId(holder.getKey().intValue());
+            compl.setId(Objects.requireNonNull(holder.getKey()).intValue());
         }
         return compl;
     }
@@ -614,7 +621,32 @@ public class UserDaoImpl implements IUserDAO {
     public List<User> getAllUsers() {
         return template.query(findAllUsers, new UserMapper());
     }
-
+    /**
+     * Get all users with number of complaints for them.
+     *
+     * @return List of users.
+     */
+    @Override
+    public List<UserComplaintsDTO> getAllUsersWithComplaintsCount(final int limit, final int offset) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.limit.name(), limit)
+                .addValue(DbQueryConstants.offset.name(), offset);
+        return template.query(findAllUsersWithComplaintsCount,param, new UserComplaintsDtoMapper());
+    }
+    /**
+     * Count the number of users in database.
+     *
+     * @return int number of all users
+     */
+    @Override
+    public int getAllUsersCount() {
+        List<Integer> res = this.template.query(findAllUsersCount, new IntegerMapper());
+        if (res.isEmpty()) {
+            return 0;
+        } else {
+            return res.get(0);
+        }
+    }
     /**
      * Change user's password.
      *

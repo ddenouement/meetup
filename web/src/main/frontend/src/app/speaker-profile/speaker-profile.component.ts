@@ -48,6 +48,7 @@ export class SpeakerProfileComponent implements OnInit {
   star: number;
   edited = false;
   selected: any;
+  load= false;
 
   constructor(
     private httpClient: HttpClient,
@@ -103,6 +104,7 @@ export class SpeakerProfileComponent implements OnInit {
       }
       this.selectedLanguages = res['userDTO'].languages;
       this.star = res['userDTO'].rate;
+      this.load = true;
       this.speakerId = res['userDTO'].id;
       this.meetupsService.getSpeakerMeetups(this.speakerId);
       //set up listener to subject
