@@ -134,6 +134,16 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public List<ArticleDisplayDTO> getAllDisplayableArticles() {
         List<Article> articles = articleDao.getAllArticles();
+        return convertToArticleDisplayDTOs(articles);
+    }
+
+    @Override
+    public List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(int limit, int offset) {
+        List<Article> articles = articleDao.getAllArticlesByPages(limit,offset);
+        return convertToArticleDisplayDTOs(articles);
+    }
+
+    private List<ArticleDisplayDTO> convertToArticleDisplayDTOs(List<Article> articles) {
         List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
 
         for (Article article : articles) {
@@ -141,12 +151,17 @@ public class ArticleServiceImpl implements IArticleService {
             UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
             List<Topic> topics = articleDao.getArticleTopics(article.getId());
             displayableArticles
-                .add(ArticleDTOConverter.convertToArticleDisplayDTO(
-                    article,
-                    topics,
-                    userDTO));
+                    .add(ArticleDTOConverter.convertToArticleDisplayDTO(
+                            article,
+                            topics,
+                            userDTO));
         }
         return displayableArticles;
+    }
+
+    @Override
+    public int getAllArticlesCount() {
+        return articleDao.getAllArticlesCount();
     }
 
     /**
