@@ -4,6 +4,7 @@ import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.model.mapper.ArticleMapper;
 import com.meetup.model.mapper.CommentaryMapper;
 import com.meetup.model.mapper.IntegerMapper;
@@ -118,8 +119,6 @@ public class ArticleDaoImpl implements IArticleDAO {
         template.update(insertNewArticle, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             int articleID = holder.getKey().intValue();
-            //adding topics to DB
-            //TODOo rewrite
             for (int topicID : articleCreationDTO.getTopicIds()) {
                 addTopicToArticle(articleID, topicID);
             }
@@ -211,7 +210,7 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<Commentary> getArticleCommentaries(final int articleID) {
+    public List<CommentaryDisplayDTO> getArticleCommentaries(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_article.name(), articleID);
         return this.template

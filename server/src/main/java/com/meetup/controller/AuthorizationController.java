@@ -179,6 +179,22 @@ public class AuthorizationController {
     }
 
     /**
+     * Send email to user.
+     *
+     * @param email user email.
+     * @return status
+     */
+    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping(value = "/user/welcome")
+    public ResponseEntity sendEmail(
+        @RequestBody final String email) {
+        userService.sendEmail(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
      * Create a cookie and add it to response.
      *
      * @param response where to add cookie
