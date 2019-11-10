@@ -172,7 +172,7 @@ public interface IMeetupService {
     /**
      * Count the number of meetups in database.
      *
-     * @return List of all meetups
+     * @return int number of all meetups
      */
     int getAllMeetupsCount();
     /**

@@ -26,6 +26,7 @@
 <mat-paginator *ngIf="meetups.length > 0 && !isLoading"
                [length]="totalMeetups"
                [pageSize]="meetupsPerPage"
+               [pageIndex]="currentPage-1"
                [pageSizeOptions]="pageSizeOptions"
                (page)="onChangePage($event)"></mat-paginator>
 <p class="info-text mat-body-2" *ngIf="meetups.length <= 0 || isLoading">No Meetings Yet</p>

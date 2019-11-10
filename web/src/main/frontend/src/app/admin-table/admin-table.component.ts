@@ -1,8 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {AdminTableService} from "./admin-table.service";
 import {UsersToAdmin} from "../models/userToAdmin";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {MeetupDto} from "../models/meetupDto.model";
+import {UserComplaintsDto} from "../models/userComplaintsDto.model";
 
 @Component({
   selector: 'app-admin-table',
@@ -14,31 +17,37 @@ export class AdminTableComponent implements OnInit {
   displayedColumns: string[] = ['id', 'login', 'email', 'firstName', 'lastName', 'complaint', 'deactivate'];
   dataSource;
   loading= false;
+  users : UserComplaintsDto[] = [];
+  totalUsers: number;
+  usersPerPage = 5;
+  currentPage = 1;
+  pageSizeOptions = [5,10,20,30];
+
 
   constructor(public adminService: AdminTableService) {
   }
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-
-
   ngOnInit() {
-    this.adminService.getAllSpeakers().subscribe(res => {
-      for (let element in res) {
-        this.ELEMENT_DATA[element] = {
-          id: res[element]['id'],
-          login: res[element]['login'],
-          email: res[element]['email'],
-          firstName: res[element]['firstName'],
-          lastName: res[element]['lastName'],
-          complaint: res[element]['complaint'],
-          active: res[element]['active']
-        };
-      }
-      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      this.dataSource.paginator = this.paginator;
+    this.adminService.getUsers(this.usersPerPage, this.currentPage).subscribe(usersData=>
+    {
+      this.users = usersData.users;
+      this.totalUsers = usersData.usersCount;
+      this.dataSource = this.users;
+
     });
   }
-
+  onChangePage(pageData: PageEvent){
+    this.currentPage = pageData.pageIndex + 1;
+    this.usersPerPage = pageData.pageSize;
+    this.loading = true;
+    this.adminService.getUsers(this.usersPerPage, this.currentPage).subscribe(usersData=>
+    {
+      this.loading=false;
+      this.users = usersData.users;
+      this.totalUsers = usersData.usersCount;
+      this.dataSource = this.users;
+    });
+  }
   onDeactivate(id: number) {
     this.adminService.deactivateUser(id).subscribe(res=>{
       this.ngOnInit();
