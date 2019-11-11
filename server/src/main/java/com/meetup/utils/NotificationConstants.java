@@ -29,9 +29,10 @@ public final class NotificationConstants {
     /**
      * A link with placeholders.
      */
+    // "Your meetup <a href='/#/meetup-profile/17'>Meetup2</a> starts in 15 minutes."
     public static final String LINK =
-        "<a [routerLink]=\"['" + ROUTER_LINK_PLACEHOLDER + "'," + ID_PLACEHOLDER
-            + "]\">" + TEXT_PLACEHOLDER + "</a>";
+        "<a href='/#" + ROUTER_LINK_PLACEHOLDER + "/" + ID_PLACEHOLDER
+            + "'>" + TEXT_PLACEHOLDER + "</a>";
     /**
      * A placeholder for meetup title.
      */
