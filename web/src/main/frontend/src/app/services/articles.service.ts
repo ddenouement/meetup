@@ -15,7 +15,7 @@ export class ArticlesService {
 
   private articles: ArticleDTO[] = [];
   private articlesUpdated = new Subject<{ articles: ArticleDTO[] }>();
-  articlesUrl = "http://localhost:9990/api/v1/user/articles";
+  articlesUrl = "/api/v1/user/articles";
 
   constructor(private http: HttpClient, private router: Router) {
   }
