@@ -16,9 +16,15 @@ import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
 import com.meetup.utils.Role;
 import com.meetup.utils.UserDTOConverter;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -48,20 +54,17 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Constructor.
-     * @param userDao
-     * User repository.
-     * @param meetupDao
-     * Meetup repository.
-     * @param meetupService
-     * Meetup service.
-     * @param notificationService
-     * Notification service.
+     *
+     * @param userDao             User repository.
+     * @param meetupDao           Meetup repository.
+     * @param meetupService       Meetup service.
+     * @param notificationService Notification service.
      */
     @Autowired
     UserServiceImpl(final UserDaoImpl userDao,
-        final MeetupDaoImpl meetupDao,
-        final MeetupServiceImpl meetupService,
-        final NotificationServiceImpl notificationService){
+                    final MeetupDaoImpl meetupDao,
+                    final MeetupServiceImpl meetupService,
+                    final NotificationServiceImpl notificationService) {
         this.userDao = userDao;
         this.meetupDao = meetupDao;
         this.meetupService = meetupService;
@@ -75,7 +78,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsListener(
-        final UserRegistrationDTO user) {
+            final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -93,7 +96,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsSpeaker(
-        final UserRegistrationDTO user) {
+            final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -107,18 +110,18 @@ public class UserServiceImpl implements IUserService {
     /**
      * Upgrade listener to speaker.
      *
-     * @param user additional info for upgraded user
+     * @param user   additional info for upgraded user
      * @param userId of listener to upgrade
      */
     @Override
     public void upgradeToSpeaker(final UserRegistrationDTO user,
-        final Integer userId) {
+                                 final Integer userId) {
         User oldUser = userDao.findUserById(userId);
         if (!oldUser.getLogin().equals(user.getLogin()) && userDao
-            .isLoginUsed(user.getLogin())) {
+                .isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (!oldUser.getEmail().equals(user.getEmail()) && userDao
-            .isEmailUsed(user.getEmail())) {
+                .isEmailUsed(user.getEmail())) {
             throw new EmailIsUsedException();
         } else {
             userDao.upgradeToSpeaker(user, userId);
@@ -140,11 +143,11 @@ public class UserServiceImpl implements IUserService {
     /**
      * Update user languages.
      *
-     * @param user User, to update languages.
+     * @param user       User, to update languages.
      * @param profileDTO Updated profile.
      */
     private void updateLanguages(final User user,
-        final ProfileDTO profileDTO) {
+                                 final ProfileDTO profileDTO) {
         userDao.removeUserLanguages(user.getId());
         for (Integer langID : profileDTO.getLanguageIds()) {
             userDao.addUserLanguage(user.getId(), langID);
@@ -200,9 +203,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<UserComplaintsDTO> getAllUsersWithComplaints(final int limit,final int offset) {
-        return userDao.getAllUsersWithComplaintsCount(limit,offset);
+    public List<UserComplaintsDTO> getAllUsersWithComplaints(final int limit, final int offset) {
+        return userDao.getAllUsersWithComplaintsCount(limit, offset);
     }
+
     /**
      * Count the number of users in database.
      *
@@ -269,19 +273,19 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * @param complaintDTO complaint without source
-     * @param login login of source
+     * @param login        login of source
      * @throws UserNotFoundException if no user with this login
      */
     @Override
     public void postComplaintOn(final ComplaintDTO complaintDTO,
-        final String login) throws UserNotFoundException {
+                                final String login) throws UserNotFoundException {
         User u = userDao.findUserByLogin(login);
         if (u == null) {
             throw new UserNotFoundException();
         }
         int id_source = u.getId();
         complaintDTO
-            .setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
+                .setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
         complaintDTO.setId_user_from(id_source);
         userDao.postComplaintOn(complaintDTO);
     }
@@ -298,7 +302,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * User can subscribe on speaker.
      *
-     * @param userId who is subscriber
+     * @param userId    who is subscriber
      * @param speakerId on whom user subscribes
      */
     @Override
@@ -313,7 +317,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * User can unsubscribe from speaker.
      *
-     * @param userId who is subscriber
+     * @param userId    who is subscriber
      * @param speakerId on whom user subscribes
      */
     @Override
@@ -344,14 +348,14 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(
-        final int speakerId) {
+            final int speakerId) {
         return userDao.getSimpleSubscribersOfSpeaker(speakerId);
     }
 
     /**
      * Change user's password.
      *
-     * @param userId id of user to change password for
+     * @param userId      id of user to change password for
      * @param newPassword the password to change to
      */
     @Override
@@ -362,14 +366,14 @@ public class UserServiceImpl implements IUserService {
     /**
      * Rate specific meetup.
      *
-     * @param meetupID Meetup ID.
+     * @param meetupID  Meetup ID.
      * @param userLogin User login
-     * @param feedback Feedback object.
+     * @param feedback  Feedback object.
      */
     @Override
     public void rateMeetup(final int meetupID,
-        final String userLogin,
-        final Feedback feedback) {
+                           final String userLogin,
+                           final Feedback feedback) {
         User user = userDao.findUserByLogin(userLogin);
         if (user == null) {
             throw new UserNotFoundException();
@@ -378,7 +382,7 @@ public class UserServiceImpl implements IUserService {
 
         Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
         User speakerOfMeetup = userDao
-            .findUserById(currentMeetup.getSpeakerId());
+                .findUserById(currentMeetup.getSpeakerId());
         updateUserRate(speakerOfMeetup, feedback);
     }
 
@@ -399,26 +403,73 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Send email to user.
-     * @param email
-     * User email.
+     *
+     * @param email User email.
      */
     @Override
-    public void sendEmail(String email) {
-        //TODO send message.
+    public void sendEmail(String email, String login) {
+        String USER_NAME = "meetupplus77";  // GMail user name (just the part before "@gmail.com")
+        String PASSWORD = "Qwerty123_"; // GMail password
+        String RECIPIENT = email;
+        String from = USER_NAME;
+        String pass = PASSWORD;
+        String to = RECIPIENT; // list of recipient email addresses
+        String subject = "WELCOME TO MEETUP";
+        String body = "<h1>Hello my friend</h1>\n" +
+                "<p>Thank you for registering at <a href=\"https://app-meetup.herokuapp.com\">MeetUp</a>\n" +
+                "<p>Your login credentials:\n" +
+                "<p style=\"margin-left: 10px;\"> https://app-meetup.herokuapp.com/login\n" +
+                "<p style=\"margin-left: 10px;\"> login: " + login + "\n" +
+                "<p>Hugs!\n" +
+                "<p>Oleg from MeetUp\n";
+        sendFromGMail(from, pass, to, subject, body);
+    }
+
+    private static void sendFromGMail(String from, String pass, String to,
+                                      String subject, String body) {
+        Properties props = System.getProperties();
+        String host = "smtp.gmail.com";
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.user", from);
+        props.put("mail.smtp.password", pass);
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
+
+        try {
+            message.setFrom(new InternetAddress(from));
+            InternetAddress toAddress = new InternetAddress(to);
+            message.addRecipient(Message.RecipientType.TO, toAddress);
+
+            message.setSubject(subject);
+            message.setContent(body, "text/html");
+
+            Transport transport = session.getTransport("smtp");
+            transport.connect(host, from, pass);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (AddressException ae) {
+            ae.printStackTrace();
+        } catch (MessagingException me) {
+            me.printStackTrace();
+        }
     }
 
 
     /**
      * Update speaker rate after rating meetup.
      *
-     * @param user User.
+     * @param user     User.
      * @param feedback Feedback of meetup.
      */
     private void updateUserRate(final User user,
-        final Feedback feedback) {
+                                final Feedback feedback) {
         float rate =
-            (user.getRate() * user.getNumRates() + feedback.getRate())
-                / (user.getNumRates() + 1);
+                (user.getRate() * user.getNumRates() + feedback.getRate())
+                        / (user.getNumRates() + 1);
         user.setRate(rate);
         user.setNumRates(user.getNumRates() + 1);
         userDao.updateRate(user);

@@ -5,6 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.controller.jwtsecurity.JwtSecurityConstants;
 import com.meetup.controller.jwtsecurity.JwtTokenProvider;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.RegistrationDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;
@@ -181,16 +182,13 @@ public class AuthorizationController {
     /**
      * Send email to user.
      *
-     * @param email user email.
+     * @param data user email and login.
      * @return status
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/user/welcome")
     public ResponseEntity sendEmail(
-        @RequestBody final String email) {
-        userService.sendEmail(email);
+        @RequestBody final RegistrationDTO data) {
+        userService.sendEmail(data.getEmail(), data.getLogin());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

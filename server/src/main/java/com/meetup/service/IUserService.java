@@ -192,6 +192,6 @@ public interface IUserService {
      * @param email Email.
      */
 
-    void sendEmail(String email);
+    void sendEmail(String email, String login);
 }
 
