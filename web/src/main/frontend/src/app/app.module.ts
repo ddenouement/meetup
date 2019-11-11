@@ -1,15 +1,12 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
-import {EmojiPickerModule} from 'ng-emoji-picker';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ToolbarMenuComponent} from './toolbar-menu/toolbar-menu.component';
 
-
 import {
   MatButtonModule,
-  MatCardModule, MatChip, MatChipsModule,
+  MatCardModule, MatChipsModule,
   MatGridListModule,
   MatInputModule,
   MatMenuModule,
@@ -22,7 +19,6 @@ import {
   TimepickerModule,
   BsDatepickerModule,
   TimepickerConfig,
-  DatepickerConfig,
   BsDatepickerConfig
 } from 'ngx-bootstrap';
 
@@ -121,11 +117,8 @@ import {HttpCustom} from "./services/HttpCustom";
     FiltersPanelComponent
   ],
   imports: [
-    //for smiles
     IconsModule,
     PickerModule,
-    //ne
-    //   EmojiPickerModule,
     BsDatepickerModule.forRoot(),
     MatTabsModule,
     MatProgressSpinnerModule,

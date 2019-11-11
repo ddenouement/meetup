@@ -14,9 +14,7 @@ import {MatPasswordStrengthComponent} from '@angular-material-extensions/passwor
 import {Router} from "@angular/router";
 import {RegisterService} from "./register.service";
 import {LanguagesList} from "../models/languagesList";
-import {from, pipe} from "rxjs";
-import {tap} from "rxjs/operators";
-import {Aachen} from "../register/register.component";
+import {Registration} from "../models/registration";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -63,20 +61,22 @@ export class RegisterSpeakerComponent implements OnInit {
   }
 
   onSubmit() {
-    this.rozsulka();
+    this.sendMail();
     this.register();
   }
 
   onStrengthChanged(strength: number) {
   }
 
-  public rozsulka(): void {
-    const user = <Aachen>{
+  public sendMail(): void {
+    const user = <Registration>{
       login: this.registerForm.get('login').value,
-      email: this.registerForm.get('password').value
+      email: this.registerForm.get('email').value
     };
-    this.registerService.sendUser(user).subscribe(res=>{
-
+    this.registerService.sendUser(user).subscribe(res => {
+      console.log('EMAIL SEND');
+    },error1 => {
+      console.error('Email ! send');
     });
 
   }

@@ -1,4 +1,4 @@
-package com.meetup.controller.jwtsecurity;
+package com.meetup.controller.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

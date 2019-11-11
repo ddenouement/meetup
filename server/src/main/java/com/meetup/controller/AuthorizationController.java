@@ -2,13 +2,16 @@ package com.meetup.controller;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import com.meetup.controller.jwtsecurity.JwtSecurityConstants;
-import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.controller.security.jwt.JwtSecurityConstants;
+import com.meetup.controller.security.jwt.JwtTokenProvider;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.RegistrationDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IUserService;
+import com.meetup.service.impl.LoginValidatorServiceImpl;
+import com.meetup.service.impl.UserServiceImpl;
 import com.meetup.utils.RoleProcessor;
 import io.swagger.annotations.Api;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,28 +49,37 @@ public class AuthorizationController {
     /**
      * ,. UserService
      */
-    @Autowired
     private IUserService userService;
     /**
      * . userDao
      */
-    @Autowired
     private UserDaoImpl userDao;
     /**
      * ,. Spring class
      */
-    @Autowired
     private AuthenticationManager authenticationManager;
     /**
      * ,. Class to extraxt token from cookie
      */
-    @Autowired
     private JwtTokenProvider jwtTokenProvider;
     /**
      * Login validation service.
      */
-    @Autowired
     private ILoginValidatorService loginValidatorService;
+
+    @Autowired
+    AuthorizationController(final UserServiceImpl userService,
+        final UserDaoImpl userDao,
+        final AuthenticationManager authenticationManager,
+        final JwtTokenProvider jwtTokenProvider,
+        final LoginValidatorServiceImpl loginValidatorService) {
+        this.userService = userService;
+        this.userDao = userDao;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.loginValidatorService = loginValidatorService;
+
+    }
 
     /**
      * ,. SignIn   generates a token
@@ -94,6 +107,7 @@ public class AuthorizationController {
         model.put("role", RoleProcessor.getRoleString(user));
         log.debug("Successful Login: " + username + "\ntoken: " + token);
         saveToken(response, token);
+
         return ok(model);
     }
 
@@ -121,6 +135,10 @@ public class AuthorizationController {
     @PostMapping(value = "/user/register/listener")
     public ResponseEntity registerListener(
         final @RequestBody UserRegistrationDTO user) {
+        String userPassword = user.getPassword();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(11);
+        String encodedPassword = encoder.encode(userPassword);
+        user.setPassword(encodedPassword);
         userService.registerAsListener(user);
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -134,6 +152,10 @@ public class AuthorizationController {
     @PostMapping(value = "/user/register/speaker")
     public ResponseEntity registerSpeaker(
         final @RequestBody UserRegistrationDTO user) {
+        String userPassword = user.getPassword();
+        String encodedPassword = new BCryptPasswordEncoder(11)
+            .encode(userPassword);
+        user.setPassword(encodedPassword);
         userService.registerAsSpeaker(user);
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -181,16 +203,26 @@ public class AuthorizationController {
     /**
      * Send email to user.
      *
-     * @param email user email.
+     * @param data user email and login.
      * @return status
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/user/welcome")
     public ResponseEntity sendEmail(
-        @RequestBody final String email) {
-        userService.sendEmail(email);
+        @RequestBody final RegistrationDTO data) {
+        userService.sendEmail(data.getEmail(), data.getLogin());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Send email to user.
+     *
+     * @param data user email and login.
+     * @return status
+     */
+    @PostMapping(value = "/user/password")
+    public ResponseEntity sendNewPassword(
+            @RequestBody final RegistrationDTO data) {
+        userService.sendEmail(data.getEmail(), data.getLogin());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

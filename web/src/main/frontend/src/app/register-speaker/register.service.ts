@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {LanguagesList} from "../models/languagesList";
-import {Aachen} from "../register/register.component";
+import {Registration} from "../models/registration";
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +13,13 @@ import {Aachen} from "../register/register.component";
 
 export class RegisterService {
   private languagesURL = '/api/v1/languages?sorted=true';
+  private sendMail = '/api/v1/user/welcome';
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient) {
   }
 
-  sendUser(user: Aachen) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-        'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-      })
-    };
-    return this.http.post('https://events.sendpulse.com/events/id/63c05ac4961149dffbc76906bc2db760/7246374', user, httpOptions);
+  sendUser(user: Registration) {
+    return this.http.post(this.sendMail, user);
   }
 
   getLanguages(): Observable<LanguagesList[]> {

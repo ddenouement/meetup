@@ -1,7 +1,7 @@
-package com.meetup.controller.jwtsecurity;
+package com.meetup.controller.security.jwt;
 
-import static com.meetup.controller.jwtsecurity.JwtSecurityConstants.SECRET;
-import static com.meetup.controller.jwtsecurity.JwtSecurityConstants.VALIDITY_IN_MS;
+import static com.meetup.controller.security.jwt.JwtSecurityConstants.SECRET;
+import static com.meetup.controller.security.jwt.JwtSecurityConstants.VALIDITY_IN_MS;
 
 import com.meetup.service.impl.AuthenticationService;
 import io.jsonwebtoken.Claims;

@@ -165,14 +165,15 @@ CREATE TABLE badges
 
 CREATE TABLE filters
 (
-    id          BIGSERIAL     NOT NULL,
-    id_user     BIGINT        NOT NULL,
-    name        TEXT          NOT NULL,
-    id_language INTEGER       NULL,
-    rate_from   NUMERIC(1, 1) NULL,
-    rate_to     NUMERIC(1, 1) NULL,
-    time_from   TIMESTAMP     NULL,
-    time_to     TIMESTAMP     NULL,
+    id              BIGSERIAL   NOT NULL,
+    id_user         BIGINT      NOT NULL,
+    name            TEXT        NOT NULL,
+    id_language     INTEGER     NULL,
+    rate_from       REAL        NULL,
+    rate_to         REAL        NULL,
+    time_from       TIMESTAMP   NULL,
+    time_to         TIMESTAMP   NULL,
+    title_substring TEXT        NULL,
     id_topic BIGINT NOT NULL DEFAULT 1,
 
 FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
