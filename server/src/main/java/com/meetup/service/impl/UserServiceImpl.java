@@ -19,7 +19,6 @@ import com.meetup.utils.Role;
 import com.meetup.utils.UserDTOConverter;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.*;
 import javax.mail.*;
@@ -27,7 +26,6 @@ import javax.mail.internet.*;
 import javax.activation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
