@@ -177,15 +177,11 @@ public class LanguageDaoImpl implements ILanguageDAO {
      */
     @Override
     public void delete(final Integer id_language) {
-        try {
+
             SqlParameterSource param = new MapSqlParameterSource()
                     .addValue(DbQueryConstants.id.name(), id_language);
             template.update(deleteLanguage, param);
-        }
-catch (DataAccessException e)
-        {
-            throw new LanguageIsUsedException();
-        }
+
     }
 
     /**

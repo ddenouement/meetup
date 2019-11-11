@@ -139,15 +139,11 @@ public class TopicDaoImpl implements ITopicDAO {
      */
     @Override
     public void removeTopic(final int topicID) {
-        try {
+
             SqlParameterSource param = new MapSqlParameterSource()
                     .addValue(DbQueryConstants.id.name(), topicID);
             template.update(removeTopic, param);
-        }
-        catch (DataAccessException e)
-        {
-            throw new TopicIsUsedException();
-        }
+
     }
 
     /**
