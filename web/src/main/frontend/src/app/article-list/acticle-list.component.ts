@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ArticleDTO} from "../models/article-dto";
-import {Subscription} from "rxjs";
 import {ArticlesService} from "../services/articles.service";
 import {PageEvent} from "@angular/material/paginator";
 
@@ -14,9 +13,9 @@ export class ActicleListComponent implements OnInit {
   articles : ArticleDTO[] = [];
   isLoading = false;
   totalArticles: number;
-  articlesPerPage = 5;
+  articlesPerPage = 9;
   currentPage = 1;
-  pageSizeOptions = [5,10,20,30];
+  pageSizeOptions = [9,12,18,24,36,42];
 
   constructor(public articlesService: ArticlesService){}
 

@@ -33,8 +33,9 @@ export class MeetupProfileComponent implements OnInit {
         this.meetupService.getUserId().subscribe(res=>{
           this.userId = res;
         });
-        this.meetupService.getMeetup(+this.meetupId);
-        this.meetingsSub = this.meetupService.getMeetupJoinedUpdateListener().subscribe(meetupData =>{
+        this.meetupService.getMeetup(+this.meetupId)
+        // this.meetingsSub = this.meetupService.getMeetupJoinedUpdateListener()
+          .subscribe(meetupData =>{
           this.isLoading = false;
           this.meetup = meetupData.meetup;
           this.joined = meetupData.ifJoinedMeetup;

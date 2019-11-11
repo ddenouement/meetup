@@ -13,41 +13,11 @@ import {UserComplaintsDto} from "../models/userComplaintsDto.model";
 })
 export class ArticlesService {
 
-  private articles: ArticleDTO[] = [];
-  private articlesUpdated = new Subject<{ articles: ArticleDTO[] }>();
-  articlesUrl = "/api/v1/user/articles";
+  // articlesUrl = "/api/v1/user/articles";
+  articlesUrl = "http://localhost:9990/api/v1/user/articles";
 
   constructor(private http: HttpClient, private router: Router) {
   }
-  // getArticles() {
-  //   this.http
-  //     .get<ArticleDTO[]>(
-  //       this.articlesUrl
-  //     )
-  //     .pipe(
-  //       map(articlesData => {
-  //         return {
-  //           articles: articlesData.map(article => {
-  //               return {
-  //                 id: +article.id,
-  //                 title: article.title,
-  //                 topics: article.topics,
-  //                 content: article.content,
-  //                 dateTimePosted: article.dateTimePosted,
-  //                 author: article.author
-  //             }
-  //             }
-  //           )
-  //         };
-  //       })
-  //     )
-  //     .subscribe(transformedArticlesData => {
-  //       this.articles = transformedArticlesData.articles;
-  //       this.articlesUpdated.next({
-  //         articles: [...this.articles]
-  //       });
-  //     });
-  // }
   getArticles(articlesPerPage : number, currentPage: number) {
     const queryParams = `?pagesize=${articlesPerPage}&page=${currentPage}`;
     return this.http.get<{articles: ArticleDTO[], articlesCount : number}>(

@@ -19,9 +19,6 @@
     </mat-card>
   </ng-container>
 
-  <button mat-fab routerLink="/meetup-create" class="create_button">
-    <mat-icon>add_circle</mat-icon>
-  </button>
 </div>
 <mat-paginator *ngIf="meetups.length > 0 && !isLoading"
                [length]="totalMeetups"
@@ -30,4 +27,3 @@
                [pageSizeOptions]="pageSizeOptions"
                (page)="onChangePage($event)"></mat-paginator>
 <p class="info-text mat-body-2" *ngIf="meetups.length <= 0 || isLoading">No Meetings Yet</p>
-

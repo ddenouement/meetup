@@ -1,7 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Subscription} from "rxjs";
 
-import {Meetup} from "../models/meetup.model";
 import {MeetupsService} from "../services/meetups.service";
 import {PageEvent} from "@angular/material/paginator";
 import {MeetupDto} from "../models/meetupDto.model";
@@ -15,23 +13,20 @@ export class MeetupListComponent implements OnInit, OnDestroy{
 
   meetups : MeetupDto[] = [];
   totalMeetups: number;
-  meetupsPerPage = 5;
+  meetupsPerPage = 9;
   currentPage = 1;
-  pageSizeOptions = [5,10,20,30];
+  pageSizeOptions = [9,12,18,24,36,42];
   isLoading = false;
-  private meetingsSub: Subscription;
 
   constructor(public meetupsService: MeetupsService){}
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage);
-    //set up listener to subject
-    this.meetingsSub = this.meetupsService.getMeetupDtoUpdateListener()
-      .subscribe((meetupData: { meetups: MeetupDto[], meetupCount: number })=>{
+    this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage)
+      .subscribe(meetupsData =>{
         this.isLoading=false;
-        this.meetups = meetupData.meetups;
-        this.totalMeetups = meetupData.meetupCount;
+        this.meetups = meetupsData.meetups;
+        this.totalMeetups = meetupsData.meetupCount;
       });
 
   }
@@ -40,18 +35,16 @@ export class MeetupListComponent implements OnInit, OnDestroy{
     this.currentPage = pageData.pageIndex + 1;
     this.meetupsPerPage = pageData.pageSize;
     this.isLoading = true;
-    this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage);
-    this.meetingsSub = this.meetupsService.getMeetupDtoUpdateListener()
-      .subscribe((meetupData: { meetups: MeetupDto[], meetupCount: number })=>{
+    this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage)
+      .subscribe(meetupsData =>{
         this.isLoading=false;
-        this.meetups = meetupData.meetups;
-        this.totalMeetups = meetupData.meetupCount;
+        this.meetups = meetupsData.meetups;
+        this.totalMeetups = meetupsData.meetupCount;
       });
   }
 
   //remove subscription and prevent memory leaks
   ngOnDestroy(): void {
-    this.meetingsSub.unsubscribe();
   }
 
 

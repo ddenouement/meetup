@@ -4,6 +4,17 @@
   flex-wrap: wrap;
   justify-content: flex-start;
 }
+.content {
+  margin: 40px 10px 0 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+@media (max-width: 900px) {
+  .content {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
 /* Column Gap */
 .cardList > * {
   box-sizing: border-box;
@@ -17,12 +28,7 @@
   margin-bottom: 1rem;
 
 }
-.more-button{
-  top: 0;
-  right: 0;
-  position: absolute;
-}
-.edit-button {
+.more-button {
   bottom: 0;
   right: 0;
   position: absolute;
@@ -53,5 +59,5 @@
 }
 .authorName{
   font-size: small;
-  color: red;
+  color: #008CBA;
 }

@@ -34,6 +34,14 @@ export class MeetupCreateComponent implements OnInit {
     {title: '1 h', minutes: 60},
     {title: '1h 30min', minutes: 90},
     {title: '2 h', minutes: 120},
+    {title: '2h 30min', minutes: 150},
+    {title: '3 h', minutes: 180},
+    {title: '3h 30min', minutes: 210},
+    {title: '4 h', minutes: 240},
+    {title: '4h 30min', minutes: 270},
+    {title: '5 h', minutes: 300},
+    {title: '5h 30min', minutes: 330},
+    {title: '6 h', minutes: 360},
   ];
   meetup: MeetupDto;
   form: FormGroup;
@@ -44,7 +52,7 @@ export class MeetupCreateComponent implements OnInit {
   private meetupTopic : Topic;
   private meetupDurationMinutes: number;
   speaker : User;
-  minDate = new Date();
+  minDate = new Date(Date.now());
   time : Date;
   date : Date;
   startDate : Date;
@@ -70,6 +78,7 @@ export class MeetupCreateComponent implements OnInit {
       time: new FormControl(this.minDate, [Validators.required]),
       date: new FormControl( null ),
     });
+
     this.route.paramMap.subscribe((paramMap: ParamMap)=>{
       if(paramMap.has('meetupId')){
         this.mode = 'edit';
@@ -83,32 +92,24 @@ export class MeetupCreateComponent implements OnInit {
           this.meetupDurationMinutes = meetupData.meetup.durationMinutes;
           const toSelectDuration = this.durations.find(d => d.minutes == this.meetupDurationMinutes);
           this.form.get('durationMinutes').setValue(toSelectDuration);
-          this.meetupService.getLanguages();
-          this.langsSub = this.meetupService.getLanguageUpdateListener()
-            .subscribe((langsData: { languages: LanguagesList[] })=>{
-              this.languagesList = langsData.languages;
-              const toSelectLanguage = this.languagesList.find(l => l.name == this.meetupLang.name);
-              this.form.get('language').setValue(toSelectLanguage);
-            });
-          this.meetupService.getTopics();
-          this.topicsSub = this.meetupService.getTopicUpdateListener()
-            .subscribe((topicsData: { topics: LanguagesList[] })=>{
-              this.topicsList = topicsData.topics;
-            });
+          this.meetupService.getLanguages().subscribe(langData=>{
+            this.languagesList = langData;
+            const toSelectLanguage = this.languagesList.find(l => l.name == this.meetupLang.name);
+            this.form.get('language').setValue(toSelectLanguage);
+          });
+          this.meetupService.getTopics().subscribe(topicsData=>{
+            this.topicsList = topicsData;
+          });
         });
       }else{
         this.mode ='create';
         this.meetupId = null;
-        this.meetupService.getLanguages();
-        this.langsSub = this.meetupService.getLanguageUpdateListener()
-          .subscribe((langsData: { languages: LanguagesList[] })=>{
-            this.languagesList = langsData.languages;
-          });
-        this.meetupService.getTopics();
-        this.topicsSub = this.meetupService.getTopicUpdateListener()
-          .subscribe((topicsData: { topics: LanguagesList[] })=>{
-            this.topicsList = topicsData.topics;
-          });
+        this.meetupService.getLanguages().subscribe(langData=>{
+          this.languagesList = langData;
+        });
+        this.meetupService.getTopics().subscribe(topicsData=>{
+          this.topicsList = topicsData;
+        });
       }
     });
 
