@@ -4,6 +4,7 @@ import com.meetup.entities.Feedback;
 import com.meetup.entities.Meetup;
 import com.meetup.entities.User;
 import com.meetup.entities.dto.*;
+import com.meetup.error.EmailDoesntExistException;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
 import com.meetup.error.UserNotFoundException;
@@ -419,6 +420,38 @@ public class UserServiceImpl implements IUserService {
                 "<p>Your login credentials:\n" +
                 "<p style=\"margin-left: 10px;\"> https://app-meetup.herokuapp.com/login\n" +
                 "<p style=\"margin-left: 10px;\"> login: " + login + "\n" +
+                "<p>Hugs!\n" +
+                "<p>Oleg from MeetUp\n";
+        sendFromGMail(from, pass, to, subject, body);
+    }
+
+    /**
+     * Send email to user.
+     *
+     * @param email User email.
+     */
+    @Override
+    public void sendNewPassword(String email) {
+        User user = userDao.findUserByEmail(email);
+        if (user == null) {
+            throw  new EmailDoesntExistException();
+        }
+        int userId = user.getId();
+        String userLogin = user.getLogin();
+        changePassword(userId,"Qwerty123_");
+        String USER_NAME = "meetupplus77";  // GMail user name (just the part before "@gmail.com")
+        String PASSWORD = "Qwerty123_"; // GMail password
+        String RECIPIENT = email;
+        String from = USER_NAME;
+        String pass = PASSWORD;
+        String to = RECIPIENT; // list of recipient email addresses
+        String subject = "CHANGE PASSWORD ON MEETUP";
+        String body = "<h1>Hello my friend</h1>\n" +
+                "<p>Your login credentials:\n" +
+                "<p style=\"margin-left: 10px;\"> https://app-meetup.herokuapp.com/change-password\n" +
+                "<p style=\"margin-left: 10px;\"> login: " + userLogin + "\n" +
+                //TODO add password generator
+                "<p style=\"margin-left: 10px;\"> password: " + "Qwerty123_" + "\n" +
                 "<p>Hugs!\n" +
                 "<p>Oleg from MeetUp\n";
         sendFromGMail(from, pass, to, subject, body);

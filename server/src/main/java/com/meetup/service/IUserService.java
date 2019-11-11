@@ -193,5 +193,13 @@ public interface IUserService {
      */
 
     void sendEmail(String email, String login);
+
+    /**
+     * Send email to user.
+     *
+     * @param email Email.
+     */
+
+    void sendNewPassword(String email);
 }
 

@@ -1,18 +1,6 @@
 package com.meetup.controller;
 
-import com.meetup.error.ArticleNotFoundException;
-import com.meetup.error.BadgeNameExistsException;
-import com.meetup.error.LanguageIsUsedException;
-import com.meetup.error.MeetupNotFoundException;
-import com.meetup.error.TopicIsUsedException;
-import com.meetup.error.UserNotFoundException;
-import com.meetup.error.BadgeScriptIsIncorrectException;
-import com.meetup.error.EmailIsUsedException;
-import com.meetup.error.IllegalMeetupStateException;
-import com.meetup.error.LoginIsUsedException;
-import com.meetup.error.OutOfSlotsException;
-import com.meetup.error.TopicNotFoundException;
-import com.meetup.error.SpeakerOperationNotAllowedException;
+import com.meetup.error.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -193,6 +181,18 @@ public class GlobalExceptionController {
     public ResponseEntity<Object> illegalMeetupStateException() {
         return new ResponseEntity<>(
             "Such meetup operation with this state is prohibited!",
+            HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * EmailDoesntExistException controller.
+     * @return
+     * Response entity with status code.
+     */
+    @ExceptionHandler({EmailDoesntExistException.class})
+    public ResponseEntity<Object> emailDoesntExistException() {
+        return new ResponseEntity<>(
+                "User with this email doesn't exist!",
             HttpStatus.BAD_REQUEST);
     }
 

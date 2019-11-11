@@ -52,14 +52,11 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   public approve(): void {
-    const user = <User>{
-      login: this.forgotForm.get('login').value,
-      email: this.forgotForm.get('email').value
-    };
     this.loading = true;
     this.forgotForm.controls['login'].disable();
     this.forgotForm.controls['email'].disable();
-    this.httpClient.post("/api/v1/user/register/speaker", user).subscribe(data => {
+    let mail = this.forgotForm.get('email').value;
+    this.httpClient.post("/api/v1/user/password", mail).subscribe(data => {
         this.router.navigate(['/verify']);
       },
       error => {

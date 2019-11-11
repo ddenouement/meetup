@@ -192,6 +192,19 @@ public class AuthorizationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Send email to user.
+     *
+     * @param data user email and login.
+     * @return status
+     */
+    @PostMapping(value = "/user/password")
+    public ResponseEntity sendNewPassword(
+            @RequestBody final RegistrationDTO data) {
+        userService.sendEmail(data.getEmail(), data.getLogin());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     /**
      * Create a cookie and add it to response.
