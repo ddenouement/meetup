@@ -15,11 +15,11 @@ public class ComplaintDTO {
     /**.
      * Id of user who is complaining
      */
-    private int id_user_from;
+    private int idUserFrom;
     /**.
      * Id of user on whom is complaining
      */
-    private int id_user_to;
+    private int idUserTo;
     /**
      * Content .
      */
@@ -28,10 +28,6 @@ public class ComplaintDTO {
      * time posted
      */
     private Date postedDate;
-    /**.
-     * time posted (int)
-     */
-    private long postedDateInNumFormat;
 
     /**.
      *  if admin has read this complaint

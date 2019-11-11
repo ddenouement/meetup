@@ -283,10 +283,9 @@ public class UserServiceImpl implements IUserService {
         if (u == null) {
             throw new UserNotFoundException();
         }
-        int id_source = u.getId();
-        complaintDTO
-                .setPostedDate(new Date(complaintDTO.getPostedDateInNumFormat()));
-        complaintDTO.setId_user_from(id_source);
+        int idSource = u.getId();
+        complaintDTO.setPostedDate(complaintDTO.getPostedDate());
+        complaintDTO.setIdUserFrom(idSource);
         userDao.postComplaintOn(complaintDTO);
     }
 

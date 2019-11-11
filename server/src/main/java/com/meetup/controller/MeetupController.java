@@ -69,7 +69,7 @@ public class MeetupController {
      *
      * @return ResponseEntity<List < Meetup>>
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups")
@@ -79,11 +79,11 @@ public class MeetupController {
     }
 
     /**
-     * .
+     * Get meetups, depending on page size.
      *
      * @return ResponseEntity<List < Meetup>>
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups", params = {"pagesize", "page"})
@@ -105,7 +105,7 @@ public class MeetupController {
      * @param meetupId Meetup ID.
      * @return Response entity with meetup.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups/{id}")
@@ -127,7 +127,7 @@ public class MeetupController {
      * @param speakerID Speaker ID.
      * @return Response entity with list of meetups.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups/speakers/{id}")
@@ -144,7 +144,7 @@ public class MeetupController {
      * @param meetup Meetup object to be created.
      * @return ResponseEntity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @PostMapping(value = "/user/speaker/meetups")
     public ResponseEntity<Meetup> createMeetup(
         @CookieValue("token") final String token,
@@ -162,7 +162,7 @@ public class MeetupController {
      * @param meetupID Meetup ID to be canceled.
      * @return Response entity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @PutMapping(value = "/user/speaker/meetups/{id}")
     public ResponseEntity<Meetup> updateMeetup(
         @CookieValue("token") final String token,
@@ -181,7 +181,7 @@ public class MeetupController {
      * @param meetupID Meetup to be canceled.
      * @return Response entity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @DeleteMapping(value = "/user/speaker/meetups/{id}")
     public ResponseEntity<Meetup> cancelMeetup(
         @CookieValue("token") final String token,
@@ -198,7 +198,7 @@ public class MeetupController {
      * @param meetupID Meetup ID that should be started.
      * @return ResponseEntity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @PostMapping(value = "/user/speaker/meetups/{id}/start")
     public ResponseEntity<Meetup> startMeetup(
         @CookieValue("token") final String token,
@@ -215,7 +215,7 @@ public class MeetupController {
      * @param meetupID Meetup ID that should be terminated.
      * @return ResponseEntity with status code.
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).SPEAKER)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @PostMapping(value = "/user/speaker/meetups/{id}/terminate")
     public ResponseEntity<Meetup> terminateMeetup(
         @CookieValue("token") final String token,
@@ -232,7 +232,7 @@ public class MeetupController {
      * @param token JSON web token.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping("/user/meetups/{id}")
@@ -251,7 +251,7 @@ public class MeetupController {
      * @param meetupID Meetup, that user should leave.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping("/user/meetups/{id}")
@@ -271,7 +271,7 @@ public class MeetupController {
      * @param meetupID Meetup ID.
      * @return Response entity with status code.
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/user/rate/meetups/{id}")
     public ResponseEntity rateMeetup(

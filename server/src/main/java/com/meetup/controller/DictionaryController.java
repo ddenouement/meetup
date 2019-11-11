@@ -63,7 +63,7 @@ public class DictionaryController {
         return ok(dictionaryService.getAllLanguages(sorted.orElse(false)));
     }
 
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping("/language/{id}")
     public ResponseEntity<Language> findLanguageByID(
             @PathVariable("id") final Integer id) {
@@ -80,7 +80,7 @@ public class DictionaryController {
      * @param id id of language to update
      * @return updated language
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @PutMapping("/language/{id}")
     public ResponseEntity<Language> updateLanguage(
             @PathVariable("id") final Integer id,
@@ -94,7 +94,7 @@ public class DictionaryController {
      * @param language language to insert
      * @return inserted language
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @PostMapping("/language")
     public ResponseEntity<Language> insertLanguage(
             @RequestBody final Language language) {
@@ -106,7 +106,7 @@ public class DictionaryController {
      * Delete a language with specified ID.
      * @param id ID of language to delete
      */
-    @PreAuthorize("hasRole(T(com.meetup.utils.Role).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).ADMIN)")
     @DeleteMapping("/language/{id}")
     public ResponseEntity deleteLanguage(@PathVariable("id") final Integer id) {
         dictionaryService.delete(id);
@@ -117,7 +117,7 @@ public class DictionaryController {
      * Find all speaker's languages.
      * @return list of speaker's languages
      */
-    @PreAuthorize("hasAnyRole(T(com.meetup.utils.Role).ADMIN, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping("/user/languages")

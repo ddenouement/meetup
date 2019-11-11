@@ -14,9 +14,11 @@ import java.util.*;
 @Data
 public class Filter {
     private int id;
+    /**
+     * user to whom this filter is saved
+     */
     private int id_user;
     /**
-     *
      * name given by user.
      */
     private String name;
@@ -26,26 +28,49 @@ public class Filter {
     private Date time_from;
     private Date time_to;
     private int topic_id;
+    private String title_substring;
 
     /**
      * used to transfer data to frontend in user-friendly way (with topic name).
      */
     private String topic_name;
 
-    private String title_substring;
 
-    public Filter() {
-        // topics_ids = new ArrayList<>()   ;
-        //topics = new ArrayList<>();
+    public String nullOrTitleSubstring() {
+        if (title_substring.equals("")) return null;
+        else return title_substring;
     }
 
-    public Integer null_or_idLanguage() {
-if(id_language==0) return null;
-else return id_language;
+    public Integer nullOrIdLanguage() {
+        if (id_language == 0) return null;
+        else return id_language;
     }
 
-    public Integer null_or_idTopic() {
-        if(topic_id==0) return null;
+    /**.
+     * Not to add rate range as a clause to sql string, if range is default
+     * @return boolean whether the rate range is default (0-5)
+     */
+    private boolean isDefaultRateRange() {
+        return this.getRate_from() == 0.0 && this.getRate_to() == 5.0;
+    }
+
+
+    public Integer nullOrIdTopic() {
+        if (topic_id == 0) return null;
         else return topic_id;
     }
+
+    public Float nullOrRateTo() {
+        if (rate_to == 0) return null;
+        if (isDefaultRateRange()) return null;
+        else return rate_to;
+    }
+
+    public Float nullOrRateFrom() {
+        if (rate_from == 0) return null;
+        if (isDefaultRateRange()) return null;
+        else return rate_from;
+    }
+
+
 }

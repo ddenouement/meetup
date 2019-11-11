@@ -27,7 +27,7 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {HomeComponent} from './home/home.component';
 import {RegisterSpeakerComponent} from './register-speaker/register-speaker.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
@@ -72,7 +72,10 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from "ng-pick-datetime";
 import {TimepickerActions} from "ngx-bootstrap/timepicker";
 import {CommonModule} from "@angular/common";
+import { MatSnackBarModule} from '@angular/material'
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
 import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
+import {HttpCustom} from "./services/HttpCustom";
 
 @NgModule({
   declarations: [
@@ -150,11 +153,19 @@ import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
     NgbModule,
     MatDatepickerModule,
     OwlDateTimeModule,
-    TimepickerModule
+    TimepickerModule,
+   MatSnackBarModule,
   ],
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig],
+  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig,{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+  /*   ,
+     {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpCustom,
+    multi: true,
+  }*/
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

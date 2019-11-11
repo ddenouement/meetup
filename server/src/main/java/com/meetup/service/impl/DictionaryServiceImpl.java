@@ -67,6 +67,7 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     @Override
     public void delete(Integer id) {
+
         languageDao.delete(id);
     }
 

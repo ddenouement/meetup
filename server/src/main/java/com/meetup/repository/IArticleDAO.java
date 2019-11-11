@@ -4,6 +4,7 @@ import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
+import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public interface IArticleDAO {
      * @param articleID Article ID.
      * @return Article object.
      */
-    Article findArticleByID(int articleID);
+    ArticleDisplayDTO findArticleByID(int articleID);
 
     /**
      * Get topics of article.
@@ -58,7 +59,7 @@ public interface IArticleDAO {
      *
      * @return List of articles.
      */
-    List<Article> getAllArticles();
+    List<ArticleDisplayDTO> getAllArticles();
     /**
      * Count the number of articles in database.
      *
@@ -72,7 +73,7 @@ public interface IArticleDAO {
      * @param offset offset for paging
      * @return List of articles by pages
      */
-    List<Article> getAllArticlesByPages(int limit, int offset);
+    List<ArticleDisplayDTO> getAllArticlesByPages(int limit, int offset);
 
     /**
      * Get commentaries of specific article.

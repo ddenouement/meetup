@@ -93,14 +93,10 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public ArticleDisplayDTO getDisplayableArticle(final int articleID) {
-        Article article = articleDao.findArticleByID(articleID);
+        ArticleDisplayDTO article = articleDao.findArticleByID(articleID);
         List<Topic> topics = articleDao.getArticleTopics(articleID);
-
-        User user = userDao.findUserById(article.getAuthorID());
-        UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
-
-        return ArticleDTOConverter
-            .convertToArticleDisplayDTO(article, topics, userDTO);
+        article.setTopics(topics);
+        return article;
     }
 
     /**
@@ -110,31 +106,42 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public List<ArticleDisplayDTO> getAllDisplayableArticles() {
-        List<Article> articles = articleDao.getAllArticles();
-        return convertToArticleDisplayDTOs(articles);
+        List<ArticleDisplayDTO> articles = articleDao.getAllArticles();
+        for (ArticleDisplayDTO article : articles) {
+            List<Topic> topics = articleDao.getArticleTopics(article.getId());
+            article.setTopics(topics);
+        }
+        return articles;
     }
 
     @Override
-    public List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(int limit, int offset) {
-        List<Article> articles = articleDao.getAllArticlesByPages(limit,offset);
-        return convertToArticleDisplayDTOs(articles);
-    }
-
-    private List<ArticleDisplayDTO> convertToArticleDisplayDTOs(List<Article> articles) {
-        List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
-
-        for (Article article : articles) {
-            User user = userDao.findUserById(article.getAuthorID());
-            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
+    public List<ArticleDisplayDTO> getAllDisplayableArticlesByPages(int limit,
+        int offset) {
+        List<ArticleDisplayDTO> articles = articleDao
+            .getAllArticlesByPages(limit, offset);
+        for (ArticleDisplayDTO article : articles) {
             List<Topic> topics = articleDao.getArticleTopics(article.getId());
-            displayableArticles
-                    .add(ArticleDTOConverter.convertToArticleDisplayDTO(
-                            article,
-                            topics,
-                            userDTO));
+            article.setTopics(topics);
         }
-        return displayableArticles;
+        return articles;
     }
+
+//    private List<ArticleDisplayDTO> convertToArticleDisplayDTOs(
+//        List<Article> articles) {
+//        List<ArticleDisplayDTO> displayableArticles = new ArrayList<>();
+//
+//        for (Article article : articles) {
+//            User user = userDao.findUserById(article.getAuthorID());
+//            UserDTO userDTO = UserDTOConverter.convertToUserDTO(user);
+//            List<Topic> topics = articleDao.getArticleTopics(article.getId());
+//            displayableArticles
+//                .add(ArticleDTOConverter.convertToArticleDisplayDTO(
+//                    article,
+//                    topics,
+//                    userDTO));
+//        }
+//        return displayableArticles;
+//    }
 
     @Override
     public int getAllArticlesCount() {
@@ -170,14 +177,15 @@ public class ArticleServiceImpl implements IArticleService {
      * @param commentary Commentary.
      */
     @Override
-    public CommentaryDisplayDTO postCommentary(final int articleID, final String userLogin,
+    public CommentaryDisplayDTO postCommentary(final int articleID,
+        final String userLogin,
         final Commentary commentary) {
         User user = userDao.findUserByLogin(userLogin);
         int userID = user.getId();
         Commentary commentCreated =
-                articleDao.addCommentary(articleID, userID, commentary);
+            articleDao.addCommentary(articleID, userID, commentary);
         return CommentaryDTOConverter
-                .convertToCommentaryDisplayDTO(commentCreated, user);
+            .convertToCommentaryDisplayDTO(commentCreated, user);
     }
 
     /**

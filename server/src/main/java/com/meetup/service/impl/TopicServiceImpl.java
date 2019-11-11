@@ -94,6 +94,7 @@ public class TopicServiceImpl implements ITopicService {
      */
     @Override
     public void removeTopic(final int topicID) {
+
         topicDao.removeTopic(topicID);
     }
 }

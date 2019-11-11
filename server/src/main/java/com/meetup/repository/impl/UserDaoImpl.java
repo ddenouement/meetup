@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -490,15 +492,15 @@ public class UserDaoImpl implements IUserDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.reason.name(), compl.getContent())
             .addValue(DbQueryConstants.id_destination.name(),
-                compl.getId_user_to())
+                compl.getIdUserTo())
             .addValue(DbQueryConstants.time_posted.name(),
                 compl.getPostedDate())
             .addValue(DbQueryConstants.id_source.name(),
-                compl.getId_user_from());
+                compl.getIdUserFrom());
         ResultSet rs = null;
         template.update(postComplaint, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
-            compl.setId(holder.getKey().intValue());
+            compl.setId(Objects.requireNonNull(holder.getKey()).intValue());
         }
         return compl;
     }

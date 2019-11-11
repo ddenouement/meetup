@@ -7,6 +7,8 @@ import {ActivatedRoute, ParamMap} from "@angular/router";
 import {MeetupDto} from "../models/meetupDto.model";
 import {UserComplaintsDto} from "../models/userComplaintsDto.model";
 
+import { MatSnackBar } from "@angular/material";
+
 @Component({
   selector: 'app-admin-table',
   templateUrl: './admin-table.component.html',
@@ -24,7 +26,7 @@ export class AdminTableComponent implements OnInit {
   pageSizeOptions = [5,10,20,30];
 
 
-  constructor(public adminService: AdminTableService) {
+  constructor(public snackBar:MatSnackBar, public adminService: AdminTableService) {
   }
 
   ngOnInit() {
@@ -49,14 +51,23 @@ export class AdminTableComponent implements OnInit {
     });
   }
   onDeactivate(id: number) {
-    this.adminService.deactivateUser(id).subscribe(res=>{
+    this.adminService.deactivateUser(id).subscribe(res=> {
       this.ngOnInit();
-    });
-  }
+      let ref =   this.snackBar.open('User deactivated','', {
+        duration: 3000
+      });
+
+    })
+   }
 
   onActivate(id: number) {
     this.adminService.activateUser(id).subscribe(res=>{
       this.ngOnInit();
+
+    let ref =   this.snackBar.open('User activated','', {
+        duration: 3000
+      });
+
     });
   }
 }

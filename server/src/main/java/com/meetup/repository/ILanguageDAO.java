@@ -66,6 +66,4 @@ public interface ILanguageDAO {
      * @return list of speaker's languages
      */
     List<Language> getSpeakerLanguages(Integer speakerId);
-
-
-}
+ }
