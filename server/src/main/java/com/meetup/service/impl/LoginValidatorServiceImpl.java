@@ -1,6 +1,6 @@
 package com.meetup.service.impl;
 
-import com.meetup.controller.jwtsecurity.JwtTokenProvider;
+import com.meetup.controller.security.jwt.JwtTokenProvider;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ILoginValidatorService;

@@ -1,4 +1,4 @@
-package com.meetup.controller.jwtsecurity;
+package com.meetup.controller.security.jwt;
 
 import com.meetup.service.impl.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +10,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.AntPathMatcher;
 
@@ -38,6 +38,10 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationService customUserDetailsService;
 
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * . get AuthenticationManager
      */
@@ -45,6 +49,11 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(11);
     }
 
     /**
@@ -56,7 +65,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configAuthentication(final AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.userDetailsService(customUserDetailsService);
+        auth.userDetailsService(customUserDetailsService)
+            .passwordEncoder(passwordEncoder);
     }
 
     /**

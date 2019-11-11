@@ -1,4 +1,4 @@
-package com.meetup.controller.jwtsecurity;
+package com.meetup.controller.security.jwt;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
