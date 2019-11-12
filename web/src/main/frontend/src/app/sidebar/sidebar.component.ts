@@ -34,120 +34,120 @@ export class SidebarComponent implements OnInit {
         }
         this.SIDEBAR_DATA = [
           {
-            activeSRC: '../../assets/images/admTableActive.png',
-            noActiveSRC: '../../assets/images/admTableNoActive.png',
+            activeSRC: '../../assets/images/admTableActive.svg',
+            noActiveSRC: '../../assets/images/admTableNoActive.svg',
             routerLink: '/admin-table',
             alt: 'table-users',
             role: this.admin,
             active: false
           },
           {
-            activeSRC: '../../assets/images/dictionariesActive.png',
-            noActiveSRC: '../../assets/images/dictionariesNoActive.png',
+            activeSRC: '../../assets/images/dictionariesActive.svg',
+            noActiveSRC: '../../assets/images/dictionariesNoActive.svg',
             routerLink: '/dictionaries',
             alt: 'dictionaries',
             role: this.admin,
             active: false
           },
           {
-            activeSRC: '../../assets/images/createArticleActive.png',
-            noActiveSRC: '../../assets/images/createArticleNoActive.png',
+            activeSRC: '../../assets/images/createArticleActive.svg',
+            noActiveSRC: '../../assets/images/createArticleNoActive.svg',
             routerLink: '/admin-badges',
             alt: 'admin-badges',
             role: this.admin,
             active: false
           },
           {
-            activeSRC: '../../assets/images/myProfileActive.png',
-            noActiveSRC: '../../assets/images/myProfileNoActive.png',
+            activeSRC: '../../assets/images/myProfileActive.svg',
+            noActiveSRC: '../../assets/images/myProfileNoActive.svg',
             routerLink: '/speaker-profile',
             alt: 'speaker-profile',
             role: this.speaker,
             active: false
           },
           {
-            activeSRC: '../../assets/images/subscriptionsActive.png',
-            noActiveSRC: '../../assets/images/subscriptionsNoActive.png',
+            activeSRC: '../../assets/images/subscriptionsActive.svg',
+            noActiveSRC: '../../assets/images/subscriptionsNoActive.svg',
             routerLink: '/subscriptions',
             alt: 'subscriptions',
             role: this.speaker,
             active: false
           },
           {
-            activeSRC: '../../assets/images/subscriptionsActive.png',
-            noActiveSRC: '../../assets/images/subscriptionsNoActive.png',
+            activeSRC: '../../assets/images/subscriptionsActive.svg',
+            noActiveSRC: '../../assets/images/subscriptionsNoActive.svg',
             routerLink: '/subscriptions',
             alt: 'subscriptions',
             role: this.listener,
             active: false
           },
           {
-            activeSRC: '../../assets/images/notificationActive.png',
-            noActiveSRC: '../../assets/images/notificationNoActive.png',
+            activeSRC: '../../assets/images/notificationActive.svg',
+            noActiveSRC: '../../assets/images/notificationNoActive.svg',
             routerLink: '/notifications',
             alt: 'notifications',
             role: this.speaker,
             active: false
           },
           {
-            activeSRC: '../../assets/images/createArticleActive.png',
-            noActiveSRC: '../../assets/images/createArticleNoActive.png',
+            activeSRC: '../../assets/images/createArticleActive.svg',
+            noActiveSRC: '../../assets/images/createArticleNoActive.svg',
             routerLink: '/create-article',
             alt: 'create-article',
             role: this.speaker,
             active: false
           },
           {
-            activeSRC: '../../assets/images/meetupCreateActive.png',
-            noActiveSRC: '../../assets/images/meetupCreateNoActive.png',
+            activeSRC: '../../assets/images/meetupCreateActive.svg',
+            noActiveSRC: '../../assets/images/meetupCreateNoActive.svg',
             routerLink: '/meetup-create',
             alt: 'meetup-create',
             role: this.speaker,
             active: false
           },
           {
-            activeSRC: '../../assets/images/meetupListActive.png',
-            noActiveSRC: '../../assets/images/meetupListNoActive.png',
+            activeSRC: '../../assets/images/meetupListActive.svg',
+            noActiveSRC: '../../assets/images/meetupListNoActive.svg',
             routerLink: '/meetup-list',
             alt: 'meetup-list',
             role: this.speaker,
             active: false
           },
           {
-            activeSRC: '../../assets/images/meetupListActive.png',
-            noActiveSRC: '../../assets/images/meetupListNoActive.png',
+            activeSRC: '../../assets/images/meetupListActive.svg',
+            noActiveSRC: '../../assets/images/meetupListNoActive.svg',
             routerLink: '/meetup-list',
             alt: 'meetup-list',
             role: this.listener,
             active: false
           },
           {
-            activeSRC: '../../assets/images/myProfileActive.png',
-            noActiveSRC: '../../assets/images/myProfileNoActive.png',
+            activeSRC: '../../assets/images/myProfileActive.svg',
+            noActiveSRC: '../../assets/images/myProfileNoActive.svg',
             routerLink: '/listener-profile',
             alt: 'listener-profile',
             role: this.listener,
             active: false
           },
           {
-            activeSRC: '../../assets/images/notificationActive.png',
-            noActiveSRC: '../../assets/images/notificationNoActive.png',
+            activeSRC: '../../assets/images/notificationActive.svg',
+            noActiveSRC: '../../assets/images/notificationNoActive.svg',
             routerLink: '/notifications',
             alt: 'notifications',
             role: this.listener,
             active: false
           },
           {
-            activeSRC: '../../assets/images/articleActive.png',
-            noActiveSRC: '../../assets/images/articleNoActive.png',
+            activeSRC: '../../assets/images/articleActive.svg',
+            noActiveSRC: '../../assets/images/articleNoActive.svg',
             routerLink: '/article-list',
             alt: 'article-list',
             role: true,
             active: false
           },
           {
-            activeSRC: '../../assets/images/feedbackActive.png',
-            noActiveSRC: '../../assets/images/feedbackNoActive.png',
+            activeSRC: '../../assets/images/feedbackActive.svg',
+            noActiveSRC: '../../assets/images/feedbackNoActive.svg',
             routerLink: '/feedback',
             alt: 'feedback',
             role: this.speaker,

@@ -2,6 +2,8 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Filter;
 import com.meetup.entities.Meetup;
+import com.meetup.entities.dto.MeetupDisplayDTO;
+import com.meetup.model.mapper.MeetupDisplayDtoMapper;
 import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.ISearchDAO;
@@ -117,8 +119,8 @@ public class SearchDaoImpl implements ISearchDAO {
         return fil;
     }
 
-    private String getTopicName(int topic_id) {
-        return topicDAO.findTopicByID(topic_id).getName();
+    private String getTopicName(int topicId) {
+        return topicDAO.findTopicByID(topicId).getName();
     }
 
 
@@ -127,7 +129,7 @@ public class SearchDaoImpl implements ISearchDAO {
      * @return List of matched meetups
      */
     @Override
-    public List<Meetup> searchWithFilter(final Filter filter) throws SQLException {
+    public List<MeetupDisplayDTO> searchWithFilter(final Filter filter) throws SQLException {
            SqlParameterSource param = new MapSqlParameterSource()
                 .addValue(DbQueryConstants.id_language_param.name(), filter.nullOrIdLanguage())
                 .addValue(DbQueryConstants.title_param.name(), filter.getTitle_substring())
@@ -136,10 +138,8 @@ public class SearchDaoImpl implements ISearchDAO {
                 .addValue(DbQueryConstants.end_date_param.name(), filter.getTime_to())
                 .addValue(DbQueryConstants.rate_from.name(), filter.nullOrRateFrom())
                 .addValue(DbQueryConstants.rate_to.name(), filter.nullOrRateTo());
-        List<Meetup> foundmeetups = template.query(searchMeetupsByFilterWithFunction, param, new MeetupMapper());
 
-
-        return foundmeetups;
+        return template.query(searchMeetupsByFilterWithFunction, param, new MeetupDisplayDtoMapper());
     }
 
 }
