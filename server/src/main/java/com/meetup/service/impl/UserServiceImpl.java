@@ -481,10 +481,8 @@ public class UserServiceImpl implements IUserService {
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-        } catch (AddressException ae) {
+        } catch (MessagingException ae) {
             ae.printStackTrace();
-        } catch (MessagingException me) {
-            me.printStackTrace();
         }
     }
 
