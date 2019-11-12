@@ -77,12 +77,10 @@ public class MeetupServiceImpl implements IMeetupService {
 
     /**
      * Get meetups, depending on page size;
-     * @param offset
-     * Offset.
-     * @param limit
-     * Limit.
-     * @return
-     * List of meetups.
+     *
+     * @param offset Offset.
+     * @param limit Limit.
+     * @return List of meetups.
      */
     @Override
     public List<MeetupDisplayDTO> getMeetupsByPages(final Integer offset,
@@ -162,6 +160,9 @@ public class MeetupServiceImpl implements IMeetupService {
         final Meetup editedMeetup,
         final User user) {
         Meetup oldMeetup = meetupDao.findMeetupByID(meetupID);
+        if (oldMeetup == null) {
+            throw new MeetupNotFoundException();
+        }
         editedMeetup.setSpeakerId(user.getId());
         editedMeetup.setStateId(oldMeetup.getStateId());
         Meetup updated = meetupDao.updateMeetup(editedMeetup, meetupID);
@@ -171,6 +172,7 @@ public class MeetupServiceImpl implements IMeetupService {
                 .sendMeetupInfoChangedNotifications(updated, changes);
         }
         return updated;
+
     }
 
     /**
@@ -208,6 +210,9 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     private Meetup cancelMeetup(final int meetupID, final User user) {
         Meetup existingMeetup = meetupDao.findMeetupByID(meetupID);
+        if (existingMeetup == null) {
+            throw new MeetupNotFoundException();
+        }
         existingMeetup.setStateId(MeetupState.CANCELED.getCode());
         Meetup updated = updateMeetup(meetupID, existingMeetup,
             existingMeetup.getSpeakerId());
@@ -221,7 +226,11 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     @Override
     public MeetupDisplayDTO getMeetup(final int meetupID) {
-        return meetupDao.findDisplayMeetupByID(meetupID);
+        MeetupDisplayDTO meetup = meetupDao.findDisplayMeetupByID(meetupID);
+        if (meetup == null) {
+            throw new MeetupNotFoundException();
+        }
+        return meetup;
     }
 
     /**
@@ -234,6 +243,9 @@ public class MeetupServiceImpl implements IMeetupService {
     @Override
     public Meetup startMeetup(final int meetupID, final String userLogin) {
         Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
+        if (currentMeetup == null) {
+            throw new MeetupNotFoundException();
+        }
         currentMeetup.setStateId(MeetupState.IN_PROGRESS.getCode());
         Meetup updated = updateMeetup(meetupID, currentMeetup,
             currentMeetup.getSpeakerId());
@@ -252,6 +264,9 @@ public class MeetupServiceImpl implements IMeetupService {
     @Override
     public Meetup terminateMeetup(final int meetupID, final String userLogin) {
         Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
+        if (currentMeetup == null) {
+            throw new MeetupNotFoundException();
+        }
         if (currentMeetup.getStateId() == MeetupState.IN_PROGRESS.getCode()) {
             currentMeetup.setStateId(MeetupState.TERMINATED.getCode());
             return updateMeetup(meetupID, currentMeetup,
@@ -307,9 +322,6 @@ public class MeetupServiceImpl implements IMeetupService {
     public List<MeetupDisplayDTO> getSpeakerMeetups(final int speakerID) {
         List<Meetup> speakerMeetups = meetupDao
             .getSpeakerMeetupsAllHosted(speakerID);
-        if (speakerMeetups.isEmpty()) {
-            throw new MeetupNotFoundException();
-        }
         return meetupDTOConverter.convertToMeetupDTO(speakerMeetups);
     }
 

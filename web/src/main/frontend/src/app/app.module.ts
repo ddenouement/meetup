@@ -76,6 +76,9 @@ import { MatSnackBarModule} from '@angular/material'
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
 import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
 import {HttpCustom} from "./services/HttpCustom";
+import {ResponseInterceptor} from "./services/ResponseInterseptor";
+import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +117,9 @@ import {HttpCustom} from "./services/HttpCustom";
     FooterComponent,
     ActicleListComponent,
     NotificationsComponent,
-    FiltersPanelComponent
+    FiltersPanelComponent,
+    ForbiddenComponent,
+    NotFoundComponent
   ],
   imports: [
     IconsModule,
@@ -159,12 +164,12 @@ import {HttpCustom} from "./services/HttpCustom";
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig,{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
-  /*   ,
-     {
+     ,
+    {
     provide: HTTP_INTERCEPTORS,
-    useClass: HttpCustom,
+    useClass: ResponseInterceptor,
     multi: true,
-  }*/
+  }
   ],
   bootstrap: [AppComponent]
 })
