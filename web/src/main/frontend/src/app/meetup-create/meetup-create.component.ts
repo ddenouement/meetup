@@ -1,19 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 
-import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {MeetupsService} from "../services/meetups.service";
-import {Meetup} from "../models/meetup.model";
 import {Duration} from "../models/duration.model";
-import {Languagesservice} from "../services/languagessservice";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {User} from "../models/user";
-import {Topicsservice} from "../services/Topicsservice";
-import {TopicClass} from "../models/topic_class";
 import {LanguagesList} from "../models/languagesList";
 import {Topic} from "../models/topic";
 import {MeetupDto} from "../models/meetupDto.model";
-import DateTimeFormat = Intl.DateTimeFormat;
+
 // TODO: validation of date, time;
 @Component({
   selector: 'app-meetup-create',
@@ -24,8 +20,6 @@ export class MeetupCreateComponent implements OnInit {
 
   languagesList: LanguagesList[];
   topicsList: Topic[];
-  private langsSub: Subscription;
-  private topicsSub: Subscription;
   private meetingsSub: Subscription;
 
 

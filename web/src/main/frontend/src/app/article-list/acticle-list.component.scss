@@ -29,11 +29,12 @@
 
 }
 .more-button {
-  bottom: 0;
-  right: 0;
+  bottom: 10px;
+  right: 10px;
   position: absolute;
 }
-
+.delete-button{
+}
 /* medium size viewport */
 @media screen and (max-width: 959px) {
   /* Column Gap */

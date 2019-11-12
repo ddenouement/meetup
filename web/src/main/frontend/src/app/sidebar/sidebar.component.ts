@@ -17,12 +17,14 @@ export class SidebarComponent implements OnInit {
   public href: string = "";
   public SIDEBAR_DATA: Sidebar[] = [];
   public notificationCount = 0;
-
+  isLoading = false;
   constructor(private httpClient: HttpClient, private  router: Router, private notificationsService: NotificationsService) {
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.httpClient.get(this.userURL).subscribe(res => {
+        this.isLoading = false;
         if (res['userDTO'].roles.includes("SPEAKER")) {
           this.speaker = true;
         } else if (res['userDTO'].roles.includes("ADMIN")) {
@@ -148,8 +150,9 @@ export class SidebarComponent implements OnInit {
       error => {
         console.warn('error in sidebar (get): ' + error);
       });
-
+    this.isLoading = true;
     this.notificationsService.countAll().subscribe((res: number) => {
+      this.isLoading = false;
       this.notificationCount = res;
     });
 
