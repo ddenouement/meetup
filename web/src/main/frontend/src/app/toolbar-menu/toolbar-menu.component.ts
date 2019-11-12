@@ -12,6 +12,7 @@ export class ToolbarMenuComponent implements OnInit {
   private _authService: LoginService;
   time = new Date();
   timer;
+  login: string;
 
   constructor(private authService: LoginService, private httpClient: HttpClient,) {
     this._authService = authService;
