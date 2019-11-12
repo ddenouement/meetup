@@ -14,7 +14,9 @@
         {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
       </mat-card-subtitle>
       <div fxLayout = "row">
+        <mat-chip-list>
         <mat-chip>{{meetup.topic.name}}</mat-chip>
+        </mat-chip-list>
       </div>
     </mat-card>
   </ng-container>

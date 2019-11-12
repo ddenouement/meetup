@@ -7,7 +7,6 @@
     <mat-card class="cardListItem">
       <mat-card-title fxLayout = "row">
         {{article.title}}
-        <a mat-raised-button color="accent" [routerLink]="['/article-view',article.id]" class="more-button">More</a>
       </mat-card-title>
       <mat-card-subtitle fxLayout = "row" class="authorName">
         {{article.author.firstName}} {{article.author.lastName}}
@@ -20,6 +19,9 @@
           <mat-chip>{{l.name}}</mat-chip>
         </mat-chip-list>
       </div>
+      <a mat-raised-button color="red" *ngIf ="isAdmin" (click)="onDelete(article.id)" class="delete-button">Delete</a>
+      <a mat-raised-button color="accent" [routerLink]="['/article-view',article.id]" class="more-button">More</a>
+
     </mat-card>
   </ng-container>
 </div>

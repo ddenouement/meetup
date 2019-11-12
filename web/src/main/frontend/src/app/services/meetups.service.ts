@@ -32,22 +32,24 @@ export class MeetupsService {
   private languagesUpdated = new Subject<{ languages: LanguagesList[] }>();
   private topicsUpdated = new Subject<{ topics: Topic[] }>();
   private speakerMeetupsUpdated = new Subject<{ meetups: MeetupDto[] }>();
-  private speakerLanguagesURL = 'http://localhost:9990/api/v1/user/languages';
-  private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
-  private meetupUrl = "http://localhost:9990/api/v1/meetups/";
-  private addMeetupUrl = "http://localhost:9990/api/v1/user/speaker/meetups";
-  private meetupsUrl = "http://localhost:9990/api/v1/meetups";
-  private joinUrl = "http://localhost:9990/api/v1/user/meetups/";
-  private userUrl = "http://localhost:9990/api/v1/user/id";
-  private speakerMeetupsUrl = "http://localhost:9990/api/v1/meetups/speakers/";
 
-  // private speakerLanguagesURL = '/api/v1/user/languages';
-  // private topicsURL = '/api/v1/meetups/topics';
-  // private meetupUrl = "/api/v1/meetups/";
-  // private addMeetupUrl = "/api/v1/user/speaker/meetups";
-  // private meetupsUrl = "/api/v1/meetups";
-  // private joinUrl = "/api/v1/user/meetups/";
-  // private userUrl = "/api/v1/user/id"
+  // private speakerLanguagesURL = 'http://localhost:9990/api/v1/user/languages';
+  // private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
+  // private meetupUrl = "http://localhost:9990/api/v1/meetups/";
+  // private addMeetupUrl = "http://localhost:9990/api/v1/user/speaker/meetups";
+  // private meetupsUrl = "http://localhost:9990/api/v1/meetups";
+  // private joinUrl = "http://localhost:9990/api/v1/user/meetups/";
+  // private userUrl = "http://localhost:9990/api/v1/user/id";
+  // private speakerMeetupsUrl = "http://localhost:9990/api/v1/meetups/speakers/";
+
+  private speakerLanguagesURL = '/api/v1/user/languages';
+  private topicsURL = '/api/v1/meetups/topics';
+  private meetupUrl = "/api/v1/meetups/";
+  private addMeetupUrl = "/api/v1/user/speaker/meetups";
+  private meetupsUrl = "/api/v1/meetups";
+  private joinUrl = "/api/v1/user/meetups/";
+
+  private speakerMeetupsUrl = "/api/v1/meetups/speakers/";
 
 
   constructor(private http: HttpClient, private router: Router) {
@@ -164,9 +166,7 @@ export class MeetupsService {
     // @ts-ignore
     return this.http.delete(this.joinUrl + id);
   }
-  getUserId(){
-    return this.http.get<any>(this.userUrl);
-  }
+
 
 
 
