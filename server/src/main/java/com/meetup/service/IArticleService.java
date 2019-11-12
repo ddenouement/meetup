@@ -24,9 +24,8 @@ public interface IArticleService {
      * Remove article by speaker.
      *
      * @param articleID Article ID, that should be removed
-     * @param userLogin User login, that removes an article.
      */
-    void removeArticle(int articleID, String userLogin);
+    void removeArticle(int articleID);
 
     /**
      * Get article, that could be displayed.

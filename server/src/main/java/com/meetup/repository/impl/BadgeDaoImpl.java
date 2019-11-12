@@ -6,7 +6,7 @@ import com.meetup.model.mapper.BadgeMapper;
 import com.meetup.model.mapper.StringMapper;
 import com.meetup.model.mapper.UserMapper;
 import com.meetup.repository.IBadgeDAO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,7 +8,7 @@ import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IProfileService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.ModelConstants;
+import com.meetup.utils.constants.ModelConstants;
 import io.swagger.annotations.Api;
 import java.util.List;
 import java.util.Map;

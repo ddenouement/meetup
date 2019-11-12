@@ -1,12 +1,10 @@
 package com.meetup.model.mapper;
 
 import com.meetup.entities.Language;
-import com.meetup.entities.Meetup;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.entities.dto.UserShortDTO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import com.meetup.utils.MeetupState;
 import com.meetup.utils.TimeUtility;
 import java.sql.ResultSet;

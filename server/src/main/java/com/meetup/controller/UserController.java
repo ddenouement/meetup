@@ -6,14 +6,13 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.*;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.ModelConstants;
+import com.meetup.utils.constants.ModelConstants;
 import io.swagger.annotations.Api;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,9 +55,7 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping(value = "user/users")
     public ResponseEntity<List<User>> getAllActiveUsers() {
         return new ResponseEntity<>(userService.getAllActiveUsers(),
@@ -70,9 +67,7 @@ public class UserController {
      *
      * @return List of Users
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN)")
     @GetMapping(value = "user/users/all")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(),
@@ -167,8 +162,7 @@ public class UserController {
      * @param compl complaint entity.
      * @return ResponseEntity.
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/user/complaint")
     public ResponseEntity postComplaintOnUser(

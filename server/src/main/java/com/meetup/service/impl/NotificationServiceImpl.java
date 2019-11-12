@@ -7,7 +7,7 @@ import com.meetup.repository.INotificationDAO;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.NotificationConstants;
+import com.meetup.utils.constants.NotificationConstants;
 import com.meetup.utils.NotificationType;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

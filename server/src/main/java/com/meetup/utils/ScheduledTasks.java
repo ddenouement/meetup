@@ -2,6 +2,7 @@ package com.meetup.utils;
 
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
+import com.meetup.utils.constants.NotificationConstants;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;

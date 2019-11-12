@@ -1,7 +1,7 @@
 package com.meetup.model.mapper;
 
 import com.meetup.entities.dto.SimpleUserDTO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

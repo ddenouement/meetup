@@ -9,6 +9,6 @@ public class ElementIsUsedException extends RuntimeException {
      * Constructor.
      */
     public ElementIsUsedException() {
-        super("Element is used!");
+        super();
     }
 }

@@ -1,4 +1,4 @@
-package com.meetup.utils;
+package com.meetup.utils.constants;
 
 
 /**

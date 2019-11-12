@@ -10,6 +10,6 @@ public class BadgeScriptIsIncorrectException extends RuntimeException {
      * Constructor.
      */
     public BadgeScriptIsIncorrectException() {
-        super("SQL script is incorrect.");
+        super();
     }
 }

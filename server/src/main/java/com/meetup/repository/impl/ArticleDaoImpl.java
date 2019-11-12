@@ -1,18 +1,17 @@
 package com.meetup.repository.impl;
 
-import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
-import com.meetup.model.mapper.ArticleMapper;
-import com.meetup.model.mapper.CommentaryMapper;
+import com.meetup.model.mapper.ArticleDisplayDTOMapper;
+import com.meetup.model.mapper.CommentaryDisplayDTOMapper;
 import com.meetup.model.mapper.IntegerMapper;
 import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IArticleDAO;
 
-import static com.meetup.utils.DbQueryConstants.*;
+import static com.meetup.utils.constants.DbQueryConstants.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -39,7 +38,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @PropertySource("classpath:sql/article_queries.properties")
 public class ArticleDaoImpl implements IArticleDAO {
-//TODO generic dao
+
     /**
      * JDBC template.
      */
@@ -120,8 +119,6 @@ public class ArticleDaoImpl implements IArticleDAO {
         template.update(insertNewArticle, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             int articleID = holder.getKey().intValue();
-            //adding topics to DB
-            //TODOo rewrite
             for (int topicID : articleCreationDTO.getTopicIds()) {
                 addTopicToArticle(articleID, topicID);
             }
@@ -153,7 +150,8 @@ public class ArticleDaoImpl implements IArticleDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id.name(), articleID);
         return this.template
-            .queryForObject(findArticleByID, param, new ArticleMapper());
+            .queryForObject(findArticleByID, param,
+                new ArticleDisplayDTOMapper());
     }
 
     /**
@@ -189,13 +187,13 @@ public class ArticleDaoImpl implements IArticleDAO {
     @Override
     public List<ArticleDisplayDTO> getAllArticles() {
         return this.template
-            .query(findAllArticles, new ArticleMapper());
+            .query(findAllArticles, new ArticleDisplayDTOMapper());
     }
 
     @Override
     public int getAllArticlesCount() {
         List<Integer> res = this.template
-                .query(findAllArticlesCount, new IntegerMapper());
+            .query(findAllArticlesCount, new IntegerMapper());
         if (res.isEmpty()) {
             return 0;
         } else {
@@ -204,20 +202,24 @@ public class ArticleDaoImpl implements IArticleDAO {
     }
 
     @Override
-    public List<ArticleDisplayDTO> getAllArticlesByPages(int limit, int offset) {
+    public List<ArticleDisplayDTO> getAllArticlesByPages(int limit,
+        int offset) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.limit.name(), limit)
-                .addValue(DbQueryConstants.offset.name(), offset);
+            .addValue(DbQueryConstants.limit.name(), limit)
+            .addValue(DbQueryConstants.offset.name(), offset);
         return this.template
-                .query(findAllArticlesByPages,param, new ArticleMapper());
+            .query(findAllArticlesByPages, param,
+                new ArticleDisplayDTOMapper());
     }
 
     @Override
-    public List<CommentaryDisplayDTO> getArticleCommentaries(final int articleID) {
+    public List<CommentaryDisplayDTO> getArticleCommentaries(
+        final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id_article.name(), articleID);
         return this.template
-            .query(findArticleCommentaries, param, new CommentaryMapper());
+            .query(findArticleCommentaries, param,
+                new CommentaryDisplayDTOMapper());
     }
 
     /**
@@ -243,8 +245,8 @@ public class ArticleDaoImpl implements IArticleDAO {
 
     /**
      * Remove commentary from DB.
-     * @param commentID
-     * Commentary ID.
+     *
+     * @param commentID Commentary ID.
      */
     @Override
     public void removeCommentary(final int commentID) {

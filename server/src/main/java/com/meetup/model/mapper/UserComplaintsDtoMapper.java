@@ -2,7 +2,7 @@ package com.meetup.model.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 
 import com.meetup.entities.dto.UserComplaintsDTO;
 import org.springframework.jdbc.core.RowMapper;
