@@ -14,6 +14,7 @@ import {TopicClass} from "../models/topic_class";
 import {LanguagesList} from "../models/languagesList";
 import {Topic} from "../models/topic";
 import {MeetupDto} from "../models/meetupDto.model";
+import {ArticleDTO} from "../models/article-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -31,20 +32,24 @@ export class MeetupsService {
   private languagesUpdated = new Subject<{ languages: LanguagesList[] }>();
   private topicsUpdated = new Subject<{ topics: Topic[] }>();
   private speakerMeetupsUpdated = new Subject<{ meetups: MeetupDto[] }>();
+
+  // private speakerLanguagesURL = 'http://localhost:9990/api/v1/user/languages';
+  // private topicsURL = 'http://localhost:9990/api/v1/meetups/topics';
+  // private meetupUrl = "http://localhost:9990/api/v1/meetups/";
+  // private addMeetupUrl = "http://localhost:9990/api/v1/user/speaker/meetups";
+  // private meetupsUrl = "http://localhost:9990/api/v1/meetups";
+  // private joinUrl = "http://localhost:9990/api/v1/user/meetups/";
+  // private userUrl = "http://localhost:9990/api/v1/user/id";
+  // private speakerMeetupsUrl = "http://localhost:9990/api/v1/meetups/speakers/";
+
   private speakerLanguagesURL = '/api/v1/user/languages';
   private topicsURL = '/api/v1/meetups/topics';
   private meetupUrl = "/api/v1/meetups/";
   private addMeetupUrl = "/api/v1/user/speaker/meetups";
   private meetupsUrl = "/api/v1/meetups";
   private joinUrl = "/api/v1/user/meetups/";
-  private userUrl = "/api/v1/user/id"
-  // private speakerLanguagesURL = '/api/v1/user/languages';
-  // private topicsURL = '/api/v1/meetups/topics';
-  // private meetupUrl = "/api/v1/meetups/";
-  // private addMeetupUrl = "/api/v1/user/speaker/meetups";
-  // private meetupsUrl = "/api/v1/meetups";
-  // private joinUrl = "/api/v1/user/meetups/";
-  // private userUrl = "/api/v1/user/id"
+
+  private speakerMeetupsUrl = "/api/v1/meetups/speakers/";
 
 
   constructor(private http: HttpClient, private router: Router) {
@@ -62,12 +67,6 @@ export class MeetupsService {
 
   getSpeakerMeetupUpdateListener() {
     return this.speakerMeetupsUpdated.asObservable();
-  }
-  getLanguageUpdateListener() {
-    return this.languagesUpdated.asObservable();
-  }
-  getTopicUpdateListener() {
-    return this.topicsUpdated.asObservable();
   }
 
   addMeetup(languageId: number,
@@ -123,9 +122,50 @@ export class MeetupsService {
 
       });
   }
-
-
   getMeetups(meetupsPerPage : number, currentPage: number) {
+    const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
+    return this.http
+      .get<{meetups: MeetupDto[], meetupCount : number}>(
+        this.meetupsUrl+queryParams
+      );
+  }
+  getSpeakerMeetupsPaged(meetupsPerPage : number, currentPage: number) {
+    const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
+    return this.http
+      .get<{meetups: MeetupDto[], meetupCount : number}>(
+        this.speakerMeetupsUrl+queryParams
+      );
+  }
+  getSpeakerMeetups(id:number) {
+    return this.http.get<MeetupDto[]>(this.speakerMeetupsUrl+id);
+  }
+
+  getMeetup(id:number){
+    return this.http.get<{meetup:MeetupDto, ifJoinedMeetup: boolean}>(this.meetupUrl+ id);
+  }
+
+  getLanguages() {
+    return this.http.get<LanguagesList[]>(this.speakerLanguagesURL);
+  }
+  getTopics() {
+    return this.http.get<Topic[]>(this.topicsURL);
+  }
+
+  joinMeetup(id:number){
+    // @ts-ignore
+    return this.http.post(this.joinUrl + id);
+  }
+
+  leaveMeetup(id:number){
+    // @ts-ignore
+    return this.http.delete(this.joinUrl + id);
+  }
+
+
+
+
+/*
+  getMeetups1(meetupsPerPage : number, currentPage: number) {
     const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
     this.http
       .get<{meetups: MeetupDto[], meetupCount : number}>(
@@ -164,10 +204,12 @@ export class MeetupsService {
         }
       );
   }
-  getSpeakerMeetups(id: number) {
+
+
+  getSpeakerMeetups1(id: number) {
     this.http
       .get<MeetupDto[]>(
-        "/api/v1/meetups/speakers/"+id)
+        this.speakerMeetupsUrl+id)
       .pipe(
         map(meetupData => {
           return {
@@ -197,76 +239,7 @@ export class MeetupsService {
         });
       });
   }
+*/
 
 
-
-  getMeetup(id:number){
-    this.http.get<{meetup:MeetupDto, ifJoinedMeetup: boolean}>(this.meetupUrl+ id).pipe(map(meetupData=>{
-      return{
-        meetup: meetupData.meetup,
-        ifJoinedMeetup: meetupData.ifJoinedMeetup
-      }
-    })).subscribe(transformedData=>{
-      this.meetupUpdated.next({
-        meetup : transformedData.meetup,
-        ifJoinedMeetup: transformedData.ifJoinedMeetup
-      })
-    });
-  }
-
-  getLanguages() {
-    this.http.get<LanguagesList[]>(this.speakerLanguagesURL)
-      .pipe(map(langData => {
-          return {
-            languages: langData.map( lang => {
-                return {
-                  id: lang.id,
-                  name: lang.name
-                }
-              }
-            )
-          };
-        })
-      )
-      .subscribe(transformedLangData => {
-        this.languages = transformedLangData.languages;
-        this.languagesUpdated.next({
-          languages: [...this.languages]
-        });
-      });
-  }
-  getTopics() {
-    this.http.get<Topic[]>(this.topicsURL)
-      .pipe(map(topicsData => {
-          return {
-            topics: topicsData.map( topic => {
-                return {
-                  id: topic.id,
-                  name: topic.name
-                }
-              }
-            )
-          };
-        })
-      )
-      .subscribe(transformedTopicsData => {
-        this.topics = transformedTopicsData.topics;
-        this.topicsUpdated.next({
-          topics: [...this.topics]
-        });
-      });
-  }
-
-  joinMeetup(id:number){
-    // @ts-ignore
-    return this.http.post(this.joinUrl + id);
-  }
-
-  leaveMeetup(id:number){
-    // @ts-ignore
-    return this.http.delete(this.joinUrl + id);
-  }
-  getUserId(){
-    return this.http.get<any>(this.userUrl);
-  }
 }

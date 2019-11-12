@@ -196,6 +196,7 @@ public class AuthorizationController {
         @RequestBody final String password,
         @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);
+
         userService.changePassword(userId, password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -221,8 +222,8 @@ public class AuthorizationController {
      */
     @PostMapping(value = "/user/password")
     public ResponseEntity sendNewPassword(
-            @RequestBody final RegistrationDTO data) {
-        userService.sendEmail(data.getEmail(), data.getLogin());
+            @RequestBody final String data) {
+        userService.sendNewPassword(data);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
