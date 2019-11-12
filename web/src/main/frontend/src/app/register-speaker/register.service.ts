@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
 // @ts-ignore
-import {HttpClient, HttpHeaders, Response} from "@angular/common/http";
+import {HttpClient, Response} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {Router} from "@angular/router";
 import {LanguagesList} from "../models/languagesList";
 import {Registration} from "../models/registration";
 

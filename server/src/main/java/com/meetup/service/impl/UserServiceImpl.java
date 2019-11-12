@@ -26,6 +26,7 @@ import javax.mail.internet.*;
 import javax.activation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -358,7 +359,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void changePassword(final Integer userId, final String newPassword) {
-        userDao.changePassword(userId, newPassword);
+        String encodedPassword = new BCryptPasswordEncoder(11)
+                .encode(newPassword);
+        userDao.changePassword(userId, encodedPassword);
     }
 
     /**
@@ -432,11 +435,11 @@ public class UserServiceImpl implements IUserService {
     public void sendNewPassword(String email) {
         User user = userDao.findUserByEmail(email);
         if (user == null) {
-            throw  new EmailDoesntExistException();
+            throw new EmailDoesntExistException();
         }
         int userId = user.getId();
         String userLogin = user.getLogin();
-        changePassword(userId,"Qwerty123_");
+        changePassword(userId, "Qwerty123_");
         String USER_NAME = "meetupplus77";  // GMail user name (just the part before "@gmail.com")
         String PASSWORD = "Qwerty123_"; // GMail password
         String RECIPIENT = email;
@@ -502,6 +505,4 @@ public class UserServiceImpl implements IUserService {
         user.setNumRates(user.getNumRates() + 1);
         userDao.updateRate(user);
     }
-
-
 }

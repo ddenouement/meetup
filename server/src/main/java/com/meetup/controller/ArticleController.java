@@ -140,8 +140,9 @@ public class ArticleController {
      * @param articleID Article ID.
      * @return Article.
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles/{id}")
     public ResponseEntity<ArticleDisplayDTO> getArticle(
         @PathVariable("id") final int articleID) {
