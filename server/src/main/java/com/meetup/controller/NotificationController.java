@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -100,7 +101,7 @@ public class NotificationController {
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @PutMapping(value = "/user/notifications/{id}/read")
+    @DeleteMapping("/user/notifications/{id}")
     public ResponseEntity markNotificationAsRead(@PathVariable final Integer id,
         @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);

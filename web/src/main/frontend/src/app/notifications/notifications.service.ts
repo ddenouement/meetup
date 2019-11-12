@@ -8,16 +8,20 @@ import {HttpClient} from "@angular/common/http";
 export class NotificationsService {
   private allURL = 'api/v1/user/notifications';
   private countURL = 'api/v1/user/notifications/count';
-  private readURL = 'api/v1/users/notifications/{id}/read'
+  private readURL = 'api/v1/users/notifications/'
 
   constructor(private http: HttpClient) {
   }
 
-  getAll(){
+  getAll() {
     return this.http.get(this.allURL);
   }
 
-  countAll(){
+  countAll() {
     return this.http.get(this.countURL);
+  }
+
+  read(id: number) {
+    return this.http.delete(this.readURL + id);
   }
 }

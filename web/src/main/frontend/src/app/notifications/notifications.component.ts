@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Notification} from "../models/notification";
 import {NotificationsService} from "./notifications.service";
+import {CommentDto} from "../models/commentDto";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-notifications',
@@ -10,16 +12,27 @@ import {NotificationsService} from "./notifications.service";
 export class NotificationsComponent implements OnInit {
 
   notifications: Notification[] = [];
-  message: string = "Your meetup <a class=\'link\' [routerLink]=\"[\'/meetup-profile\',17]\">Meetup2</a> starts in 15 minutes.";
+  // message: string = "Your meetup <a class=\'link\' [routerLink]=\"[\'/meetup-profile\',17]\">Meetup2</a> starts in 15 minutes.";
 
-  constructor(public notificationsService: NotificationsService) { }
+  constructor(public notificationsService: NotificationsService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.notificationsService.getAll().subscribe((res: Notification[]) => {
       this.notifications = res;
     }, error => {
-      console.log(error.error.message);
+      this.snackBar.open('Error loading notifications');
     });
+  }
+
+  readNotification(notification: Notification) {
+    this.notificationsService.read(notification.id).subscribe(data => {
+        this.notifications.splice(this.notifications.indexOf(notification),1);
+        // this.snackBar.open('Deleted a comment');
+      },
+      error => {
+        this.snackBar.open('Error deleting notification');
+      }
+    )
   }
 
 }

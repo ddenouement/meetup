@@ -8,7 +8,7 @@
           <mat-card class="cardListItem">
             <div fxLayout="row">
               <div class="block" [innerHTML]=notification.message></div>
-              <button mat-icon-button class="close-button">
+              <button mat-icon-button class="close-button" (click)="readNotification(notification)">
                 <mat-icon>close</mat-icon>
               </button>
             </div>

@@ -209,8 +209,8 @@ ____________________________________
 - /api/v1/user/notifications/count
 
 #### Mark notification as read
-- Type: PUT
-- /api/v1/user/notifications/{id}/read
+- Type: DELETE
+- /api/v1/user/notifications/{id}
 
 ### USER CONTROLLER
 ____________________________________
