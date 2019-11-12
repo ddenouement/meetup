@@ -3,10 +3,10 @@ import {ArticleViewService} from "./article-view.service";
 import {ArticleDTO} from "../models/article-dto";
 import {Validators} from "@angular/forms";
 import {Topic} from "../models/topic";
-import {User} from "../models/user";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {Meetup} from "../models/meetup.model";
 import {UserService} from "../services/user.service";
+import {SimpleUserDto} from "../models/simpleUserDto.model";
 
 @Component({
   selector: 'app-article-view',
@@ -22,7 +22,7 @@ export class ArticleViewComponent implements OnInit {
   isLoading = false;
   isAdmin = false;
   adminLogin = "admin";
-  author: User;
+  author: SimpleUserDto;
   dateTimePosted: string;
   topics: Topic[];
   meetup: Meetup;
@@ -58,7 +58,6 @@ export class ArticleViewComponent implements OnInit {
       }
       this.isLoading = false;
     });
-
 
 
   }

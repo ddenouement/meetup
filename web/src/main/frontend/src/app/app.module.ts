@@ -76,6 +76,7 @@ import { MatSnackBarModule} from '@angular/material'
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
 import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
 import {HttpCustom} from "./services/HttpCustom";
+import { UserComplaintsComponent } from './user-complaints/user-complaints.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import {HttpCustom} from "./services/HttpCustom";
     FooterComponent,
     ActicleListComponent,
     NotificationsComponent,
-    FiltersPanelComponent
+    FiltersPanelComponent,
+    UserComplaintsComponent
   ],
   imports: [
     IconsModule,

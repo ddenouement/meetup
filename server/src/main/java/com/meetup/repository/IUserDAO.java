@@ -119,6 +119,13 @@ public interface IUserDAO {
 
     /**
      * .
+     * @param id int, id of user
+     * @return List of all complaints to user
+     */
+    List<ComplaintDTO> getComplaintsToUser(int id);
+
+    /**
+     * .
      *
      * @param compl ComplaintDTO
      */

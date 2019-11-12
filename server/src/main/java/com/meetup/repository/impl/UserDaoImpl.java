@@ -108,6 +108,11 @@ public class UserDaoImpl implements IUserDAO {
     @Value("${get_all_complaints_not_read}")
     private String getAllNotReadComplaints;
     /**
+     * sql for finding complaints to user from DB.
+     */
+    @Value("${find_complaints_for_user}")
+    private String findComplaintsToUser;
+    /**
      * sql query to post new complaint.
      */
     @Value("${post_complaint}")
@@ -480,6 +485,18 @@ public class UserDaoImpl implements IUserDAO {
     @Override
     public List<ComplaintDTO> getAllNotReadComplaints() {
         return template.query(getAllNotReadComplaints, new ComplaintMapper());
+    }
+
+    /**
+     * .
+     * @param id int, id of user
+     * @return List of all complaints to user
+     */
+    @Override
+    public List<ComplaintDTO> getComplaintsToUser(final int id){
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.user_id.name(), id);
+        return template.query(findComplaintsToUser,param,new ComplaintMapper());
     }
 
     /**
