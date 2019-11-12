@@ -6,6 +6,7 @@ import {MeetupsService} from "../services/meetups.service";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {MeetupDto} from "../models/meetupDto.model";
 import {Subscription} from "rxjs";
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-meetup-profile',
@@ -23,18 +24,19 @@ export class MeetupProfileComponent implements OnInit {
   joinText = "JOIN";
   joined = false;
 
-  constructor(public meetupService: MeetupsService,  public route: ActivatedRoute) {
+  constructor(public meetupService: MeetupsService,public userService: UserService,  public route: ActivatedRoute) {
   }
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('meetupId')) {
         this.meetupId = paramMap.get('meetupId');
         this.isLoading = true;
-        this.meetupService.getUserId().subscribe(res=>{
+        this.userService.getUserId().subscribe(res=>{
           this.userId = res;
         });
-        this.meetupService.getMeetup(+this.meetupId);
-        this.meetingsSub = this.meetupService.getMeetupJoinedUpdateListener().subscribe(meetupData =>{
+        this.meetupService.getMeetup(+this.meetupId)
+        // this.meetingsSub = this.meetupService.getMeetupJoinedUpdateListener()
+          .subscribe(meetupData =>{
           this.isLoading = false;
           this.meetup = meetupData.meetup;
           this.joined = meetupData.ifJoinedMeetup;

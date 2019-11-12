@@ -106,12 +106,14 @@ export class SpeakerProfileComponent implements OnInit {
       this.star = res['userDTO'].rate;
       this.load = true;
       this.speakerId = res['userDTO'].id;
-      this.meetupsService.getSpeakerMeetups(this.speakerId);
+      this.meetupsService.getSpeakerMeetups(this.speakerId).subscribe(meetupsData=>{
+        this.speakerMeetups = meetupsData;
+      });
       //set up listener to subject
-      this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
-        .subscribe((meetupData: { meetups: MeetupDto[] })=>{
-          this.speakerMeetups = meetupData.meetups;
-        });
+      // this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
+      //   .subscribe((meetupData: { meetups: MeetupDto[] })=>{
+      //     this.speakerMeetups = meetupData.meetups;
+      //   });
 
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
@@ -137,7 +139,6 @@ export class SpeakerProfileComponent implements OnInit {
       err => {
         console.log(err);
       });
-
 
   }
 
