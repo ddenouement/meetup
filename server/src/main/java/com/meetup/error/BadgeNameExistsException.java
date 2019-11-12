@@ -10,6 +10,6 @@ public class BadgeNameExistsException extends RuntimeException {
      * Constructor.
      */
     public BadgeNameExistsException() {
-        super("Badge with such name already exists.");
+        super();
     }
 }

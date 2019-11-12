@@ -8,7 +8,7 @@ import {HttpClient} from "@angular/common/http";
 export class NotificationsService {
   private allURL = 'api/v1/user/notifications';
   private countURL = 'api/v1/user/notifications/count';
-  private readURL = 'api/v1/users/notifications/'
+  private readURL = 'api/v1/user/notifications/';
 
   constructor(private http: HttpClient) {
   }

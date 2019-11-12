@@ -1,6 +1,4 @@
-package com.meetup.utils;
-
-import java.util.prefs.AbstractPreferences;
+package com.meetup.utils.constants;
 
 public enum DbQueryConstants {
 

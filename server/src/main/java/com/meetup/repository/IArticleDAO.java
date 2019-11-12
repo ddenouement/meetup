@@ -1,6 +1,5 @@
 package com.meetup.repository;
 
-import com.meetup.entities.Article;
 import com.meetup.entities.Commentary;
 import com.meetup.entities.Topic;
 import com.meetup.entities.dto.ArticleCreationDTO;

@@ -4,7 +4,7 @@ import com.meetup.entities.Notification;
 import com.meetup.model.mapper.CountMapper;
 import com.meetup.model.mapper.NotificationMapper;
 import com.meetup.repository.INotificationDAO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;

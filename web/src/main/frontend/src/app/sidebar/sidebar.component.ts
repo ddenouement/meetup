@@ -42,19 +42,18 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/teamActive.svg',
-            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            activeSRC: '../../assets/images/dictionariesActive.svg',
+            noActiveSRC: '../../assets/images/dictionariesNoActive.svg',
             routerLink: '/dictionaries',
             alt: 'dictionaries',
             role: this.admin,
             active: false
           },
           {
-            //nema
-            activeSRC: '../../assets/images/teamActive.svg',
-            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            activeSRC: '../../assets/images/createArticleActive.svg',
+            noActiveSRC: '../../assets/images/createArticleNoActive.svg',
             routerLink: '/admin-badges',
-            alt: 'edit-badges',
+            alt: 'admin-badges',
             role: this.admin,
             active: false
           },
@@ -67,11 +66,19 @@ export class SidebarComponent implements OnInit {
             active: false
           },
           {
-            activeSRC: '../../assets/images/teamActive.svg',
-            noActiveSRC: '../../assets/images/teamNoActive.svg',
+            activeSRC: '../../assets/images/subscriptionsActive.svg',
+            noActiveSRC: '../../assets/images/subscriptionsNoActive.svg',
             routerLink: '/subscriptions',
             alt: 'subscriptions',
             role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/subscriptionsActive.svg',
+            noActiveSRC: '../../assets/images/subscriptionsNoActive.svg',
+            routerLink: '/subscriptions',
+            alt: 'subscriptions',
+            role: this.listener,
             active: false
           },
           {
@@ -92,7 +99,7 @@ export class SidebarComponent implements OnInit {
           },
           {
             activeSRC: '../../assets/images/meetupCreateActive.svg',
-            noActiveSRC: '../../assets/images/myProfileNoActive.svg',
+            noActiveSRC: '../../assets/images/meetupCreateNoActive.svg',
             routerLink: '/meetup-create',
             alt: 'meetup-create',
             role: this.speaker,
@@ -104,6 +111,14 @@ export class SidebarComponent implements OnInit {
             routerLink: '/meetup-list',
             alt: 'meetup-list',
             role: this.speaker,
+            active: false
+          },
+          {
+            activeSRC: '../../assets/images/meetupListActive.svg',
+            noActiveSRC: '../../assets/images/meetupListNoActive.svg',
+            routerLink: '/meetup-list',
+            alt: 'meetup-list',
+            role: this.listener,
             active: false
           },
           {

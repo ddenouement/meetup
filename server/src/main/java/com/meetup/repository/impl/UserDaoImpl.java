@@ -5,7 +5,7 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.*;
 import com.meetup.model.mapper.*;
 import com.meetup.repository.IUserDAO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import com.meetup.utils.Role;
 import java.sql.Array;
 import java.sql.PreparedStatement;

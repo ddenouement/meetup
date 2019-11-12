@@ -6,7 +6,7 @@ import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
 import com.meetup.service.impl.ArticleServiceImpl;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
-import com.meetup.utils.ModelConstants;
+import com.meetup.utils.constants.ModelConstants;
 import io.swagger.annotations.Api;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * API Rest Controller for Articles.
+ * Rest Controller for Articles.
  */
 @RestController
 @Api(value = "meetup-application")
@@ -70,17 +70,14 @@ public class ArticleController {
     /**
      * Remove article by speaker.
      *
-     * @param token JSON web token.
      * @param articleID Article ID that should be removed.
      * @return ResponseEntity with status code.
      */
     @PreAuthorize("hasAuthority(T(com.meetup.utils.Role).SPEAKER)")
     @DeleteMapping(value = "/user/speaker/articles/{id}")
     public ResponseEntity removeArticleBySpeaker(
-        @CookieValue("token") final String token,
         @PathVariable("id") final int articleID) {
-        String userLogin = loginValidatorService.extractLogin(token);
-        articleService.removeArticle(articleID, userLogin);
+        articleService.removeArticle(articleID);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -99,13 +96,13 @@ public class ArticleController {
     }
 
     /**
-     * Get all displayable articles Article ID.
+     * Get all displayable articles.
      *
      * @return Article list.
      */
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles")
     public ResponseEntity<List<ArticleDisplayDTO>> getAllArticles() {
         return new ResponseEntity<>(articleService.getAllDisplayableArticles(),
@@ -115,11 +112,11 @@ public class ArticleController {
     /**
      * Get articles, depending on page size.
      *
-     * @return ResponseEntity<HashMap < List < ArticleDisplayDTO>, int>>
+     * @return ResponseEntity<HashMap   <   List   <   ArticleDisplayDTO>, Integer>>
      */
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles", params = {"pagesize", "page"})
     public ResponseEntity getArticlesByPages(
         @RequestParam("pagesize") final int pageSize,
@@ -141,8 +138,8 @@ public class ArticleController {
      * @return Article.
      */
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-            + "T(com.meetup.utils.Role).SPEAKER, "
-            + "T(com.meetup.utils.Role).LISTENER)")
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/user/articles/{id}")
     public ResponseEntity<ArticleDisplayDTO> getArticle(
         @PathVariable("id") final int articleID) {
@@ -184,7 +181,6 @@ public class ArticleController {
         @CookieValue("token") final String token,
         @PathVariable("id") final int articleID) {
         String userLogin = loginValidatorService.extractLogin(token);
-
         return new ResponseEntity<>(
             articleService.postCommentary(articleID, userLogin, commentary),
             HttpStatus.CREATED);

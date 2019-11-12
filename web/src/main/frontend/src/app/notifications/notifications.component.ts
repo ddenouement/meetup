@@ -12,7 +12,6 @@ import {MatSnackBar} from "@angular/material";
 export class NotificationsComponent implements OnInit {
 
   notifications: Notification[] = [];
-  // message: string = "Your meetup <a class=\'link\' [routerLink]=\"[\'/meetup-profile\',17]\">Meetup2</a> starts in 15 minutes.";
 
   constructor(public notificationsService: NotificationsService, private snackBar: MatSnackBar) { }
 
@@ -27,7 +26,6 @@ export class NotificationsComponent implements OnInit {
   readNotification(notification: Notification) {
     this.notificationsService.read(notification.id).subscribe(data => {
         this.notifications.splice(this.notifications.indexOf(notification),1);
-        // this.snackBar.open('Deleted a comment');
       },
       error => {
         this.snackBar.open('Error deleting notification');
