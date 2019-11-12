@@ -40,10 +40,9 @@ public class SearchServiceImpl implements ISearchService {
 
     }
     @Override
-    public  List<Meetup> searchWithFilter(final Filter filter) throws SQLException {
-             List<Meetup> meetups =  searchDao.searchWithFilter(filter);
-           return meetups;
-     //   return   meetupDTOConverter.convertToMeetupDTO(meetups) ;
+    public  List<MeetupDisplayDTO> searchWithFilter(final Filter filter) throws SQLException {
+             List<MeetupDisplayDTO> meetups =  searchDao.searchWithFilter(filter);
+         return meetups;
     }
 
     @Override

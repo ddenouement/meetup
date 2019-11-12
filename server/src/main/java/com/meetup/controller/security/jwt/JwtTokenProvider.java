@@ -88,7 +88,7 @@ log.debug(getUsername(token));
                 .getAuthorities().size());
 
         return new UsernamePasswordAuthenticationToken(userDetails, "",
-            userDetails.getAuthorities());
+           userDetails.getAuthorities());
     }
 
     /**

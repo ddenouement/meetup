@@ -159,12 +159,12 @@ import {HttpCustom} from "./services/HttpCustom";
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig,{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
-  /*   ,
+      ,
      {
     provide: HTTP_INTERCEPTORS,
     useClass: HttpCustom,
     multi: true,
-  }*/
+  }
   ],
   bootstrap: [AppComponent]
 })

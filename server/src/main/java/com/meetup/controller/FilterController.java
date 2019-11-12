@@ -64,7 +64,7 @@ public class FilterController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/search")
-    public ResponseEntity<List<Meetup>> searchWithFilter(
+    public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
          @RequestBody final Filter filter
     ) throws SQLException {
 

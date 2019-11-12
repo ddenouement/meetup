@@ -144,10 +144,12 @@ this.isAddDisabledButton = false;
   }
 
   redirectToProfile(id: number) {
-    this.serv.getUserRole(id).subscribe(data => {
-      if (data == 'LISTENER') this.router.navigate(['/listener-profile', id]);
-      else if (data == 'SPEAKER') this.router.navigate(['/speaker-profile', id]);
-    });
+    if(this.authorId != id) {
+      this.serv.getUserRole(id).subscribe(data => {
+        if (data == 'LISTENER') this.router.navigate(['/listener-profile', id]);
+        else if (data == 'SPEAKER') this.router.navigate(['/speaker-profile', id]);
+      });
+    }
   }
 
   deleteMyComment(comment: CommentDto) {
