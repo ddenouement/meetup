@@ -14,7 +14,7 @@ import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.utils.MeetupDTOConverter;
 import com.meetup.utils.MeetupState;
-import com.meetup.utils.NotificationConstants;
+import com.meetup.utils.constants.NotificationConstants;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Timer;

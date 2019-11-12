@@ -31,7 +31,7 @@ public interface IMeetupDAO {
      * Return all meetups with display using pagination parameters.
      * @param offset offset for paging
      * @param limit limit for paging
-     * @return
+     * @return List of meetups.
      */
     List<MeetupDisplayDTO> getAllMeetupsByPages(Integer offset, Integer limit);
 

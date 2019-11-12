@@ -1,8 +1,7 @@
 package com.meetup.model.mapper;
 
-import com.meetup.entities.Commentary;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import com.meetup.utils.TimeUtility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +10,10 @@ import org.springframework.jdbc.core.RowMapper;
 /**
  * Class, used to map ResultSet from DB to Commentary model.
  */
-public final class CommentaryMapper implements RowMapper<CommentaryDisplayDTO> {
+public final class CommentaryDisplayDTOMapper implements RowMapper<CommentaryDisplayDTO> {
 
     /**
-     * . Callback method of RowMapper interface.
+     * Callback method of RowMapper interface.
      *
      * @param rs A table of data representing a database result set.
      * @param rowNum the number of the current row

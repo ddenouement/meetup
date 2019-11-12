@@ -7,12 +7,11 @@ import com.meetup.service.IBadgeService;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.IProfileService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.ModelConstants;
+import com.meetup.utils.constants.ModelConstants;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**

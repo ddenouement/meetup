@@ -8,7 +8,7 @@ import com.meetup.service.IUserService;
 import com.meetup.service.impl.LoginValidatorServiceImpl;
 import com.meetup.service.impl.MeetupServiceImpl;
 import com.meetup.service.impl.UserServiceImpl;
-import com.meetup.utils.ModelConstants;
+import com.meetup.utils.constants.ModelConstants;
 import io.swagger.annotations.Api;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MeetupController {
 
     /**
-     * . Service, that manages meetup functionality
+     * Service, that manages meetup functionality.
      */
     private IMeetupService meetupService;
     /**
@@ -45,12 +45,12 @@ public class MeetupController {
      */
     private IUserService userService;
     /**
-     * Login validator service service.
+     * Login validator service.
      */
     private LoginValidatorServiceImpl loginValidatorService;
 
     /**
-     * . set the MeetupService
+     * Controller constructor.
      *
      * @param meetupService MeetupService custom
      * @param loginValidatorService LoginValidatorService.
@@ -65,7 +65,7 @@ public class MeetupController {
     }
 
     /**
-     * .
+     * Get all meetups.
      *
      * @return ResponseEntity<List < Meetup>>
      */
@@ -232,8 +232,7 @@ public class MeetupController {
      * @param token JSON web token.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping("/user/meetups/{id}")
     public ResponseEntity joinMeetup(
@@ -251,8 +250,7 @@ public class MeetupController {
      * @param meetupID Meetup, that user should leave.
      * @return Response entity
      */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @DeleteMapping("/user/meetups/{id}")
     public ResponseEntity leaveMeetup(

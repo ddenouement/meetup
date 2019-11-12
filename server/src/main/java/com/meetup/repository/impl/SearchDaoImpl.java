@@ -2,15 +2,11 @@ package com.meetup.repository.impl;
 
 import com.meetup.entities.Filter;
 import com.meetup.entities.Meetup;
-import com.meetup.entities.Topic;
 import com.meetup.model.mapper.MeetupMapper;
-import com.meetup.model.mapper.TopicMapper;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.ITopicDAO;
-import com.meetup.utils.DbQueryConstants;
-import com.meetup.utils.SqlAndParamsHolder;
-import com.meetup.utils.TimeUtility;
+import com.meetup.utils.constants.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,7 +19,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 /**

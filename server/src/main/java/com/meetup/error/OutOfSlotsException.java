@@ -10,6 +10,6 @@ public class OutOfSlotsException extends RuntimeException {
      * Constructor.
      */
     public OutOfSlotsException() {
-        super("No available slot for listener!");
+        super();
     }
 }

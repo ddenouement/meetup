@@ -7,7 +7,7 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.model.mapper.*;
 import com.meetup.repository.IMeetupDAO;
-import com.meetup.utils.DbQueryConstants;
+import com.meetup.utils.constants.DbQueryConstants;
 import com.meetup.utils.MeetupState;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Repository;
 public class MeetupDaoImpl implements IMeetupDAO {
 
     /**
-     * . JDBC template.
+     * JDBC template.
      */
     @Autowired
     private NamedParameterJdbcTemplate template;
