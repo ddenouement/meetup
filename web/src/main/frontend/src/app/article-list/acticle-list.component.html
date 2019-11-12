@@ -19,7 +19,7 @@
           <mat-chip>{{l.name}}</mat-chip>
         </mat-chip-list>
       </div>
-      <a mat-raised-button color="red" *ngIf ="isAdmin" (click)="onDelete(article.id)" class="delete-button">Delete</a>
+      <a mat-raised-button *ngIf ="isAdmin" (click)="onDelete(article.id)" class="delete-button">Delete</a>
       <a mat-raised-button color="accent" [routerLink]="['/article-view',article.id]" class="more-button">More</a>
 
     </mat-card>

@@ -7,6 +7,8 @@ import {Router} from "@angular/router";
 })
 export class UserService {
   // private userUrl = "http://localhost:9990/api/v1/user/id";
+  // private userLoginUrl = "http://localhost:9990/api/v1/users/current/login";
+
   private userUrl = "/api/v1/user/id";
   private userLoginUrl = "api/v1/users/current/login";
 
@@ -18,7 +20,8 @@ export class UserService {
   }
 
   getUserLogin(){
-    return this.http.get<any>(this.userLoginUrl);
+    // @ts-ignore
+    return this.http.get<any>(this.userLoginUrl,{responseType: 'text'});
   }
 
 }

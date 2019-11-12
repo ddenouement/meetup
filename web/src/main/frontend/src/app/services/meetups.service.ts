@@ -68,12 +68,6 @@ export class MeetupsService {
   getSpeakerMeetupUpdateListener() {
     return this.speakerMeetupsUpdated.asObservable();
   }
-  getLanguageUpdateListener() {
-    return this.languagesUpdated.asObservable();
-  }
-  getTopicUpdateListener() {
-    return this.topicsUpdated.asObservable();
-  }
 
   addMeetup(languageId: number,
             topicId: number,

@@ -16,6 +16,7 @@ export class ActicleListComponent implements OnInit {
   isLoading = false;
   isAdmin = false;
   userLogin : string;
+  userId : number;
   adminLogin = "admin";
   totalArticles: number;
   articlesPerPage = 9;
@@ -27,9 +28,13 @@ export class ActicleListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.userService.getUserLogin().subscribe(res=>{
+    this.userService.getUserId().subscribe(res=>{
+      this.userId = res;
+    });
+
+    this.userService.getUserLogin().subscribe(login=>{
       this.isLoading = false;
-      this.userLogin = res;
+      this.userLogin = login;
       if( this.adminLogin === this.userLogin){
         this.isAdmin = true;
       }

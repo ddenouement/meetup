@@ -32,14 +32,13 @@ export class ArticleViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('articleId')) {
         this.articleId = paramMap.get('articleId');
-        this.isLoading = true;
         this.articleViewService.getArticleDTO(+this.articleId)
           .subscribe(
             article => {
-              this.isLoading = false;
               this.articleDTO = article;
               this.title = this.articleDTO.title;
               this.content = this.articleDTO.content;
@@ -51,14 +50,13 @@ export class ArticleViewComponent implements OnInit {
             err => {
               console.log(err);
             });
-        this.isLoading = true;
         this.userService.getUserLogin().subscribe(res=>{
-          this.isLoading = false;
           if( this.adminLogin === res){
             this.isAdmin = true;
           }
         });
       }
+      this.isLoading = false;
     });
 
 

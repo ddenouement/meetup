@@ -18,11 +18,11 @@ export class ArticlesService {
   private articlesUpdated = new Subject<{articles: ArticleDTO[], articlesCount : number}>();
 
 
-  articlesUrl = "/api/v1/user/articles";
-  deleteActicleAdminUrl="/api/v1/user/articles/";
-  //
-  // deleteActicleAdminUrl="http://localhost:9990/api/v1/user/articles/";
-  // articlesUrl = "http://localhost:9990/api/v1/user/articles";
+  // articlesUrl = "/api/v1/user/articles";
+  // deleteActicleAdminUrl="/api/v1/user/articles/";
+  // //
+  deleteActicleAdminUrl="http://localhost:9990/api/v1/user/articles/";
+  articlesUrl = "http://localhost:9990/api/v1/user/articles";
 
   constructor(private http: HttpClient, private router: Router) {
   }
