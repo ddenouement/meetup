@@ -19,20 +19,4 @@
   </div>
 </main>
 
-<!--<main>-->
-<!--  <div class="content">-->
-<!--    <form>-->
-<!--      <p class="form__headline">Notifications</p>-->
-<!--      <div class="cardList">-->
-<!--        <mat-card class="cardListItem">-->
-<!--          <div fxLayout="row">-->
-<!--            <div class="block" [innerHTML]=message></div>-->
-<!--            <button mat-icon-button class="close-button">-->
-<!--              <mat-icon>close</mat-icon>-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </mat-card>-->
-<!--      </div>-->
-<!--    </form>-->
-<!--  </div>-->
-<!--</main>-->
+<p class="info-text mat-body-2" *ngIf="notifications.length <= 0">You have no unread notifications!</p>
