@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
- * Exception controller class. Returns ResponseEntity object with status code.
+ * Exception controller class.
+ * Returns ResponseEntity object with status code.
  */
 
-//TODO logger
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionController {
