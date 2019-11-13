@@ -24,6 +24,7 @@ import {SubscribeComponent} from "./subscribe/subscribe.component";
 import {ActicleListComponent} from "./article-list/acticle-list.component";
 import {AdminBagesComponent} from "./admin-bages/admin-bages.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
+import {DeactivateComponent} from "./deactivate/deactivate.component";
 import {UserComplaintsComponent} from "./user-complaints/user-complaints.component";
 import {ForbiddenComponent} from "./forbidden/forbidden.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'register-speaker', component: RegisterSpeakerComponent},
   {path: 'speaker-profile', component: SpeakerProfileComponent},
   {path: 'verify', component: VerificationComponent},
+  {path: 'deactivate', component: DeactivateComponent},
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback/:meetupId', component: FeedbackComponent},
   {path: 'admin-table', component: AdminTableComponent},

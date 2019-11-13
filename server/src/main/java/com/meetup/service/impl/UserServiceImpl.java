@@ -22,6 +22,7 @@ import com.meetup.utils.constants.EmailServiceConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -30,6 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * . Class for working with users
@@ -489,6 +497,40 @@ public class UserServiceImpl implements IUserService {
                 .replaceAll(EmailServiceConstants.TOKEN_PASSWORD, newPassword);
         sendFromGMail(email,
                 EmailServiceConstants.CHANGE_PASSWORD_SUBJECT,
+                bodyWithPassword);
+    }
+
+
+    /**
+     * Send email to user.
+     *
+     * @param email User email.
+     * @param text  Admin feedback
+     */
+    @Override
+    public void sendActivationEmail(String email, String text) {
+        User user = userDao.findUserByEmail(email);
+        if (user == null) {
+            throw new EmailDoesntExistException();
+        }
+        int userId = user.getId();
+        String userLogin = user.getLogin();
+        String newPassword = generateRandomPassword();
+        changePassword(userId, newPassword);
+        String body = EmailServiceConstants.DEACTIVATE_USER_BODY;
+        String bodyWithLogin = body
+                .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, userLogin);
+        String bodyWithPassword;
+        if (text == null) {
+            bodyWithPassword = bodyWithLogin
+                    .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, "Because you are bad gay");
+        } else {
+            bodyWithPassword = bodyWithLogin
+                    .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, text);
+        }
+
+        sendFromGMail(email,
+                EmailServiceConstants.DEACTIVATE_USER_SUBJECT,
                 bodyWithPassword);
     }
 

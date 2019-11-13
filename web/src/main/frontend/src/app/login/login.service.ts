@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {LoginComponent} from "./login.component";
+import {User} from "../models/user";
+import {Authentificationrequest} from "../models/authentificationrequest";
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +10,19 @@ import {LoginComponent} from "./login.component";
 
 export class LoginService {
   private logoutURL = '/api/v1/user/logout';
+  private logInURL = '/api/v1/user/login';
+  private userURL = '/api/v1/user/profile';
   public _logInUser = false;
 
   constructor(private http: HttpClient) {
+  }
+
+  login(user: Authentificationrequest){
+    return this.http.post(this.logInURL, user);
+  }
+
+  getUser(){
+    return this.http.get(this.userURL);
   }
 
   logInUser(){

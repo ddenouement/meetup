@@ -39,10 +39,8 @@
         </ng-container>
 
         <ng-container matColumnDef="deactivate">
-          <mat-header-cell  *matHeaderCellDef > Deactivate </mat-header-cell>
-          <mat-cell  *matCellDef="let element">
-            <button mat-button *ngIf="element.active" class="deactivate" (click)="onDeactivate(element.id)" type="button">X</button>
-            <button mat-button *ngIf="!element.active" class="activate" (click)="onActivate(element.id)" type="button">Y</button>
+          <mat-header-cell  *matHeaderCellDef > Is Activate </mat-header-cell>
+          <mat-cell  *matCellDef="let element">YES ? element.active : NO
           </mat-cell>
         </ng-container>
 

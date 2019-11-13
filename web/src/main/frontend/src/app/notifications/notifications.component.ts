@@ -48,7 +48,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.isLoading = true;
     this.notificationsService.getAll().subscribe((res: Notification[]) => {
       this.notifications = res;
