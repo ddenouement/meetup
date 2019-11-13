@@ -210,8 +210,8 @@ public class AuthorizationController {
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @PutMapping(value = "/user/password")
-    public ResponseEntity changePassword(
+    @PostMapping(value = "/user/passwordcheck")
+    public ResponseEntity changePasswordAndCheck(
             @RequestBody final PasswordChangeDTO passwordsObject,
             @CookieValue("token") final String token) {
         Integer userId = loginValidatorService.extractId(token);

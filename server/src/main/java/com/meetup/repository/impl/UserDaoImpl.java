@@ -90,11 +90,7 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${find_languages_by_user_id}")
     private String findUsersLanguages;
-    /**
-     * . sql for finding password of a user
-     */
-    @Value("${find_password_by_user_id}")
-    private String findUserPassword;
+
     /**
      * .
      * <p>

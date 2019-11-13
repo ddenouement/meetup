@@ -3,18 +3,12 @@ package com.meetup.controller;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.meetup.entities.Filter;
-import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.MeetupDisplayDTO;
-import com.meetup.model.mapper.MeetupMapper;
 import com.meetup.service.ILoginValidatorService;
 import com.meetup.service.ISearchService;
 import io.swagger.annotations.Api;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +48,7 @@ public class FilterController {
         this.searchService = searchService;
         this.loginValidatorService = loginValidatorService;
     }
-
+//TODO sql exception
     /**
      * Perform filtered search.
      *
@@ -64,21 +58,13 @@ public class FilterController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/search")
-    public ResponseEntity<List<MeetupDisplayDTO>> searchWithFilter(
+    public ResponseEntity<List<MeetupDisplayDTO>> search(
          @RequestBody final Filter filter
     ) throws SQLException {
 
-        return ok(searchService.searchWithFilter(filter));
+        return ok(searchService.getMeetups(filter));
     }
 
-    //only for testing, to see how JSON looks like
-    @GetMapping(value = "/users/filter")
-    public ResponseEntity<Filter> getSampleFilter(
-    ) {
-        Filter filter = new Filter();
-        filter.setTopic_id(2);
-        return ok(filter);
-    }
 
     /**
      * user can save filter.
@@ -91,12 +77,12 @@ public class FilterController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/current/filters")
-    public ResponseEntity<Filter> saveFilter(
+    public ResponseEntity<Filter> createFilter(
         @CookieValue("token") final String token,
         @RequestBody Filter filter
     ) {
         int id = loginValidatorService.extractId(token);
-        return ok(searchService.insertFilter(filter, id));
+        return ok(searchService.createFilter(filter, id));
     }
 
     /**
@@ -109,10 +95,10 @@ public class FilterController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/users/current/filters")
-    public ResponseEntity<List<Filter>> savedFilters(
+    public ResponseEntity<List<Filter>> getFilters(
         @CookieValue("token") final String token
     ) {
         int id = loginValidatorService.extractId(token);
-        return ok(searchService.getUserFilters(id));
+        return ok(searchService.getFilters(id));
     }
 }
