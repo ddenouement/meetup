@@ -260,8 +260,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 editedMeetup.getLanguageId())
             .addValue(DbQueryConstants.id_topic.name(),
                 editedMeetup.getTopicId())
-            .addValue(DbQueryConstants.id_state.name(),
-                MeetupState.SCHEDULED.getCode())
+            .addValue(DbQueryConstants.id_state.name(), editedMeetup.getStateId())
             .addValue(DbQueryConstants.title.name(), editedMeetup.getTitle())
             .addValue(DbQueryConstants.start_time.name(),
                 editedMeetup.getStartDate())

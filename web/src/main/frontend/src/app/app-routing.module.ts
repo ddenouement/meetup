@@ -36,7 +36,7 @@ const routes: Routes = [
   {path: 'speaker-profile', component: SpeakerProfileComponent},
   {path: 'verify', component: VerificationComponent},
   {path: 'create-article', component: CreateArticleComponent},
-  {path: 'feedback', component: FeedbackComponent},
+  {path: 'feedback/:meetupId', component: FeedbackComponent},
   {path: 'admin-table', component: AdminTableComponent},
   {path: 'speaker-profile/:speakerId', component: SpeakerProfileToUsersComponent},
   {path: 'dictionaries', component:DictionariesComponent},
