@@ -90,6 +90,7 @@ public class UserDaoImpl implements IUserDAO {
      */
     @Value("${find_languages_by_user_id}")
     private String findUsersLanguages;
+
     /**
      * .
      * <p>
@@ -677,6 +678,9 @@ public class UserDaoImpl implements IUserDAO {
             .addValue(DbQueryConstants.id.name(), userId);
         template.update(changePassword, param);
     }
+
+
+
 
     /**
      * Update user rate.

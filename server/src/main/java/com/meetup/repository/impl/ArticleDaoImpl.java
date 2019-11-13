@@ -244,7 +244,7 @@ public class ArticleDaoImpl implements IArticleDAO {
             .addValue(id_author.name(), authorID)
             .addValue(id_article.name(), articleID)
             .addValue(contents.name(), commentary.getContents())
-            .addValue(time_posted.name(), getCurrentTimestamp());
+            .addValue(time_posted.name(),   Timestamp.valueOf(commentary.getTimePosted()));
         template.update(insertNewCommentary, param);
         return commentary;
     }

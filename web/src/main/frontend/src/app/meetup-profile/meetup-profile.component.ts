@@ -18,6 +18,7 @@ export class MeetupProfileComponent implements OnInit {
   meetup: MeetupDto;
   private meetupId: string;
   private userId: number;
+  meetupDate: Date;
   joinedCount : number;
   isLoading = false;
   isAutor = false;
@@ -39,6 +40,8 @@ export class MeetupProfileComponent implements OnInit {
           .subscribe(meetupData =>{
           this.isLoading = false;
           this.meetup = meetupData.meetup;
+          // this.meetupDate = this.convertUTCDateToLocalDate(meetupData.meetup.startDate);
+          // this.meetup.startDate.setDate(this.meetup.)
           this.joined = meetupData.ifJoinedMeetup;
           if(this.joined){
             this.joinText = "LEAVE";
@@ -80,6 +83,17 @@ export class MeetupProfileComponent implements OnInit {
 
         });
     }
+  }
+
+  public convertUTCDateToLocalDate(date) {
+    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+    var offset = date.getTimezoneOffset() / 60;
+    var hours = date.getHours();
+
+    newDate.setHours(hours - offset);
+
+    return newDate;
   }
 
 }

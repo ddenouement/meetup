@@ -1,20 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Notification} from "../models/notification";
 import {NotificationsService} from "./notifications.service";
-import {CommentDto} from "../models/commentDto";
 import {MatSnackBar} from "@angular/material";
+import {UserService} from "../services/user.service";
+import { Message } from "@stomp/stompjs";
+import {MessagingService} from "../services/messaging.service";
+
+const NOTIFICATIONS_URL = "/topic/notifications";
 
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss']
 })
-export class NotificationsComponent implements OnInit {
+export class NotificationsComponent implements OnInit, OnDestroy {
 
   notifications: Notification[] = [];
   isLoading = false;
+  private userLogin;
+  private messagingService: MessagingService;
 
-  constructor(public notificationsService: NotificationsService, private snackBar: MatSnackBar) { }
+  constructor(private notificationsService: NotificationsService,
+              private userService: UserService,
+              private snackBar: MatSnackBar) {
+    // this.initializeWebSocketConnection();
+
+    this.userService.getUserLogin().subscribe(data => {
+        this.userLogin = data;
+        let that = this;
+
+        // Instantiate a messagingService
+        this.messagingService = new MessagingService("ws://" + window.location.host + "/socket", '/user/' + that.userLogin + NOTIFICATIONS_URL);
+
+        // Subscribe to its stream (to listen on messages)
+        this.messagingService.stream().subscribe((message: Message) => {
+          let n : Notification = JSON.parse(message.body);
+          this.notifications.unshift(n);
+          console.log(message.body);
+        });
+
+        // Subscribe to its state (to know its connected or not)
+        // this.messagingService.state().subscribe((state: StompState) => {
+        //   this.state = StompState[state];
+        // });
+      }
+    )
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -24,6 +55,10 @@ export class NotificationsComponent implements OnInit {
     }, error => {
       this.snackBar.open('Error loading notifications');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.messagingService.disconnect();
   }
 
   readNotification(notification: Notification) {

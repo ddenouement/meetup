@@ -23,8 +23,12 @@ import com.meetup.utils.constants.EmailServiceConstants;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +82,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * .
+     * Find user by his/her id.
+     * @param userId id of user to find
+     * @return user with specified id
+     */
+    @Override
+    public User findUserById(final int userId) {
+        return userDao.findUserById(userId);
+    }
+
+    /**
+     * Register listener.
      *
      * @param user User (that has role of listener) to register
      */
@@ -253,7 +267,7 @@ public class UserServiceImpl implements IUserService {
             meetupService.cancelMeetup(meetup.getId(), id);
         }
         userDao.deactivateUser(id);
-        notificationService.sendProfileDeactivatedNotification(id);
+        notificationService.sendProfileDeactivatedNotification(findUserById(id));
         return true;
     }
 
@@ -266,7 +280,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean activateUser(final int id) {
         userDao.activateUser(id);
-        notificationService.sendProfileActivatedNotification(id);
+        notificationService.sendProfileActivatedNotification(findUserById(id));
         return true;
     }
 
@@ -370,7 +384,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * Change user's password.
+     * Change user's password.     *
      *
      * @param userId      id of user to change password for
      * @param newPassword the password to change to
@@ -380,6 +394,32 @@ public class UserServiceImpl implements IUserService {
         String encodedPassword = new BCryptPasswordEncoder(11)
                 .encode(newPassword);
         userDao.changePassword(userId, encodedPassword);
+    }
+
+    @Override
+    public void changePasswordFull(final Integer userId, final String oldPassword, final String newPassword) {
+        String encodedPasswordOld = new BCryptPasswordEncoder(11)
+                .encode(oldPassword);
+        if (arePasswordsEqual(userId, encodedPasswordOld)) {
+            String encodedPassword = new BCryptPasswordEncoder(11)
+                    .encode(newPassword);
+            userDao.changePassword(userId, encodedPassword);
+        } else {
+      throw new BadCredentialsException("Invalid old password supplied");
+        }
+    }
+
+    /**
+     * .
+     * Helper method to check equality of submitted password
+     *
+     * @param userId             id of user, who we are checking
+     * @param encodedOldPassword encoded old password of user
+     * @return boolean
+     */
+    private boolean arePasswordsEqual(final Integer userId, final String encodedOldPassword) {
+        User user = userDao.findUserById(userId);
+        return user.getPassword().equals(encodedOldPassword);
     }
 
     /**

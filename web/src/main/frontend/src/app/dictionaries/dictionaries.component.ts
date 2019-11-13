@@ -17,7 +17,7 @@ export class DictionariesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.httpClient.get(this.userURL).subscribe(res => {
+   this.httpClient.get(this.userURL).subscribe(res => {
         if (res['userDTO'].roles.includes("ADMIN"))
           this.admin = true;
       }

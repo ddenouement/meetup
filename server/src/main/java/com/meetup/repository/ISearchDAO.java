@@ -16,7 +16,7 @@ public interface ISearchDAO {
      * @param filter custom Filter from frontend.
      * @return List of matched meetups
      */
-    List<MeetupDisplayDTO> searchWithFilter(Filter filter) throws SQLException;
+    List<MeetupDisplayDTO> getMeetups(Filter filter) ;
 
     /**
      * .

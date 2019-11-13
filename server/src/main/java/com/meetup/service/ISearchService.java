@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ISearchService {
-      List<MeetupDisplayDTO > searchWithFilter(Filter filter) throws SQLException;
-      Filter insertFilter(Filter filter, int userID);
-      List<Filter> getUserFilters(int userId);
+      List<MeetupDisplayDTO > getMeetups(Filter filter) throws SQLException;
+      Filter createFilter(Filter filter, int userID);
+      List<Filter> getFilters(int userId);
 }

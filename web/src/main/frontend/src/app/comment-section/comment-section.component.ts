@@ -36,7 +36,12 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   isAddDisabledButton: boolean;
   text: string;
   showEmojiPicker: boolean;
-
+  private subscriptionUserLogin: ISubscription;
+  private subscriptionRouteParams: ISubscription;
+  private subscriptionUserId: ISubscription;
+  private subscriptionGetComments: ISubscription;
+  private subscriptionDeleteComment: ISubscription;
+  private subscriptionAddComment: ISubscription;
 
   constructor(private userService: UserService, private snackBar: MatSnackBar, private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
     this.comments = new Array<CommentDto>();
@@ -46,10 +51,10 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
     this.isAddDisabledButton = false;
     this.getThisUserLogin();
     this.getThisUserId();
-    this.subscription = this.route.params.subscribe(params => {
+    this.subscriptionRouteParams = this.route.params.subscribe(params => {
 
       this.articleId = +params['articleId'];//from this route
-      this.userService.getUserLogin().subscribe(res => {
+      this.subscriptionUserLogin = this.userService.getUserLogin().subscribe(res => {
         if (this.adminLogin === res) {
           this.isAdmin = true;
         }
@@ -77,7 +82,7 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   getThisUserLogin() {
-    this.serv.getUserLogin()
+    this.subscriptionUserLogin = this.serv.getUserLogin()
       .subscribe(
         data => {
           this.currentUserLogin = data;
@@ -110,7 +115,7 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private loadComments() {
-    this.serv.getComments(this.articleId)
+    this.subscriptionGetComments = this.serv.getComments(this.articleId)
       .subscribe(
         comments => {
           this.comments = comments;
@@ -120,14 +125,11 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
         });
   }
 
-  //charset : 'utf8mb4'
   addComment() {
     this.isAddDisabledButton = true;
     const date = new Date();
-
     const editedComment = new Comment(0, this.authorId, this.articleId, this.text, date, 0);
-    this.serv.createComment(this.articleId, editedComment).subscribe(data => {
-        //   const savedComment = new CommentDto(0, this.authorId, this.currentUserLogin, this.articleId, this.text,date);
+    this.subscriptionAddComment = this.serv.createComment(this.articleId, editedComment).subscribe(data => {
         this.statusMessage = '';
         this.comments.unshift(data);
         this.text = "";
@@ -138,11 +140,9 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
         this.snackBar.open(err.error);
         this.isAddDisabledButton = false;
       });
-
   }
 
   loadTemplate(c: CommentDto) {
-
     return this.readOnlyTemplate;
   }
 
@@ -163,7 +163,7 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   deleteMyComment(comment: CommentDto) {
-    this.serv.deleteComment(comment.id).subscribe(data => {
+    this.subscriptionDeleteComment = this.serv.deleteComment(comment.id).subscribe(data => {
         this.comments.splice(this.comments.indexOf(comment), 1);
         this.snackBar.open('Deleted a comment');
       },
@@ -174,6 +174,13 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    clearInterval(this.dataRefresher);
+
+    if (this.subscriptionUserLogin) this.subscriptionUserLogin.unsubscribe();
+    if (this.subscriptionRouteParams) this.subscriptionRouteParams.unsubscribe();
+    if (this.subscriptionUserId) this.subscriptionUserId.unsubscribe();
+    if (this.subscriptionGetComments) this.subscriptionGetComments.unsubscribe();
+    if (this.subscriptionDeleteComment) this.subscriptionDeleteComment.unsubscribe();
+    if (this.subscriptionAddComment) this.subscriptionAddComment.unsubscribe();
   }
 }

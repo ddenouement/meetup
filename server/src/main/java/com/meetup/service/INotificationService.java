@@ -100,14 +100,14 @@ public interface INotificationService {
     /**
      * Send notification of type PROFILE_DEACTIVATED to the user with given id.
      *
-     * @param userId id of user to send notification to
+     * @param user user to send notification to
      */
-    void sendProfileDeactivatedNotification(Integer userId);
+    void sendProfileDeactivatedNotification(User user);
 
     /**
      * Send notification of type PROFILE_ACTIVATED to the user with given id.
      *
-     * @param userId id of user to send notification to
+     * @param user user to send notification to
      */
-    void sendProfileActivatedNotification(Integer userId);
+    void sendProfileActivatedNotification(User user);
 }

@@ -5,6 +5,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.meetup.controller.security.jwt.JwtSecurityConstants;
 import com.meetup.controller.security.jwt.JwtTokenProvider;
 import com.meetup.entities.User;
+import com.meetup.entities.dto.PasswordChangeDTO;
 import com.meetup.entities.dto.RegistrationDTO;
 import com.meetup.entities.dto.UserRegistrationDTO;
 import com.meetup.repository.impl.UserDaoImpl;
@@ -200,6 +201,24 @@ public class AuthorizationController {
         userService.changePassword(userId, password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    /**
+     * Change user's password with additional check of previous password.
+     * @param passwordsObject json from frontend containing old and new one.
+     * @param token cookie with JWT
+     * @return status
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @PostMapping(value = "/user/passwordcheck")
+    public ResponseEntity changePasswordAndCheck(
+            @RequestBody final PasswordChangeDTO passwordsObject,
+            @CookieValue("token") final String token) {
+        Integer userId = loginValidatorService.extractId(token);
+        userService.changePasswordFull(userId, passwordsObject.getOldPassword(),passwordsObject.getNewPassword());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     /**
      * Send email to user.

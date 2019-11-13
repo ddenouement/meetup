@@ -189,5 +189,6 @@ public interface IMeetupService {
      * @return boolean if user joined meetup
      */
     boolean ifJoinedMeetup(int userId, int meetupId);
+    void cancelOutdatedMeetups();
 
 }
