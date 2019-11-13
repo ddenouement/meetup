@@ -1,0 +1,75 @@
+.cardList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .create-button{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    z-index: 2;
+  }
+}
+/* Column Gap */
+.cardList > * {
+  box-sizing: border-box;
+}
+.cardList > *:not(:last-child) {
+  margin-right: 25px;
+}
+/* Item sizing */
+.cardListItem {
+  flex: 0 1 calc(33.3% - 25px);
+  margin-bottom: 1rem;
+
+}
+.join-button{
+  top: 0;
+  right: 0;
+  position: absolute;
+}
+.edit-button {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+
+
+/* medium size viewport */
+@media screen and (max-width: 959px) {
+  /* Column Gap */
+  .cardList > *:not(:last-child) {
+    margin-right: 25px;
+  }
+  /* Item sizing */
+  .cardListItem {
+    flex: 0 1 calc(50% - 25px);
+  }
+}
+/* small size viewport */
+@media screen and (max-width: 599px) {
+  .cardList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .cardList > *:not(:last-child) {
+    margin-right: unset;
+    margin-bottom: 25px;
+  }
+}
+.speakerName{
+  font-size: small;
+  color: red;
+}
+
+mat-spinner{
+  margin: auto;
+}
+p{
+  position: center;
+  margin: auto;
+
+}
+

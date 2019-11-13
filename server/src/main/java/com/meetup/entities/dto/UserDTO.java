@@ -1,7 +1,7 @@
 package com.meetup.entities.dto;
 
 import com.meetup.entities.Language;
-import com.meetup.entities.Role;
+import com.meetup.utils.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

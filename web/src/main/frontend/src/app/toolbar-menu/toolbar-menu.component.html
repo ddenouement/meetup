@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <a href="#" routerLink="/" style="display: flex; flex-direction: row; align-items: center; outline:none;">
+  <a style="display: flex; flex-direction: row; align-items: center; outline:none;">
     <svg cc="http://creativecommons.org/ns#" data-color="1" dc="http://purl.org/dc/elements/1.1/"
          fill="#322b6b"
          height="56" inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -21,12 +21,13 @@
     </svg>
   </a>
   <span class="filler"></span>
-  <button *ngIf="!_authService.logInUser()" mat-button routerLink="/login">Log in</button>
-  <button *ngIf="!_authService.logInUser()" [matMenuTriggerFor]="signUp" mat-button>Sign up</button>
+  <p class="time">{{ time | date: 'hh:mm:ss a' }}</p>
+  <hr class="vertical-line">
+  <button *ngIf="!_authService.logInUser()" mat-button style="outline: none;" routerLink="/login">Log in</button>
+  <button *ngIf="!_authService.logInUser()" [matMenuTriggerFor]="signUp" style="outline: none;" mat-button>Sign up</button>
   <mat-menu #signUp="matMenu">
     <button mat-menu-item routerLink="/register-speaker">As speaker</button>
     <button mat-menu-item routerLink="/register">As listener</button>
   </mat-menu>
   <button *ngIf="_authService.logInUser()" (click)="_authService.logoutUser()" mat-button routerLink="/">Log out</button>
 </mat-toolbar>
-

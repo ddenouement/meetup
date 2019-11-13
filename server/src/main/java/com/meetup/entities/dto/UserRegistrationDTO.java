@@ -1,6 +1,6 @@
 package com.meetup.entities.dto;
 
-import com.meetup.entities.Role;
+import com.meetup.utils.Role;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;

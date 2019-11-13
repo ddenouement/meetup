@@ -1,0 +1,25 @@
+<app-sidebar></app-sidebar>
+<main>
+  <div class="content">
+    <form>
+      <p class="form__headline">Subscriptions</p>
+      <div class="cardList">
+        <ng-container *ngFor="let user of users">
+          <mat-card class="cardListItem">
+            <div class="block">
+              <mat-card-subtitle fxLayout="row" class="speakerName">
+                {{user.firstName}} {{user.lastName}}
+              </mat-card-subtitle>
+              <star-rating class="user__img--change" [value]="user.rate" checkedcolor="gold" uncheckedcolor="#dddddd"
+                           size="24px"
+                           readonly="true"></star-rating>
+            </div>
+            <mat-card-title fxLayout="row">
+              <a mat-raised-button color="white" [routerLink]="['/speaker-profile',user.id]">{{user.login}}</a>
+            </mat-card-title>
+          </mat-card>
+        </ng-container>
+      </div>
+    </form>
+  </div>
+</main>

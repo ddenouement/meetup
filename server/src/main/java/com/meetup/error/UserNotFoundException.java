@@ -1,11 +1,11 @@
 package com.meetup.error;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends ElementNotFoundException {
 
     /**
      * Constructor.
      */
     public UserNotFoundException() {
-        super("User not found!");
+        super();
     }
 }

@@ -1,6 +1,6 @@
 $color_1: white;
-$background_color_1: lightgray;
-$background_color_2: red;
+$background_color_1: red;
+$background_color_2: #cc0000;
 
 /*.responsive {*/
 /*width: 100%;*/
@@ -28,6 +28,8 @@ $background_color_2: red;
     opacity: 0.7;
     color: $color_1;
     font-size: 18px;
+    font-family: 'UbuntuMono', monospace;
+    font-weight: bolder;
     padding: 13px 30px;
     border: white;
     cursor: pointer;
@@ -38,9 +40,55 @@ $background_color_2: red;
       opacity: 1;
     }
   }
+  h3{
+    font-size: 18px;
+    font-family: 'UbuntuMono', monospace;
+    font-weight: bolder;
+  }
+
+
 }
 
 .topics {
   margin-left: 20%;
   margin-right: 20%;
+  .button {
+    border: none;
+    color: white;
+    //padding: 20px;
+    width:100px;
+    height: 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-family: 'UbuntuMono', monospace;
+    font-weight: bolder;
+  }
+  .button1{
+    background-color:#ffc520;
+  }
+  .button2{
+    background-color:#0ad69c;
+  }
+  .button3{
+    background-color:#fc8c84;
+  }
+  .button4{
+    background-color:#008CBA;
+  }
+  .button5{
+    background-color:#009926;
+  }
+  .button6{
+    background-color:#546087;
+  }
+  .button7{
+    background-color:#990073;
+  }
+  .button8{
+    background-color:orange;
+  }
 }

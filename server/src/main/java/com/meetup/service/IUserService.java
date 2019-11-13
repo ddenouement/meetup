@@ -1,8 +1,8 @@
 package com.meetup.service;
 
+import com.meetup.entities.Feedback;
 import com.meetup.entities.User;
-import com.meetup.entities.dto.UserDTO;
-import com.meetup.entities.dto.UserRegistrationDTO;
+import com.meetup.entities.dto.*;
 import com.meetup.error.UserNotFoundException;
 
 import java.util.List;
@@ -11,6 +11,13 @@ import java.util.List;
  * . UserService interface. Working with abstract User
  */
 public interface IUserService {
+
+    /**
+     * Find user by his/her id.
+     * @param userId id of user to find
+     * @return user with specified id
+     */
+    User findUserById(int userId);
 
     /**
      * .
@@ -27,48 +34,196 @@ public interface IUserService {
     void registerAsSpeaker(UserRegistrationDTO user);
 
     /**
-     * .
+     * Upgrade listener to speaker.
      *
-     * @param user User
-     * @return User
+     * @param user additional info for upgraded user
+     * @param userId of listener to upgrade
      */
-    User updateProfile(User user);
+    void upgradeToSpeaker(UserRegistrationDTO user, Integer userId);
 
     /**
-     * .
+     * Update user general info.
      *
-     * @param user User
-     * @return User
+     * @param profileDTO User profile info.
      */
-    User changePassword(User user);
+    void updateProfile(ProfileDTO profileDTO);
 
     /**
      * Get user's profile info.
-     * @param login login of user to get
+     *
+     * @param id of user to get
      * @return UserDTO with info
      * @throws UserNotFoundException throws if user does not exist
      */
-    UserDTO getProfileUserDTO(String login) throws UserNotFoundException;
+    UserDTO getProfileUserDTO(int id) throws UserNotFoundException;
 
     /**
-     * .
+     * Get all active speakers.
      *
      * @return List<User> of speakers
      */
     List<User> getAllSpeakers();
 
-    /**.
+    /**
+     * Get all active users.
+     *
+     * @return List<User> of users.
+     */
+    List<User> getAllActiveUsers();
+
+    /**
+     * Get all users.
+     *
+     * @return List<User> of users.
+     */
+    List<User> getAllUsers();
+
+    /**
+     * Get all users with number of complaint for them.
+     *
+     * @param limit users per page
+     * @param offset offset of list
+     * @return List<UserComplaintsDTO> of users.
+     */
+    List<UserComplaintsDTO> getAllUsersWithComplaints(int limit, int offset);
+
+    /**
+     * Count the number of users in database.
+     *
+     * @return int number of all users
+     */
+    int getAllUsersCount();
+
+    /**
+     * .
      *
      * @param id id
      * @return List<User> of Speakers
      */
-    List<User>  getUsersSubscriptionsToSpeakers(int id);
+    List<User> getUsersSubscriptionsToSpeakers(int id);
+
     /**
      * .
+     *
      * @param id user id
      * @return boolean whether successful operation or not
      */
     boolean deactivateUser(int id);
 
+    /**
+     * Activate user.
+     *
+     * @param id id of user to activate
+     * @return true iff successful
+     */
+    boolean activateUser(int id);
+
+    /**
+     * .
+     *
+     * @return List of all complaints
+     */
+    List<ComplaintDTO> getAllNotReadComplaints();
+
+    /**
+     * .
+     *@param id user id
+     * @return List of complaints to user
+     */
+    List<ComplaintDTO> getComplaintsToUser(int id);
+
+    /**
+     * Convert login -> id, convert date in long format -> Date exemplar and
+     * pass it to DAO
+     *
+     * @param compl ComplaintDTO
+     */
+    void postComplaintOn(ComplaintDTO compl, String login)
+        throws UserNotFoundException;
+
+    /**
+     * mark complain as read.
+     *
+     * @param id Complaint id
+     */
+    boolean markAsReadComplaint(int id);
+
+    /**
+     * for user to subscribe on speaker.
+     *
+     * @param userId who is subscriber
+     * @param speakerId on whom user subscribes
+     */
+    void subscribeToSpeaker(int userId, int speakerId);
+
+    /**
+     * unsubscribe from speaker.
+     *
+     * @param userId who is subscriber
+     * @param speakerId on whom user was subscribed
+     */
+    void unSubscribeFromSpeaker(int userId, int speakerId);
+
+    /**
+     * Get users who are subscribed on speaker.
+     *
+     * @param speakerId speaker
+     * @return users (subscribers)
+     */
+    List<User> getSubscribersOfSpeaker(int speakerId);
+
+    /**
+     * Get basic info about users who are subscribed on speaker.
+     *
+     * @param speakerId speaker
+     * @return users (subscribers)
+     */
+    List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(int speakerId);
+
+    /**
+     * Change user's password.
+     *
+     * @param userId id of user to change password for
+     * @param newPassword the password to change to
+     */
+    void changePassword(Integer userId, String newPassword);
+
+    /**
+     * Change user's password with verification of the old one.     *
+     * @param userId id of user to change password for
+     * @param oldPassword the password to change to
+     * @param newPassword the password to change to
+     */
+    void changePasswordFull(Integer userId, String oldPassword, String newPassword);
+
+    /**
+     * Rate specific meetup.
+     *
+     * @param meetupID Meetup ID.
+     * @param userLogin User login
+     * @param feedback Feedback object.
+     */
+    void rateMeetup(int meetupID, String userLogin, Feedback feedback);
+
+    String userPrimaryRole(int userId);
+
+
+    /**
+     * Send email to user.
+     *
+     * @param email Email.
+     */
+
+    void sendEmail(String email, String login);
+
+    /**
+     * Send email to user.
+     *
+     * @param email Email.
+     */
+
+    void sendNewPassword(String email);
+
+    void sendActivationEmail(String email, String text);
 }
 

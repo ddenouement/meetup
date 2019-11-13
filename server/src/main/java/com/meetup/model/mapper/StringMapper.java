@@ -14,7 +14,7 @@ public final class StringMapper implements RowMapper<String> {
      *
      * @param rs result set
      * @param rowNum number of row to map
-     * @return Badge created from specified row
+     * @return String created from specified row
      * @throws SQLException if an SQLException is encountered getting column
      * values
      */

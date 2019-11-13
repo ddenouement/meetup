@@ -1,0 +1,37 @@
+<app-sidebar></app-sidebar>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<main>
+<div class="content">
+<div class="cardList" *ngIf="articles.length > 0 && !isLoading">
+  <ng-container *ngFor="let article of articles">
+    <mat-card class="cardListItem">
+      <mat-card-title fxLayout = "row">
+        {{article.title}}
+      </mat-card-title>
+      <mat-card-subtitle fxLayout = "row" class="authorName">
+        {{article.author.firstName}} {{article.author.lastName}}
+      </mat-card-subtitle>
+      <mat-card-subtitle fxLayout = "row">
+        {{article.dateTimePosted | date:'mediumDate'}} {{article.dateTimePosted | date:'shortTime'}}
+      </mat-card-subtitle>
+      <div fxLayout = "row">
+        <mat-chip-list *ngFor="let l of article.topics">
+          <mat-chip>{{l.name}}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <a mat-raised-button *ngIf ="isAdmin" (click)="onDelete(article.id)" class="delete-button">Delete</a>
+      <a mat-raised-button color="accent" [routerLink]="['/article-view',article.id]" class="more-button">More</a>
+
+    </mat-card>
+  </ng-container>
+</div>
+<mat-paginator *ngIf="articles.length > 0 && !isLoading"
+               [length]="totalArticles"
+               [pageSize]="articlesPerPage"
+               [pageIndex]="currentPage-1"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onChangePage($event)"></mat-paginator>
+<p class="info-text mat-body-2" *ngIf="articles.length <= 0 ">No Articles Yet</p>
+<p class="info-text mat-body-2" *ngIf="isLoading">Loading...</p>
+</div>
+</main>

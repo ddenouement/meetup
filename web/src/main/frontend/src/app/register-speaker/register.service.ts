@@ -3,8 +3,8 @@ import {Injectable} from "@angular/core";
 import {HttpClient, Response} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {Router} from "@angular/router";
 import {LanguagesList} from "../models/languagesList";
+import {Registration} from "../models/registration";
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,16 @@ import {LanguagesList} from "../models/languagesList";
 
 export class RegisterService {
   private languagesURL = '/api/v1/languages?sorted=true';
+  private sendMail = '/api/v1/user/welcome';
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient) {
   }
 
-  getLanguages(): Observable<LanguagesList[]>{
-    return this.http.get<LanguagesList[]>(this.languagesURL).pipe(map((response:Response)=>response));
+  sendUser(user: Registration) {
+    return this.http.post(this.sendMail, user);
+  }
+
+  getLanguages(): Observable<LanguagesList[]> {
+    return this.http.get<LanguagesList[]>(this.languagesURL).pipe(map((response: Response) => response));
   }
 }

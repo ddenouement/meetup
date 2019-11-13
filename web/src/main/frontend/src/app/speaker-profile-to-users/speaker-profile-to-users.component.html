@@ -1,0 +1,63 @@
+<app-sidebar></app-sidebar>
+<main>
+  <div class="content">
+    <form>
+      <div class="user__personal personal-active">
+        <div class="user__change">
+          <div class="form__user">
+            <div class="change__form">
+              <p class="change__form--text">First Name:</p>
+              <p class="form--text">{{firstName}}</p>
+            </div>
+            <div class="change__form">
+              <p class="change__form--text">Last Name:</p>
+              <p class="form--text">{{lastName}}</p>
+            </div>
+          </div>
+          <div class="form__user">
+            <div class="change__form">
+              <p class="change__form--text">Login:</p>
+              <p class="form--text">{{login}}</p>
+            </div>
+            <div class="change__form">
+              <p class="change__form--text">Email:</p>
+              <p class="form--text" >{{email}}</p>
+            </div>
+          </div>
+          <div class="change__form">
+            <p class="change__form--text">about:</p>
+            <p class="form--text" >{{about}}</p>
+          </div>
+          <div class="form__user">
+            <div class="change__form">
+              <p class="change__form--text">languages:</p>
+              <p class="form--text" *ngFor="let item of langList" >{{item}}</p>
+            </div>
+          </div>
+          <div class="form__group">
+            <button [ngClass]="{subscribe:subscribe,unsubscribe:unsubscribe}" (click)="onSubscribe()" type="button">
+              <p *ngIf="!loading">{{subscribeText}}</p>
+              <img *ngIf="loading"src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+            </button>
+          </div>
+        </div>
+        <div class="user__badges">
+          <star-rating *ngIf="load" class="user__img--change" [value]="star" checkedcolor="gold" uncheckedcolor="#dddddd" size="24px"
+                       readonly="true"></star-rating>
+          <div class="badges--header">
+            <img class="header--img" src="../../assets/images/crown.svg">
+            <span class="header--text">BADGES</span>
+          </div>
+          <div class="badges">
+            <span *ngIf="badgeList.length<1" class="badges--text">This speaker haven`t badges</span>
+            <div class="badge" *ngFor="let badge of badgeList">
+              <img class="badge--img" src="../../assets/images/medal.svg">
+              <span class="badges--text">{{badge}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <app-complaint></app-complaint>
+  </div>
+</main>

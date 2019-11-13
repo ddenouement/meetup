@@ -1,3 +1,5 @@
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 $background_color_1: #f9fafc;
 
 /* You can add global styles to this file, and also import other style files */
@@ -57,3 +59,6 @@ body::-webkit-scrollbar-thumb {
   background-color: #d7dce9;
   border-radius: 6px;
 }
+mat-spinner{
+  margin: auto;
+ }

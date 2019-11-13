@@ -1,34 +1,59 @@
 <div class="container">
-  <img alt="Meetup" src="../../assets/images/meetup1.jpg">
-  <button class="btn">Join meetup</button>
+  <ngb-carousel *ngIf="images">
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper">
+        <img [src]="images[0]" alt="Random first slide">
+      </div>
+      <div class="carousel-caption">
+        <h3>Create meetups</h3>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper">
+        <img [src]="images[1]" alt="Random second slide">
+      </div>
+      <div class="carousel-caption">
+        <h3>Join meetups</h3>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper">
+        <img [src]="images[2]" alt="Random third slide">
+      </div>
+      <div class="carousel-caption">
+        <h3>Find new friends</h3>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+  <button class="btn" routerLink="/register">Join meetup</button>
 </div>
 <div class="topics">
   <mat-grid-list cols="4" rowHeight="1:1">
     <mat-grid-tile>
-      <mat-card class="topic-card">
-        <img alt="Shopping" mat-card-image src="../../assets/images/shopping.JPG">
-        <mat-card-title>Shopping</mat-card-title>
-      </mat-card>
+     <button class="button button1">Music</button>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-card class="topic-card">
-        <img alt="Games" mat-card-image src="../../assets/images/games.JPG">
-        <mat-card-title>Games</mat-card-title>
-      </mat-card>
+    <button class="button button2">Games</button>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-card class="topic-card">
-        <img alt="Music" mat-card-image src="../../assets/images/music.JPG">
-        <mat-card-title>Music</mat-card-title>
-      </mat-card>
+    <button class="button button3">Tech</button>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-card class="topic-card">
-        <img alt="Travel" mat-card-image src="../../assets/images/travel.JPG">
-        <mat-card-title>Travel</mat-card-title>
-      </mat-card>
+      <button class="button button4">Travel</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+    <button class="button button5">Shopping</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+    <button class="button button6">EQ</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+    <button class="button button7">Yoga</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+    <button class="button button8">Books</button>
     </mat-grid-tile>
   </mat-grid-list>
-
 </div>
+<app-footer></app-footer>
 

@@ -1,0 +1,48 @@
+main{
+  width:60%;
+  height: auto;
+  margin: auto;
+  .header{
+    margin: auto;
+    padding: 2rem;
+    .title{
+      font-size: xx-large;
+      font-family: 'UbuntuMono', monospace;
+    }
+    .speaker{
+      color: #008CBA;
+      float:left;
+    }
+    .detailSpeaker{
+      font-style: italic;
+      float:left;
+      margin-right: 10px;
+    }
+  }
+  .info{
+    width: auto;
+    float: right;
+    margin-top: 1rem;
+    mat-icon{
+      float: left;
+      margin-right: 10px;
+    }
+    mat-card-subtitle{
+      float: left;
+      margin: 5px 10px;
+    }
+  }
+  .details{
+    float: left;
+    width: 60%;
+    margin-top: 1rem;
+    mat-card-title{
+      font-family: 'UbuntuMono', monospace;
+    }
+  }
+  @media screen and (max-width: 1400px){
+    .details{
+      width: 100%
+    }
+  }
+}

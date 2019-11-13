@@ -1,0 +1,39 @@
+<form [formGroup]="form" (submit)="onApply()">
+<div class="row">
+  <div class="col-xs-12 col-12 col-md-2 form-group">
+    <mat-form-field>
+      <mat-label>Language</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let l of languagesList" [value]="l">
+          {{l.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+    <div class="col-xs-12 col-12 col-md-2 form-group">
+    <mat-form-field>
+      <mat-label>Topic</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let t of topicsList" [value]="t">
+          {{t.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-xs-12 col-12 col-md-2 form-group">
+    <input type="text"
+           placeholder="Daterangepicker"
+           class="form-control datepicker"
+           bsDaterangepicker
+           formControlName="date">
+  </div>
+  <div class="col-xs-12 col-12 col-md-2 form-group">
+    <mat-form-field appearance="outline">
+      <mat-label>Containing string</mat-label>
+      <input matInput placeholder="Containing string">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+</div>
+  <button mat-raised-button color="primary" type="submit">Apply</button>
+</form>

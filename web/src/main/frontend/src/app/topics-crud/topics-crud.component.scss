@@ -1,0 +1,56 @@
+tr:hover {background-color: #f5f5f5;}
+table {
+  width: 100%;
+}
+td {
+  height: 30px;
+  vertical-align: center;
+  padding: 5px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+.btn_my {
+  background-color: grey;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 8px;
+}
+.btnedit{
+  background-color: orange;
+}
+.addbtn {
+  background-color: #4CAF50;
+  margin: 10px;
+}
+.btn_delete{
+  background-color: #f44336;
+}
+.btn_good{
+  background-color: #4CAF50;
+}
+.btn_warning{
+  background-color: #008CBA;
+}
+.message_or_error{
+  background-color: #000066;
+  color: white;
+}
+
+.input_form{
+  font-size:14px;
+  padding:5px;
+  border:2px solid #ccc;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.input_form:focus {
+  border-color: #000066;
+}

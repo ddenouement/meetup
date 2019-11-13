@@ -1,1 +1,69 @@
-<p>listener-profile works!</p>
+<app-sidebar></app-sidebar>
+<main>
+  <div class="content">
+    <form>
+      <div class="user__personal personal-active">
+        <div class="user__change">
+          <div class="form__user">
+            <div class="change__form">
+              <p class="change__form--text">Login:</p>
+              <p class="form--text">{{login}}</p>
+            </div>
+            <div class="change__form">
+              <p class="change__form--text">Email:</p>
+              <p class="form--text" >{{email}}</p>
+            </div>
+          </div>
+          <div class="form__user">
+            <div class="form__group">
+              <button class="form__button" type="submit" routerLink="/approve-to-speaker">Promote me to speaker</button>
+            </div>
+          </div>
+        </div>
+        <div class="user__badges">
+          <div class="badges--header">
+            <img class="header--img" src="../../assets/images/crown.svg">
+            <span class="header--text">BADGES</span>
+          </div>
+          <div class="badges">
+            <span *ngIf="badgeList.length<1" class="badges--text">participate in meetups and get achievements</span>
+            <div class="badge" *ngFor="let badge of badgeList">
+              <img class="badge--img" src="../../assets/images/medal.svg">
+              <span class="badges--text">{{badge}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <mat-tab-group>
+      <mat-tab label="Future Joined Meetups">
+        <mat-accordion multi="true" *ngIf="userFutureMeetups.length > 0 && !loading">
+          <mat-expansion-panel *ngFor="let meetup of userFutureMeetups">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+              </mat-panel-title>
+              <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-action-row>
+              <a mat-button color="primary" (click)="onLeave(meetup.id)">LEAVE</a>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-tab>
+      <mat-tab label="Past Joined Meetups">  <mat-accordion multi="true" *ngIf="userPastMeetups.length > 0 && !loading">
+        <mat-expansion-panel *ngFor="let meetup of userPastMeetups">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+            </mat-panel-title>
+            <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
+</main>
