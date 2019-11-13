@@ -26,23 +26,23 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     // this.initializeWebSocketConnection();
 
     this.userService.getUserLogin().subscribe(data => {
-        this.userLogin = data;
+       this.userLogin = data;
         let that = this;
 
         // Instantiate a messagingService
-        this.messagingService = new MessagingService("ws://" + window.location.host + "/socket", '/user/' + that.userLogin + NOTIFICATIONS_URL);
+        let prefix = "wss://";
+        if (window.location.hostname === "localhost") {
+          prefix = "ws://";
+        }
+        this.messagingService = new MessagingService(
+          prefix + window.location.host + "/socket",
+          '/user/' + that.userLogin + NOTIFICATIONS_URL);
 
         // Subscribe to its stream (to listen on messages)
         this.messagingService.stream().subscribe((message: Message) => {
           let n : Notification = JSON.parse(message.body);
           this.notifications.unshift(n);
-          console.log(message.body);
         });
-
-        // Subscribe to its state (to know its connected or not)
-        // this.messagingService.state().subscribe((state: StompState) => {
-        //   this.state = StompState[state];
-        // });
       }
     )
   }

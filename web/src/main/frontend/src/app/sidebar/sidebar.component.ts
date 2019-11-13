@@ -5,8 +5,8 @@ import {Sidebar} from "../models/sidebar";
 import {NotificationsService} from "../notifications/notifications.service";
 import {UserService} from "../services/user.service";
 import {MessagingService} from "../services/messaging.service";
-import {Notification} from "../models/notification";
 import { Message } from "@stomp/stompjs";
+import {MatSnackBar} from "@angular/material";
 
 const NOTIFICATION_COUNT_URL = "/topic/notification-count";
 
@@ -29,26 +29,26 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(private httpClient: HttpClient, private  router: Router,
               private notificationsService: NotificationsService,
-              private userService: UserService) {
+              private userService: UserService,
+              private snackBar: MatSnackBar) {
     this.userService.getUserLogin().subscribe(data => {
         this.userLogin = data;
         let that = this;
 
         // Instantiate a messagingService
+        let prefix = "wss://";
+        if (window.location.hostname === "localhost") {
+          prefix = "ws://";
+        }
         this.messagingService = new MessagingService(
-          "ws://" + window.location.host + "/socket",
+          prefix + window.location.host + "/socket",
           '/user/' + that.userLogin + NOTIFICATION_COUNT_URL);
 
         // Subscribe to its stream (to listen on messages)
         this.messagingService.stream().subscribe((message: Message) => {
           this.notificationCount = +message.body;
-          console.log(message.body);
+          this.snackBar.open("New notification!");
         });
-
-        // Subscribe to its state (to know its connected or not)
-        // this.messagingService.state().subscribe((state: StompState) => {
-        //   this.state = StompState[state];
-        // });
       }
     )
   }

@@ -96,18 +96,4 @@ public interface INotificationService {
      * @param meetup meetup to create notification for
      */
     void sendLeaveFeedbackNotifications(Meetup meetup);
-
-    /**
-     * Send notification of type PROFILE_DEACTIVATED to the user with given id.
-     *
-     * @param user user to send notification to
-     */
-    void sendProfileDeactivatedNotification(User user);
-
-    /**
-     * Send notification of type PROFILE_ACTIVATED to the user with given id.
-     *
-     * @param user user to send notification to
-     */
-    void sendProfileActivatedNotification(User user);
 }
