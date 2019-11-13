@@ -17,10 +17,10 @@ export class NotificationsComponent implements OnInit {
   constructor(public notificationsService: NotificationsService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    isLoading = true;
+    this.isLoading = true;
     this.notificationsService.getAll().subscribe((res: Notification[]) => {
       this.notifications = res;
-      isLoading = false;
+      this.isLoading = false;
     }, error => {
       this.snackBar.open('Error loading notifications');
     });
