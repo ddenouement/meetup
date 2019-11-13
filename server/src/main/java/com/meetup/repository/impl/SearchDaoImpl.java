@@ -101,7 +101,7 @@ public class SearchDaoImpl implements ISearchDAO {
                         (resultSet, i) -> toFilter(resultSet));
     }
 
-
+//TODO add constants
     private Filter toFilter(final ResultSet rs) throws SQLException {
         Filter fil = new Filter();
         fil.setId(rs.getInt("id"));
@@ -129,7 +129,7 @@ public class SearchDaoImpl implements ISearchDAO {
      * @return List of matched meetups
      */
     @Override
-    public List<MeetupDisplayDTO> searchWithFilter(final Filter filter) throws SQLException {
+    public List<MeetupDisplayDTO> getMeetups(final Filter filter)  {
            SqlParameterSource param = new MapSqlParameterSource()
                 .addValue(DbQueryConstants.id_language_param.name(), filter.nullOrIdLanguage())
                 .addValue(DbQueryConstants.title_param.name(), filter.getTitle_substring())

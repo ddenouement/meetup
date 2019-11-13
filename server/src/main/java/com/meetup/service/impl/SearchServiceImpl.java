@@ -1,7 +1,6 @@
 package com.meetup.service.impl;
 
 import com.meetup.entities.Filter;
-import com.meetup.entities.Meetup;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.IUserDAO;
@@ -40,18 +39,18 @@ public class SearchServiceImpl implements ISearchService {
 
     }
     @Override
-    public  List<MeetupDisplayDTO> searchWithFilter(final Filter filter) throws SQLException {
-             List<MeetupDisplayDTO> meetups =  searchDao.searchWithFilter(filter);
+    public  List<MeetupDisplayDTO> getMeetups(final Filter filter) {
+             List<MeetupDisplayDTO> meetups =  searchDao.getMeetups(filter);
          return meetups;
     }
 
     @Override
-    public Filter insertFilter(Filter filter, int userID) {
+    public Filter createFilter(Filter filter, int userID) {
         return searchDao.saveFilterToCurrentUser(filter, userID);
     }
 
     @Override
-    public List<Filter> getUserFilters(int userId) {
+    public List<Filter> getFilters(int userId) {
        return searchDao.getUserFiltersSaved(userId);
     }
 
