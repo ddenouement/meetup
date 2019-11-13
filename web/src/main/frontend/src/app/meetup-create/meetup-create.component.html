@@ -43,13 +43,6 @@
         </mat-select>
                 <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>
       </div>
-<!--      <mat-form-field>-->
-<!--          <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>-->
-<!--          <mat-error *ngIf="form.get('language').invalid">Please choose a language of meetup</mat-error>-->
-<!--          <mat-error *ngIf="form.get('topics').invalid">Please choose a topics of meetup</mat-error>-->
-<!--          <mat-error *ngIf="form.get('description').invalid">Please enter a meetup description.</mat-error>-->
-<!--      </mat-form-field>-->
-
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <mat-select
           placeholder="Language"
@@ -61,6 +54,7 @@
             {{language.name}}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('language').invalid">Please choose a language of meetup</mat-error>
       </div>
 
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
@@ -74,6 +68,7 @@
             {{topic.name}}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('topics').invalid">Please choose a topics of meetup</mat-error>
       </div>
     </div>
     <div class="row">
@@ -89,17 +84,16 @@
         <input matInput
                [ngModel]="meetup?.maxAttendees"
                type="number"
-               min="1"
                formControlName="maxAttendees" placeholder="Max attendees"/>
       </div>
     </div>
-
     <mat-form-field>
       <textarea matInput
                 [ngModel]="meetup?.description"
                 rows="4"
                 formControlName="description"
                 placeholder="Meetup Description"></textarea>
+      <mat-error *ngIf="form.get('description').invalid">Please enter a meetup description.</mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">Save</button>
   </form>
