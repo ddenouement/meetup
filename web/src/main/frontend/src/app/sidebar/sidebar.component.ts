@@ -1,15 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Sidebar} from "../models/sidebar";
 import {NotificationsService} from "../notifications/notifications.service";
+import {UserService} from "../services/user.service";
+import {MessagingService} from "../services/messaging.service";
+import {Notification} from "../models/notification";
+import { Message } from "@stomp/stompjs";
+
+const NOTIFICATION_COUNT_URL = "/topic/notification-count";
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   public admin = false;
   public speaker = false;
   public listener = false;
@@ -18,7 +24,33 @@ export class SidebarComponent implements OnInit {
   public SIDEBAR_DATA: Sidebar[] = [];
   public notificationCount = 0;
   isLoading = false;
-  constructor(private httpClient: HttpClient, private  router: Router, private notificationsService: NotificationsService) {
+  private userLogin;
+  private messagingService: MessagingService;
+
+  constructor(private httpClient: HttpClient, private  router: Router,
+              private notificationsService: NotificationsService,
+              private userService: UserService) {
+    this.userService.getUserLogin().subscribe(data => {
+        this.userLogin = data;
+        let that = this;
+
+        // Instantiate a messagingService
+        this.messagingService = new MessagingService(
+          "ws://" + window.location.host + "/socket",
+          '/user/' + that.userLogin + NOTIFICATION_COUNT_URL);
+
+        // Subscribe to its stream (to listen on messages)
+        this.messagingService.stream().subscribe((message: Message) => {
+          this.notificationCount = +message.body;
+          console.log(message.body);
+        });
+
+        // Subscribe to its state (to know its connected or not)
+        // this.messagingService.state().subscribe((state: StompState) => {
+        //   this.state = StompState[state];
+        // });
+      }
+    )
   }
 
   ngOnInit() {
@@ -180,6 +212,10 @@ export class SidebarComponent implements OnInit {
       hamburger.classList.toggle("is-active");
       // Do something else, like open/close menu
     });
+  }
+
+  ngOnDestroy(): void {
+    this.messagingService.disconnect();
   }
 
   hamburger() {

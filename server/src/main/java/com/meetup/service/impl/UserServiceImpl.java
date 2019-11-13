@@ -73,7 +73,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * .
+     * Find user by his/her id.
+     * @param userId id of user to find
+     * @return user with specified id
+     */
+    @Override
+    public User findUserById(final int userId) {
+        return userDao.findUserById(userId);
+    }
+
+    /**
+     * Register listener.
      *
      * @param user User (that has role of listener) to register
      */
@@ -248,7 +258,7 @@ public class UserServiceImpl implements IUserService {
             meetupService.cancelMeetup(meetup.getId(), id);
         }
         userDao.deactivateUser(id);
-        notificationService.sendProfileDeactivatedNotification(id);
+        notificationService.sendProfileDeactivatedNotification(findUserById(id));
         return true;
     }
 
@@ -261,7 +271,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean activateUser(final int id) {
         userDao.activateUser(id);
-        notificationService.sendProfileActivatedNotification(id);
+        notificationService.sendProfileActivatedNotification(findUserById(id));
         return true;
     }
 
