@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Builder
 @NoArgsConstructor
 public class Meetup {
-
     /**
      * ID of meetup.
      */

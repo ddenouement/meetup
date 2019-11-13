@@ -430,6 +430,16 @@ public class MeetupServiceImpl implements IMeetupService {
     public List<User> getUsersOnMeetup(final int meetupId) {
         return meetupDao.getUsersOnMeetup(meetupId);
     }
+    /**
+     * Get number of joined users on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return int count of users
+     */
+    @Override
+    public int getJoinedUsersCount(final int meetupId) {
+        return meetupDao.getJoinedUsersCount(meetupId);
+    }
 
     private String getMeetupChanges(final Meetup oldMeetup,
         final Meetup newMeetup) {

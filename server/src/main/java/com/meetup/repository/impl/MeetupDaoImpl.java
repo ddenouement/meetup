@@ -127,6 +127,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Value("${get_users_on_meetup}")
     private String getUsersOnMeetup;
     /**
+     * . SQL reference script. Get number of users joined specific meetup.
+     */
+    @Value("${get_joined_count}")
+    private String getJoinedUsersCount;
+    /**
      * . SQL reference script. Get meetup by ID.
      */
     @Value("${find_meetup_by_id}")
@@ -484,6 +489,23 @@ public class MeetupDaoImpl implements IMeetupDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.meetup_id.name(), meetupId);
         return this.template.query(getUsersOnMeetup, param, new UserMapper());
+    }
+    /**
+     * Get number of joined users on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return int count of users
+     */
+    @Override
+    public int getJoinedUsersCount(int meetupId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.meetup_id.name(), meetupId);
+        List<Integer> result = this.template.query(getJoinedUsersCount, param, new IntegerMapper());
+        if (result.isEmpty()) {
+            return 0;
+        } else {
+            return result.get(0);
+        }
     }
 
     /**
