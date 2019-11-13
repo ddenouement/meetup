@@ -3,12 +3,11 @@ export interface Meetup{
   speakerId: number;
   languageId: number;
   topicId: number;
-  state: string;
+  stateId: number;
   title : string;
   startDate: Date;
   durationMinutes: number;
   minAttendees : number;
   maxAttendees : number;
   description : string;
-  // topics : Topic[];
 }
