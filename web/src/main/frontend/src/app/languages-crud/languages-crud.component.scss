@@ -42,3 +42,15 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   background-color: #000066;
   color: white;
 }
+.input_form{
+  font-size:14px;
+
+  padding:5px;
+  border:2px solid #ccc;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.input_form:focus {
+  border-color: #000066;
+}
