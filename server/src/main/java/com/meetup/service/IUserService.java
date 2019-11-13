@@ -182,6 +182,14 @@ public interface IUserService {
     void changePassword(Integer userId, String newPassword);
 
     /**
+     * Change user's password with verification of the old one.     *
+     * @param userId id of user to change password for
+     * @param oldPassword the password to change to
+     * @param newPassword the password to change to
+     */
+    void changePasswordFull(Integer userId, String oldPassword, String newPassword);
+
+    /**
      * Rate specific meetup.
      *
      * @param meetupID Meetup ID.
