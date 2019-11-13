@@ -24,6 +24,7 @@ import {SubscribeComponent} from "./subscribe/subscribe.component";
 import {ActicleListComponent} from "./article-list/acticle-list.component";
 import {AdminBagesComponent} from "./admin-bages/admin-bages.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
+import {DeactivateComponent} from "./deactivate/deactivate.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: 'register-speaker', component: RegisterSpeakerComponent},
   {path: 'speaker-profile', component: SpeakerProfileComponent},
   {path: 'verify', component: VerificationComponent},
+  {path: 'deactivate', component: DeactivateComponent},
   {path: 'create-article', component: CreateArticleComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'admin-table', component: AdminTableComponent},
