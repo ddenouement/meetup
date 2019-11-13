@@ -1,10 +1,10 @@
 export class Complaint{
     id:number;
-    id_user_from:number;
+    idUserFrom:number;
   /**.
    * Id of user on whom is complaining
    */
-    id_user_to:number;
+    idUserTo:number;
   content:string;
    postedDate:number;
   /**.

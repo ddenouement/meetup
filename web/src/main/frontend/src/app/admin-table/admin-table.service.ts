@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {UserComplaintsDto} from "../models/userComplaintsDto.model";
+import {Registration} from "../models/registration";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,8 @@ export class AdminTableService {
   // private usersURL = 'http://localhost:9990/api/v1/user/users/all';
   private deactivateURL = '/api/v1/user/users/';
   private activateURL = '/api/v1/users/';
+  private mailURL = '/api/v1/user/activation';
+
   constructor(private http: HttpClient) {
   }
 
@@ -34,4 +37,7 @@ export class AdminTableService {
       );
   }
 
+  sendEmail(user: Registration) {
+    return this.http.post(this.mailURL, user);
+  }
 }

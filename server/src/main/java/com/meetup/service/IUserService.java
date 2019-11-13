@@ -208,5 +208,7 @@ public interface IUserService {
      */
 
     void sendNewPassword(String email);
+
+    void sendActivationEmail(String email, String text);
 }
 

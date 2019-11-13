@@ -1,7 +1,7 @@
 import {
   Component,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit, SimpleChange, SimpleChanges,
   TemplateRef,
   ViewChild
@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Comment} from '../models/comment'
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserService} from "../services/user.service";
+import {ISubscription} from "rxjs-compat/Subscription";
 
 @Component({
   selector: 'app-comment-section',
@@ -19,43 +20,43 @@ import {UserService} from "../services/user.service";
   styleUrls: ['./comment-section.component.scss'],
   providers: [Commentsectionservice]
 })
-export class CommentSectionComponent implements OnChanges, OnInit {
+export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   articleId: number;
   authorId: number;
   isAdmin = false;
   adminLogin = "admin";
   currentUserLogin: string;
+  private subscription: ISubscription;
   @Input() article_author_id1: number;
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
 
   comments: Array<CommentDto>;
   statusMessage: string;
   dataRefresher: any;
-  isAddDisabledButton:boolean;
+  isAddDisabledButton: boolean;
   text: string;
   showEmojiPicker: boolean;
 
 
-  constructor(private userService: UserService,private snackBar: MatSnackBar, private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UserService, private snackBar: MatSnackBar, private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
     this.comments = new Array<CommentDto>();
   }
 
   ngOnInit() {
-this.isAddDisabledButton = false;
+    this.isAddDisabledButton = false;
     this.getThisUserLogin();
     this.getThisUserId();
-    this.route.params.subscribe(params => {
+    this.subscription = this.route.params.subscribe(params => {
 
       this.articleId = +params['articleId'];//from this route
-      this.userService.getUserLogin().subscribe(res=>{
-        if( this.adminLogin === res){
+      this.userService.getUserLogin().subscribe(res => {
+        if (this.adminLogin === res) {
           this.isAdmin = true;
         }
       });
       this.loadComments();
       this.refreshData();
     });
-
   }
 
   public openPopup: Function;
@@ -63,11 +64,12 @@ this.isAddDisabledButton = false;
   setPopupAction(fn: any) {
     this.openPopup = fn;
   }
-  getThisUserId(){
+
+  getThisUserId() {
     this.serv.getUserId()
       .subscribe(
         data => {
-          this.authorId = Number( data);
+          this.authorId = Number(data);
         },
         err => {
           this.snackBar.open(err.error);
@@ -152,7 +154,7 @@ this.isAddDisabledButton = false;
   }
 
   redirectToProfile(id: number) {
-    if(this.authorId != id) {
+    if (this.authorId != id) {
       this.serv.getUserRole(id).subscribe(data => {
         if (data == 'LISTENER') this.router.navigate(['/listener-profile', id]);
         else if (data == 'SPEAKER') this.router.navigate(['/speaker-profile', id]);
@@ -162,12 +164,16 @@ this.isAddDisabledButton = false;
 
   deleteMyComment(comment: CommentDto) {
     this.serv.deleteComment(comment.id).subscribe(data => {
-        this.comments.splice(this.comments.indexOf(comment),1);
+        this.comments.splice(this.comments.indexOf(comment), 1);
         this.snackBar.open('Deleted a comment');
       },
       error => {
         this.snackBar.open('Error!');
       }
     )
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

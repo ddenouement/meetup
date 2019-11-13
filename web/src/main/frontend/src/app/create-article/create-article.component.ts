@@ -31,7 +31,7 @@ export class CreateArticleComponent implements OnInit {
   ngOnInit() {
     this.createArticleForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(2)]],
-      content: ['', Validators.required, Validators.minLength(10)],
+      content: ['', [Validators.required, Validators.minLength(10)]],
       articleTopics: ['', Validators.required],
     });
 
@@ -64,7 +64,7 @@ export class CreateArticleComponent implements OnInit {
     this.createArticleForm.controls['content'].disable();
     this.createArticleForm.controls['articleTopics'].disable();
     this.httpClient.post("/api/v1/user/speaker/articles", article).subscribe(data => {
-      this.router.navigate(['/speaker-profile']);
+      this.router.navigate(['/article-list']);
     }, error => {
       console.warn(error);
       this.loading = false;

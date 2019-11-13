@@ -43,16 +43,17 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         this.loginService.getUser().subscribe(res=>{
           if(res['userDTO'].active == false){
-            this.router.navigate['/deactivate'];
             this.loginService.logoutUser();
-          }
-          this.loginService._logInUser = true;
-          if (data['role'] === "SPEAKER") {
-            this.router.navigate(['/speaker-profile']);
-          } else if (data['role'] === "ADMIN") {
-            this.router.navigate(['/admin-table']);
-          } else {
-            this.router.navigate(['/listener-profile']);
+            this.router.navigate(['/deactivate']);
+          }else {
+            this.loginService._logInUser = true;
+            if (data['role'] === "SPEAKER") {
+              this.router.navigate(['/speaker-profile']);
+            } else if (data['role'] === "ADMIN") {
+              this.router.navigate(['/admin-table']);
+            } else {
+              this.router.navigate(['/listener-profile']);
+            }
           }
         },error1 => {
 

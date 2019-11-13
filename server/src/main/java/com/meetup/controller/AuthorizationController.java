@@ -217,6 +217,19 @@ public class AuthorizationController {
     /**
      * Send email to user.
      *
+     * @param data text to deactivate or activate user.
+     * @return status
+     */
+    @PostMapping(value = "/user/activation")
+    public ResponseEntity sendActivationEmail(
+            @RequestBody final RegistrationDTO data) {
+        userService.sendActivationEmail(data.getEmail(), data.getLogin());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Send email to user.
+     *
      * @param data user email and login.
      * @return status
      */

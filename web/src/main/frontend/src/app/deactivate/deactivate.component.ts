@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './deactivate.component.html',
   styleUrls: ['./deactivate.component.scss']
 })
+
 export class DeactivateComponent implements OnInit {
 
   constructor() { }
