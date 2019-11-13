@@ -22,6 +22,11 @@ public class UserComplaintsDTO {
      * last name
      */
     private String lastName;
+    /**.
+     * is user active
+     */
+    private boolean isActive;
+
     /** number of complaints.
      */
     private int complaintsCount;
