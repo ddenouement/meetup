@@ -61,4 +61,12 @@ public class ScheduledTasks {
             .forEach(m -> notificationService
                 .sendJoinedMeetupStartsSoonNotifications(m));
     }
+
+    /**
+     * Periodically check which meetups haven't started and cancel them.
+     */
+    @Scheduled(cron = "${cancel_meetups_cron}")
+    public void cancelOutdatedMeetups() {
+        meetupService.cancelOutdatedMeetups();
+    }
 }

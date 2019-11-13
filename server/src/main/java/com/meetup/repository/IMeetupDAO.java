@@ -172,4 +172,5 @@ public interface IMeetupDAO {
      * @param meetupId Meetup ID.
      * */
     boolean ifJoinedMeetup(int userId, int meetupId);
+    void cancelOutdatedMeetups();
 }

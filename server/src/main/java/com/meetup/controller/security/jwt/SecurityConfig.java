@@ -92,8 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                    .and()
                      .csrf()
                 .ignoringAntMatchers("/user/login", "/", "/user/logout",  "/api/v1/user/login","/api/v1/user/logout")
-               // .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/","/login","/logout","/api/v1/user/login","/api/v1/user/logout","/api/v1/user/profile"))
-                 .csrfTokenRepository (this.getCsrfTokenRepository());
+                .csrfTokenRepository (this.getCsrfTokenRepository());
     }
 
     private CsrfTokenRepository getCsrfTokenRepository() {

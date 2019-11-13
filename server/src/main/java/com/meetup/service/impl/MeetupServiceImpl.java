@@ -491,4 +491,9 @@ public class MeetupServiceImpl implements IMeetupService {
     public boolean ifJoinedMeetup(final int userId, final int meetupId) {
         return meetupDao.ifJoinedMeetup(userId, meetupId);
     }
+
+    @Override
+    public void cancelOutdatedMeetups() {
+        meetupDao.cancelOutdatedMeetups();
+    }
 }
