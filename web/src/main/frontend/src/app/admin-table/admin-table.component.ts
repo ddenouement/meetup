@@ -8,6 +8,7 @@ import {MeetupDto} from "../models/meetupDto.model";
 import {UserComplaintsDto} from "../models/userComplaintsDto.model";
 
 import { MatSnackBar } from "@angular/material";
+import {Registration} from "../models/registration";
 
 @Component({
   selector: 'app-admin-table',
@@ -35,7 +36,6 @@ export class AdminTableComponent implements OnInit {
       this.users = usersData.users;
       this.totalUsers = usersData.usersCount;
       this.dataSource = this.users;
-
     });
   }
   onChangePage(pageData: PageEvent){

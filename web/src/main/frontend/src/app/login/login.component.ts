@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   public login: string;
   public password: string;
 
-  private logInURL = '/api/v1/user/login';
+
 
   constructor(
     public loginService: LoginService,
@@ -39,16 +39,25 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.loginForm.controls['login'].disable();
     this.loginForm.controls['password'].disable();
-    this.httpClient.post(this.logInURL, user)
+    this.loginService.login(user)
       .subscribe(data => {
-          this.loginService._logInUser = true;
-          if (data['role'] === "SPEAKER") {
-            this.router.navigate(['/speaker-profile']);
-          } else if (data['role'] === "ADMIN") {
-            this.router.navigate(['/admin-table']);
-          } else {
-            this.router.navigate(['/listener-profile']);
+        this.loginService.getUser().subscribe(res=>{
+          if(res['userDTO'].active == false){
+            this.loginService.logoutUser();
+            this.router.navigate(['/deactivate']);
+          }else {
+            this.loginService._logInUser = true;
+            if (data['role'] === "SPEAKER") {
+              this.router.navigate(['/speaker-profile']);
+            } else if (data['role'] === "ADMIN") {
+              this.router.navigate(['/admin-table']);
+            } else {
+              this.router.navigate(['/listener-profile']);
+            }
           }
+        },error1 => {
+
+        });
         },
         error => {
           this.error = error.error;

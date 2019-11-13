@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {RegisterService} from "../register-speaker/register.service";
+import {Meetup} from "../models/meetup.model";
+import {Subscription} from "rxjs";
+import {MeetupsService} from "../services/meetups.service";
 
 @Component({
   selector: 'app-listener-profile',
@@ -14,8 +15,12 @@ export class ListenerProfileComponent implements OnInit {
   private login;
   private email;
   public star: number;
+  userFutureMeetups:Meetup[] = [];
+  private userMeetupFutureSub: Subscription;
+  userPastMeetups:Meetup[] = [];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private meetupsService: MeetupsService
+  ) { }
 
   ngOnInit() {
     this.httpClient.get(this.userURL).subscribe(res => {
@@ -24,6 +29,19 @@ export class ListenerProfileComponent implements OnInit {
       this.email = res['userDTO'].email;
       this.star =res['userDTO'].rate;
     });
+    this.meetupsService.getUserFutureMeetups();
+    this.userMeetupFutureSub = this.meetupsService.getUserFutureMeetupUpdateListener()
+      .subscribe(meetupsData =>{
+        this.userFutureMeetups = meetupsData.meetups;
+      });
+    this.meetupsService.getUserPastMeetups().subscribe(meetupsData =>{
+      this.userPastMeetups = meetupsData;
+    })
   }
+  onLeave(id:number){
+    this.meetupsService.leaveMeetup(id).subscribe(res => {
+      this.meetupsService.getUserFutureMeetups();
 
+    });
+  }
 }

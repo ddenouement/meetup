@@ -26,6 +26,7 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   isAdmin = false;
   adminLogin = "admin";
   currentUserLogin: string;
+  private subscription: ISubscription;
   @Input() article_author_id1: number;
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
 
@@ -61,7 +62,6 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
       this.loadComments();
       this.refreshData();
     });
-
   }
 
   public openPopup: Function;
@@ -71,7 +71,7 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   getThisUserId() {
-    this.subscriptionUserId = this.serv.getUserId()
+    this.serv.getUserId()
       .subscribe(
         data => {
           this.authorId = Number(data);
@@ -176,12 +176,11 @@ export class CommentSectionComponent implements OnChanges, OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.dataRefresher);
 
-      this.subscriptionUserLogin.unsubscribe();
-      this.subscriptionRouteParams.unsubscribe();
-    if(this.subscriptionUserId)  this.subscriptionUserId.unsubscribe();
-   if(this.subscriptionGetComments)   this.subscriptionGetComments.unsubscribe();
-   if(this.subscriptionDeleteComment)   this.subscriptionDeleteComment.unsubscribe();
-    if(this.subscriptionAddComment)  this.subscriptionAddComment.unsubscribe();
-
+    if (this.subscriptionUserLogin) this.subscriptionUserLogin.unsubscribe();
+    if (this.subscriptionRouteParams) this.subscriptionRouteParams.unsubscribe();
+    if (this.subscriptionUserId) this.subscriptionUserId.unsubscribe();
+    if (this.subscriptionGetComments) this.subscriptionGetComments.unsubscribe();
+    if (this.subscriptionDeleteComment) this.subscriptionDeleteComment.unsubscribe();
+    if (this.subscriptionAddComment) this.subscriptionAddComment.unsubscribe();
   }
 }

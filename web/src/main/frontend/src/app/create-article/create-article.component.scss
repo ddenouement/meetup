@@ -78,6 +78,27 @@ form {
   }
 }
 
+.area {
+  margin-bottom: 40px;
+}
+
+.form__textarea {
+  height: 60px;
+  resize: none;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: #fdfeff;
+    mix-blend-mode: normal;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $background_color_2;
+    border-radius: 2px;
+  }
+}
+
 .error {
   padding-top: 5px;
   background-color: $background_color_2;
