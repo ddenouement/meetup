@@ -11,11 +11,14 @@ import com.meetup.utils.TimeUtility;
 import com.meetup.utils.constants.DbQueryConstants;
 import com.meetup.utils.MeetupState;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.bouncycastle.util.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -152,6 +155,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${find_if_user_joined_meetup}")
     private String ifJoinedMeetup;
+    /**
+     * SQL reference script. Rate meetup.
+     */
+    @Value("${set_cancelled_to_meetups}")
+    private String setMeetupsCancelled;
 
 
     /**
@@ -522,5 +530,16 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     public Timestamp getCurrentTimestamp() {
         return new Timestamp(new Date().getTime());
+    }
+
+    /**.
+     * Set all meetups that are not activated in 30 mins from their start time
+     */
+    public void cancelOutdatedMeetups(){
+        //1800 sec = 30 min
+        Timestamp datetime =  new Timestamp( Instant.now().minusSeconds(1800).toEpochMilli()) ;
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue( "time_now_utc_zero", datetime);
+        template.update(setMeetupsCancelled , param);
     }
 }
