@@ -30,7 +30,7 @@ export class LanguagesCrudComponent  implements OnInit {
   }
 
   private loadLanguages() {
-    this.serv.getLanguages()
+     this.serv.getLanguages()
       .subscribe(
         languages => {
           this.languages = languages;

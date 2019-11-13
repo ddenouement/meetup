@@ -110,14 +110,11 @@ this.isAddDisabledButton = false;
         });
   }
 
-  //charset : 'utf8mb4'
   addComment() {
     this.isAddDisabledButton = true;
     const date = new Date();
-
     const editedComment = new Comment(0, this.authorId, this.articleId, this.text, date, 0);
     this.serv.createComment(this.articleId, editedComment).subscribe(data => {
-        //   const savedComment = new CommentDto(0, this.authorId, this.currentUserLogin, this.articleId, this.text,date);
         this.statusMessage = '';
         this.comments.unshift(data);
         this.text = "";
@@ -128,11 +125,9 @@ this.isAddDisabledButton = false;
         this.snackBar.open(err.error);
         this.isAddDisabledButton = false;
       });
-
   }
 
   loadTemplate(c: CommentDto) {
-
     return this.readOnlyTemplate;
   }
 

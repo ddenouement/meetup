@@ -22,7 +22,7 @@
 </ng-template>
 <ng-template #editTemplate>
   <td>
-    <input type="text" [(ngModel)]="editedLanguage.name" class="form-control" />
+    <input type="text" [(ngModel)]="editedLanguage.name"  class="input_form" />
   </td>
   <td>
     <input type="button" value="Save"  [disabled] = "editedLanguage.name===''" (click)="saveLanguage()" class="btn_good btn_my" />
