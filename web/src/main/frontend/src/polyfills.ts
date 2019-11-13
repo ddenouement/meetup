@@ -61,3 +61,5 @@ import 'core-js/features/reflect';
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+(window as any).global = window;

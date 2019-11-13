@@ -23,7 +23,7 @@
 </ng-template>
 <ng-template #editTemplate>
   <td>
-    <input type="text" [(ngModel)]="editedTopic.name" class="form-control" />
+    <input type="text" [(ngModel)]="editedTopic.name" class="input_form" />
   </td>
   <td>
     <input type="button" value="Save"  [disabled] = "editedTopic.name===''" (click)="saveTopic()" class="btn_my btn_good" />

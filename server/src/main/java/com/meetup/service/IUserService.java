@@ -13,6 +13,13 @@ import java.util.List;
 public interface IUserService {
 
     /**
+     * Find user by his/her id.
+     * @param userId id of user to find
+     * @return user with specified id
+     */
+    User findUserById(int userId);
+
+    /**
      * .
      *
      * @param user User
@@ -180,6 +187,14 @@ public interface IUserService {
      * @param newPassword the password to change to
      */
     void changePassword(Integer userId, String newPassword);
+
+    /**
+     * Change user's password with verification of the old one.     *
+     * @param userId id of user to change password for
+     * @param oldPassword the password to change to
+     * @param newPassword the password to change to
+     */
+    void changePasswordFull(Integer userId, String oldPassword, String newPassword);
 
     /**
      * Rate specific meetup.

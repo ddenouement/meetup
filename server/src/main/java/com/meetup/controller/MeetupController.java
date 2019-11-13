@@ -358,4 +358,12 @@ public class MeetupController {
         return meetupService.getJoinedUsersCount(meetupId);
     }
 
+
+    //TODO NOT NEED this method, delete it
+    @GetMapping("/meetups/cancel")
+    public int setCancelled( ) {
+          meetupService.cancelOutdatedMeetups();
+          return 5;
+    }
+
 }

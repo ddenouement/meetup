@@ -7,15 +7,25 @@ import com.meetup.repository.INotificationDAO;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
 import com.meetup.service.IUserService;
-import com.meetup.utils.constants.NotificationConstants;
 import com.meetup.utils.NotificationType;
+import com.meetup.utils.constants.NotificationConstants;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationServiceImpl implements INotificationService {
+
+    /**
+     * Destination to send websocket messages with new notifications to.
+     */
+    private static final String NOTIFICATIONS_LINK = "/topic/notifications";
+    /**
+     * Destination to send websocket messages with new notification counts to.
+     */
+    private static final String NOTIFICATION_COUNT_LINK = "/topic/notification-count";
 
     /**
      * Notification repository.
@@ -33,19 +43,27 @@ public class NotificationServiceImpl implements INotificationService {
     private IUserService userService;
 
     /**
+     * Template to send messages to users.
+     */
+    private SimpMessagingTemplate messagingTemplate;
+
+    /**
      * Initialize service.
      *
      * @param notificationDAO notification repository.
      * @param meetupService meetup operations.
      * @param userService user operations.
+     * @param messagingTemplate messaging template.
      */
     @Autowired
     public NotificationServiceImpl(final INotificationDAO notificationDAO,
         @Lazy final IMeetupService meetupService,
-        @Lazy final IUserService userService) {
+        @Lazy final IUserService userService,
+        final SimpMessagingTemplate messagingTemplate) {
         this.notificationDAO = notificationDAO;
         this.meetupService = meetupService;
         this.userService = userService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     /**
@@ -91,6 +109,9 @@ public class NotificationServiceImpl implements INotificationService {
     @Override
     public void markAsRead(final Integer id, final Integer userId) {
         notificationDAO.markAsRead(id, userId);
+        messagingTemplate
+            .convertAndSendToUser(userService.findUserById(userId).getLogin(),
+                "/topic/notification-count", countUnread(userId));
     }
 
     /**
@@ -119,7 +140,9 @@ public class NotificationServiceImpl implements INotificationService {
             .replace(NotificationConstants.TEXT_PLACEHOLDER, meetup.getTitle());
         Notification notification = new Notification(message,
             NotificationType.MEETUP_BOOKED);
-        sendNotificationToUser(notification, meetup.getSpeakerId());
+        User speaker = userService.findUserById(meetup.getSpeakerId());
+        sendNotificationToUser(notification, speaker.getId(),
+            speaker.getLogin());
     }
 
     /**
@@ -137,7 +160,9 @@ public class NotificationServiceImpl implements INotificationService {
             .replace(NotificationConstants.TEXT_PLACEHOLDER, meetup.getTitle());
         Notification notification = new Notification(message,
             NotificationType.HOSTED_MEETUP_STARTS_SOON);
-        sendNotificationToUser(notification, meetup.getSpeakerId());
+        User speaker = userService.findUserById(meetup.getSpeakerId());
+        sendNotificationToUser(notification, speaker.getId(),
+            speaker.getLogin());
     }
 
     /**
@@ -155,10 +180,9 @@ public class NotificationServiceImpl implements INotificationService {
             .replace(NotificationConstants.TEXT_PLACEHOLDER, meetup.getTitle());
         Notification notification = new Notification(message,
             NotificationType.JOINED_MEETUP_STARTS_SOON);
-        List<User> listeners = meetupService.getUsersOnMeetup(meetup.getId());
-        for (User listener : listeners) {
-            sendNotificationToUser(notification, listener.getId());
-        }
+        meetupService.getUsersOnMeetup(meetup.getId())
+            .forEach(u -> sendNotificationToUser(notification, u.getId(),
+                u.getLogin()));
     }
 
     /**
@@ -181,7 +205,8 @@ public class NotificationServiceImpl implements INotificationService {
         Notification notification = new Notification(message,
             NotificationType.MEETUP_INFO_CHANGED);
         meetupService.getUsersOnMeetup(meetup.getId())
-            .forEach(u -> sendNotificationToUser(notification, u.getId()));
+            .forEach(u -> sendNotificationToUser(notification, u.getId(),
+                u.getLogin()));
     }
 
     /**
@@ -200,7 +225,8 @@ public class NotificationServiceImpl implements INotificationService {
         Notification notification = new Notification(message,
             NotificationType.NEW_SUBSCRIBED_MEETUP);
         userService.getSimpleSubscribersOfSpeaker(meetup.getSpeakerId())
-            .forEach(u -> sendNotificationToUser(notification, u.getId()));
+            .forEach(u -> sendNotificationToUser(notification, u.getId(),
+                u.getLogin()));
     }
 
     /**
@@ -222,31 +248,32 @@ public class NotificationServiceImpl implements INotificationService {
         Notification notification = new Notification(message,
             NotificationType.LEAVE_FEEDBACK);
         meetupService.getUsersOnMeetup(meetup.getId())
-            .forEach(u -> sendNotificationToUser(notification, u.getId()));
+            .forEach(u -> sendNotificationToUser(notification, u.getId(),
+                u.getLogin()));
     }
 
     /**
      * Send notification of type PROFILE_DEACTIVATED to the user with given id.
      *
-     * @param userId id of user to send notification to
+     * @param user user to send notification to
      */
-    public void sendProfileDeactivatedNotification(final Integer userId) {
+    public void sendProfileDeactivatedNotification(final User user) {
         Notification notification = new Notification(
             NotificationConstants.PROFILE_DEACTIVATED_MESSAGE,
             NotificationType.PROFILE_DEACTIVATED);
-        sendNotificationToUser(notification, userId);
+        sendNotificationToUser(notification, user.getId(), user.getLogin());
     }
 
     /**
      * Send notification of type PROFILE_ACTIVATED to the user with given id.
      *
-     * @param userId id of user to send notification to
+     * @param user user to send notification to
      */
-    public void sendProfileActivatedNotification(final Integer userId) {
+    public void sendProfileActivatedNotification(final User user) {
         Notification notification = new Notification(
             NotificationConstants.PROFILE_ACTIVATED_MESSAGE,
             NotificationType.PROFILE_ACTIVATED);
-        sendNotificationToUser(notification, userId);
+        sendNotificationToUser(notification, user.getId(), user.getLogin());
     }
 
     /**
@@ -255,12 +282,29 @@ public class NotificationServiceImpl implements INotificationService {
      * @param notification notification to insert
      * @param userId id of user to send the notification to
      */
+//    private void sendNotificationToUser(
+//        final Notification notification, final Integer userId) {
+//
+//    }
+
+    /**
+     * Send a given notification to user with given id.
+     *
+     * @param notification notification to insert
+     * @param userId id of user to send the notification to
+     * @param userLogin login of user tot send the notification to
+     */
     private void sendNotificationToUser(
-        final Notification notification, final Integer userId) {
+        final Notification notification, final int userId,
+        final String userLogin) {
         notification.setIdUser(userId);
         insert(notification);
-        // TODO: notify client.
+        messagingTemplate
+            .convertAndSendToUser(userLogin, NOTIFICATIONS_LINK,
+                notification);
+        messagingTemplate
+            .convertAndSendToUser(userLogin, NOTIFICATION_COUNT_LINK,
+                countUnread(userId));
     }
-
 
 }
