@@ -7,14 +7,14 @@ spring:
   application:
     name: MeetUp
   datasource:
-    # Heroku DB
-#    url: jdbc:postgresql://ec2-174-129-205-197.compute-1.amazonaws.com:5432/d132n30cpecl80
-#    username: yakgmstslqpheb
-#    password: 5a687df146eae7b0b542f05365922b15134492c2468a85686c3bba2ce7a00584
+#     Heroku DB
+    url: jdbc:postgresql://ec2-174-129-205-197.compute-1.amazonaws.com:5432/d132n30cpecl80
+    username: yakgmstslqpheb
+    password: 5a687df146eae7b0b542f05365922b15134492c2468a85686c3bba2ce7a00584
     # local DB (Julia)
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: user
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: user
     # local DB (Polina)
 #    url: jdbc:postgresql://localhost:5432/meetup
 #    username: postgres

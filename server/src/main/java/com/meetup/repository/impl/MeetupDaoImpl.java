@@ -7,6 +7,7 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.MeetupDisplayDTO;
 import com.meetup.model.mapper.*;
 import com.meetup.repository.IMeetupDAO;
+import com.meetup.utils.TimeUtility;
 import com.meetup.utils.constants.DbQueryConstants;
 import com.meetup.utils.MeetupState;
 import java.sql.Timestamp;
@@ -187,7 +188,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Override
     public int getAllMeetupsCount() {
-        List<Integer> res = this.template.query(getAllMeetupsCount, new IntegerMapper());
+        List<Integer> res = this.template
+            .query(getAllMeetupsCount, new IntegerMapper());
         if (res.isEmpty()) {
             return 0;
         } else {
@@ -226,7 +228,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.id_state.name(),
                 MeetupState.SCHEDULED.getCode())
             .addValue(DbQueryConstants.title.name(), meetup.getTitle())
-            .addValue(DbQueryConstants.start_time.name(), meetup.getStartDate())
+            .addValue(DbQueryConstants.start_time.name(),
+                TimeUtility.toUtc(meetup.getStartDate()))
             .addValue(DbQueryConstants.duration_minutes.name(),
                 meetup.getDurationMinutes())
             .addValue(DbQueryConstants.min_attendees.name(),
@@ -260,7 +263,8 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 editedMeetup.getLanguageId())
             .addValue(DbQueryConstants.id_topic.name(),
                 editedMeetup.getTopicId())
-            .addValue(DbQueryConstants.id_state.name(), editedMeetup.getStateId())
+            .addValue(DbQueryConstants.id_state.name(),
+                editedMeetup.getStateId())
             .addValue(DbQueryConstants.title.name(), editedMeetup.getTitle())
             .addValue(DbQueryConstants.start_time.name(),
                 editedMeetup.getStartDate())
@@ -292,7 +296,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
         try {
             return this.template
                 .queryForObject(getMeetupByID, param, new MeetupMapper());
-        }catch (EmptyResultDataAccessException ex){
+        } catch (EmptyResultDataAccessException ex) {
             return null;
         }
 
@@ -310,8 +314,9 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.id.name(), meetupID);
         try {
             return this.template
-                .queryForObject(getDisplayMeetupByID, param, new MeetupDisplayDtoMapper());
-        }catch (EmptyResultDataAccessException ex){
+                .queryForObject(getDisplayMeetupByID, param,
+                    new MeetupDisplayDtoMapper());
+        } catch (EmptyResultDataAccessException ex) {
             return null;
         }
 
@@ -398,9 +403,10 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Override
     public boolean ifJoinedMeetup(final int userId, final int meetupId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", userId)
-                .addValue("id_meetup", meetupId);
-        List<Integer> res = this.template.query(ifJoinedMeetup, param, new IntegerMapper());
+            .addValue("id_user", userId)
+            .addValue("id_meetup", meetupId);
+        List<Integer> res = this.template
+            .query(ifJoinedMeetup, param, new IntegerMapper());
         if (res.isEmpty()) {
             return false;
         } else {
@@ -489,6 +495,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
             .addValue(DbQueryConstants.meetup_id.name(), meetupId);
         return this.template.query(getUsersOnMeetup, param, new UserMapper());
     }
+
     /**
      * Get number of joined users on meetup.
      *
@@ -498,8 +505,9 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Override
     public int getJoinedUsersCount(int meetupId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue(DbQueryConstants.meetup_id.name(), meetupId);
-        List<Integer> result = this.template.query(getJoinedUsersCount, param, new IntegerMapper());
+            .addValue(DbQueryConstants.meetup_id.name(), meetupId);
+        List<Integer> result = this.template
+            .query(getJoinedUsersCount, param, new IntegerMapper());
         if (result.isEmpty()) {
             return 0;
         } else {
