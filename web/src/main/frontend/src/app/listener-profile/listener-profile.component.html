@@ -35,5 +35,35 @@
         </div>
       </div>
     </form>
+
+    <mat-tab-group>
+      <mat-tab label="Future Joined Meetups">
+        <mat-accordion multi="true" *ngIf="userFutureMeetups.length > 0 && !loading">
+          <mat-expansion-panel *ngFor="let meetup of userFutureMeetups">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+              </mat-panel-title>
+              <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-action-row>
+              <a mat-button color="primary" (click)="onLeave(meetup.id)">LEAVE</a>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-tab>
+      <mat-tab label="Past Joined Meetups">  <mat-accordion multi="true" *ngIf="userPastMeetups.length > 0 && !loading">
+        <mat-expansion-panel *ngFor="let meetup of userPastMeetups">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+            </mat-panel-title>
+            <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
+      </mat-tab>
+    </mat-tab-group>
+
   </div>
 </main>

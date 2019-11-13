@@ -27,8 +27,6 @@ export class MeetupsService {
   private speakerPastMeetupsUpdated = new Subject<{ meetups: Meetup[] }>();
   private userFutureMeetups: Meetup[] = [];
   private userFutureMeetupsUpdated = new Subject<{ meetups: Meetup[] }>();
-  private userPastMeetups: Meetup[] = [];
-  private userPastMeetupsUpdated = new Subject<{ meetups: Meetup[] }>();
   private joinedCountUpdated = new Subject<number>();
 
   // private speakerLanguagesURL = 'http://localhost:9990/api/v1/user/languages';
@@ -49,7 +47,7 @@ export class MeetupsService {
   private joinedCountUrl = "api/v1/meetups/users/";
   private speakerMeetupsUrl = "/api/v1/meetups/speakers/";
   private meetupId : number;
-  private terminateUrl = "aoi/v1/user/speaker/meetups/"+this.meetupId+"/terminate";
+  private terminateUrl = "api/v1/user/speaker/meetups/"+this.meetupId+"/terminate";
   constructor(private http: HttpClient, private router: Router) {
   }
   getMeetupJoinedUpdateListener() {
