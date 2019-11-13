@@ -31,10 +31,10 @@ export class ResponseInterceptor implements HttpInterceptor {
       (error: any) => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 404) {
-            //this.router.navigate(['/not-found']);
+            this.router.navigate(['/not-found']);
           }
           if (error.status === 403) {
-            //this.router.navigate(['/forbidden'])
+            this.router.navigate(['/forbidden'])
           }
         }
       }
