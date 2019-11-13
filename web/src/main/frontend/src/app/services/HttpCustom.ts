@@ -22,8 +22,13 @@ export class HttpCustom implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     const token = this.getCookie('XSRF-TOKEN');
-    const header = 'X-XSRF-TOKEN';
-    const clonedRequest = req.clone({headers: req.headers.set(header, token)});
-    return next.handle(clonedRequest);
+if(!token){
+  return next.handle(req);
+}
+else {
+  const header = 'X-XSRF-TOKEN';
+  const clonedRequest = req.clone({headers: req.headers.set(header, token)});
+  return next.handle(clonedRequest);
+}
   }
 }

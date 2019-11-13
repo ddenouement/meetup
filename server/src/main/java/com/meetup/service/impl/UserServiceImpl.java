@@ -272,6 +272,15 @@ public class UserServiceImpl implements IUserService {
     public List<ComplaintDTO> getAllNotReadComplaints() {
         return userDao.getAllNotReadComplaints();
     }
+    /**
+     * .
+     *@param id user id
+     * @return List of complaints to user
+     */
+    @Override
+    public List<ComplaintDTO> getComplaintsToUser(final int id) {
+        return userDao.getComplaintsToUser(id);
+    }
 
     /**
      * @param complaintDTO complaint without source

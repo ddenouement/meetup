@@ -50,16 +50,10 @@ export class MeetupsService {
   private joinUrl = "/api/v1/user/meetups/";
 
   private speakerMeetupsUrl = "/api/v1/meetups/speakers/";
-
+  private meetupId : number;
+  private terminateUrl = "aoi/v1/user/speaker/meetups/"+this.meetupId+"/terminate";
 
   constructor(private http: HttpClient, private router: Router) {
-  }
-
-  getMeetupUpdateListener() {
-    return this.meetupsUpdated.asObservable();
-  }
-  getMeetupDtoUpdateListener() {
-    return  this.meetupsDtoUpdated.asObservable();
   }
   getMeetupJoinedUpdateListener() {
     return  this.meetupUpdated.asObservable();
@@ -136,8 +130,23 @@ export class MeetupsService {
         this.speakerMeetupsUrl+queryParams
       );
   }
-  getSpeakerMeetups(id:number) {
-    return this.http.get<MeetupDto[]>(this.speakerMeetupsUrl+id);
+  getSpeakerMeetups(id: number) {
+    this.http
+      .get<MeetupDto[]>(
+        this.speakerMeetupsUrl+id)
+      .pipe(
+        map(meetupData => {
+          return {
+            speakerMeetups: meetupData
+          };
+        })
+      )
+      .subscribe(transformedMeetupData => {
+        this.speakerMeetups = transformedMeetupData.speakerMeetups;
+        this.speakerMeetupsUpdated.next({
+          meetups: [...this.speakerMeetups]
+        });
+      });
   }
 
   getMeetup(id:number){
@@ -161,6 +170,11 @@ export class MeetupsService {
     return this.http.delete(this.joinUrl + id);
   }
 
+  terminateMeetup(id:number){
+    this.meetupId = id;
+    // @ts-ignore
+    return this.http.post(this.terminateUrl);
+  }
 
 
 

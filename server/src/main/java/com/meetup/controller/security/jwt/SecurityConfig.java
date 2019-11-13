@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * . jwttokenprovide, custom class
@@ -83,16 +83,17 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions()
                 .disable()//this one to enable /h2 console in browser
                 .and().httpBasic().disable()
-                  .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
+          //     .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .apply(new JwtConfigurer(jwtTokenProvider))
         //TODO un-comment to enable CSRF
-         /*           .and()
+                    .and()
                      .csrf()
-                .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/","/login","/logout","/api/v1/user/login","/api/v1/user/logout","/api/v1/user/profile"))
-                 .csrfTokenRepository (this.getCsrfTokenRepository());*/
+                .ignoringAntMatchers("/user/login", "/", "/user/logout",  "/api/v1/user/login","/api/v1/user/logout")
+               // .requireCsrfProtectionMatcher (new AllExceptUrlStartedWith("/","/login","/logout","/api/v1/user/login","/api/v1/user/logout","/api/v1/user/profile"))
+                 .csrfTokenRepository (this.getCsrfTokenRepository());
     }
 
     private CsrfTokenRepository getCsrfTokenRepository() {
@@ -101,37 +102,6 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         return tokenRepository;
     }
 
-    private static class AllExceptUrlStartedWith implements RequestMatcher {
-
-        private static final String[] ALLOWED_METHODS =
-                new String[]{"GET"};
-        AntPathMatcher antPathMatcher = new AntPathMatcher();
-
-        private final String[] allowedUrls;
-
-        public AllExceptUrlStartedWith(String... allowedUrls) {
-            this.allowedUrls = allowedUrls;
-        }
-
-        @Override
-        public boolean matches(HttpServletRequest request) {
-            String method = request.getMethod();
-            for (String allowedMethod : ALLOWED_METHODS) {
-                if (allowedMethod.equals(method)) {
-                    return false;
-                }
-            }
-
-            String uri = request.getRequestURI();
-            for (String allowedUrl : allowedUrls) {
-                if (antPathMatcher.match(allowedUrl, uri)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-    }
 
     /**
      * . set CustomAuthenticationFailureHandler

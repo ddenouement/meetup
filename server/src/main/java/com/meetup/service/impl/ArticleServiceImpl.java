@@ -6,6 +6,7 @@ import com.meetup.entities.User;
 import com.meetup.entities.dto.ArticleCreationDTO;
 import com.meetup.entities.dto.ArticleDisplayDTO;
 import com.meetup.entities.dto.CommentaryDisplayDTO;
+import com.meetup.error.ArticleNotFoundException;
 import com.meetup.repository.IArticleDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.ArticleDaoImpl;
@@ -17,8 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Article service (implementation).
- * Used to manage article functionality.
+ * Article service (implementation). Used to manage article functionality.
  */
 @Component
 public class ArticleServiceImpl implements IArticleService {
@@ -63,7 +63,11 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public void removeArticle(final int articleID) {
-        articleDao.removeArticle(articleID);
+        if (articleDao.findArticleByID(articleID) == null) {
+            throw new ArticleNotFoundException();
+        } else {
+            articleDao.removeArticle(articleID);
+        }
     }
 
     /**
@@ -75,6 +79,9 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public ArticleDisplayDTO getDisplayableArticle(final int articleID) {
         ArticleDisplayDTO article = articleDao.findArticleByID(articleID);
+        if (article == null){
+            throw new ArticleNotFoundException();
+        }
         List<Topic> topics = articleDao.getArticleTopics(articleID);
         article.setTopics(topics);
         return article;
@@ -119,7 +126,11 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public void removeArticleByAdmin(final int articleID) {
-        articleDao.removeArticle(articleID);
+        if (articleDao.findArticleByID(articleID) == null) {
+            throw new ArticleNotFoundException();
+        } else {
+            articleDao.removeArticle(articleID);
+        }
     }
 
     /**
@@ -146,8 +157,13 @@ public class ArticleServiceImpl implements IArticleService {
         final Commentary commentary) {
         User user = userDao.findUserByLogin(userLogin);
         int userID = user.getId();
-        Commentary commentCreated =
-            articleDao.addCommentary(articleID, userID, commentary);
+        Commentary commentCreated;
+        if (articleDao.findArticleByID(articleID) == null) {
+            throw new ArticleNotFoundException();
+        } else {
+            commentCreated = articleDao
+                .addCommentary(articleID, userID, commentary);
+        }
         return CommentaryDTOConverter
             .convertToCommentaryDisplayDTO(commentCreated, user);
     }

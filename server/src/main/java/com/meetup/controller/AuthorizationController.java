@@ -47,19 +47,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthorizationController {
 
     /**
-     * ,. UserService
+     *  UserService class, methods to work with User entity.
      */
     private IUserService userService;
     /**
-     * . userDao
+     * UserDao, methods to work with DB.
      */
     private UserDaoImpl userDao;
     /**
-     * ,. Spring class
+     *  Spring class.
      */
     private AuthenticationManager authenticationManager;
     /**
-     * ,. Class to extraxt token from cookie
+     *  Class to extraxt token from cookie and other useful methods.
      */
     private JwtTokenProvider jwtTokenProvider;
     /**
@@ -82,9 +82,9 @@ public class AuthorizationController {
     }
 
     /**
-     * ,. SignIn   generates a token
+     *  SignIn   generates a token from succesful login and puts it in response.
      *
-     * @param data AuthentificationRequest
+     * @param data AuthentificationRequest (login and password)
      * @param response HttpServletResponse
      * @return ResponseEntity
      **/

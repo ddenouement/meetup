@@ -43,7 +43,7 @@ export class SpeakerProfileComponent implements OnInit {
   public email: string;
   public about: string;
 
-  speakerMeetups: MeetupDto[] = [];
+  speakerMeetups:MeetupDto[] = [];
   private meetingsSub: Subscription;
   star: number;
   edited = false;
@@ -98,7 +98,9 @@ export class SpeakerProfileComponent implements OnInit {
       about: [''],
       languages: ['', Validators.required]
     });
+    this.loading = true;
     this.speakerService.getSpeaker().subscribe(res => {
+      this.loading = false;
       for (let i in res['userDTO'].languages) {
         this.langListNames[i] = res['userDTO'].languages[i].name;
       }
@@ -106,14 +108,11 @@ export class SpeakerProfileComponent implements OnInit {
       this.star = res['userDTO'].rate;
       this.load = true;
       this.speakerId = res['userDTO'].id;
-      this.meetupsService.getSpeakerMeetups(this.speakerId).subscribe(meetupsData=>{
-        this.speakerMeetups = meetupsData;
+      this.meetupsService.getSpeakerMeetups(this.speakerId);
+      this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
+        .subscribe(meetupsData =>{
+        this.speakerMeetups = meetupsData.meetups;
       });
-      //set up listener to subject
-      // this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
-      //   .subscribe((meetupData: { meetups: MeetupDto[] })=>{
-      //     this.speakerMeetups = meetupData.meetups;
-      //   });
 
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
@@ -131,9 +130,10 @@ export class SpeakerProfileComponent implements OnInit {
       this.email = res['userDTO'].email;
       this.about = res['userDTO'].about;
     });
-
+    this.loading = true;
     this.registerService.getLanguages().subscribe(
       res => {
+        this.loading = false;
         this.languages = res;
       },
       err => {

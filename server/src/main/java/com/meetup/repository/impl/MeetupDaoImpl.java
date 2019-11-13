@@ -18,6 +18,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -284,8 +285,13 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public Meetup findMeetupByID(final int meetupID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id.name(), meetupID);
-        return this.template
-            .queryForObject(getMeetupByID, param, new MeetupMapper());
+        try {
+            return this.template
+                .queryForObject(getMeetupByID, param, new MeetupMapper());
+        }catch (EmptyResultDataAccessException ex){
+            return null;
+        }
+
     }
 
     /**
@@ -298,8 +304,13 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public MeetupDisplayDTO findDisplayMeetupByID(final int meetupID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id.name(), meetupID);
-        return this.template
-            .queryForObject(getDisplayMeetupByID, param, new MeetupDisplayDtoMapper());
+        try {
+            return this.template
+                .queryForObject(getDisplayMeetupByID, param, new MeetupDisplayDtoMapper());
+        }catch (EmptyResultDataAccessException ex){
+            return null;
+        }
+
     }
 
     /**

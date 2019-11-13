@@ -10,6 +10,7 @@ export class SpeakerProfileService {
   private updateUserURL = '/api/v1/user/profile';
   private currUserURL = '/api/v1/user/profile';
   private userURL = '/api/v1/user/profile';
+
   constructor(private http: HttpClient) {
   }
 
@@ -21,4 +22,6 @@ export class SpeakerProfileService {
   getSpeaker(){
     return this.http.get(this.userURL);
   }
+
+
 }
