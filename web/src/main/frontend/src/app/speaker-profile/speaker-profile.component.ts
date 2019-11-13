@@ -43,12 +43,21 @@ export class SpeakerProfileComponent implements OnInit {
   public email: string;
   public about: string;
 
-  speakerMeetups: MeetupDto[] = [];
-  private meetingsSub: Subscription;
+  speakerFutureMeetups:Meetup[] = [];
+  private meetupFutureSub: Subscription;
+  speakerPastMeetups:Meetup[] = [];
+  private meetupPastSub: Subscription;
+  userFutureMeetups:Meetup[] = [];
+  private userMeetupFutureSub: Subscription;
+  userPastMeetups:Meetup[] = [];
   star: number;
   edited = false;
   selected: any;
   load= false;
+  terminated = {
+    id: 6,
+    true: "TERMINATED"
+  };
 
   constructor(
     private httpClient: HttpClient,
@@ -98,7 +107,9 @@ export class SpeakerProfileComponent implements OnInit {
       about: [''],
       languages: ['', Validators.required]
     });
+    this.loading = true;
     this.speakerService.getSpeaker().subscribe(res => {
+      this.loading = false;
       for (let i in res['userDTO'].languages) {
         this.langListNames[i] = res['userDTO'].languages[i].name;
       }
@@ -106,15 +117,24 @@ export class SpeakerProfileComponent implements OnInit {
       this.star = res['userDTO'].rate;
       this.load = true;
       this.speakerId = res['userDTO'].id;
-      this.meetupsService.getSpeakerMeetups(this.speakerId).subscribe(meetupsData=>{
-        this.speakerMeetups = meetupsData;
+      this.meetupsService.getSpeakerFutureMeetups(this.speakerId);
+      this.meetupFutureSub = this.meetupsService.getSpeakerFutureMeetupUpdateListener()
+        .subscribe(meetupsData =>{
+        this.speakerFutureMeetups = meetupsData.meetups;
       });
-      //set up listener to subject
-      // this.meetingsSub = this.meetupsService.getSpeakerMeetupUpdateListener()
-      //   .subscribe((meetupData: { meetups: MeetupDto[] })=>{
-      //     this.speakerMeetups = meetupData.meetups;
-      //   });
-
+      this.meetupsService.getSpeakerPastMeetups(this.speakerId);
+      this.meetupPastSub = this.meetupsService.getSpeakerPastMeetupUpdateListener()
+        .subscribe(meetupsData =>{
+        this.speakerPastMeetups = meetupsData.meetups;
+      });
+      this.meetupsService.getUserFutureMeetups();
+      this.userMeetupFutureSub = this.meetupsService.getUserFutureMeetupUpdateListener()
+        .subscribe(meetupsData =>{
+          this.userFutureMeetups = meetupsData.meetups;
+        });
+      this.meetupsService.getUserPastMeetups().subscribe(meetupsData =>{
+        this.userPastMeetups = meetupsData;
+      })
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
         firstName: [res['userDTO'].firstName, Validators.required],
@@ -131,9 +151,10 @@ export class SpeakerProfileComponent implements OnInit {
       this.email = res['userDTO'].email;
       this.about = res['userDTO'].about;
     });
-
+    this.loading = true;
     this.registerService.getLanguages().subscribe(
       res => {
+        this.loading = false;
         this.languages = res;
       },
       err => {
@@ -148,5 +169,14 @@ export class SpeakerProfileComponent implements OnInit {
 
   onCancel() {
     this.edited = false;
+  }
+
+  onLeave(id:number){
+      this.loading = true;
+      this.meetupsService.leaveMeetup(id).subscribe(res => {
+        this.loading = false;
+        this.meetupsService.getUserFutureMeetups();
+
+      });
   }
 }

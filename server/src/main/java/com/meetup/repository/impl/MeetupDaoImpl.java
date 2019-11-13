@@ -18,6 +18,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -125,6 +126,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
      */
     @Value("${get_users_on_meetup}")
     private String getUsersOnMeetup;
+    /**
+     * . SQL reference script. Get number of users joined specific meetup.
+     */
+    @Value("${get_joined_count}")
+    private String getJoinedUsersCount;
     /**
      * . SQL reference script. Get meetup by ID.
      */
@@ -284,8 +290,13 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public Meetup findMeetupByID(final int meetupID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id.name(), meetupID);
-        return this.template
-            .queryForObject(getMeetupByID, param, new MeetupMapper());
+        try {
+            return this.template
+                .queryForObject(getMeetupByID, param, new MeetupMapper());
+        }catch (EmptyResultDataAccessException ex){
+            return null;
+        }
+
     }
 
     /**
@@ -298,8 +309,13 @@ public class MeetupDaoImpl implements IMeetupDAO {
     public MeetupDisplayDTO findDisplayMeetupByID(final int meetupID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.id.name(), meetupID);
-        return this.template
-            .queryForObject(getDisplayMeetupByID, param, new MeetupDisplayDtoMapper());
+        try {
+            return this.template
+                .queryForObject(getDisplayMeetupByID, param, new MeetupDisplayDtoMapper());
+        }catch (EmptyResultDataAccessException ex){
+            return null;
+        }
+
     }
 
     /**
@@ -473,6 +489,23 @@ public class MeetupDaoImpl implements IMeetupDAO {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(DbQueryConstants.meetup_id.name(), meetupId);
         return this.template.query(getUsersOnMeetup, param, new UserMapper());
+    }
+    /**
+     * Get number of joined users on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return int count of users
+     */
+    @Override
+    public int getJoinedUsersCount(int meetupId) {
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.meetup_id.name(), meetupId);
+        List<Integer> result = this.template.query(getJoinedUsersCount, param, new IntegerMapper());
+        if (result.isEmpty()) {
+            return 0;
+        } else {
+            return result.get(0);
+        }
     }
 
     /**

@@ -21,4 +21,6 @@ export class SpeakerProfileService {
   getSpeaker(){
     return this.http.get(this.userURL);
   }
+
+
 }

@@ -1,5 +1,5 @@
 import {Topic} from "./topic";
-import {User} from "./user";
+import {SimpleUserDto} from "./simpleUserDto.model";
 
 export interface ArticleDTO {
   id: number;
@@ -7,6 +7,6 @@ export interface ArticleDTO {
   content: string;
   topics: Topic[];
   dateTimePosted: string;
-  author: User;
+  author: SimpleUserDto;
 
 }

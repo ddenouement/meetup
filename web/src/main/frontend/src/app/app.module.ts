@@ -13,7 +13,7 @@ import {
   MatBadgeModule,
   MatToolbarModule,
   MatPaginatorModule,
-  MatProgressSpinnerModule,MatNativeDateModule
+  MatProgressSpinnerModule, MatNativeDateModule
 } from "@angular/material";
 import {
   TimepickerModule,
@@ -31,19 +31,19 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
-import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
+import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { SpeakerProfileComponent } from './speaker-profile/speaker-profile.component';
-import { VerificationComponent } from './verification/verification.component';
+import {SpeakerProfileComponent} from './speaker-profile/speaker-profile.component';
+import {VerificationComponent} from './verification/verification.component';
 import {RatingModule} from "ng-starrating";
-import { CreateArticleComponent } from './create-article/create-article.component';
-import { ListenerProfileComponent } from './listener-profile/listener-profile.component';
-import { FeedbackComponent } from './feedback/feedback.component';
-import { SpeakerProfileToUsersComponent } from './speaker-profile-to-users/speaker-profile-to-users.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import {CreateArticleComponent} from './create-article/create-article.component';
+import {ListenerProfileComponent} from './listener-profile/listener-profile.component';
+import {FeedbackComponent} from './feedback/feedback.component';
+import {SpeakerProfileToUsersComponent} from './speaker-profile-to-users/speaker-profile-to-users.component';
+import {SidebarComponent} from './sidebar/sidebar.component';
 import {MatTableModule} from "@angular/material/table";
-import { LanguagesCrudComponent } from './languages-crud/languages-crud.component';
-import { TopicsCrudComponent } from './topics-crud/topics-crud.component';
+import {LanguagesCrudComponent} from './languages-crud/languages-crud.component';
+import {TopicsCrudComponent} from './topics-crud/topics-crud.component';
 import {IconsModule} from "./icons/icons.module";
 import {CommentSectionComponent} from "./comment-section/comment-section.component";
 import {ComplaintComponent} from "./complaint/complaint.component";
@@ -52,11 +52,11 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {DictionariesComponent} from "./dictionaries/dictionaries.component";
 import {PickerModule} from '@ctrl/ngx-emoji-mart';
 import {MatTabsModule} from "@angular/material/tabs";
-import { ArticleViewComponent } from './article-view/article-view.component';
-import { AdminTableComponent } from './admin-table/admin-table.component';
-import { ApproveToSpeakerComponent } from './approve-to-speaker/approve-to-speaker.component';
-import { ListenerProfileToUsersComponent } from './listener-profile-to-users/listener-profile-to-users.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import {ArticleViewComponent} from './article-view/article-view.component';
+import {AdminTableComponent} from './admin-table/admin-table.component';
+import {ApproveToSpeakerComponent} from './approve-to-speaker/approve-to-speaker.component';
+import {ListenerProfileToUsersComponent} from './listener-profile-to-users/listener-profile-to-users.component';
+import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {MeetupCreateComponent} from "./meetup-create/meetup-create.component";
 import {MeetupListComponent} from "./meetup-list/meetup-list.component";
 import {MeetupProfileComponent} from "./meetup-profile/meetup-profile.component";
@@ -64,18 +64,22 @@ import {FromNowPipe} from "./pipes/from_now_pipe";
 import {MatIconModule} from "@angular/material/icon";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {FooterComponent} from "./footer/footer.component";
-import { ActicleListComponent } from './article-list/acticle-list.component';
-import { SubscribeComponent } from './subscribe/subscribe.component';
-import { AdminBagesComponent } from './admin-bages/admin-bages.component';
-import { NotificationsComponent } from './notifications/notifications.component';
+import {ActicleListComponent} from './article-list/acticle-list.component';
+import {SubscribeComponent} from './subscribe/subscribe.component';
+import {AdminBagesComponent} from './admin-bages/admin-bages.component';
+import {NotificationsComponent} from './notifications/notifications.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from "ng-pick-datetime";
 import {TimepickerActions} from "ngx-bootstrap/timepicker";
 import {CommonModule} from "@angular/common";
-import { MatSnackBarModule} from '@angular/material'
+import {MatSnackBarModule} from '@angular/material'
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
-import { FiltersPanelComponent } from './filters-panel/filters-panel.component';
+import {FiltersPanelComponent} from './filters-panel/filters-panel.component';
 import {HttpCustom} from "./services/HttpCustom";
+import { UserComplaintsComponent } from './user-complaints/user-complaints.component';
+import {ResponseInterceptor} from "./services/ResponseInterseptor";
+import {ForbiddenComponent} from './forbidden/forbidden.component';
+import {NotFoundComponent} from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +118,10 @@ import {HttpCustom} from "./services/HttpCustom";
     FooterComponent,
     ActicleListComponent,
     NotificationsComponent,
-    FiltersPanelComponent
+    FiltersPanelComponent,
+    UserComplaintsComponent,
+    ForbiddenComponent,
+    NotFoundComponent
   ],
   imports: [
     IconsModule,
@@ -154,17 +161,25 @@ import {HttpCustom} from "./services/HttpCustom";
     MatDatepickerModule,
     OwlDateTimeModule,
     TimepickerModule,
-   MatSnackBarModule,
+    MatSnackBarModule,
   ],
   exports: [MatBadgeModule],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig,{provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
-      ,
-     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: HttpCustom,
-    multi: true,
+  providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig, {
+    provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+    useValue: {duration: 2500}
   }
+    ,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCustom,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true,
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -4,6 +4,7 @@
     <form>
       <p class="form__headline">Notifications</p>
       <div class="cardList">
+        <p class="info-text mat-body-2" *ngIf="notifications.length <= 0 && !isLoading">You have no unread notifications!</p>
         <ng-container *ngFor="let notification of notifications">
           <mat-card class="cardListItem">
             <div fxLayout="row">
@@ -18,5 +19,3 @@
     </form>
   </div>
 </main>
-
-<p class="info-text mat-body-2" *ngIf="notifications.length <= 0">You have no unread notifications!</p>

@@ -27,6 +27,7 @@ public class UserComplaintsDtoMapper implements RowMapper<UserComplaintsDTO> {
         userComplaints.setEmail(rs.getString(DbQueryConstants.email.name()));
         userComplaints.setFirstName(rs.getString(DbQueryConstants.first_name.name()));
         userComplaints.setLastName(rs.getString(DbQueryConstants.last_name.name()));
+        userComplaints.setActive(rs.getBoolean(DbQueryConstants.active.name()));
         userComplaints.setComplaintsCount(rs.getInt(DbQueryConstants.complaints_count.name()));
         return userComplaints;
     }

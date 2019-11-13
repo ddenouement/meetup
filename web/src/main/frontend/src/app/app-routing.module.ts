@@ -24,6 +24,9 @@ import {SubscribeComponent} from "./subscribe/subscribe.component";
 import {ActicleListComponent} from "./article-list/acticle-list.component";
 import {AdminBagesComponent} from "./admin-bages/admin-bages.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
+import {UserComplaintsComponent} from "./user-complaints/user-complaints.component";
+import {ForbiddenComponent} from "./forbidden/forbidden.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -49,9 +52,13 @@ const routes: Routes = [
   {path: 'meetup-list', component: MeetupListComponent},
   {path: 'article-list', component: ActicleListComponent},
   {path: 'meetup-profile/:meetupId', component: MeetupProfileComponent},
+  {path: 'user-complaints/:userId', component: UserComplaintsComponent},
   {path: 'subscriptions', component: SubscribeComponent},
   {path: 'admin-badges', component: AdminBagesComponent},
   {path: 'notifications', component: NotificationsComponent},
+  {path: 'forbidden', component: ForbiddenComponent},
+  {path: 'not-found', component: NotFoundComponent},
+
 
   // otherwise redirect to home
   {path: '**', redirectTo: ''}

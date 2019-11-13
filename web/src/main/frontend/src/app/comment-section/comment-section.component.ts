@@ -11,6 +11,7 @@ import {CommentDto} from "../models/commentDto";
 import {ActivatedRoute, Router} from '@angular/router';
 import {Comment} from '../models/comment'
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-comment-section',
@@ -21,6 +22,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class CommentSectionComponent implements OnChanges, OnInit {
   articleId: number;
   authorId: number;
+  isAdmin = false;
+  adminLogin = "admin";
   currentUserLogin: string;
   @Input() article_author_id1: number;
   @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
@@ -33,7 +36,7 @@ export class CommentSectionComponent implements OnChanges, OnInit {
   showEmojiPicker: boolean;
 
 
-  constructor(private snackBar: MatSnackBar, private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UserService,private snackBar: MatSnackBar, private serv: Commentsectionservice, private route: ActivatedRoute, private router: Router) {
     this.comments = new Array<CommentDto>();
   }
 
@@ -44,6 +47,11 @@ this.isAddDisabledButton = false;
     this.route.params.subscribe(params => {
 
       this.articleId = +params['articleId'];//from this route
+      this.userService.getUserLogin().subscribe(res=>{
+        if( this.adminLogin === res){
+          this.isAdmin = true;
+        }
+      });
       this.loadComments();
       this.refreshData();
     });

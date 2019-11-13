@@ -49,6 +49,7 @@ export class ArticlesService {
       })
     })
   }
+
   deleteArticle(articleId: number){
     return this.http.delete(this.deleteActicleAdminUrl + articleId);
 

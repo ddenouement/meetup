@@ -18,11 +18,12 @@ export class MeetupProfileComponent implements OnInit {
   meetup: MeetupDto;
   private meetupId: string;
   private userId: number;
-  private meetingsSub: Subscription;
+  joinedCount : number;
   isLoading = false;
   isAutor = false;
   joinText = "JOIN";
   joined = false;
+  private meetupSub: Subscription;
 
   constructor(public meetupService: MeetupsService,public userService: UserService,  public route: ActivatedRoute) {
   }
@@ -35,7 +36,6 @@ export class MeetupProfileComponent implements OnInit {
           this.userId = res;
         });
         this.meetupService.getMeetup(+this.meetupId)
-        // this.meetingsSub = this.meetupService.getMeetupJoinedUpdateListener()
           .subscribe(meetupData =>{
           this.isLoading = false;
           this.meetup = meetupData.meetup;
@@ -49,23 +49,36 @@ export class MeetupProfileComponent implements OnInit {
             this.isAutor = true;
           }
         });
+        this.isLoading = true;
+        this.meetupService.getJoinedCount(+this.meetupId);
+        this.meetupSub = this.meetupService.getMeetupJoinedUpdateListener()
+        .subscribe(count =>{
+          this.isLoading = false;
+          this.joinedCount = count;
+        });
       }
     });
   }
   onJoin(){
     this.isLoading = true;
     if (!this.joined) {
-      this.meetupService.joinMeetup(+this.meetupId).subscribe(res => {
+      this.isLoading = true;
+      this.meetupService.joinMeetup(+this.meetupId).subscribe( res=>{
         this.isLoading = false;
         this.joined = true;
         this.joinText = 'LEAVE';
+        this.meetupService.getJoinedCount(+this.meetupId);
+
       });
     } else {
-        this.meetupService.leaveMeetup(+this.meetupId).subscribe(res => {
+      this.isLoading = true;
+      this.meetupService.leaveMeetup(+this.meetupId).subscribe(res => {
         this.isLoading = false;
         this.joined = false;
         this.joinText = 'JOIN';
-      });
+          this.meetupService.getJoinedCount(+this.meetupId);
+
+        });
     }
   }
 

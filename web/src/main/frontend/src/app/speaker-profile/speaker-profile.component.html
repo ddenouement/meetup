@@ -1,6 +1,7 @@
 <app-sidebar></app-sidebar>
 <main>
-  <div class="content">
+  <mat-spinner *ngIf="loading"></mat-spinner>
+  <div class="content" *ngIf="!loading">
     <form (ngSubmit)="onSubmit()" [formGroup]="changeForm">
       <div class="user__personal personal-active">
         <div class="user__change">
@@ -86,24 +87,66 @@
     </form>
 
     <mat-tab-group>
-      <mat-tab label="Created Meetups">
-        <mat-accordion multi="true" *ngIf="speakerMeetups.length > 0">
-          <mat-expansion-panel *ngFor="let meetup of speakerMeetups">
-            <mat-panel-title>
-              {{ meetup.title }}
-            </mat-panel-title>
-            <mat-panel-description>
-              {{ meetup.startDate }}
-            </mat-panel-description>
-            <p>{{ meetup.description }}</p>
+      <mat-tab label="Created Future Meetups">
+        <mat-accordion multi="true" *ngIf="speakerFutureMeetups.length > 0 && !loading">
+        <mat-expansion-panel *ngFor="let meetup of speakerFutureMeetups">
+          <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+          </mat-panel-title>
+          <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+          </mat-expansion-panel-header>
             <mat-action-row>
-              <a mat-button color="primary" [routerLink]="['/meetup-edit', meetup.id]">EDIT</a>
+            <a mat-button color="primary" [routerLink]="['/meetup-edit', meetup.id]">EDIT</a>
+              <a mat-button color="danger">CANCEL</a>
+            </mat-action-row>
+        </mat-expansion-panel>
+        </mat-accordion>
+      </mat-tab>
+      <mat-tab label="Hosted Past Meetups">
+        <mat-accordion multi="true" *ngIf="speakerPastMeetups.length > 0 && !loading">
+        <mat-expansion-panel *ngFor="let meetup of speakerPastMeetups">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+            </mat-panel-title>
+            <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-action-row>
+            <a mat-button color="danger" *ngIf="meetup.stateId === terminated.id ">{{terminated.true}}</a>
+
+          </mat-action-row>
+        </mat-expansion-panel>
+        </mat-accordion>
+      </mat-tab>
+      <mat-tab label="Future Joined Meetups">
+        <mat-accordion multi="true" *ngIf="userFutureMeetups.length > 0 && !loading">
+          <mat-expansion-panel *ngFor="let meetup of userFutureMeetups">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+              </mat-panel-title>
+              <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-action-row>
+              <a mat-button color="primary" (click)="onLeave(meetup.id)">LEAVE</a>
             </mat-action-row>
           </mat-expansion-panel>
         </mat-accordion>
       </mat-tab>
-      <mat-tab label="Joined Meetups"> Content 2 </mat-tab>
+      <mat-tab label="Past Joined Meetups">  <mat-accordion multi="true" *ngIf="userPastMeetups.length > 0 && !loading">
+        <mat-expansion-panel *ngFor="let meetup of userPastMeetups">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ meetup.startDate | date:'mediumDate'}}, {{ meetup.startDate | date:'shortTime' }}
+            </mat-panel-title>
+            <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
+      </mat-tab>
     </mat-tab-group>
+
   </div>
 
 </main>

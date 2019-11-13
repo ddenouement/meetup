@@ -147,6 +147,14 @@ public interface IMeetupDAO {
      */
     List<User> getUsersOnMeetup(int meetupId);
 
+    /**
+     * Get number of joined users on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return int count of users
+     */
+    int getJoinedUsersCount(int meetupId);
+
     List<Meetup> getSpeakerMeetupsAllHosted(int speakerID);
 
     /**

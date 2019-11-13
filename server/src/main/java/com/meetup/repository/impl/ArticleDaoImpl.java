@@ -23,6 +23,7 @@ import com.meetup.utils.constants.DbQueryConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -149,9 +150,14 @@ public class ArticleDaoImpl implements IArticleDAO {
     public ArticleDisplayDTO findArticleByID(final int articleID) {
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue(id.name(), articleID);
-        return this.template
-            .queryForObject(findArticleByID, param,
-                new ArticleDisplayDTOMapper());
+        try {
+            return this.template
+                .queryForObject(findArticleByID, param,
+                    new ArticleDisplayDTOMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
+
     }
 
     /**

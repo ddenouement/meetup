@@ -136,6 +136,68 @@ public class MeetupController {
         return new ResponseEntity<>(
             meetupService.getSpeakerMeetups(speakerID), HttpStatus.OK);
     }
+    /**
+     * Retrieve meetups of speaker.
+     *
+     * @param speakerID Speaker ID.
+     * @return Response entity with list of meetups.
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/meetups/speakers/{id}/future")
+    public ResponseEntity<List<Meetup>> getSpeakerFutureMeetups(
+        @PathVariable("id") final int speakerID) {
+        return new ResponseEntity<>(
+            meetupService.getHostedMeetupsFuture(speakerID), HttpStatus.OK);
+    }
+    /**
+     * Retrieve meetups of speaker.
+     *
+     * @param speakerID Speaker ID.
+     * @return Response entity with list of meetups.
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/meetups/speakers/{id}/past")
+    public ResponseEntity<List<Meetup>> getSpeakerPastMeetups(
+        @PathVariable("id") final int speakerID) {
+        return new ResponseEntity<>(
+            meetupService.getHostedMeetupsPast(speakerID), HttpStatus.OK);
+    }
+    /**
+     * Retrieve meetups of user.
+     *
+     * @param token JSON web token.
+     * @return Response entity with list of meetups.
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/user/meetups/past")
+    public ResponseEntity<List<Meetup>> getUserJoinedPastMeetups(
+            @CookieValue("token") final String token) {
+        int userId = loginValidatorService.extractId(token);
+        return new ResponseEntity<>(
+            meetupService.getJoinedMeetupsPast(userId), HttpStatus.OK);
+    }
+    /**
+     * Retrieve meetups of user.
+     *
+     * @param token JSON web token.
+     * @return Response entity with list of meetups.
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+        + "T(com.meetup.utils.Role).SPEAKER, "
+        + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping(value = "/user/meetups/future")
+    public ResponseEntity<List<Meetup>> getUserJoinedFutureMeetups(
+            @CookieValue("token") final String token) {
+        int userId = loginValidatorService.extractId(token);
+        return new ResponseEntity<>(
+            meetupService.getJoinedMeetupsFuture(userId), HttpStatus.OK);
+    }
 
     /**
      * Create meetup.
@@ -280,6 +342,20 @@ public class MeetupController {
         userService.rateMeetup(meetupID, userLogin, feedback);
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    /**
+     * Get number of joined users on meetup.
+     *
+     * @param meetupId Meetup ID
+     * @return int count of users
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
+            + "T(com.meetup.utils.Role).SPEAKER, "
+            + "T(com.meetup.utils.Role).LISTENER)")
+    @GetMapping("/meetups/users/{id}")
+    public int getJoinedUsersCount(@PathVariable("id") final int meetupId) {
+        return meetupService.getJoinedUsersCount(meetupId);
     }
 
 }

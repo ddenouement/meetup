@@ -229,4 +229,18 @@ public class UserController {
                 userService.getSimpleSubscribersOfSpeaker(speakerID);
         return ok(result_users);
     }
+    /**
+     * .
+     *@param userId user id
+     * @return List of complaints to user
+     */
+    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN)")
+    @GetMapping(value = "/users/{id}/complaints")
+    public ResponseEntity<List<ComplaintDTO>> getComplaintsToUser(@PathVariable("id") final int userId) {
+        List<ComplaintDTO> result_complaints =
+                userService.getComplaintsToUser(userId);
+        return ok(result_complaints);
+    }
+
+
 }

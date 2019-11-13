@@ -1,7 +1,7 @@
 
 <div class="comments-container-outer">
 
-<div class="add-comment-section">
+<div class="add-comment-section" *ngIf="!isAdmin">
    <button type="button" class="toggle-emoji" (click)="toggleEmojiPicker()"><i-feather name="smile"></i-feather></button>
   <input  type="text" maxlength="200" [(ngModel)]="text" class="input_comment"  />
   <input type="button" value="Comment" class="addbtn btn_my" [disabled]="!text || isAddDisabledButton" (click)="addComment()" />

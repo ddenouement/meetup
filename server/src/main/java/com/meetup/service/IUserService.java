@@ -119,6 +119,13 @@ public interface IUserService {
     List<ComplaintDTO> getAllNotReadComplaints();
 
     /**
+     * .
+     *@param id user id
+     * @return List of complaints to user
+     */
+    List<ComplaintDTO> getComplaintsToUser(int id);
+
+    /**
      * Convert login -> id, convert date in long format -> Date exemplar and
      * pass it to DAO
      *

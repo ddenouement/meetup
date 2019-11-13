@@ -1,1 +1,38 @@
-<p>filters-panel works!</p>
+<div class="row">
+<div class="col-xs-12 col-12 col-md-4 form-group">
+  <mat-form-field>
+    <mat-label>Language</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let i of [1,2,3]" [value]="i.value">
+        {{i}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+  <div class="col-xs-12 col-12 col-md-4 form-group">
+  <mat-form-field>
+    <mat-label>Topic</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let i of [1,2,3]" [value]="i.value">
+        {{i}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+  <div class="col-xs-12 col-12 col-md-4 form-group">
+    <mat-form-field>
+      <mat-label>Topic</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let i of [1,2,3]" [value]="i.value">
+          {{i}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+<div class="col-xs-12 col-12 col-md-4 form-group">
+  <input type="text"
+         placeholder="Daterangepicker"
+         class="form-control"
+         bsDaterangepicker >
+</div>
+</div>

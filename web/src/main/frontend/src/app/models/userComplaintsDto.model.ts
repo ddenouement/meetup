@@ -4,5 +4,6 @@ export interface UserComplaintsDto {
   email : string;
   firstName: string;
   lastName : string;
+  active : boolean;
   complaintsCount : number;
 }
