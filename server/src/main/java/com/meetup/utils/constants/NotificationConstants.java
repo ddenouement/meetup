@@ -1,7 +1,6 @@
 package com.meetup.utils.constants;
 
 import java.time.format.DateTimeFormatter;
-import org.springframework.context.annotation.PropertySource;
 
 public final class NotificationConstants {
 
@@ -84,17 +83,6 @@ public final class NotificationConstants {
     public static final String LEAVE_FEEDBACK_MESSAGE =
         "Please leave your feedback for meetup " + MEETUP_TITLE_PLACEHOLDER
             + " " + LINK + ".";
-    /**
-     * Message for notification of type PROFILE_DEACTIVATED.
-     */
-    public static final String PROFILE_DEACTIVATED_MESSAGE =
-        "Unfortunately, your profile has been deactivated by admin.";
-    /**
-     * Message for notification of type PROFILE_ACTIVATED.
-     */
-    public static final String PROFILE_ACTIVATED_MESSAGE =
-        "Your profile has been activated by admin.";
-
     /**
      * Message in notification for cancelled meetup.
      */
