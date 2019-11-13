@@ -12,12 +12,15 @@ import {MatSnackBar} from "@angular/material";
 export class NotificationsComponent implements OnInit {
 
   notifications: Notification[] = [];
+  isLoading = false;
 
   constructor(public notificationsService: NotificationsService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    isLoading = true;
     this.notificationsService.getAll().subscribe((res: Notification[]) => {
       this.notifications = res;
+      isLoading = false;
     }, error => {
       this.snackBar.open('Error loading notifications');
     });
