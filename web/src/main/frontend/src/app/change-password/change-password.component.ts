@@ -32,8 +32,8 @@ export class ChangePasswordComponent implements OnInit {
 
   public changePass(): void {
     const pass = <ChangePass>{
-      currPass: this.changeForm.get('currPass').value,
-      password: this.passwordComponentWithConfirmation.password
+      oldPassword: this.changeForm.get('currPass').value,
+      newPassword: this.passwordComponentWithConfirmation.password
     };
     this.loading = true;
     this.changeForm.controls['currPass'].disable();

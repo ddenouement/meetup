@@ -1,4 +1,4 @@
 export interface ChangePass {
-  currPass: string;
-  password: string;
+  oldPassword: string;
+  newPassword: string;
 }

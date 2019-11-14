@@ -169,7 +169,6 @@ import {MatDialogModule} from "@angular/material/dialog";
     OwlDateTimeModule,
     TimepickerModule,
     MatSnackBarModule,
-    NgxNumberSpinModule,
     MatDialogModule,
   ],
   exports: [MatBadgeModule],
