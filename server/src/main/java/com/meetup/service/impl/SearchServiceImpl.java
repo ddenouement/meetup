@@ -30,8 +30,8 @@ public class SearchServiceImpl implements ISearchService {
 
     }
     @Override
-    public  List<MeetupDisplayDTO> getMeetups(final Filter filter) {
-             List<MeetupDisplayDTO> meetups =  searchDao.getMeetups(filter);
+    public  List<MeetupDisplayDTO> getMeetups(final Filter filter,Integer offset, Integer limit) {
+             List<MeetupDisplayDTO> meetups =  searchDao.getMeetups(filter, offset, limit);
          return meetups;
     }
 

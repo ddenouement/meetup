@@ -16,7 +16,7 @@ public interface ISearchDAO {
      * @param filter custom Filter from frontend.
      * @return List of matched meetups
      */
-    List<MeetupDisplayDTO> getMeetups(Filter filter) ;
+    List<MeetupDisplayDTO> getMeetups(Filter filter, Integer offset, Integer limit) ;
 
     /**
      * .
@@ -34,4 +34,6 @@ public interface ISearchDAO {
      * @return List of Filters
      */
     List<Filter> getFilters(int userId);
+
+    int getAllMeetupsCount(Filter filter);
 }
