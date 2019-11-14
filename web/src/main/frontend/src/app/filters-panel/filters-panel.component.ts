@@ -7,6 +7,7 @@ import {Filter} from "../models/filter.model";
 import {FilterService} from "../services/filter.service";
 import {MatDialog} from "@angular/material/dialog";
 import {FilterDialogComponent} from "../filter-dialog/filter-dialog.component";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-filters-panel',
@@ -25,6 +26,7 @@ export class FiltersPanelComponent implements OnInit {
   rateFrom = 0;
   rateTo = 0;
   language: LanguagesList;
+  private filtersSub: Subscription;
   @Output() filterEvent = new EventEmitter<Filter>();
 
 
@@ -48,6 +50,10 @@ export class FiltersPanelComponent implements OnInit {
     this.meetupService.getTopics().subscribe(topicsData=>{
       this.topicsList = topicsData;
     });
+    this.filterService.getUserFilters();
+    this.filtersSub = this.filterService.getUserFiltersListener().subscribe(filtersData=>{
+      this.filtersList = filtersData.filters;
+    })
   }
 
   onApply(){

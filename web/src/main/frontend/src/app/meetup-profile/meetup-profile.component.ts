@@ -40,6 +40,7 @@ export class MeetupProfileComponent implements OnInit {
           .subscribe(meetupData =>{
           this.isLoading = false;
           this.meetup = meetupData.meetup;
+          this.meetupDate = meetupData.meetup.startDate;
           // this.meetupDate = this.convertUTCDateToLocalDate(meetupData.meetup.startDate);
           // this.meetup.startDate.setDate(this.meetup.)
           this.joined = meetupData.ifJoinedMeetup;

@@ -2,7 +2,7 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <main *ngIf="!isLoading">
   <mat-card class="header">
-    <mat-card-subtitle>{{meetup.startDate | date: 'fullDate'}}</mat-card-subtitle>
+    <mat-card-subtitle>{{meetupDate | date: 'fullDate'}}</mat-card-subtitle>
     <mat-card-title class="mat-display-1 title">{{meetup.title}}</mat-card-title>
     <mat-card-subtitle class="mat-h2 detailSpeaker">Created by </mat-card-subtitle>
     <mat-card-subtitle class="mat-h2 speaker"> {{meetup.speaker.firstName}} {{meetup.speaker.lastName}}</mat-card-subtitle>
@@ -11,9 +11,8 @@
   <mat-card class="info">
     <mat-icon>access_time</mat-icon> <mat-card-subtitle>{{meetupDate | date: 'fullDate'}} at {{meetupDate | date: 'shortTime'}}</mat-card-subtitle>
     <br>
-    <p><mat-icon>language</mat-icon> <mat-card-subtitle>{{meetup.language.name}}</mat-card-subtitle></p>
-    <br>
-    <p><mat-icon>speaker_notes</mat-icon><mat-card-subtitle>{{meetup.topic.name}}</mat-card-subtitle></p>
+    <mat-icon>language</mat-icon> <mat-card-subtitle>{{meetup.language.name}}</mat-card-subtitle>
+    <mat-icon>speaker_notes</mat-icon><mat-card-subtitle>{{meetup.topic.name}}</mat-card-subtitle>
     <br>
     <mat-icon>supervisor_account</mat-icon><mat-card-subtitle>{{joinedCount}} / {{meetup.maxAttendees}} joined</mat-card-subtitle>
 

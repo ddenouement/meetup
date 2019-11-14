@@ -48,9 +48,11 @@ export class MeetupListComponent implements OnInit, OnDestroy{
 
   receiveFilter($event){
     this.filter = $event;
-    this.filterService.getMeetups(this.filter).subscribe(meetupsData =>{
-      this.filteredMeetups = meetupsData;
-    })
+    // this.meetupsService.getMeetups(this.filter,this.meetupsPerPage, this.currentPage).subscribe(meetupsData =>{
+    //   this.isLoading=false;
+    //   this.meetups = meetupsData.meetups;
+    //   this.totalMeetups = meetupsData.meetupCount;
+    // });
 
   }
   //remove subscription and prevent memory leaks
