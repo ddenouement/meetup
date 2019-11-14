@@ -44,6 +44,10 @@ public class SearchServiceImpl implements ISearchService {
     public List<Filter> getFilters(int userId) {
        return searchDao.getFilters(userId);
     }
+    @Override
+    public int getAllMeetupsCount(Filter fil){
+        return searchDao.getAllMeetupsCount(fil);
+    }
 
 
 }
