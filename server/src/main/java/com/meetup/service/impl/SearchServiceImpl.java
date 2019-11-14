@@ -37,12 +37,12 @@ public class SearchServiceImpl implements ISearchService {
 
     @Override
     public Filter createFilter(Filter filter, int userID) {
-        return searchDao.saveFilterToCurrentUser(filter, userID);
+        return searchDao.saveFilter(filter, userID);
     }
 
     @Override
     public List<Filter> getFilters(int userId) {
-       return searchDao.getUserFiltersSaved(userId);
+       return searchDao.getFilters(userId);
     }
 
 

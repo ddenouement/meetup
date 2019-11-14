@@ -69,6 +69,7 @@ public enum DbQueryConstants {
     rate_from,
     rate_to,
     complaints_count,
-    author_login;
-
-    }
+    author_login,
+    time_to,
+    time_from, title_substring, id_user_param;
+}

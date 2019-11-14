@@ -83,13 +83,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .frameOptions()
                 .disable()//this one to enable /h2 console in browser
                 .and().httpBasic().disable()
-        //        .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
+            //    .csrf().disable()//TODO it is disabled for testing in postman (erase when application is ready!)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
         //TODO un-comment to enable CSRF
-                   .and()
+                  .and()
                      .csrf()
                 .ignoringAntMatchers("/user/login", "/", "/user/logout",  "/api/v1/user/login","/api/v1/user/logout")
                 .csrfTokenRepository (this.getCsrfTokenRepository());
