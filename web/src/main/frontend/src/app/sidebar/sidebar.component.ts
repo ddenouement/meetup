@@ -205,8 +205,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
         // Subscribe to its stream (to listen on messages)
         this.messagingService.stream().subscribe((message: Message) => {
-          this.notificationCount = +message.body;
-          this.snackBar.open("New notification!");
+          let count = +message.body;
+          if (count > this.notificationCount) {
+            this.snackBar.open("New notification!");
+          }
+          this.notificationCount = count;
         });
       }
     );
