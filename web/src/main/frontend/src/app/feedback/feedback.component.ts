@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
 import DateTimeFormat = Intl.DateTimeFormat;
 import {Feedback} from "../models/feedback.model";
-import {Router} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {error} from "util";
 
 @Component({
@@ -19,15 +19,18 @@ export class FeedbackComponent implements OnInit {
   rate: number;
   feedback: string;
   public enable = false;
-  //TODO remove hardcode
-  private feedbackURL = '/api/v1/rate/meetups/{id}';
+  private feedbackURL = '/api/v1/user/rate/meetups/';
+  private id: number;
+  loading = false;
 
   constructor(private httpClient: HttpClient,
               private formBuilder: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+
     this.feedbackForm = this.formBuilder.group({
       feedback: [''],
     });
@@ -38,29 +41,32 @@ export class FeedbackComponent implements OnInit {
   }
 
   public send(): void {
+    this.loading = true;
     const userFeedback = <Feedback>{
       rate: this.rate,
       feedback: this.feedbackForm.get('feedback').value,
     };
-
-    this.httpClient.post(this.feedbackURL, userFeedback).subscribe(
-      res=>{
-        this.router.navigate(['/speaker-profile']);
-      },
-      error =>{
-        console.warn('ERROR in feedback');
-        console.warn(error);
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('meetupId')) {
+        this.id = +paramMap.get('meetupId');
+        this.httpClient.post(this.feedbackURL+this.id, userFeedback).subscribe(
+          res => {
+            this.router.navigate(['/']);
+          },
+          error => {
+            this.loading = false;
+            console.warn('ERROR in feedback');
+            console.warn(error);
+          }
+        )
       }
-    )
+    });
+
   }
 
   onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
     this.enable = true;
     this.rate = $event.newValue;
-    alert(`Old Value:${$event.oldValue}, 
-      New Value: ${$event.newValue}, 
-      Checked Color: ${$event.starRating.checkedcolor}, 
-      Unchecked Color: ${$event.starRating.uncheckedcolor}`);
   }
 
 }

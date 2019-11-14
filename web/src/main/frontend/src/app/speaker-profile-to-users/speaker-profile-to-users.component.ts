@@ -9,22 +9,22 @@ import {SpeakerProfileToUsersService} from "./speaker-profile-to-users.service";
   styleUrls: ['./speaker-profile-to-users.component.scss']
 })
 export class SpeakerProfileToUsersComponent implements OnInit {
-  languages: LanguagesList [];
-  public badgeList: string[] = [];
-  public firstName: string;
-  public lastName: string;
-  public login: string;
-  public email: string;
-  public about: string;
+  private languages: LanguagesList [];
+  private badgeList: string[] = [];
+  private firstName: string;
+  private lastName: string;
+  private login: string;
+  private email: string;
+  private about: string;
   private langList: string[] = [];
   private subscribeToIdsList: number[] = [];
   private speakerId: string;
-  public star: number;
-  subscribe = true;
-  unsubscribe = false;
-  subscribeText = 'SUBSCRIBE';
-  loading= false;
-  load= false;
+  private star: number;
+  private subscribe = true;
+  private unsubscribe = false;
+  private subscribeText = 'SUBSCRIBE';
+  private loading= false;
+  private load= false;
 
   constructor(public speakerService: SpeakerProfileToUsersService, public route: ActivatedRoute) {
   }

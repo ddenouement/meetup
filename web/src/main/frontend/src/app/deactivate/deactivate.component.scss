@@ -1,0 +1,59 @@
+@import "src/app/scss-helpers/mixins";
+
+$color_1: #2A74DB;
+$color_2: #000000;
+$font_family_1: "Exo 2", sans-serif;
+
+main {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 100vw;
+}
+
+.ellipse {
+  z-index: -100;
+  margin-top: 300px;
+  position: absolute;
+}
+
+@include for-tablet-landscape-up {
+  .ellipse {
+    margin-top: 230px;
+  }
+}
+
+.verify_headline {
+  font-family: $font_family_1;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 60px;
+  text-align: center;
+  letter-spacing: 0.4px;
+  color: $color_1;
+  margin-top: 320px;
+}
+
+@include for-tablet-landscape-up {
+  .verify_headline {
+    margin-top: 240px;
+    font-size: 45px;
+  }
+}
+
+@include for-phone-only {
+  .verify_headline {
+    font-size: 33px;
+  }
+}
+
+@include for-mini-phone {
+  .verify_headline {
+    line-height: inherit;
+  }
+}
+

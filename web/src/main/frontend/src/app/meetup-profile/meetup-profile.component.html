@@ -9,7 +9,7 @@
   </mat-card>
 
   <mat-card class="info">
-    <mat-icon>access_time</mat-icon> <mat-card-subtitle>{{meetup.startDate | date: 'fullDate'}} at {{meetup.startDate | date: 'shortTime'}}</mat-card-subtitle>
+    <mat-icon>access_time</mat-icon> <mat-card-subtitle>{{meetupDate | date: 'fullDate'}} at {{meetupDate | date: 'shortTime'}}</mat-card-subtitle>
     <p><mat-icon>language</mat-icon> <mat-card-subtitle>{{meetup.language.name}}</mat-card-subtitle></p>
     <p><mat-icon>speaker_notes</mat-icon><mat-card-subtitle>{{meetup.topic.name}}</mat-card-subtitle></p>
     <mat-icon>supervisor_account</mat-icon><mat-card-subtitle>{{joinedCount}} / {{meetup.maxAttendees}} joined</mat-card-subtitle>

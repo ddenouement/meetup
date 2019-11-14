@@ -22,6 +22,8 @@ public final class EmailServiceConstants {
 
     public static final String TOKEN_LOGIN = "TOKEN_LOGIN";
 
+    public static final String TOKEN_FEEDBACK = "TOKEN_FEEDBACK";
+
     public static final String TOKEN_PASSWORD = "TOKEN_PASSWORD";
 
     public static final String FROM_EMAIL = "meetupplus77";
@@ -31,6 +33,9 @@ public final class EmailServiceConstants {
     public static final String WELCOME_SUBJECT = "WELCOME TO MEETUP";
 
     public static final String CHANGE_PASSWORD_SUBJECT = "CHANGE PASSWORD ON MEETUP";
+
+
+    public static final String DEACTIVATE_USER_SUBJECT = "ACTIVATION ACCOUNT ON MEETUP";
 
     public static final String REGISTER_BODY = "<h1>Hello my friend</h1>\n" +
         "<p>Thank you for registering at <a href=\"https://app-meetup.herokuapp.com\">MeetUp</a>\n" +
@@ -44,11 +49,17 @@ public final class EmailServiceConstants {
         "<p>Your login credentials:\n" +
         "<p style=\"margin-left: 10px;\"> https://app-meetup.herokuapp.com/change-password\n"
         +
-        "<p style=\"margin-left: 10px;\"> login: TOKEN_LOGIN\n" +
+        "<p style=\"margin-left: 10px;\"> login: TOKEN_FEEDBACK\n" +
         "<p style=\"margin-left: 10px;\"> password: TOKEN_PASSWORD\n"
         +
         "<p>Hugs!\n" +
         "<p>Oleg from MeetUp\n";
+
+    public static final String DEACTIVATE_USER_BODY = "<h1>Hello my friend</h1>\n" +
+            "<p>Your account TOKEN_LOGIN is blocked:\n" +
+            "<p>TOKEN_FEEDBACK" +
+            "<p>Hugs!\n" +
+            "<p>Oleg from MeetUp\n";
 
     public static final String ALPHANUMERIC_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         + "0123456789"

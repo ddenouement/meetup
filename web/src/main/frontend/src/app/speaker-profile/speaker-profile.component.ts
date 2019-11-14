@@ -29,19 +29,23 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class SpeakerProfileComponent implements OnInit {
 
-  changeForm: FormGroup;
-  public loading = false;
-  matcher = new MyErrorStateMatcher();
-  languages: LanguagesList [];
-  selectedLanguages: LanguagesList [];
-  public speakerId: number;
-  public badgeList: string[] = [];
-  public langListNames: string[] = [];
-  public firstName: string;
-  public lastName: string;
-  public login: string;
-  public email: string;
-  public about: string;
+  private changeForm: FormGroup;
+  private loading = false;
+  private matcher = new MyErrorStateMatcher();
+  private languages: LanguagesList [];
+  private selectedLanguages: LanguagesList [];
+  private speakerId: number;
+  private badgeList: string[] = [];
+  private langListNames: string[] = [];
+  private firstName: string;
+  private lastName: string;
+  private login: string;
+  private email: string;
+  private about: string;
+  private star: number;
+  private edited = false;
+  private selected: any;
+  private load= false;
 
   speakerFutureMeetups:Meetup[] = [];
   private meetupFutureSub: Subscription;
@@ -50,10 +54,7 @@ export class SpeakerProfileComponent implements OnInit {
   userFutureMeetups:Meetup[] = [];
   private userMeetupFutureSub: Subscription;
   userPastMeetups:Meetup[] = [];
-  star: number;
-  edited = false;
-  selected: any;
-  load= false;
+
   terminated = {
     id: 6,
     true: "TERMINATED"

@@ -13,6 +13,13 @@ import java.util.List;
 public interface IUserService {
 
     /**
+     * Find user by his/her id.
+     * @param userId id of user to find
+     * @return user with specified id
+     */
+    User findUserById(int userId);
+
+    /**
      * .
      *
      * @param user User
@@ -216,5 +223,7 @@ public interface IUserService {
      */
 
     void sendNewPassword(String email);
+
+    void sendActivationEmail(String email, String text);
 }
 

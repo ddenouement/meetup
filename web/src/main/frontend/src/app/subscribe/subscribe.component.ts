@@ -9,15 +9,9 @@ import {SubscribeService} from "./subscribe.service";
   styleUrls: ['./subscribe.component.scss']
 })
 export class SubscribeComponent implements OnInit {
-  users: UserToSubscribe [] = [];
+  private users: UserToSubscribe [] = [];
 
-  public id: number;
-  public firstName: string;
-  public lastName: string;
-  public login: string;
-  public star: number;
-
-  constructor(private httpClient: HttpClient,public subscribeService: SubscribeService,) { }
+  constructor(public subscribeService: SubscribeService,) { }
 
   ngOnInit() {
     this.subscribeService.getUsers().subscribe((res: { users: UserToSubscribe[] })=>{

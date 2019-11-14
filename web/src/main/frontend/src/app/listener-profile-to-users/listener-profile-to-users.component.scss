@@ -1,3 +1,5 @@
+@import "src/app/scss-helpers/mixins";
+
 $color_1: #35373B;
 $color_2: #546087;
 $color_3: #fff;
@@ -248,7 +250,7 @@ header {
   padding-top: 12px;
 }
 
-@media (max-width: 900px) {
+@include for-tablet-landscape-up {
   .content {
     margin-left: 4px;
     margin-right: 4px;
@@ -259,7 +261,7 @@ header {
   }
 }
 
-@media (max-width: 620px) {
+@include for-phone-only {
   form {
     padding-top: 10px;
     margin-left: 10%;
@@ -284,7 +286,7 @@ header {
   }
 }
 
-@media (max-width: 460px) {
+@include for-mini-phone {
   .form__button {
     align-self: center;
   }

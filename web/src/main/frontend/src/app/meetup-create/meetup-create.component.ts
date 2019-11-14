@@ -49,7 +49,8 @@ export class MeetupCreateComponent implements OnInit {
   time : Date;
   date : Date;
   startDate : Date;
-
+  minAtt : number;
+  errorText: string;
 
   constructor(public meetupService: MeetupsService,
               private router: Router,
@@ -71,7 +72,6 @@ export class MeetupCreateComponent implements OnInit {
       time: new FormControl(this.minDate, [Validators.required]),
       date: new FormControl( null ),
     });
-
     this.route.paramMap.subscribe((paramMap: ParamMap)=>{
       if(paramMap.has('meetupId')){
         this.mode = 'edit';
@@ -109,8 +109,10 @@ export class MeetupCreateComponent implements OnInit {
 
   onSaveMeetup(){
     if (this.form.invalid){
+
       return;
     }
+
     this.isLoading = true;
     this.time = this.form.get('time').value;
     this.date = this.form.get('date').value;

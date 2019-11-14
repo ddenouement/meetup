@@ -1,0 +1,154 @@
+@import "src/app/scss-helpers/mixins";
+
+$color_1: #322b6b;
+$color_2: #222428;
+$color_3: #fff;
+$color_4: #991006;
+$font_family_1: "Roboto", sans-serif;
+$font_family_2: "Exo 2", sans-serif;
+$background_color_1: #0AD69C;
+$background_color_2: #fbb1b1;
+$background_color_7: #d6440c;
+/*----------------------------------------header----------------------------------------*/
+.content {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 30px rgba(153, 163, 174, 0.06);
+  border-radius: 4px;
+  margin: 62px 64px 0 148px;
+  height: 75vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: #fdfeff;
+    mix-blend-mode: normal;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d7dce9;
+    border-radius: 6px;
+  }
+}
+
+form {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top: 10px;
+}
+
+.form__headline {
+  font-family: $font_family_2;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: 0.4px;
+  color: $color_1;
+  margin-bottom: 25px;
+}
+
+@include for-tablet-landscape-up {
+  .content {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+  form {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+
+@include for-phone-only {
+  form {
+    padding-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: -20px 20px 20px 0px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12) !important;
+}
+
+.block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user__link {
+  color: #322b6b !important;
+  cursor: pointer;
+
+  &:hover {
+    color: #00af02 !important;
+  }
+}
+
+.form__input {
+  font-family: $font_family_1;
+  height: 80px;
+  margin-bottom: 24px;
+  width: 400px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.speakerName {
+  padding-top: 5px;
+}
+
+.cardListItem {
+  margin-bottom: 20px;
+}
+
+.deactivate__user {
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 0px 19px 20px 0px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  margin: 50px 20px 0;
+}
+
+
+.form__textarea {
+  resize: none;
+  height: 60px;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: #fdfeff;
+    mix-blend-mode: normal;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d7dce9;
+    border-radius: 6px;
+  }
+}
+
+.activate {
+  align-self: center;
+  height: 40px;
+  background-color: $background_color_1;
+  font-family: $font_family_2;
+  color: $color_3;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.deactivate {
+  align-self: center;
+  height: 40px;
+  background-color: $background_color_7;
+  font-family: $font_family_2;
+  color: $color_3;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+}

@@ -1,12 +1,14 @@
-$color_1: #322b6b;
-$color_2: #222428;
+@import "src/app/scss-helpers/mixins";
+
+$color_5: #322b6b;
+$color_6: #222428;
 $color_3: #fff;
-$color_4: #991006;
+$color_7: #991006;
 $font_family_1: "Roboto", sans-serif;
 $font_family_2: "Exo 2", sans-serif;
 $background_color_1: #0AD69C;
 $background_color_2: #d7dce9;
-$background_color_3: #fbb1b1;
+$background_color_10: #fbb1b1;
 
 main {
   display: flex;
@@ -87,7 +89,7 @@ form {
   font-size: 28px;
   line-height: 34px;
   letter-spacing: 0.4px;
-  color: $color_1;
+  color: $color_5;
   margin-bottom: 25px;
 }
 
@@ -100,7 +102,7 @@ form {
   line-height: 14px;
   letter-spacing: 0.28px;
   margin-top: -10px;
-  color: $color_2;
+  color: $color_6;
 }
 
 .form__group {
@@ -159,8 +161,8 @@ form {
 
 .error {
   padding-top: 5px;
-  background-color: $background_color_3;
-  color: $color_4;
+  background-color: $background_color_10;
+  color: $color_7;
   margin-top: 10px;
   height: auto;
   text-align: center;
@@ -176,7 +178,7 @@ form {
   margin-right: 10px;
 }
 
-@media (max-width: 900px) {
+@include for-tablet-landscape-up {
   .content {
     width: 70%;
   }
@@ -185,7 +187,7 @@ form {
   }
 }
 
-@media (max-width: 620px) {
+@include for-phone-only {
   .content {
     margin-top: 10px;
     width: 80%;
@@ -198,7 +200,7 @@ form {
   }
 }
 
-@media (max-width: 460px) {
+@include for-mini-phone {
   .content {
     margin-top: 10px;
     width: 95%;

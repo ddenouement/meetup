@@ -22,6 +22,7 @@ import com.meetup.utils.constants.EmailServiceConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -30,6 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * . Class for working with users
@@ -74,7 +82,17 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * .
+     * Find user by his/her id.
+     * @param userId id of user to find
+     * @return user with specified id
+     */
+    @Override
+    public User findUserById(final int userId) {
+        return userDao.findUserById(userId);
+    }
+
+    /**
+     * Register listener.
      *
      * @param user User (that has role of listener) to register
      */
@@ -248,9 +266,7 @@ public class UserServiceImpl implements IUserService {
         for (Meetup meetup : meetupDao.getSpeakerMeetupsFuture(id)) {
             meetupService.cancelMeetup(meetup.getId(), id);
         }
-        userDao.deactivateUser(id);
-        notificationService.sendProfileDeactivatedNotification(id);
-        return true;
+        return userDao.deactivateUser(id);
     }
 
     /**
@@ -261,9 +277,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean activateUser(final int id) {
-        userDao.activateUser(id);
-        notificationService.sendProfileActivatedNotification(id);
-        return true;
+        return userDao.activateUser(id);
     }
 
     /**
@@ -479,6 +493,40 @@ public class UserServiceImpl implements IUserService {
                 .replaceAll(EmailServiceConstants.TOKEN_PASSWORD, newPassword);
         sendFromGMail(email,
                 EmailServiceConstants.CHANGE_PASSWORD_SUBJECT,
+                bodyWithPassword);
+    }
+
+
+    /**
+     * Send email to user.
+     *
+     * @param email User email.
+     * @param text  Admin feedback
+     */
+    @Override
+    public void sendActivationEmail(String email, String text) {
+        User user = userDao.findUserByEmail(email);
+        if (user == null) {
+            throw new EmailDoesntExistException();
+        }
+        int userId = user.getId();
+        String userLogin = user.getLogin();
+        String newPassword = generateRandomPassword();
+        changePassword(userId, newPassword);
+        String body = EmailServiceConstants.DEACTIVATE_USER_BODY;
+        String bodyWithLogin = body
+                .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, userLogin);
+        String bodyWithPassword;
+        if (text == null) {
+            bodyWithPassword = bodyWithLogin
+                    .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, "Because you are bad gay");
+        } else {
+            bodyWithPassword = bodyWithLogin
+                    .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, text);
+        }
+
+        sendFromGMail(email,
+                EmailServiceConstants.DEACTIVATE_USER_SUBJECT,
                 bodyWithPassword);
     }
 
