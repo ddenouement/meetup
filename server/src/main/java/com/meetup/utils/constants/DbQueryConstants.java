@@ -1,7 +1,5 @@
 package com.meetup.utils.constants;
 
-import java.util.spi.ToolProvider;
-
 public enum DbQueryConstants {
 
     id_author,
