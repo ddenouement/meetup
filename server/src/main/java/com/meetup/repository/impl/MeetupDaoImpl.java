@@ -151,6 +151,11 @@ public class MeetupDaoImpl implements IMeetupDAO {
     @Value("${rate_meetup}")
     private String rateMeetup;
     /**
+     * SQL reference script. Get speaker rate for specific meetup.
+     */
+    @Value("${get_speaker_rate_from_meetup}")
+    private String getSpeakerRateFromMeetup;
+    /**
      * SQL reference script. Rate meetup.
      */
     @Value("${find_if_user_joined_meetup}")
@@ -237,7 +242,7 @@ public class MeetupDaoImpl implements IMeetupDAO {
                 MeetupState.SCHEDULED.getCode())
             .addValue(DbQueryConstants.title.name(), meetup.getTitle())
             .addValue(DbQueryConstants.start_time.name(),
-                TimeUtility.toUtc(meetup.getStartDate()))
+                meetup.getStartDate())
             .addValue(DbQueryConstants.duration_minutes.name(),
                 meetup.getDurationMinutes())
             .addValue(DbQueryConstants.min_attendees.name(),
@@ -408,6 +413,24 @@ public class MeetupDaoImpl implements IMeetupDAO {
         template.update(rateMeetup, param);
     }
 
+    /**
+     * Get speaker rate for meetup.
+     *
+     * @param meetupID Meetup ID.
+     * @param userID User ID.
+     */
+    @Override
+    public int getSpeakerRateFromMeetup(final int meetupID, final int userID) {
+        SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("id_meetup", meetupID)
+            .addValue("id_user", userID);
+        try {
+            return this.template.queryForObject(getSpeakerRateFromMeetup, param, Integer.class);
+        } catch (EmptyResultDataAccessException | NullPointerException ex) {
+            return 0;
+        }
+    }
+
     @Override
     public boolean ifJoinedMeetup(final int userId, final int meetupId) {
         SqlParameterSource param = new MapSqlParameterSource()
@@ -532,14 +555,17 @@ public class MeetupDaoImpl implements IMeetupDAO {
         return new Timestamp(new Date().getTime());
     }
 
-    /**.
-     * Set all meetups that are not activated in 30 mins from their start time
+
+    /**
+     * . Set all meetups that are not activated in 30 mins from their start
+     * time
      */
-    public void cancelOutdatedMeetups(){
+    public void cancelOutdatedMeetups() {
         //1800 sec = 30 min
-        Timestamp datetime =  new Timestamp( Instant.now().minusSeconds(1800).toEpochMilli()) ;
+        Timestamp datetime = new Timestamp(
+            Instant.now().minusSeconds(1800).toEpochMilli());
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue( "time_now_utc_zero", datetime);
-        template.update(setMeetupsCancelled , param);
+            .addValue("time_now_utc_zero", datetime);
+        template.update(setMeetupsCancelled, param);
     }
 }

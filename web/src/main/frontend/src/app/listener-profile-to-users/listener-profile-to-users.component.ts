@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {MeetupsService} from "../services/meetups.service";
-import {ListenerProfileToUsersService} from "./listener-profile-to-users.service";
+import {ListenerProfileToUsersService} from "../services/listener-profile-to-users.service";
 
 @Component({
   selector: 'app-listener-profile-to-users',

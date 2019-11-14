@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AdminBagesService} from "./admin-bages.service";
+import {AdminBagesService} from "../services/admin-bages.service";
 import {LanguagesList} from "../models/languagesList";
 import {Badge} from "../models/badge";
 import {UserToSubscribe} from "../models/userToSubscribe";
@@ -14,7 +14,7 @@ import {SubscriptionLike} from "rxjs";
 })
 export class AdminBagesComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private subscriptionGetBadges: ISubscription;
+  private subscriptionGetBadges: Subscription;
   private selected: Badge[];
   private badgeForm: FormGroup;
   private allBadges: Badge[];
@@ -42,10 +42,6 @@ export class AdminBagesComponent implements OnInit, OnDestroy {
     this.subscriptionGetBadges = this.adminService.getBadges().subscribe(res => {
         // @ts-ignore
         this.allBadges = res;
-      },
-      err => {
-        console.warn('ERROR in grt Badges');
-        console.warn(err);
       });
     this.subscriptions.add(this.subscriptionGetBadges);
   }
@@ -60,7 +56,6 @@ export class AdminBagesComponent implements OnInit, OnDestroy {
       this.testCorrect = true;
       this.loadingTest = false;
     }, error => {
-      console.warn(error);
       this.loadingTest = false;
       this.testCorrect = false;
       this.test = true;
@@ -78,8 +73,6 @@ export class AdminBagesComponent implements OnInit, OnDestroy {
         this.ngOnInit();
         this.loadingSave = false;
       }, error => {
-        console.warn('ERROR in updateScript');
-        console.warn(error);
         this.loadingSave = false;
         this.testCorrect = false;
         this.test = true;
@@ -94,8 +87,6 @@ export class AdminBagesComponent implements OnInit, OnDestroy {
         this.ngOnInit();
         this.loadingSave = false;
       }, error => {
-        console.warn('ERROR in updateScript');
-        console.warn(error);
         this.loadingSave = false;
       }));
     }
@@ -110,10 +101,10 @@ export class AdminBagesComponent implements OnInit, OnDestroy {
     this.loadingDelete = true;
     this.subscriptions.add(this.adminService.deleteBadge(id).subscribe(res => {
       this.ngOnInit();
+      // this.subscriptionGetBadges;
       this.loadingDelete = false;
       this.delete = true;
     }, error => {
-      console.warn(error);
       this.loadingSave = false;
     }));
   }

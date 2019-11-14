@@ -7,6 +7,7 @@ import com.meetup.entities.dto.*;
 import com.meetup.error.EmailDoesntExistException;
 import com.meetup.error.EmailIsUsedException;
 import com.meetup.error.LoginIsUsedException;
+import com.meetup.error.RateAlreadyExistsException;
 import com.meetup.error.UserNotFoundException;
 import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.IUserDAO;
@@ -23,9 +24,6 @@ import com.meetup.utils.constants.EmailServiceConstants;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -65,16 +63,16 @@ public class UserServiceImpl implements IUserService {
     /**
      * Constructor.
      *
-     * @param userDao             User repository.
-     * @param meetupDao           Meetup repository.
-     * @param meetupService       Meetup service.
+     * @param userDao User repository.
+     * @param meetupDao Meetup repository.
+     * @param meetupService Meetup service.
      * @param notificationService Notification service.
      */
     @Autowired
     UserServiceImpl(final UserDaoImpl userDao,
-                    final MeetupDaoImpl meetupDao,
-                    final MeetupServiceImpl meetupService,
-                    final NotificationServiceImpl notificationService) {
+        final MeetupDaoImpl meetupDao,
+        final MeetupServiceImpl meetupService,
+        final NotificationServiceImpl notificationService) {
         this.userDao = userDao;
         this.meetupDao = meetupDao;
         this.meetupService = meetupService;
@@ -83,6 +81,7 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * Find user by his/her id.
+     *
      * @param userId id of user to find
      * @return user with specified id
      */
@@ -98,7 +97,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsListener(
-            final UserRegistrationDTO user) {
+        final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -116,7 +115,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public void registerAsSpeaker(
-            final UserRegistrationDTO user) {
+        final UserRegistrationDTO user) {
         if (userDao.isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (userDao.isEmailUsed(user.getEmail())) {
@@ -130,18 +129,18 @@ public class UserServiceImpl implements IUserService {
     /**
      * Upgrade listener to speaker.
      *
-     * @param user   additional info for upgraded user
+     * @param user additional info for upgraded user
      * @param userId of listener to upgrade
      */
     @Override
     public void upgradeToSpeaker(final UserRegistrationDTO user,
-                                 final Integer userId) {
+        final Integer userId) {
         User oldUser = userDao.findUserById(userId);
         if (!oldUser.getLogin().equals(user.getLogin()) && userDao
-                .isLoginUsed(user.getLogin())) {
+            .isLoginUsed(user.getLogin())) {
             throw new LoginIsUsedException();
         } else if (!oldUser.getEmail().equals(user.getEmail()) && userDao
-                .isEmailUsed(user.getEmail())) {
+            .isEmailUsed(user.getEmail())) {
             throw new EmailIsUsedException();
         } else {
             userDao.upgradeToSpeaker(user, userId);
@@ -163,11 +162,11 @@ public class UserServiceImpl implements IUserService {
     /**
      * Update user languages.
      *
-     * @param user       User, to update languages.
+     * @param user User, to update languages.
      * @param profileDTO Updated profile.
      */
     private void updateLanguages(final User user,
-                                 final ProfileDTO profileDTO) {
+        final ProfileDTO profileDTO) {
         userDao.removeUserLanguages(user.getId());
         for (Integer langID : profileDTO.getLanguageIds()) {
             userDao.addUserLanguage(user.getId(), langID);
@@ -224,7 +223,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserComplaintsDTO> getAllUsersWithComplaints(final int limit,
-                                                             final int offset) {
+        final int offset) {
         return userDao.getAllUsersWithComplaintsCount(limit, offset);
     }
 
@@ -301,12 +300,12 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * @param complaintDTO complaint without source
-     * @param login        login of source
+     * @param login login of source
      * @throws UserNotFoundException if no user with this login
      */
     @Override
     public void postComplaintOn(final ComplaintDTO complaintDTO,
-                                final String login) throws UserNotFoundException {
+        final String login) throws UserNotFoundException {
         User u = userDao.findUserByLogin(login);
         if (u == null) {
             throw new UserNotFoundException();
@@ -329,7 +328,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * User can subscribe on speaker.
      *
-     * @param userId    who is subscriber
+     * @param userId who is subscriber
      * @param speakerId on whom user subscribes
      */
     @Override
@@ -344,7 +343,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * User can unsubscribe from speaker.
      *
-     * @param userId    who is subscriber
+     * @param userId who is subscriber
      * @param speakerId on whom user subscribes
      */
     @Override
@@ -375,45 +374,46 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public List<SimpleUserDTO> getSimpleSubscribersOfSpeaker(
-            final int speakerId) {
+        final int speakerId) {
         return userDao.getSimpleSubscribersOfSpeaker(speakerId);
     }
 
     /**
      * Change user's password.     *
      *
-     * @param userId      id of user to change password for
+     * @param userId id of user to change password for
      * @param newPassword the password to change to
      */
     @Override
     public void changePassword(final Integer userId, final String newPassword) {
         String encodedPassword = new BCryptPasswordEncoder(11)
-                .encode(newPassword);
+            .encode(newPassword);
         userDao.changePassword(userId, encodedPassword);
     }
 
     @Override
-    public void changePasswordFull(final Integer userId, final String oldPassword, final String newPassword) {
+    public void changePasswordFull(final Integer userId,
+        final String oldPassword, final String newPassword) {
         String encodedPasswordOld = new BCryptPasswordEncoder(11)
-                .encode(oldPassword);
+            .encode(oldPassword);
         if (arePasswordsEqual(userId, encodedPasswordOld)) {
             String encodedPassword = new BCryptPasswordEncoder(11)
-                    .encode(newPassword);
+                .encode(newPassword);
             userDao.changePassword(userId, encodedPassword);
         } else {
-      throw new BadCredentialsException("Invalid old password supplied");
+            throw new BadCredentialsException("Invalid old password supplied");
         }
     }
 
     /**
-     * .
-     * Helper method to check equality of submitted password
+     * . Helper method to check equality of submitted password
      *
-     * @param userId             id of user, who we are checking
+     * @param userId id of user, who we are checking
      * @param encodedOldPassword encoded old password of user
      * @return boolean
      */
-    private boolean arePasswordsEqual(final Integer userId, final String encodedOldPassword) {
+    private boolean arePasswordsEqual(final Integer userId,
+        final String encodedOldPassword) {
         User user = userDao.findUserById(userId);
         return user.getPassword().equals(encodedOldPassword);
     }
@@ -421,24 +421,27 @@ public class UserServiceImpl implements IUserService {
     /**
      * Rate specific meetup.
      *
-     * @param meetupID  Meetup ID.
+     * @param meetupID Meetup ID.
      * @param userLogin User login
-     * @param feedback  Feedback object.
+     * @param feedback Feedback object.
      */
     @Override
     public void rateMeetup(final int meetupID,
-                           final String userLogin,
-                           final Feedback feedback) {
+        final String userLogin,
+        final Feedback feedback) {
         User user = userDao.findUserByLogin(userLogin);
         if (user == null) {
             throw new UserNotFoundException();
         }
-        meetupDao.rateMeetup(meetupID, user.getId(), feedback);
-
-        Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
-        User speakerOfMeetup = userDao
+        if (meetupDao.getSpeakerRateFromMeetup(meetupID, user.getId()) == 0) {
+            meetupDao.rateMeetup(meetupID, user.getId(), feedback);
+            Meetup currentMeetup = meetupDao.findMeetupByID(meetupID);
+            User speakerOfMeetup = userDao
                 .findUserById(currentMeetup.getSpeakerId());
-        updateUserRate(speakerOfMeetup, feedback);
+            updateUserRate(speakerOfMeetup, feedback);
+        } else {
+            throw new RateAlreadyExistsException();
+        }
     }
 
     @Override
@@ -465,10 +468,10 @@ public class UserServiceImpl implements IUserService {
     public void sendEmail(String email, String login) {
         String body = EmailServiceConstants.REGISTER_BODY;
         String bodyWithLogin = body
-                .replaceAll(EmailServiceConstants.TOKEN_LOGIN, login);
+            .replaceAll(EmailServiceConstants.TOKEN_LOGIN, login);
         sendFromGMail(email,
-                EmailServiceConstants.WELCOME_SUBJECT,
-                bodyWithLogin);
+            EmailServiceConstants.WELCOME_SUBJECT,
+            bodyWithLogin);
     }
 
     /**
@@ -488,20 +491,19 @@ public class UserServiceImpl implements IUserService {
         changePassword(userId, newPassword);
         String body = EmailServiceConstants.CHANGE_PASSWORD_BODY;
         String bodyWithLogin = body
-                .replaceAll(EmailServiceConstants.TOKEN_LOGIN, userLogin);
+            .replaceAll(EmailServiceConstants.TOKEN_LOGIN, userLogin);
         String bodyWithPassword = bodyWithLogin
-                .replaceAll(EmailServiceConstants.TOKEN_PASSWORD, newPassword);
+            .replaceAll(EmailServiceConstants.TOKEN_PASSWORD, newPassword);
         sendFromGMail(email,
-                EmailServiceConstants.CHANGE_PASSWORD_SUBJECT,
-                bodyWithPassword);
+            EmailServiceConstants.CHANGE_PASSWORD_SUBJECT,
+            bodyWithPassword);
     }
-
 
     /**
      * Send email to user.
      *
      * @param email User email.
-     * @param text  Admin feedback
+     * @param text Admin feedback
      */
     @Override
     public void sendActivationEmail(String email, String text) {
@@ -515,23 +517,24 @@ public class UserServiceImpl implements IUserService {
         changePassword(userId, newPassword);
         String body = EmailServiceConstants.DEACTIVATE_USER_BODY;
         String bodyWithLogin = body
-                .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, userLogin);
+            .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, userLogin);
         String bodyWithPassword;
         if (text == null) {
             bodyWithPassword = bodyWithLogin
-                    .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, "Because you are bad gay");
+                .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK,
+                    "Because you are bad guy");
         } else {
             bodyWithPassword = bodyWithLogin
-                    .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, text);
+                .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, text);
         }
 
         sendFromGMail(email,
-                EmailServiceConstants.DEACTIVATE_USER_SUBJECT,
-                bodyWithPassword);
+            EmailServiceConstants.DEACTIVATE_USER_SUBJECT,
+            bodyWithPassword);
     }
 
     private void sendFromGMail(String to,
-                               String subject, String body) {
+        String subject, String body) {
         Properties props = System.getProperties();
         props.put("mail.smtp.starttls.enable", EmailServiceConstants.TLS);
         props.put("mail.smtp.host", EmailServiceConstants.HOST);
@@ -545,7 +548,8 @@ public class UserServiceImpl implements IUserService {
 
         try {
             message
-                    .setFrom(new InternetAddress(EmailServiceConstants.FROM_EMAIL));
+                .setFrom(
+                    new InternetAddress(EmailServiceConstants.FROM_EMAIL));
             InternetAddress toAddress = new InternetAddress(to);
             message.addRecipient(Message.RecipientType.TO, toAddress);
 
@@ -554,8 +558,8 @@ public class UserServiceImpl implements IUserService {
 
             Transport transport = session.getTransport("smtp");
             transport.connect(EmailServiceConstants.HOST,
-                    EmailServiceConstants.FROM_EMAIL,
-                    EmailServiceConstants.FROM_PASS);
+                EmailServiceConstants.FROM_EMAIL,
+                EmailServiceConstants.FROM_PASS);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (MessagingException ae) {
@@ -563,18 +567,18 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
-
     /**
      * Update speaker rate after rating meetup.
      *
-     * @param user     User.
+     * @param user User.
      * @param feedback Feedback of meetup.
      */
     private void updateUserRate(final User user,
-                                final Feedback feedback) {
+        final Feedback feedback) {
         float rate =
-                (user.getRate() * user.getNumRates() + feedback.getRate())
-                        / (user.getNumRates() + 1);
+            (user.getRate() * user.getNumRates() + feedback.getRate())
+                / (user.getNumRates() + 1);
+        rate = Math.round(rate);
         user.setRate(rate);
         user.setNumRates(user.getNumRates() + 1);
         userDao.updateRate(user);
@@ -590,10 +594,10 @@ public class UserServiceImpl implements IUserService {
 
         for (int i = 0; i < 10; i++) {
             int index = (int) (
-                    EmailServiceConstants.ALPHANUMERIC_CHARACTERS.length()
-                            * Math.random());
+                EmailServiceConstants.ALPHANUMERIC_CHARACTERS.length()
+                    * Math.random());
             sb.append(EmailServiceConstants.ALPHANUMERIC_CHARACTERS
-                    .charAt(index));
+                .charAt(index));
         }
         return sb.toString();
     }

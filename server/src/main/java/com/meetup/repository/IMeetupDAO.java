@@ -165,6 +165,15 @@ public interface IMeetupDAO {
      * @param feedback Feedback object.
      */
     void rateMeetup(int meetupID, int userID, Feedback feedback);
+
+    /**
+     * Get speaker rate for meetup.
+     *
+     * @param meetupID Meetup ID.
+     * @param userID User ID.
+     */
+    int getSpeakerRateFromMeetup(final int meetupID, final int userID);
+
     /**
      * Check if user joined specific meetup.
      *
@@ -172,5 +181,7 @@ public interface IMeetupDAO {
      * @param meetupId Meetup ID.
      * */
     boolean ifJoinedMeetup(int userId, int meetupId);
+
+
     void cancelOutdatedMeetups();
 }

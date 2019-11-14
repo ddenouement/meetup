@@ -12,7 +12,7 @@ import {
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
-import {RegisterService} from "./register.service";
+import {RegisterService} from "../services/register.service";
 import {LanguagesList} from "../models/languagesList";
 import {Registration} from "../models/registration";
 
@@ -68,9 +68,6 @@ export class RegisterSpeakerComponent implements OnInit {
       email: this.registerForm.get('email').value
     };
     this.registerService.sendUser(user).subscribe(res => {
-      console.log('EMAIL SEND');
-    },error1 => {
-      console.error('Email ! send');
     });
 
   }
@@ -104,8 +101,6 @@ export class RegisterSpeakerComponent implements OnInit {
       error => {
         this.loading = false;
         this.error = error.error;
-        console.warn('ERROR in register Speaker');
-        console.warn(error);
         this.registerForm.controls['firstName'].enable();
         this.registerForm.controls['lastName'].enable();
         this.registerForm.controls['login'].enable();
@@ -135,9 +130,6 @@ export class RegisterSpeakerComponent implements OnInit {
       .subscribe(
         languages => {
           this.languages = languages;
-        },
-        err => {
-          console.log(err);
         });
   }
 }

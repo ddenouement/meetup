@@ -5,7 +5,7 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {ErrorStateMatcher} from "@angular/material/core";
 import {MatPasswordStrengthComponent} from '@angular-material-extensions/password-strength';
 import {Router} from "@angular/router";
-import {RegisterService} from "../register-speaker/register.service";
+import {RegisterService} from "../services/register.service";
 import {Registration} from "../models/registration";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -30,9 +30,6 @@ export class RegisterComponent implements OnInit {
   private registerForm: FormGroup;
   private loading = false;
   private error: '';
-  private login: string;
-  private email: string;
-  private password: string;
   private matcher = new MyErrorStateMatcher();
   private showDetails3: boolean;
 
@@ -63,9 +60,6 @@ export class RegisterComponent implements OnInit {
       email: this.registerForm.get('email').value
     };
     this.registerService.sendUser(user).subscribe(res => {
-      console.log('EMAIL SEND');
-    },error1 => {
-      console.error('Email ! send');
     });
 
   }
@@ -86,7 +80,6 @@ export class RegisterComponent implements OnInit {
       },
       error => {
         this.error = error.error;
-        console.log(error);
         this.loading = false;
         this.registerForm.controls['login'].enable();
         this.registerForm.controls['email'].enable();

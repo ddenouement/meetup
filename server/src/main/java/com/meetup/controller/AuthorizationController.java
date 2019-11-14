@@ -210,7 +210,7 @@ public class AuthorizationController {
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
             + "T(com.meetup.utils.Role).SPEAKER, "
             + "T(com.meetup.utils.Role).LISTENER)")
-    @PostMapping(value = "/user/passwordcheck")
+    @PostMapping(value = "/user/password/change")
     public ResponseEntity changePasswordAndCheck(
             @RequestBody final PasswordChangeDTO passwordsObject,
             @CookieValue("token") final String token) {

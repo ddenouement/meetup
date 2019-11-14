@@ -25,7 +25,7 @@ spring:
 #    password: ggwp
 
     hikari:
-      maximumPoolSize: 7
+      maximumPoolSize: 10
 
     #    for local Postgres db(julia)
 #    url: jdbc:postgresql://localhost:5432/postgres

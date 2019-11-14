@@ -23,8 +23,6 @@ export class HomeComponent implements OnInit {
       } else {
         this.router.navigate(['/listener-profile']);
       }
-    },error => {
-      console.log(error);
     });
   }
 
