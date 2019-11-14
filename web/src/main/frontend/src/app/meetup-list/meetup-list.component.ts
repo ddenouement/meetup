@@ -3,6 +3,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MeetupsService} from "../services/meetups.service";
 import {PageEvent} from "@angular/material/paginator";
 import {MeetupDto} from "../models/meetupDto.model";
+import {FilterService} from "../services/filter.service";
+import {Filter} from "../models/filter.model";
 
 @Component({
   selector: 'app-meetup-list',
@@ -17,8 +19,9 @@ export class MeetupListComponent implements OnInit, OnDestroy{
   currentPage = 1;
   pageSizeOptions = [9,12,18,24,36,42];
   isLoading = false;
-
-  constructor(public meetupsService: MeetupsService){}
+  filter : Filter;
+  filteredMeetups: MeetupDto[] = [];
+  constructor(public meetupsService: MeetupsService,public filterService: FilterService){}
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -43,6 +46,13 @@ export class MeetupListComponent implements OnInit, OnDestroy{
       });
   }
 
+  receiveFilter($event){
+    this.filter = $event;
+    this.filterService.getMeetups(this.filter).subscribe(meetupsData =>{
+      this.filteredMeetups = meetupsData;
+    })
+
+  }
   //remove subscription and prevent memory leaks
   ngOnDestroy(): void {
   }
