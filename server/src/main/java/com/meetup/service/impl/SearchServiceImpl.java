@@ -6,10 +6,8 @@ import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.IUserDAO;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.ISearchService;
-import com.meetup.utils.MeetupDTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.SQLException;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +21,12 @@ public class SearchServiceImpl implements ISearchService {
      * Search with filters repository.
      */
     private ISearchDAO searchDao;
-    /**
-     * Meetup DTO converter.
-     */
-    private MeetupDTOConverter meetupDTOConverter;
 
 
     SearchServiceImpl(@Autowired final UserDaoImpl userDao,
-                       @Autowired final ISearchDAO searchDao,
-                      @Autowired final MeetupDTOConverter meetupDTOConverter
-                      ) {
+                       @Autowired final ISearchDAO searchDao) {
         this.userDao = userDao;
         this.searchDao = searchDao;
-        this.meetupDTOConverter = meetupDTOConverter;
 
     }
     @Override

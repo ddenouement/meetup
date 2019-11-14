@@ -104,15 +104,6 @@ public interface IMeetupService {
     List<Meetup> getMeetupsByStartTime(LocalDateTime startTime);
 
     /**
-     * Get all meetups of specified speaker.
-     *
-     * @param speakerID Speaker ID
-     * @return List of all meetups of specified speaker
-     */
-    List<MeetupDisplayDTO> getSpeakerMeetups(int speakerID);
-
-
-    /**
      * Register user for meetup.
      *
      * @param meetupID Meetup, that will be used to register user to
@@ -189,6 +180,7 @@ public interface IMeetupService {
      * @return boolean if user joined meetup
      */
     boolean ifJoinedMeetup(int userId, int meetupId);
+
     void cancelOutdatedMeetups();
 
 }

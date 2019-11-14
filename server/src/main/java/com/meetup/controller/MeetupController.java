@@ -130,21 +130,6 @@ public class MeetupController {
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
-    @GetMapping(value = "/meetups/speakers/{id}")
-    public ResponseEntity<List<MeetupDisplayDTO>> getSpeakerMeetups(
-        @PathVariable("id") final int speakerID) {
-        return new ResponseEntity<>(
-            meetupService.getSpeakerMeetups(speakerID), HttpStatus.OK);
-    }
-    /**
-     * Retrieve meetups of speaker.
-     *
-     * @param speakerID Speaker ID.
-     * @return Response entity with list of meetups.
-     */
-    @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
-        + "T(com.meetup.utils.Role).SPEAKER, "
-        + "T(com.meetup.utils.Role).LISTENER)")
     @GetMapping(value = "/meetups/speakers/{id}/future")
     public ResponseEntity<List<Meetup>> getSpeakerFutureMeetups(
         @PathVariable("id") final int speakerID) {
