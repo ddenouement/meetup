@@ -3,6 +3,7 @@ import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ToolbarMenuComponent} from './toolbar-menu/toolbar-menu.component';
+import { NgxNumberSpinModule } from 'ngx-number-spin';
 
 import {
   MatButtonModule,
@@ -81,6 +82,8 @@ import { UserComplaintsComponent } from './user-complaints/user-complaints.compo
 import {ResponseInterceptor} from "./services/ResponseInterseptor";
 import {ForbiddenComponent} from './forbidden/forbidden.component';
 import {NotFoundComponent} from './not-found/not-found.component';
+import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -123,7 +126,8 @@ import {NotFoundComponent} from './not-found/not-found.component';
     DeactivateComponent,
     UserComplaintsComponent,
     ForbiddenComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    FilterDialogComponent
   ],
   imports: [
     IconsModule,
@@ -164,8 +168,11 @@ import {NotFoundComponent} from './not-found/not-found.component';
     OwlDateTimeModule,
     TimepickerModule,
     MatSnackBarModule,
+    NgxNumberSpinModule,
+    MatDialogModule,
   ],
   exports: [MatBadgeModule],
+  entryComponents: [FilterDialogComponent],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig, {
     provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

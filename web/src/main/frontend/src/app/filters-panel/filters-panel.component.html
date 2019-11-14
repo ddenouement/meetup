@@ -1,39 +1,39 @@
-<form [formGroup]="form" (submit)="onApply()">
-<div class="row">
-  <div class="col-xs-12 col-12 col-md-2 form-group">
-    <mat-form-field>
-      <mat-label>Language</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let l of languagesList" [value]="l">
-          {{l.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-    <div class="col-xs-12 col-12 col-md-2 form-group">
-    <mat-form-field>
-      <mat-label>Topic</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let t of topicsList" [value]="t">
-          {{t.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="col-xs-12 col-12 col-md-2 form-group">
+<form  [formGroup]='filterForm'>
+<!--  (submit)="onApply()">-->
+  <mat-form-field class="col-xs-12 col-12 col-md-4 orm-group" appearance="outline">
+    <mat-label>Language</mat-label>
+    <mat-select formControlName="language">
+      <mat-option *ngFor="let l of languagesList" [value]="l">
+        {{l.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="col-xs-12 col-12 col-md-4 form-group" appearance="outline">
+    <mat-label>Topic</mat-label>
+          <mat-select formControlName="topic">
+            <mat-option *ngFor="let t of topicsList" [value]="t">
+              {{t.name}}
+            </mat-option>
+          </mat-select>
+  </mat-form-field>
+  <mat-form-field class="col-xs-12 col-12 col-md-4 form-group" appearance="outline">
+        <mat-label>Containing string</mat-label>
+        <input matInput formControlName="substring" placeholder="Containing string">
+        <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  <div class="col-xs-12 col-12 col-md-4 form-group">
     <input type="text"
-           placeholder="Daterangepicker"
-           class="form-control datepicker"
-           bsDaterangepicker
-           formControlName="date">
+               placeholder="Range of dates"
+               class="form-control datepicker"
+               bsDaterangepicker
+               formControlName="date">
   </div>
-  <div class="col-xs-12 col-12 col-md-2 form-group">
-    <mat-form-field appearance="outline">
-      <mat-label>Containing string</mat-label>
-      <input matInput placeholder="Containing string">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+  <div class="col-xs-12 col-12 col-md-4 form-group" appearance="outline">
+  <ngb-rating [(rate)]="rateFrom" formControlName="rateFrom" max="5"></ngb-rating>
+    <br>
+    <ngb-rating [(rate)]="rateTo" formControlName="rateTo" max="5"></ngb-rating>
   </div>
-</div>
-  <button mat-raised-button color="primary" type="submit">Apply</button>
+    <button mat-raised-button color="primary" (click)="onApply()">Apply</button>
+    <button mat-raised-button color="warn" (click)="openDialog()">Save</button>
 </form>
+
