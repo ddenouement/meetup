@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LanguagesList} from "../models/languagesList";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {SpeakerProfileToUsersService} from "./speaker-profile-to-users.service";
+import {SpeakerProfileToUsersService} from "../services/speaker-profile-to-users.service";
 
 @Component({
   selector: 'app-speaker-profile-to-users',

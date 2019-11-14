@@ -4,13 +4,13 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {HttpClient} from "@angular/common/http";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {StarRatingComponent} from "ng-starrating";
-import {RegisterService} from "../register-speaker/register.service";
+import {RegisterService} from "../services/register.service";
 import {LanguagesList} from "../models/languagesList";
 import {MustMatch} from "../register-speaker/register-speaker.component";
 import {Meetup} from "../models/meetup.model";
 import {Subscription} from "rxjs";
 import {MeetupsService} from "../services/meetups.service";
-import {SpeakerProfileService} from "./speaker-profile.service";
+import {SpeakerProfileService} from "../services/speaker-profile.service";
 import {Router} from "@angular/router";
 import {MeetupDto} from "../models/meetupDto.model";
 
@@ -66,7 +66,6 @@ export class SpeakerProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private registerService: RegisterService,
     private speakerService: SpeakerProfileService,
-    private router: Router,
   ) {
   }
 
@@ -94,8 +93,6 @@ export class SpeakerProfileComponent implements OnInit {
       this.edited = false;
     }, error => {
       this.loading = false;
-      console.warn('ERROR in speaker profile UPDATE(put)');
-      console.warn(error);
     });
   }
 
@@ -157,9 +154,6 @@ export class SpeakerProfileComponent implements OnInit {
       res => {
         this.loading = false;
         this.languages = res;
-      },
-      err => {
-        console.log(err);
       });
 
   }
@@ -171,13 +165,33 @@ export class SpeakerProfileComponent implements OnInit {
   onCancel() {
     this.edited = false;
   }
+  onCancelMeetup(id:number){
+    this.loading = true;
+    this.meetupsService.cancelMeetup(id).subscribe(res => {
+      this.loading = false;
+      this.meetupsService.getSpeakerFutureMeetups(this.speakerId);
+    });
+  }
+  onTerminate(id:number){
+    this.loading = true;
+    this.meetupsService.terminateMeetup(id).subscribe(res => {
+      this.loading = false;
+      this.meetupsService.getSpeakerPastMeetups(this.speakerId);
+    });
 
+  }
+  onStart(id:number){
+    this.loading = true;
+    this.meetupsService.startMeetup(id).subscribe(res => {
+      this.loading = false;
+      this.meetupsService.getSpeakerFutureMeetups(this.speakerId);
+    });
+  }
   onLeave(id:number){
       this.loading = true;
       this.meetupsService.leaveMeetup(id).subscribe(res => {
         this.loading = false;
         this.meetupsService.getUserFutureMeetups();
-
       });
   }
 }

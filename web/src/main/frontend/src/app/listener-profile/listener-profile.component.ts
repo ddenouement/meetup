@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Meetup} from "../models/meetup.model";
 import {Subscription} from "rxjs";
 import {MeetupsService} from "../services/meetups.service";
-import {ListenerProfileService} from "./listener-profile.service";
+import {ListenerProfileService} from "../services/listener-profile.service";
 
 @Component({
   selector: 'app-listener-profile',
@@ -43,7 +43,6 @@ export class ListenerProfileComponent implements OnInit {
   onLeave(id: number) {
     this.meetupsService.leaveMeetup(id).subscribe(res => {
       this.meetupsService.getUserFutureMeetups();
-
     });
   }
 }

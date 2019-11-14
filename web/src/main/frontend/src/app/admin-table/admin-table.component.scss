@@ -14,14 +14,15 @@ $background_color_5: #b3b4b6;
 $background_color_6: #fff;
 $background_color_7: #d6440c;
 
-.activate{
+.activate {
   background-color: $background_color_1;
   font-family: $font_family_2;
   color: $color_3;
   border: none;
   cursor: pointer;
 }
-.deactivate{
+
+.deactivate {
   background-color: $background_color_7;
   font-family: $font_family_2;
   color: $color_3;
@@ -50,7 +51,8 @@ $background_color_7: #d6440c;
   border-radius: 6px;
 }
 
-.complaints__count{
+.complaints__count {
+  outline: none;
   color: #322b6b !important;
   cursor: pointer;
 
@@ -65,12 +67,15 @@ $background_color_7: #d6440c;
     margin-right: 4px;
   }
 }
+
 table {
   width: 100%;
 }
+
 td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
-  padding-top: 20px!important;
+  padding-top: 20px !important;
 }
+
 .mat-elevation-z8 {
-  box-shadow: none!important;
+  box-shadow: none !important;
 }

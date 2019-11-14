@@ -3,7 +3,7 @@
 <main *ngIf="!isLoading">
   <div class="content">
     <form [formGroup]="deactivateForm">
-      <p class="form__headline">Complains to <a class="user__link">{{currentUser}}</a></p>
+      <p class="form__headline">Complains to <a class="user__link" (click)="goToUser()">{{currentUser}}</a></p>
       <div class="cardList">
         <ng-container *ngFor="let user of userComplaints">
           <mat-card class="cardListItem">
@@ -19,14 +19,14 @@
           </mat-card>
         </ng-container>
       </div>
+      <div class="deactivate__user">
+        <mat-form-field class="form__input area">
+          <textarea formControlName="feedback" class="form__textarea" matInput placeholder="Feedback"></textarea>
+        </mat-form-field>
+        <button mat-button *ngIf="currentUserIsActive" class="deactivate" (click)="onDeactivate(currentUserId)" type="button">DEACTIVATE</button>
+        <button mat-button *ngIf="!currentUserIsActive" class="activate" (click)="onActivate(currentUserId)" type="button">ACTIVATE</button>
+      </div>
     </form>
-    <div class="deactivate__user">
-      <mat-form-field class="form__input area">
-        <textarea formControlName="feedback" class="form__textarea" matInput placeholder="Feedback"></textarea>
-      </mat-form-field>
-      <button mat-button *ngIf="currentUserIsActive" class="deactivate" (click)="onDeactivate(currentUserId)" type="button">DEACTIVATE</button>
-      <button mat-button *ngIf="!currentUserIsActive" class="activate" (click)="onActivate(currentUserId)" type="button">ACTIVATE</button>
-    </div>
   </div>
 
 </main>

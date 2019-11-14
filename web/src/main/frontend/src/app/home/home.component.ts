@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
   images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
+
   private userURL = '/api/v1/user/profile';
 
   constructor(private router: Router, private http: HttpClient) {
@@ -23,8 +24,6 @@ export class HomeComponent implements OnInit {
       } else {
         this.router.navigate(['/listener-profile']);
       }
-    },error => {
-      console.log(error);
     });
   }
 

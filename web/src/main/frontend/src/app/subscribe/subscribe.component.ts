@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserToSubscribe} from "../models/userToSubscribe";
-import {SubscribeService} from "./subscribe.service";
+import {SubscribeService} from "../services/subscribe.service";
 
 @Component({
   selector: 'app-subscribe',

@@ -23,6 +23,7 @@
     <mat-action-row>
       <a  *ngIf="isAutor" mat-button color="primary" [routerLink]="['/meetup-edit', meetup.id]">EDIT</a>
       <button *ngIf="!isAutor" mat-button color="warn"(click)="onJoin()">{{joinText}}</button>
+      <button *ngIf="isAutor" mat-button color="warn"(click)="onStart()">{{startText}}</button>
     </mat-action-row>
   </mat-card>
 </main>

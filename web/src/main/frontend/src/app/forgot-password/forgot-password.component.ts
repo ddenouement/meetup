@@ -11,7 +11,7 @@ import {
 } from "@angular/forms";
 import {ErrorStateMatcher} from '@angular/material/core';
 import {Router} from "@angular/router";
-import {RegisterService} from "../register-speaker/register.service";
+import {RegisterService} from "../services/register.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -61,7 +61,6 @@ export class ForgotPasswordComponent implements OnInit {
       error => {
         this.loading = false;
         this.error = error.error;
-        console.log(error);
         this.forgotForm.controls['email'].enable();
       });
   }

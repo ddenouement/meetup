@@ -13,7 +13,10 @@ import com.meetup.repository.IArticleDAO;
 
 import static com.meetup.utils.constants.DbQueryConstants.*;
 
+import com.meetup.utils.TimeUtility;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -244,7 +247,7 @@ public class ArticleDaoImpl implements IArticleDAO {
             .addValue(id_author.name(), authorID)
             .addValue(id_article.name(), articleID)
             .addValue(contents.name(), commentary.getContents())
-            .addValue(time_posted.name(),   Timestamp.valueOf(commentary.getTimePosted()));
+            .addValue(time_posted.name(), Timestamp.valueOf(commentary.getTimePosted()));
         template.update(insertNewCommentary, param);
         return commentary;
     }

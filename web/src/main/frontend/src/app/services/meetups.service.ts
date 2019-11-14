@@ -130,7 +130,7 @@ export class MeetupsService {
   }
   getMeetupsFiltered(filter: Filter, meetupsPerPage : number, currentPage: number) {
     const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
-    return this.http.post<{meetups: MeetupDto[], meetupCount : number}>(this.searchFilterUrl,filter);
+    return this.http.post<{meetups: MeetupDto[], meetupCount : number}>(this.searchFilterUrl+queryParams,filter);
 
   }
   getSpeakerMeetupsPaged(meetupsPerPage : number, currentPage: number) {
@@ -228,7 +228,17 @@ export class MeetupsService {
   terminateMeetup(id:number){
     this.meetupId = id;
     // @ts-ignore
-    return this.http.post(this.terminateUrl);
+    return this.http.post("/user/speaker/meetups/"+id+"/terminate");
+  }
+  cancelMeetup(id:number){
+    this.meetupId = id;
+    // @ts-ignore
+    return this.http.delete("/user/speaker/meetups/"+id);
+  }
+  startMeetup(id:number){
+    this.meetupId = id;
+    // @ts-ignore
+    return this.http.post("api/v1/user/speaker/meetups/"+id+"/start");
   }
   getJoinedCount(id:number){
     this.http.get<any>(this.joinedCountUrl+id)

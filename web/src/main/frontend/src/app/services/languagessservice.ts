@@ -16,7 +16,6 @@ export class Languagesservice {
 
   private languagesURL = '/api/v1/languages';
   private languageURL = '/api/v1/language';
-  private topicsURL = '/api/v1/languages?sorted=true';
 
   getLanguages(): Observable<Language[]> {
     return this.http.get<Language[]>(this.languagesURL).pipe(map((response: Response) => response));

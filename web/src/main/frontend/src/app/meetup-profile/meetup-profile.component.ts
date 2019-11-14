@@ -85,6 +85,10 @@ export class MeetupProfileComponent implements OnInit {
         });
     }
   }
+  onStart(){
+    this.isLoading = true;
+
+  }
 
   public convertUTCDateToLocalDate(date) {
     var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);

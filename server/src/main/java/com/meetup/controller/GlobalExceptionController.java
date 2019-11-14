@@ -200,4 +200,17 @@ public class GlobalExceptionController {
             HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * RateAlreadyExistsException controller.
+     *
+     * @return Response entity with status code.
+     */
+    @ExceptionHandler({RateAlreadyExistsException.class})
+    public ResponseEntity<Object> rateAlreadyExistsException() {
+        log.error("An exception occurred!", new RateAlreadyExistsException());
+        return new ResponseEntity<>(
+            ExceptionMessageConstants.RATE_EXSISTS,
+            HttpStatus.FORBIDDEN);
+    }
+
 }

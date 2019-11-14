@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ArticleViewService} from "./article-view.service";
+import {ArticleViewService} from "../services/article-view.service";
 import {ArticleDTO} from "../models/article-dto";
 import {Validators} from "@angular/forms";
 import {Topic} from "../models/topic";
