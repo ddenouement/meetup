@@ -1,3 +1,5 @@
+@import "src/app/scss-helpers/mixins";
+
 $color_1: #35373B;
 $color_2: #546087;
 $color_3: #fff;
@@ -57,7 +59,7 @@ $background_color_7: #d6440c;
   }
 }
 
-@media (max-width: 900px) {
+@include for-tablet-landscape-up {
   .content {
     margin-left: 4px;
     margin-right: 4px;
