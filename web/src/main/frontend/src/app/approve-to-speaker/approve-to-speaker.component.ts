@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
 import {
@@ -15,6 +15,7 @@ import {ApproveToSpeakerService} from "../services/approve-to-speaker.service";
 import {LanguagesList} from "../models/languagesList";
 import {MustMatch} from "../register-speaker/register-speaker.component";
 import {LoginService} from "../services/login.service";
+import {Subscription} from "rxjs";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,7 +31,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./approve-to-speaker.component.scss']
 })
 
-export class ApproveToSpeakerComponent implements OnInit {
+export class ApproveToSpeakerComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private approveForm: FormGroup;
   private matcher = new MyErrorStateMatcher();
   private languages: LanguagesList [];
@@ -77,7 +79,7 @@ export class ApproveToSpeakerComponent implements OnInit {
     this.approveForm.controls['about'].disable();
     this.approveForm.controls['languages'].disable();
     this.approveForm.controls['email'].disable();
-    this.approveService.upgradeToSpeaker(user).subscribe(data => {
+    this.subscriptions.add(this.approveService.upgradeToSpeaker(user).subscribe(data => {
         this.authService.logoutUser();
         this.router.navigate(['/login']);
       },
@@ -90,7 +92,7 @@ export class ApproveToSpeakerComponent implements OnInit {
         this.approveForm.controls['about'].enable();
         this.approveForm.controls['languages'].enable();
         this.approveForm.controls['email'].enable();
-      });
+      }));
   }
 
   ngOnInit() {
@@ -102,7 +104,7 @@ export class ApproveToSpeakerComponent implements OnInit {
       about: [''],
       languages: ['', Validators.required]
     });
-    this.approveService.getUser().subscribe(res => {
+    this.subscriptions.add(this.approveService.getUser().subscribe(res => {
       this.approveForm = this.formBuilder.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
@@ -111,10 +113,15 @@ export class ApproveToSpeakerComponent implements OnInit {
         about: [''],
         languages: ['', Validators.required]
       });
-    });
+    }));
 
-    this.approveService.getLanguages().subscribe(res => {
+    this.subscriptions.add(this.approveService.getLanguages().subscribe(res => {
         this.languages = res;
-      });
+      }));
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
 }

@@ -394,28 +394,23 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void changePasswordFull(final Integer userId,
         final String oldPassword, final String newPassword) {
-        String encodedPasswordOld = new BCryptPasswordEncoder(11)
-            .encode(oldPassword);
-        if (arePasswordsEqual(userId, encodedPasswordOld)) {
             String encodedPassword = new BCryptPasswordEncoder(11)
                 .encode(newPassword);
             userDao.changePassword(userId, encodedPassword);
-        } else {
-            throw new BadCredentialsException("Invalid old password supplied");
-        }
+
     }
 
     /**
      * . Helper method to check equality of submitted password
      *
-     * @param userId id of user, who we are checking
-     * @param encodedOldPassword encoded old password of user
+     * @param userId id of user, who we are checking encoded old password of user
      * @return boolean
      */
     private boolean arePasswordsEqual(final Integer userId,
-        final String encodedOldPassword) {
+        final String oldPassword) {
         User user = userDao.findUserById(userId);
-        return user.getPassword().equals(encodedOldPassword);
+        BCryptPasswordEncoder n = new BCryptPasswordEncoder(11);
+        return  n.matches(user.getPassword(), oldPassword);
     }
 
     /**

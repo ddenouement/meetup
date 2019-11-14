@@ -1,15 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {MeetupsService} from "../services/meetups.service";
 import {ListenerProfileToUsersService} from "../services/listener-profile-to-users.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-listener-profile-to-users',
   templateUrl: './listener-profile-to-users.component.html',
   styleUrls: ['./listener-profile-to-users.component.scss']
 })
-export class ListenerProfileToUsersComponent implements OnInit {
+export class ListenerProfileToUsersComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private badgeList: string[] = [];
 
   private login;
@@ -24,14 +26,19 @@ export class ListenerProfileToUsersComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('listenerId')) {
         this.listenerId = paramMap.get('listenerId');
-        this.listenerService.getListener(+this.listenerId).subscribe(res => {
+        this.subscriptions.add(this.listenerService.getListener(+this.listenerId).subscribe(res => {
           this.badgeList = res['badges'];
           this.login = res['userDTO'].login;
           this.email = res['userDTO'].email;
           this.star =res['userDTO'].rate;
-        });
+        }));
       }
     });
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
 
 }
