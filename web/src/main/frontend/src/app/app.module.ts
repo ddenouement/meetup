@@ -81,6 +81,7 @@ import { UserComplaintsComponent } from './user-complaints/user-complaints.compo
 import {ResponseInterceptor} from "./services/ResponseInterseptor";
 import {ForbiddenComponent} from './forbidden/forbidden.component';
 import {NotFoundComponent} from './not-found/not-found.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,8 @@ import {NotFoundComponent} from './not-found/not-found.component';
     DeactivateComponent,
     UserComplaintsComponent,
     ForbiddenComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ChangePasswordComponent
   ],
   imports: [
     IconsModule,

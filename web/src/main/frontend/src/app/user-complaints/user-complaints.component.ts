@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {Complaint} from "../models/complaint";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MustMatch} from "../register-speaker/register-speaker.component";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {AdminTableService} from "../admin-table/admin-table.service";
+import {AdminTableService} from "../services/admin-table.service";
 import {Registration} from "../models/registration";
 
 @Component({
@@ -62,9 +61,6 @@ export class UserComplaintsComponent implements OnInit {
       email: this.currentUserEmail
     };
     this.adminService.sendEmail(user).subscribe(res=>{
-      console.log('EMAIL SEND');
-    },error1 => {
-      console.error('Email ! send');
     });
     this.adminService.deactivateUser(id).subscribe(res => {
       this.ngOnInit();
@@ -83,5 +79,9 @@ export class UserComplaintsComponent implements OnInit {
       });
 
     });
+  }
+
+  goToUser() {
+    this.takeUserRole(this.currentUserId);
   }
 }

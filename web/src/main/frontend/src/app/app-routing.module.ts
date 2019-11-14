@@ -28,6 +28,7 @@ import {DeactivateComponent} from "./deactivate/deactivate.component";
 import {UserComplaintsComponent} from "./user-complaints/user-complaints.component";
 import {ForbiddenComponent} from "./forbidden/forbidden.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {ChangePasswordComponent} from "./change-password/change-password.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -60,6 +61,7 @@ const routes: Routes = [
   {path: 'notifications', component: NotificationsComponent},
   {path: 'forbidden', component: ForbiddenComponent},
   {path: 'not-found', component: NotFoundComponent},
+  {path: 'change-password', component: ChangePasswordComponent},
 
 
   // otherwise redirect to home

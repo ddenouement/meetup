@@ -31,26 +31,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
               private notificationsService: NotificationsService,
               private userService: UserService,
               private snackBar: MatSnackBar) {
-    this.userService.getUserLogin().subscribe(data => {
-        this.userLogin = data;
-        let that = this;
-
-        // Instantiate a messagingService
-        let prefix = "wss://";
-        if (window.location.hostname === "localhost") {
-          prefix = "ws://";
-        }
-        this.messagingService = new MessagingService(
-          prefix + window.location.host + "/socket",
-          '/user/' + that.userLogin + NOTIFICATION_COUNT_URL);
-
-        // Subscribe to its stream (to listen on messages)
-        this.messagingService.stream().subscribe((message: Message) => {
-          this.notificationCount = +message.body;
-          this.snackBar.open("New notification!");
-        });
-      }
-    )
   }
 
   ngOnInit() {
@@ -178,14 +158,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
             active: false
           },
           {
-            activeSRC: '../../assets/images/feedbackActive.svg',
-            noActiveSRC: '../../assets/images/feedbackNoActive.svg',
-            routerLink: '/feedback',
-            alt: 'feedback',
+            activeSRC: '../../assets/images/settingsActive.svg',
+            noActiveSRC: '../../assets/images/settingsNoActive.svg',
+            routerLink: '/change-password',
+            alt: 'change-password',
             role: this.speaker,
             active: false
           },
-
+          {
+            activeSRC: '../../assets/images/settingsActive.svg',
+            noActiveSRC: '../../assets/images/settingsNoActive.svg',
+            routerLink: '/change-password',
+            alt: 'change-password',
+            role: this.listener,
+            active: false
+          }
         ];
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
           if (!(paramMap.has('speakerId') || paramMap.has('listenerId'))) {
@@ -197,15 +184,32 @@ export class SidebarComponent implements OnInit, OnDestroy {
             }
           }
         });
-      },
-      error => {
-        console.warn('error in sidebar (get): ' + error);
       });
     this.isLoading = true;
     this.notificationsService.countAll().subscribe((res: number) => {
       this.isLoading = false;
       this.notificationCount = res;
     });
+    this.userService.getUserLogin().subscribe(data => {
+        this.userLogin = data;
+        let that = this;
+
+        // Instantiate a messagingService
+        let prefix = "wss://";
+        if (window.location.hostname === "localhost") {
+          prefix = "ws://";
+        }
+        this.messagingService = new MessagingService(
+          prefix + window.location.host + "/socket",
+          '/user/' + that.userLogin + NOTIFICATION_COUNT_URL);
+
+        // Subscribe to its stream (to listen on messages)
+        this.messagingService.stream().subscribe((message: Message) => {
+          this.notificationCount = +message.body;
+          this.snackBar.open("New notification!");
+        });
+      }
+    );
   }
 
   ngOnDestroy(): void {

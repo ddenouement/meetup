@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
-import {AdminTableService} from "./admin-table.service";
+import {AdminTableService} from "../services/admin-table.service";
 import {UserComplaintsDto} from "../models/userComplaintsDto.model";
 
 import {MatSnackBar} from "@angular/material";

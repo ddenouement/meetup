@@ -11,10 +11,10 @@ import {
 } from "@angular/forms";
 import {ErrorStateMatcher} from '@angular/material/core';
 import {Router} from "@angular/router";
-import {ApproveToSpeakerService} from "./approve-to-speaker.service";
+import {ApproveToSpeakerService} from "../services/approve-to-speaker.service";
 import {LanguagesList} from "../models/languagesList";
 import {MustMatch} from "../register-speaker/register-speaker.component";
-import {LoginService} from "../login/login.service";
+import {LoginService} from "../services/login.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -36,11 +36,8 @@ export class ApproveToSpeakerComponent implements OnInit {
   private languages: LanguagesList [];
   private  loading = false;
   private  error: '';
-  private  firstName: string;
-  private  lastName: string;
   private  login: string;
   private  email: string;
-  private  about: string;
 
 
   constructor(
@@ -87,8 +84,6 @@ export class ApproveToSpeakerComponent implements OnInit {
       error => {
         this.loading = false;
         this.error = error.error;
-        console.log('error in PROMOTE');
-        console.warn(error);
         this.approveForm.controls['firstName'].enable();
         this.approveForm.controls['lastName'].enable();
         this.approveForm.controls['login'].enable();
@@ -120,9 +115,6 @@ export class ApproveToSpeakerComponent implements OnInit {
 
     this.approveService.getLanguages().subscribe(res => {
         this.languages = res;
-      },
-      err => {
-        console.log(err);
       });
   }
 }

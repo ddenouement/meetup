@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Authentificationrequest} from "../models/authentificationrequest";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {LoginService} from "./login.service";
+import {LoginService} from "../services/login.service";
 
 @Component({
   selector: 'app-login',
@@ -14,8 +14,6 @@ export class LoginComponent implements OnInit {
   private loginForm: FormGroup;
   private error = '';
   private loading = false;
-  private login: string;
-  private password: string;
 
   constructor(
     private loginService: LoginService,
@@ -53,13 +51,10 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/listener-profile']);
               }
             }
-          }, error1 => {
-
           });
         },
         error => {
           this.error = error.error;
-          console.log(error.error.message);
           this.loading = false;
           this.loginForm.controls['login'].enable();
           this.loginForm.controls['password'].enable();

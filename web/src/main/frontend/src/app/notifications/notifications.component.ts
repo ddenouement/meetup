@@ -22,11 +22,18 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   constructor(private notificationsService: NotificationsService,
               private userService: UserService,
-              private snackBar: MatSnackBar) {
-    // this.initializeWebSocketConnection();
+              private snackBar: MatSnackBar) {}
 
+  ngOnInit() {
+    this.isLoading = true;
+    this.notificationsService.getAll().subscribe((res: Notification[]) => {
+      this.notifications = res;
+      this.isLoading = false;
+    }, error => {
+      this.snackBar.open('Error loading notifications');
+    });
     this.userService.getUserLogin().subscribe(data => {
-       this.userLogin = data;
+        this.userLogin = data;
         let that = this;
 
         // Instantiate a messagingService
@@ -44,17 +51,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
           this.notifications.unshift(n);
         });
       }
-    )
-  }
-
-  ngOnInit() {
-    this.isLoading = true;
-    this.notificationsService.getAll().subscribe((res: Notification[]) => {
-      this.notifications = res;
-      this.isLoading = false;
-    }, error => {
-      this.snackBar.open('Error loading notifications');
-    });
+    );
   }
 
   ngOnDestroy(): void {
