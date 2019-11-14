@@ -48,6 +48,15 @@ $background_color_7: #d6440c;
   border-radius: 6px;
 }
 
+.complaints__count{
+  color: #322b6b !important;
+  cursor: pointer;
+
+  &:hover {
+    color: #00af02 !important;
+  }
+}
+
 @media (max-width: 900px) {
   .content {
     margin-left: 4px;
