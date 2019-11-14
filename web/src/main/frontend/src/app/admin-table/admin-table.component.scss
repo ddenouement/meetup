@@ -1,3 +1,5 @@
+@import "src/app/scss-helpers/mixins";
+
 $color_1: #35373B;
 $color_2: #546087;
 $color_3: #fff;
@@ -48,7 +50,16 @@ $background_color_7: #d6440c;
   border-radius: 6px;
 }
 
-@media (max-width: 900px) {
+.complaints__count{
+  color: #322b6b !important;
+  cursor: pointer;
+
+  &:hover {
+    color: #00af02 !important;
+  }
+}
+
+@include for-tablet-landscape-up {
   .content {
     margin-left: 4px;
     margin-right: 4px;
