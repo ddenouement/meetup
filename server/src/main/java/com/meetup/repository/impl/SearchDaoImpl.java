@@ -24,29 +24,26 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * implementation of class for working with filters and meetups in DB.
+ * implementation of class for working with filters in DB.
  */
 @Repository
 @PropertySource("classpath:sql/search_queries.properties")
 public class SearchDaoImpl implements ISearchDAO {
-    @Autowired
-    DataSource dataSource;
 
-    @Autowired
-    ITopicDAO topicDAO;
-    @Autowired
+
+    private ITopicDAO topicDAO;
     private NamedParameterJdbcTemplate template;
 
-
+    /**.
+     * SQL query for retrieving saved filters of given user
+     */
     @Value("${get_user_filters_by_id}")
     private String getSavedFiltersForUser;
-
+    /**.
+     * SQL query  for saving filter to a given user
+     */
     @Value("${add_filter}")
     private String addFilter;
-
-
-    @Value("${search_meetups_by_topic_add}")
-    private String searchbyTopic;
 
     /**
      * SQl function for filtering
@@ -55,29 +52,33 @@ public class SearchDaoImpl implements ISearchDAO {
     private String searchMeetupsByFilterWithFunction;
 
     @Autowired
-    IMeetupDAO meetupDAO;
+    SearchDaoImpl( final ITopicDAO topicDAO,
+                  final NamedParameterJdbcTemplate parameterJdbcTemplate){
+        this.template = parameterJdbcTemplate;
+        this.topicDAO=topicDAO;
+
+    }
+
 
     /**
-     * .
-     *
      * @param f      Filter to save.
      * @param userId user whose filter it is
      * @return Filter
      */
     @Override
-    public Filter saveFilterToCurrentUser(Filter f, int userId) {
+    public Filter saveFilter(Filter f, int userId) {
         f.setId_user(userId);
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user", userId)
-                .addValue("id_language", f.nullOrIdLanguage())
-                .addValue("name", f.getName())
-                .addValue("rate_from", f.getRate_from())
-                .addValue("rate_to", f.getRate_to())
-                .addValue("time_from", f.getTime_from())
-                .addValue("time_to", f.getTime_to())
-                .addValue("id_topic", f.nullOrIdTopic())
-                .addValue("title_substring", f.getTitle_substring());
+                .addValue(DbQueryConstants.id_user.name(), userId)
+                .addValue(DbQueryConstants.id_language.name(), f.nullOrIdLanguage())
+                .addValue(DbQueryConstants.name.name(), f.getName())
+                .addValue(DbQueryConstants.rate_from.name(), f.getRate_from())
+                .addValue(DbQueryConstants.rate_to.name(), f.getRate_to())
+                .addValue(DbQueryConstants.time_from.name(), f.getTime_from())
+                .addValue(DbQueryConstants.time_to.name(), f.getTime_to())
+                .addValue(DbQueryConstants.id_topic.name(), f.nullOrIdTopic())
+                .addValue(DbQueryConstants.title_substring.name(), f.getTitle_substring());
         template.update(addFilter, param, holder, new String[]{"id"});
         if (holder.getKeys() != null) {
             f.setId(holder.getKey().intValue());
@@ -86,38 +87,38 @@ public class SearchDaoImpl implements ISearchDAO {
         return f;
     }
 
-    /**
-     * .
-     *
+    /**Get saved filters of a given user.
      * @param userId user whose filters we access
      * @return List of Filters
      */
     @Override
-    public List<Filter> getUserFiltersSaved(int userId) {
+    public List<Filter> getFilters(int userId) {
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id_user_param", userId);
-        return this.template
+                .addValue(DbQueryConstants.id_user_param.name(), userId);
+        return  this.template
                 .query(getSavedFiltersForUser, param,
                         (resultSet, i) -> toFilter(resultSet));
     }
 
-//TODO add constants
     private Filter toFilter(final ResultSet rs) throws SQLException {
-        Filter fil = new Filter();
-        fil.setId(rs.getInt("id"));
-        fil.setId_user(rs.getInt("id_user"));
-        fil.setName(rs.getString("name"));
-        fil.setId_language(rs.getInt("id_language"));
-        fil.setRate_from(rs.getFloat("rate_from"));
-        fil.setRate_to(rs.getFloat("rate_to"));
-        fil.setTime_from(rs.getTimestamp("time_from"));
-        fil.setTime_to(rs.getTimestamp("time_to"));
-        fil.setTitle_substring(rs.getString("title_substring"));
-        fil.setTopic_id(rs.getInt("id_topic"));
+        Filter filter = new Filter();
+        filter.setId(rs.getInt(DbQueryConstants.id.name()));
+        filter.setId_user(rs.getInt(DbQueryConstants.id_user.name()));
+        filter.setName(rs.getString(DbQueryConstants.name.name()));
+        filter.setId_language(rs.getInt(DbQueryConstants.id_language.name()));
+        filter.setRate_from(rs.getFloat(DbQueryConstants.rate_from.name()));
+        filter.setRate_to(rs.getFloat(DbQueryConstants.rate_to.name()));
+        filter.setTime_from(rs.getTimestamp(DbQueryConstants.time_from.name()));
+        filter.setTime_to(rs.getTimestamp(DbQueryConstants.time_to.name()));
+        filter.setTitle_substring(rs.getString(DbQueryConstants.title_substring.name()));
+        filter.setTopic_id(rs.getInt(DbQueryConstants.id_topic.name()));
 
-        fil.setTopic_name(getTopicName(fil.getTopic_id()));
-        return fil;
+        if (filter.getTopic_id() != 0) {
+            filter.setTopic_name(getTopicName(filter.getTopic_id()));
+        }
+        return filter;
     }
+
 
     private String getTopicName(int topicId) {
         return topicDAO.findTopicByID(topicId).getName();
@@ -125,7 +126,8 @@ public class SearchDaoImpl implements ISearchDAO {
 
 
     /**
-     * @param filter custom Filter from frontend.
+     * Perform filtered search of meetups
+     * @param filter custom Filter from frontsend.
      * @return List of matched meetups
      */
     @Override

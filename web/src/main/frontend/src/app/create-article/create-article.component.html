@@ -20,7 +20,7 @@
       </mat-form-field>
       <mat-form-field class="form__input area">
           <textarea matInput formControlName="content" type="text"
-                    placeholder="Content"></textarea>
+                    placeholder="Content" rows="10"></textarea>
       </mat-form-field>
       <div class="form__group">
         <button [disabled]="!createArticleForm.valid" class="form__button" disabled  type="submit"><p *ngIf="!loading">Create article</p>

@@ -82,6 +82,8 @@ import {ResponseInterceptor} from "./services/ResponseInterseptor";
 import {ForbiddenComponent} from './forbidden/forbidden.component';
 import {NotFoundComponent} from './not-found/not-found.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -125,7 +127,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     UserComplaintsComponent,
     ForbiddenComponent,
     NotFoundComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    FilterDialogComponent,
   ],
   imports: [
     IconsModule,
@@ -166,8 +169,11 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     OwlDateTimeModule,
     TimepickerModule,
     MatSnackBarModule,
+    NgxNumberSpinModule,
+    MatDialogModule,
   ],
   exports: [MatBadgeModule],
+  entryComponents: [FilterDialogComponent],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [TimepickerConfig, TimepickerActions, BsDatepickerConfig, {
     provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

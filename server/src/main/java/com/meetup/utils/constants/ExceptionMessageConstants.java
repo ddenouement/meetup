@@ -5,12 +5,7 @@ package com.meetup.utils.constants;
  */
 public final class ExceptionMessageConstants {
 
-    /**
-     * Private utility class constructor.
-     */
-    private ExceptionMessageConstants() {
-        throw new AssertionError();
-    }
+    public static final String RATE_EXSISTS = "You have already rated this meetup!";
 
     public static final String MEETUP_NOT_FOUND = "Meetup not found!";
 
@@ -40,4 +35,10 @@ public final class ExceptionMessageConstants {
 
     public static final String ILLEGAL_MEETUP_STATE = "Meetup operation with this state is prohibited!";
 
+    /**
+     * Private utility class constructor.
+     */
+    private ExceptionMessageConstants() {
+        throw new AssertionError();
+    }
 }

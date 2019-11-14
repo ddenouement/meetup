@@ -44,6 +44,7 @@
     "ng-pick-datetime": "^7.0.0",
     "ng-starrating": "^1.0.7",
     "ngx-bootstrap": "^5.2.0",
+    "ngx-number-spin": "0.0.4",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.3",
     "sockjs-client": "^1.4.0",

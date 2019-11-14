@@ -12,7 +12,6 @@ import com.meetup.repository.impl.MeetupDaoImpl;
 import com.meetup.repository.impl.UserDaoImpl;
 import com.meetup.service.IMeetupService;
 import com.meetup.service.INotificationService;
-import com.meetup.utils.MeetupDTOConverter;
 import com.meetup.utils.MeetupState;
 import com.meetup.utils.constants.NotificationConstants;
 import java.time.LocalDateTime;
@@ -38,10 +37,6 @@ public class MeetupServiceImpl implements IMeetupService {
      */
     private IUserDAO userDao;
     /**
-     * Meetup DTO converter.
-     */
-    private MeetupDTOConverter meetupDTOConverter;
-    /**
      * Notification operations.
      */
     private INotificationService notificationService;
@@ -51,16 +46,13 @@ public class MeetupServiceImpl implements IMeetupService {
      *
      * @param meetupDao Meetup repository
      * @param userDao User repository
-     * @param meetupDTOConverter MeetupDTO converter.
      * @param notificationService notification operations
      */
     MeetupServiceImpl(@Autowired final MeetupDaoImpl meetupDao,
         @Autowired final UserDaoImpl userDao,
-        @Autowired final MeetupDTOConverter meetupDTOConverter,
         @Autowired final INotificationService notificationService) {
         this.meetupDao = meetupDao;
         this.userDao = userDao;
-        this.meetupDTOConverter = meetupDTOConverter;
         this.notificationService = notificationService;
     }
 
@@ -313,22 +305,8 @@ public class MeetupServiceImpl implements IMeetupService {
         }
     }
 
-
     /**
-     * Method used to get specific speaker meetings list from database, using
-     * meeting repository (MeetupDao).
-     *
-     * @return List of "Meetup" objects
-     */
-    @Override
-    public List<MeetupDisplayDTO> getSpeakerMeetups(final int speakerID) {
-        List<Meetup> speakerMeetups = meetupDao
-            .getSpeakerMeetupsAllHosted(speakerID);
-        return meetupDTOConverter.convertToMeetupDTO(speakerMeetups);
-    }
-
-    /**
-     * . List of meetups hosted by speaker in past
+     * List of meetups hosted by speaker in past.
      *
      * @param id id of user
      * @return list  of user hosted meetups

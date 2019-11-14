@@ -17,7 +17,7 @@ public final class UserDTOConverter {
     }
 
     /**
-     * . Convert a User exemplar to UserDTO exemplar (e.g. without password)
+     * Convert a User exemplar to UserDTO exemplar (e.g. without password).
      *
      * @param us User
      * @return UserDTO
@@ -38,7 +38,7 @@ public final class UserDTOConverter {
     }
 
     /**
-     * . Convert a User exemplar to SimpleUserDTO exemplar     *
+     * Convert a User exemplar to SimpleUserDTO exemplar.
      *
      * @param us User
      * @return UserDTO

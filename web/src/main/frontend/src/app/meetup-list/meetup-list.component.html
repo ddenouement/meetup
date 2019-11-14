@@ -1,7 +1,10 @@
 <app-sidebar></app-sidebar>
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<!--<app-filters-panel></app-filters-panel>-->
-<div class="cardList" *ngIf="!isLoading">
+
+<div class="content">
+<!--  <app-filters-panel (filterEvent)="receiveFilter($event)"></app-filters-panel>-->
+  <p>{{filteredMeetups | json}}</p>
+  <div class="cardList" *ngIf="!isLoading">
   <ng-container *ngFor="let meetup of meetups">
     <mat-card class="cardListItem">
       <mat-card-title fxLayout = "row">
@@ -21,7 +24,6 @@
       </div>
     </mat-card>
   </ng-container>
-
 </div>
 <mat-paginator *ngIf="meetups.length > 0 && !isLoading"
                [length]="totalMeetups"
@@ -30,3 +32,4 @@
                [pageSizeOptions]="pageSizeOptions"
                (page)="onChangePage($event)"></mat-paginator>
 <p class="info-text mat-body-2" *ngIf="meetups.length <= 0 || isLoading">No Meetings Yet</p>
+</div>

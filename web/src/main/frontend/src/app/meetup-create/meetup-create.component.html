@@ -9,12 +9,13 @@
              [ngModel]="meetup?.title"
              formControlName="title"
              placeholder="Meetup Title">
-      <mat-error *ngIf="form.get('title').invalid">Please enter a meetup title.</mat-error>
+      <mat-error *ngIf="form.controls['title'].errors?.required">Please enter a meetup title.</mat-error>
+      <mat-error *ngIf="form.controls['title'].errors?.minLength">You have less than 10 characters</mat-error>
+
     </mat-form-field>
     <div class="row">
-      <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
-        <!--        <input type="text" class="form-control mb-3" placeholder="Datepicker" bsDatepicker formControlName="date" />-->
-        <mat-form-field>
+      <div class="col-xs-12 col-12 col-sm-8 col-md-6 form-group">
+        <mat-form-field appearance="outline">
           <input matInput  [ngModel]="meetup?.startDate"
                  [min]="minDate" [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -27,49 +28,51 @@
                      [minuteStep]="15"
                      formControlName="time"
         ></timepicker>
+        <mat-error *ngIf="form.hasError('minutesValidator')">
+          Minutes should be "00","15","30","45
+        </mat-error>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
+      <mat-form-field class="col-xs-12 col-12 col-sm-6 col-md-4 form-group" appearance="outline">
         <mat-select
           placeholder="Duration"
-          formControlName="durationMinutes"
-          required >
+          formControlName="durationMinutes">
           <mat-option
             *ngFor="let duration of durations"
             [value]="duration">
             {{duration.title}}
           </mat-option>
         </mat-select>
-                <mat-error *ngIf="form.get('durationMinutes').invalid">Please choose a duration of meetup</mat-error>
-      </div>
-      <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
+        <mat-error *ngIf="form.controls['durationMinutes'].errors?.required">Please choose a duration.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-xs-12 col-12 col-sm-6 col-md-4 form-group" appearance="outline">
         <mat-select
           placeholder="Language"
-          formControlName="language"
-          required >
+          formControlName="language">
           <mat-option
             *ngFor="let language of languagesList"
             [value]="language">
             {{language.name}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('language').invalid">Please choose a language of meetup</mat-error>
-      </div>
+        <mat-error *ngIf="form.controls['language'].errors?.required">Please choose language.</mat-error>
 
-      <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
+      </mat-form-field>
+
+      <mat-form-field class="col-xs-12 col-12 col-sm-6 col-md-4 form-group" appearance="outline">
         <mat-select
           placeholder="Topic"
-          formControlName="topic"
-          required>
+          formControlName="topic">
           <mat-option
             *ngFor="let topic of topicsList"
             [value]="topic">
             {{topic.name}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('topics').invalid">Please choose a topics of meetup</mat-error>
-      </div>
+        <mat-error *ngIf="form.controls['topic'].errors?.required">Please choose a topic.</mat-error>
+
+      </mat-form-field>
     </div>
     <div class="row">
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
@@ -78,14 +81,20 @@
                type="number"
                min="1"
                formControlName="minAttendees" placeholder="Min attendees"/>
+        <mat-error *ngIf="form.controls['minAttendees'].errors?.required">Amount is required.</mat-error>
       </div>
       <span class="filler"></span>
       <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">
         <input matInput
                [ngModel]="meetup?.maxAttendees"
                type="number"
-               formControlName="maxAttendees" placeholder="Max attendees"/>
+               formControlName="maxAttendees" placeholder="Max attendees"[errorStateMatcher]="errorMatcher">
+        <mat-error *ngIf="form.hasError('amountAttendeesInvalid')">
+          Maximum amount of attendees invalid
+        </mat-error>
+        <mat-error *ngIf="form.controls['maxAttendees'].errors?.required">Amount is required.</mat-error>
       </div>
+
     </div>
     <mat-form-field>
       <textarea matInput
@@ -93,9 +102,11 @@
                 rows="4"
                 formControlName="description"
                 placeholder="Meetup Description"></textarea>
-      <mat-error *ngIf="form.get('description').invalid">Please enter a meetup description.</mat-error>
+      <mat-error *ngIf="form.controls['description'].errors?.required">Description is required</mat-error>
+      <mat-error *ngIf="form.controls['description'].errors?.minLength">You have less than 10 characters</mat-error>
+
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Save</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Save</button>
   </form>
 </mat-card>
 

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * API Rest Controller for Filters.
+ * Controller for Filters.
  */
 @RestController
 @Api(value = "meetup-application")
@@ -48,10 +48,9 @@ public class FilterController {
         this.searchService = searchService;
         this.loginValidatorService = loginValidatorService;
     }
-//TODO sql exception
+
     /**
      * Perform filtered search.
-     *
      * @return list of matched meetups
      */
     @PreAuthorize("hasAnyAuthority(T(com.meetup.utils.Role).ADMIN, "
@@ -61,14 +60,12 @@ public class FilterController {
     public ResponseEntity<List<MeetupDisplayDTO>> search(
          @RequestBody final Filter filter
     ) throws SQLException {
-
         return ok(searchService.getMeetups(filter));
     }
 
 
     /**
-     * user can save filter.
-     *
+     * Method to save a filter to current user. Identify current user by token.
      * @param token cookie value
      * @param filter Filter to save
      * @return saved Filter
@@ -77,7 +74,7 @@ public class FilterController {
         + "T(com.meetup.utils.Role).SPEAKER, "
         + "T(com.meetup.utils.Role).LISTENER)")
     @PostMapping(value = "/users/current/filters")
-    public ResponseEntity<Filter> createFilter(
+    public ResponseEntity<Filter> saveFilter(
         @CookieValue("token") final String token,
         @RequestBody Filter filter
     ) {
@@ -86,8 +83,7 @@ public class FilterController {
     }
 
     /**
-     * Return saved user`s filters.
-     *
+     * Get user`s saved filters.
      * @param token cookie value
      * @return saved Filters list
      */

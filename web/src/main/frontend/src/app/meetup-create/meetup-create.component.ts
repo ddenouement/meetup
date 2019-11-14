@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {MeetupsService} from "../services/meetups.service";
 import {Duration} from "../models/duration.model";
@@ -9,8 +9,14 @@ import {User} from "../models/user";
 import {LanguagesList} from "../models/languagesList";
 import {Topic} from "../models/topic";
 import {MeetupDto} from "../models/meetupDto.model";
+import {ErrorStateMatcher} from "@angular/material/core";
+import {isValid} from "ngx-bootstrap/chronos/create/valid";
 
-// TODO: validation of date, time;
+class CrossFieldErrorMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return control.dirty && form.invalid;
+  }
+}
 @Component({
   selector: 'app-meetup-create',
   templateUrl: './meetup-create.component.html',
@@ -37,6 +43,7 @@ export class MeetupCreateComponent implements OnInit {
     {title: '6 h', minutes: 360},
   ];
   meetup: MeetupDto;
+  errorMatcher = new CrossFieldErrorMatcher();
   form: FormGroup;
   private mode = 'create';
   isLoading = false;
@@ -50,28 +57,17 @@ export class MeetupCreateComponent implements OnInit {
   date : Date;
   startDate : Date;
   minAtt : number;
+  maxAtt : number;
   errorText: string;
 
   constructor(public meetupService: MeetupsService,
               private router: Router,
-              private route: ActivatedRoute) {  }
-
+              private route: ActivatedRoute, private fb: FormBuilder) {
+    this.initForm();
+  }
 
   ngOnInit(): void {
     this.minDate.setMinutes(0);
-    this.form = new FormGroup({
-      title: new FormControl(null, {
-        validators: [Validators.required, Validators.minLength(3)]
-      }),
-      durationMinutes: new FormControl('', [Validators.required]),
-      language: new FormControl('',[Validators.required]),
-      minAttendees: new FormControl(null, {validators: [Validators.required]}),
-      maxAttendees: new FormControl(null, {validators: [Validators.required]}),
-      description: new FormControl(null, {validators: [Validators.required]}),
-      topic: new FormControl('',[Validators.required]),
-      time: new FormControl(this.minDate, [Validators.required]),
-      date: new FormControl( null ),
-    });
     this.route.paramMap.subscribe((paramMap: ParamMap)=>{
       if(paramMap.has('meetupId')){
         this.mode = 'edit';
@@ -84,7 +80,7 @@ export class MeetupCreateComponent implements OnInit {
           this.meetupDurationMinutes = meetupData.meetup.durationMinutes;
           const toSelectDuration = this.durations.find(d => d.minutes == this.meetupDurationMinutes);
           this.form.get('durationMinutes').setValue(toSelectDuration);
-          this.meetupService.getLanguages().subscribe(langData=>{
+          this.meetupService.getSpeakerLanguages().subscribe(langData=>{
             this.languagesList = langData;
             const toSelectLanguage = this.languagesList.find(l => l.name == this.meetupLang.name);
             this.form.get('language').setValue(toSelectLanguage);
@@ -96,7 +92,7 @@ export class MeetupCreateComponent implements OnInit {
       }else{
         this.mode ='create';
         this.meetupId = null;
-        this.meetupService.getLanguages().subscribe(langData=>{
+        this.meetupService.getSpeakerLanguages().subscribe(langData=>{
           this.languagesList = langData;
         });
         this.meetupService.getTopics().subscribe(topicsData=>{
@@ -107,15 +103,35 @@ export class MeetupCreateComponent implements OnInit {
 
   }
 
-  onSaveMeetup(){
-    if (this.form.invalid){
+  initForm(){
+    this.form = this.fb.group({
+      title: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(2)]
+      }),
+      durationMinutes: new FormControl('', [Validators.required]),
+      language: new FormControl('',[Validators.required]),
+      minAttendees: new FormControl(null, {validators: [Validators.required]}),
+      maxAttendees: new FormControl(null, {validators: [Validators.required]}),
+      description: new FormControl(null, {validators: [Validators.required, Validators.minLength(10)]}),
+      topic: new FormControl('',[Validators.required]),
+      time: new FormControl(this.minDate, [Validators.required]),
+      date: new FormControl( null ),
+    },{
+      validators: [this.attendeesValidator],
 
+    })
+  };
+
+  onSaveMeetup(){
+    this.time = this.form.get('time').value;
+    this.date = this.form.get('date').value;
+    this.minAtt =this.form.value.minAttendees;
+    this.maxAtt = this.form.value.maxAttendees;
+    if (this.form.invalid){
       return;
     }
 
     this.isLoading = true;
-    this.time = this.form.get('time').value;
-    this.date = this.form.get('date').value;
 
     this.startDate = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate(), this.time.getHours(), this.time.getMinutes(), 0)
     if(this.mode === "create"){
@@ -147,6 +163,16 @@ export class MeetupCreateComponent implements OnInit {
     }
     this.router.navigate([`/meetup-list`], { relativeTo: this.route });
     // this.form.reset();
+  }
+  attendeesValidator(form: FormGroup) {
+    const condition = form.get('maxAttendees').value < form.get('minAttendees').value;
+
+    return condition ? { amountAttendeesInvalid: true} : null;
+  }
+  timeValidator(form: FormGroup) {
+    const minutes = form.get('time').value;
+    const condition = minutes.getMinutes() != 0 || minutes.getMinutes() != 10 || minutes.getMinutes() != 30 || minutes.getMinutes() != 45;
+    return condition ? { minutesValidator: true} : null;
   }
 }
 
