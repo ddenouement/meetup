@@ -19,40 +19,50 @@ export class MeetupListComponent implements OnInit, OnDestroy{
   currentPage = 1;
   pageSizeOptions = [9,12,18,24,36,42];
   isLoading = false;
-  filter : Filter;
+  filter : Filter = null;
   filteredMeetups: MeetupDto[] = [];
   constructor(public meetupsService: MeetupsService,public filterService: FilterService){}
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage)
-      .subscribe(meetupsData =>{
-        this.isLoading=false;
-        this.meetups = meetupsData.meetups;
-        this.totalMeetups = meetupsData.meetupCount;
-      });
-
+    // this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage)
+    //   .subscribe(meetupsData =>{
+    //     this.isLoading=false;
+    //     this.meetups = meetupsData.meetups;
+    //     this.totalMeetups = meetupsData.meetupCount;
+    //   });
+    this.meetupsService.getMeetupsFiltered(this.filter,this.meetupsPerPage, this.currentPage).subscribe(meetupsData =>{
+      this.isLoading=false;
+      this.meetups = meetupsData.meetups;
+      this.totalMeetups = meetupsData.meetupCount;
+    });
   }
 
   onChangePage(pageData: PageEvent){
     this.currentPage = pageData.pageIndex + 1;
     this.meetupsPerPage = pageData.pageSize;
     this.isLoading = true;
-    this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage)
-      .subscribe(meetupsData =>{
-        this.isLoading=false;
-        this.meetups = meetupsData.meetups;
-        this.totalMeetups = meetupsData.meetupCount;
-      });
+    // this.meetupsService.getMeetups(this.meetupsPerPage, this.currentPage)
+    //   .subscribe(meetupsData =>{
+    //     this.isLoading=false;
+    //     this.meetups = meetupsData.meetups;
+    //     this.totalMeetups = meetupsData.meetupCount;
+    //   });
+    this.meetupsService.getMeetupsFiltered(this.filter,this.meetupsPerPage, this.currentPage).subscribe(meetupsData =>{
+      this.isLoading=false;
+      this.meetups = meetupsData.meetups;
+      this.totalMeetups = meetupsData.meetupCount;
+    });
+
   }
 
   receiveFilter($event){
     this.filter = $event;
-    // this.meetupsService.getMeetups(this.filter,this.meetupsPerPage, this.currentPage).subscribe(meetupsData =>{
-    //   this.isLoading=false;
-    //   this.meetups = meetupsData.meetups;
-    //   this.totalMeetups = meetupsData.meetupCount;
-    // });
+    this.meetupsService.getMeetupsFiltered(this.filter,this.meetupsPerPage, this.currentPage).subscribe(meetupsData =>{
+      this.isLoading=false;
+      this.meetups = meetupsData.meetups;
+      this.totalMeetups = meetupsData.meetupCount;
+    });
 
   }
   //remove subscription and prevent memory leaks

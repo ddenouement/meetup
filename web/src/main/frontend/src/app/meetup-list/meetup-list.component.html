@@ -2,8 +2,8 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content">
-<!--  <app-filters-panel (filterEvent)="receiveFilter($event)"></app-filters-panel>-->
-<!--  <p>{{filteredMeetups | json}}</p>-->
+  <app-filters-panel (filterEvent)="receiveFilter($event)"></app-filters-panel>
+  <p>{{filteredMeetups | json}}</p>
   <div class="cardList" *ngIf="!isLoading">
   <ng-container *ngFor="let meetup of meetups">
     <mat-card class="cardListItem">

@@ -15,6 +15,7 @@ import {LanguagesList} from "../models/languagesList";
 import {Topic} from "../models/topic";
 import {MeetupDto} from "../models/meetupDto.model";
 import {ArticleDTO} from "../models/article-dto";
+import {Filter} from "../models/filter.model";
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,7 @@ export class MeetupsService {
   private joinUrl = "/api/v1/user/meetups/";
   private joinedCountUrl = "api/v1/meetups/users/";
   private speakerMeetupsUrl = "/api/v1/meetups/speakers/";
+  private searchFilterUrl = "/api/v1/users/search";
   private meetupId : number;
   private terminateUrl = "api/v1/user/speaker/meetups/"+this.meetupId+"/terminate";
   constructor(private http: HttpClient, private router: Router) {
@@ -125,6 +127,11 @@ export class MeetupsService {
       .get<{meetups: MeetupDto[], meetupCount : number}>(
         this.meetupUrl+queryParams
       );
+  }
+  getMeetupsFiltered(filter: Filter, meetupsPerPage : number, currentPage: number) {
+    const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
+    return this.http.post<{meetups: MeetupDto[], meetupCount : number}>(this.searchFilterUrl,filter);
+
   }
   getSpeakerMeetupsPaged(meetupsPerPage : number, currentPage: number) {
     const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
