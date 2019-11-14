@@ -31,7 +31,7 @@
         <mat-error *ngIf="form.hasError('minutesValidator')">
           Minutes should be "00","15","30","45
         </mat-error>
-      </div>"
+      </div>
     </div>
     <div class="row">
       <mat-form-field class="col-xs-12 col-12 col-sm-6 col-md-4 form-group" appearance="outline">
@@ -70,7 +70,6 @@
             {{topic.name}}
           </mat-option>
         </mat-select>
-<!--        <mat-error *ngIf="hasError('topic', 'required')">Topic is required</mat-error>-->
         <mat-error *ngIf="form.controls['topic'].errors?.required">Please choose a topic.</mat-error>
 
       </mat-form-field>
