@@ -11,8 +11,6 @@ export interface Filter {
   time_from : Date;
   time_to : Date;
   topic_id : number;
-  topic_name: string;
-
   title_substring: string;
 
 }
