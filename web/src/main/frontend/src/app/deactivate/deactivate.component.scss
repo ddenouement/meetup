@@ -1,3 +1,5 @@
+@import "src/app/scss-helpers/mixins";
+
 $color_1: #2A74DB;
 $color_2: #000000;
 $font_family_1: "Exo 2", sans-serif;
@@ -18,7 +20,7 @@ main {
   position: absolute;
 }
 
-@media (max-width: 900px) {
+@include for-tablet-landscape-up {
   .ellipse {
     margin-top: 230px;
   }
@@ -36,20 +38,20 @@ main {
   margin-top: 320px;
 }
 
-@media (max-width: 900px) {
+@include for-tablet-landscape-up {
   .verify_headline {
     margin-top: 240px;
     font-size: 45px;
   }
 }
 
-@media (max-width: 620px) {
+@include for-phone-only {
   .verify_headline {
     font-size: 33px;
   }
 }
 
-@media (max-width: 460px) {
+@include for-mini-phone {
   .verify_headline {
     line-height: inherit;
   }

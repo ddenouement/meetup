@@ -266,9 +266,7 @@ public class UserServiceImpl implements IUserService {
         for (Meetup meetup : meetupDao.getSpeakerMeetupsFuture(id)) {
             meetupService.cancelMeetup(meetup.getId(), id);
         }
-        userDao.deactivateUser(id);
-        notificationService.sendProfileDeactivatedNotification(findUserById(id));
-        return true;
+        return userDao.deactivateUser(id);
     }
 
     /**
@@ -279,9 +277,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean activateUser(final int id) {
-        userDao.activateUser(id);
-        notificationService.sendProfileActivatedNotification(findUserById(id));
-        return true;
+        return userDao.activateUser(id);
     }
 
     /**

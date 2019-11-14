@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {LanguagesList} from "../models/languagesList";
 import {Registration} from "../models/registration";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,31 @@ import {Registration} from "../models/registration";
 
 export class RegisterService {
   private languagesURL = '/api/v1/languages?sorted=true';
-  private sendMail = '/api/v1/user/welcome';
+  private sendMailURL = '/api/v1/user/welcome';
+  private forgotPassURL = '/api/v1/user/password';
+  private registerListenerURL = '/api/v1/user/register/listener';
+  private registerSpeakerURL = '/api/v1/user/register/speaker';
 
   constructor(private http: HttpClient) {
   }
 
+  forgotPassword(mail: String){
+    return this.http.post(this.forgotPassURL, mail);
+  }
+
   sendUser(user: Registration) {
-    return this.http.post(this.sendMail, user);
+    return this.http.post(this.sendMailURL, user);
   }
 
   getLanguages(): Observable<LanguagesList[]> {
     return this.http.get<LanguagesList[]>(this.languagesURL).pipe(map((response: Response) => response));
+  }
+
+  registerListener(user: User) {
+    return this.http.post(this.registerListenerURL, user);
+  }
+
+  registerSpeaker(user: User) {
+    return this.http.post(this.registerSpeakerURL, user);
   }
 }

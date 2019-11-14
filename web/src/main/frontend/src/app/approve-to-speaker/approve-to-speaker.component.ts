@@ -31,18 +31,16 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 
 export class ApproveToSpeakerComponent implements OnInit {
-
-
-  approveForm: FormGroup;
-  matcher = new MyErrorStateMatcher();
-  languages: LanguagesList [];
-  public loading = false;
-  public error: '';
-  public firstName: string;
-  public lastName: string;
-  public login: string;
-  public email: string;
-  public about: string;
+  private approveForm: FormGroup;
+  private matcher = new MyErrorStateMatcher();
+  private languages: LanguagesList [];
+  private  loading = false;
+  private  error: '';
+  private  firstName: string;
+  private  lastName: string;
+  private  login: string;
+  private  email: string;
+  private  about: string;
 
 
   constructor(
@@ -82,14 +80,14 @@ export class ApproveToSpeakerComponent implements OnInit {
     this.approveForm.controls['about'].disable();
     this.approveForm.controls['languages'].disable();
     this.approveForm.controls['email'].disable();
-    this.httpClient.put("/api/v1/users/upgrade", user).subscribe(data => {
+    this.approveService.upgradeToSpeaker(user).subscribe(data => {
         this.authService.logoutUser();
         this.router.navigate(['/login']);
       },
       error => {
         this.loading = false;
         this.error = error.error;
-        console.log('error in PROMOTE' );
+        console.log('error in PROMOTE');
         console.warn(error);
         this.approveForm.controls['firstName'].enable();
         this.approveForm.controls['lastName'].enable();
@@ -107,7 +105,7 @@ export class ApproveToSpeakerComponent implements OnInit {
       login: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       about: [''],
-      languages: ['',Validators.required]
+      languages: ['', Validators.required]
     });
     this.approveService.getUser().subscribe(res => {
       this.approveForm = this.formBuilder.group({
@@ -116,7 +114,7 @@ export class ApproveToSpeakerComponent implements OnInit {
         login: [res['userDTO'].login, Validators.required],
         email: [res['userDTO'].email, [Validators.required, Validators.email]],
         about: [''],
-        languages: ['',Validators.required]
+        languages: ['', Validators.required]
       });
     });
 

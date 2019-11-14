@@ -253,41 +253,6 @@ public class NotificationServiceImpl implements INotificationService {
     }
 
     /**
-     * Send notification of type PROFILE_DEACTIVATED to the user with given id.
-     *
-     * @param user user to send notification to
-     */
-    public void sendProfileDeactivatedNotification(final User user) {
-        Notification notification = new Notification(
-            NotificationConstants.PROFILE_DEACTIVATED_MESSAGE,
-            NotificationType.PROFILE_DEACTIVATED);
-        sendNotificationToUser(notification, user.getId(), user.getLogin());
-    }
-
-    /**
-     * Send notification of type PROFILE_ACTIVATED to the user with given id.
-     *
-     * @param user user to send notification to
-     */
-    public void sendProfileActivatedNotification(final User user) {
-        Notification notification = new Notification(
-            NotificationConstants.PROFILE_ACTIVATED_MESSAGE,
-            NotificationType.PROFILE_ACTIVATED);
-        sendNotificationToUser(notification, user.getId(), user.getLogin());
-    }
-
-    /**
-     * Send a given notification to user with given id.
-     *
-     * @param notification notification to insert
-     * @param userId id of user to send the notification to
-     */
-//    private void sendNotificationToUser(
-//        final Notification notification, final Integer userId) {
-//
-//    }
-
-    /**
      * Send a given notification to user with given id.
      *
      * @param notification notification to insert

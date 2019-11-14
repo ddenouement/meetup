@@ -10,12 +10,12 @@ import {ListenerProfileToUsersService} from "./listener-profile-to-users.service
   styleUrls: ['./listener-profile-to-users.component.scss']
 })
 export class ListenerProfileToUsersComponent implements OnInit {
-  public badgeList: string[] = [];
+  private badgeList: string[] = [];
 
   private login;
   private email;
   private listenerId: string;
-  public star: number;
+  private star: number;
 
   constructor(public listenerService: ListenerProfileToUsersService, private httpClient: HttpClient, public route: ActivatedRoute) {
   }
