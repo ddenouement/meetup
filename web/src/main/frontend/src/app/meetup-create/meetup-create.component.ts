@@ -114,10 +114,11 @@ export class MeetupCreateComponent implements OnInit {
       maxAttendees: new FormControl(null, {validators: [Validators.required]}),
       description: new FormControl(null, {validators: [Validators.required, Validators.minLength(10)]}),
       topic: new FormControl('',[Validators.required]),
-      time: new FormControl(this.minDate, [Validators.required, this.timeValidator]),
+      time: new FormControl(this.minDate, [Validators.required]),
       date: new FormControl( null ),
     },{
-      validator :this.attendeesValidator,
+      validators: [this.attendeesValidator],
+
     })
   };
 
