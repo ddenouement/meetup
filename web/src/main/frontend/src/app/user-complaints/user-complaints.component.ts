@@ -15,20 +15,20 @@ import {Registration} from "../models/registration";
 })
 export class UserComplaintsComponent implements OnInit {
   private roles: string[];
-  userComplaints: Complaint[];
-  userId: number;
-  currentUser: string;
-  currentUserEmail: string;
-  currentUserId: number;
-  currentUserIsActive: boolean;
-  isLoading = false;
-  deactivateForm: FormGroup;
+  private userComplaints: Complaint[];
+  private userId: number;
+  private currentUser: string;
+  private currentUserEmail: string;
+  private currentUserId: number;
+  private currentUserIsActive: boolean;
+  private isLoading = false;
+  private deactivateForm: FormGroup;
 
   constructor(public snackBar:MatSnackBar, public adminService: AdminTableService, private userService: UserService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.isLoading = true;//change to true
+    this.isLoading = true;
     this.deactivateForm = this.formBuilder.group({
       feedback: [''],
     });

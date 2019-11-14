@@ -35,18 +35,12 @@ export class RegisterSpeakerComponent implements OnInit {
   @ViewChild('passwordComponentWithConfirmation', {static: true})
   passwordComponentWithConfirmation: MatPasswordStrengthComponent;
 
-  registerForm: FormGroup;
-  matcher = new MyErrorStateMatcher();
-  languages: LanguagesList [];
-  showDetails3: boolean;
-  public loading = false;
-  public error: '';
-  public firstName: string;
-  public lastName: string;
-  public login: string;
-  public email: string;
-  public about: string;
-  public password: string;
+  private registerForm: FormGroup;
+  private matcher = new MyErrorStateMatcher();
+  private languages: LanguagesList [];
+  private showDetails3: boolean;
+  private loading = false;
+  private error: '';
 
   constructor(
     public registerService: RegisterService,
@@ -104,7 +98,7 @@ export class RegisterSpeakerComponent implements OnInit {
     this.registerForm.controls['email'].disable();
     this.registerForm.controls['password'].disable();
     this.registerForm.controls['confirmPassword'].disable();
-    this.httpClient.post("/api/v1/user/register/speaker", user).subscribe(data => {
+    this.registerService.registerSpeaker(user).subscribe(data => {
         this.router.navigate(['/verify']);
       },
       error => {

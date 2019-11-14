@@ -49,7 +49,7 @@ public final class EmailServiceConstants {
         "<p>Your login credentials:\n" +
         "<p style=\"margin-left: 10px;\"> https://app-meetup.herokuapp.com/change-password\n"
         +
-        "<p style=\"margin-left: 10px;\"> login: TOKEN_LOGIN\n" +
+        "<p style=\"margin-left: 10px;\"> login: TOKEN_FEEDBACK\n" +
         "<p style=\"margin-left: 10px;\"> password: TOKEN_PASSWORD\n"
         +
         "<p>Hugs!\n" +

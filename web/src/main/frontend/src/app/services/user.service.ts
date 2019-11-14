@@ -14,6 +14,7 @@ export class UserService {
   private userLoginUrl = "api/v1/users/current/login";
   private usersUrl = "api/v1/users/";
   private complaintsUrl = "/complaints";
+  private userProfileURL = '/api/v1/user/profile';
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -35,4 +36,7 @@ export class UserService {
     return this.http.get(this.userByIdURL + userId);
   }
 
+  getUserProfile() {
+    return this.http.get(this.userProfileURL);
+  }
 }

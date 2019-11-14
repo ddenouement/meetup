@@ -61,7 +61,6 @@ public class FilterController {
     public ResponseEntity<List<MeetupDisplayDTO>> search(
          @RequestBody final Filter filter
     ) throws SQLException {
-
         return ok(searchService.getMeetups(filter));
     }
 

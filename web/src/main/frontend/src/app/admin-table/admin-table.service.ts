@@ -30,11 +30,12 @@ export class AdminTableService {
   getAllSpeakers() {
     return this.http.get(this.usersURL);
   }
-  getUsers(usersPerPage : number, currentPage: number) {
+
+  getUsers(usersPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${usersPerPage}&page=${currentPage}`;
-    return this.http.get<{users: UserComplaintsDto[], usersCount : number}>(
-        this.usersURL+queryParams
-      );
+    return this.http.get<{ users: UserComplaintsDto[], usersCount: number }>(
+      this.usersURL + queryParams
+    );
   }
 
   sendEmail(user: Registration) {

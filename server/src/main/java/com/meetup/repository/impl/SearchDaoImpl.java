@@ -96,9 +96,10 @@ public class SearchDaoImpl implements ISearchDAO {
     public List<Filter> getUserFiltersSaved(int userId) {
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("id_user_param", userId);
-        return this.template
+        return  this.template
                 .query(getSavedFiltersForUser, param,
                         (resultSet, i) -> toFilter(resultSet));
+
     }
 
 //TODO add constants
@@ -115,7 +116,10 @@ public class SearchDaoImpl implements ISearchDAO {
         fil.setTitle_substring(rs.getString("title_substring"));
         fil.setTopic_id(rs.getInt("id_topic"));
 
-        fil.setTopic_name(getTopicName(fil.getTopic_id()));
+        if (fil.getTopic_id() != 0) {
+            fil.setTopic_name(getTopicName(fil.getTopic_id()));
+        }
+
         return fil;
     }
 

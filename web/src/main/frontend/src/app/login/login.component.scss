@@ -1,3 +1,5 @@
+@import "src/app/scss-helpers/mixins";
+
 $color_1: #322b6b;
 $color_2: #222428;
 $color_3: #fff;
@@ -92,7 +94,7 @@ form {
   outline: none;
 }
 
-@media (max-width: 900px) {
+@include for-tablet-landscape-up {
   .content {
     width: 70%;
   }
@@ -101,7 +103,7 @@ form {
   }
 }
 
-@media (max-width: 620px) {
+@include for-phone-only {
   .content {
     margin-top: 10px;
     width: 80%;
@@ -114,7 +116,7 @@ form {
   }
 }
 
-@media (max-width: 460px) {
+@include for-mini-phone {
   .content {
     margin-top: 10px;
     width: 95%;
