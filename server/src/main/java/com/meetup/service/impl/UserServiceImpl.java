@@ -24,9 +24,6 @@ import com.meetup.utils.constants.EmailServiceConstants;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -525,7 +522,7 @@ public class UserServiceImpl implements IUserService {
         if (text == null) {
             bodyWithPassword = bodyWithLogin
                 .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK,
-                    "Because you are bad gay");
+                    "Because you are bad guy");
         } else {
             bodyWithPassword = bodyWithLogin
                 .replaceAll(EmailServiceConstants.TOKEN_FEEDBACK, text);
