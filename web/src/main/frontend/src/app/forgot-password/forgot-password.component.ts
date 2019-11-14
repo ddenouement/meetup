@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../models/user";
 import {
@@ -12,6 +12,7 @@ import {
 import {ErrorStateMatcher} from '@angular/material/core';
 import {Router} from "@angular/router";
 import {RegisterService} from "../services/register.service";
+import {Subscription} from "rxjs";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -27,8 +28,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./forgot-password.component.scss']
 })
 
-export class ForgotPasswordComponent implements OnInit {
-
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private forgotForm: FormGroup;
   private matcher = new MyErrorStateMatcher();
   private loading = false;
@@ -55,19 +56,22 @@ export class ForgotPasswordComponent implements OnInit {
     this.loading = true;
     this.forgotForm.controls['email'].disable();
     let mail = this.forgotForm.get('email').value;
-    this.regService.forgotPassword(mail).subscribe(data => {
+    this.subscriptions.add(this.regService.forgotPassword(mail).subscribe(data => {
         this.router.navigate(['/verify']);
       },
       error => {
         this.loading = false;
         this.error = error.error;
         this.forgotForm.controls['email'].enable();
-      });
+      }));
   }
 
   ngOnInit() {
     this.forgotForm = this.formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
     });
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

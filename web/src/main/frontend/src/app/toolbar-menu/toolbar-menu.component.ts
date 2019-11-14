@@ -10,8 +10,6 @@ import {HttpClient} from "@angular/common/http";
 
 export class ToolbarMenuComponent implements OnInit {
   private _authService: LoginService;
-  time = new Date();
-  timer;
   login: string;
 
   constructor(private authService: LoginService, private httpClient: HttpClient,) {
@@ -19,18 +17,12 @@ export class ToolbarMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.timer = setInterval(() => {
-      this.time = new Date();
-    }, 1000);
     this.httpClient.get('/api/v1/user/id').subscribe(res => {
       this.authService.logInUserBool = true;
-    }, error => {
-      console.warn(error);
     });
 
   }
 
   ngOnDestroy() {
-    clearInterval(this.timer);
   }
 }

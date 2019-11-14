@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Meetup} from "../models/meetup.model";
 import {Subscription} from "rxjs";
@@ -10,7 +10,8 @@ import {ListenerProfileService} from "../services/listener-profile.service";
   templateUrl: './listener-profile.component.html',
   styleUrls: ['./listener-profile.component.scss']
 })
-export class ListenerProfileComponent implements OnInit {
+export class ListenerProfileComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private badgeList: string[] = [];
   private login;
   private email;
@@ -24,12 +25,12 @@ export class ListenerProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listenerService.getListener().subscribe(res => {
+    this.subscriptions.add(this.listenerService.getListener().subscribe(res => {
       this.badgeList = res['badges'];
       this.login = res['userDTO'].login;
       this.email = res['userDTO'].email;
       this.star = res['userDTO'].rate;
-    });
+    }));
     this.meetupsService.getUserFutureMeetups();
     this.userMeetupFutureSub = this.meetupsService.getUserFutureMeetupUpdateListener()
       .subscribe(meetupsData => {
@@ -44,5 +45,8 @@ export class ListenerProfileComponent implements OnInit {
     this.meetupsService.leaveMeetup(id).subscribe(res => {
       this.meetupsService.getUserFutureMeetups();
     });
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
