@@ -6,6 +6,8 @@ CREATE OR REPLACE FUNCTION do_filter(
                                     , _end_date_param       TIMESTAMP = NULL
                                     , _rate_from   REAL = NULL
                                     , _rate_to       REAL = NULL
+                                    , _offset INTEGER = NULL
+                                    , _limit INTEGER = NULL
 )
     RETURNS TABLE(id bigint, id_speaker bigint, id_language int, topic_name text, language_name text, id_state int, title text, start_time timestamp, duration_minutes smallint,
     min_attendees int, max_attendees int, description text, id_topic bigint, speaker_login text, speaker_first_name text, speaker_last_name text, speaker_rate real, speaker_num_rates integer) AS
@@ -37,8 +39,10 @@ WHERE  TRUE'
         concat(
             'AND u.active = TRUE AND
   meetups.id_state IN (select id from meetup_states where name = ''SCHEDULED'' or name = ''BOOKED'')
-  ORDER BY start_time ASC'
+  ORDER BY start_time ASC '
     )
+        ,
+        concat(CASE WHEN  $8 IS NOT NULL THEN ' OFFSET $8 LIMIT $9' END)
 )
 USING $1, $2, $3, $4, $5, $6, $7;
     END

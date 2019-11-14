@@ -9,6 +9,7 @@ import com.meetup.repository.IMeetupDAO;
 import com.meetup.repository.ISearchDAO;
 import com.meetup.repository.ITopicDAO;
 import com.meetup.utils.constants.DbQueryConstants;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -124,15 +125,9 @@ public class SearchDaoImpl implements ISearchDAO {
         return topicDAO.findTopicByID(topicId).getName();
     }
 
-
-    /**
-     * Perform filtered search of meetups
-     * @param filter custom Filter from frontsend.
-     * @return List of matched meetups
-     */
     @Override
-    public List<MeetupDisplayDTO> getMeetups(final Filter filter)  {
-           SqlParameterSource param = new MapSqlParameterSource()
+    public int getAllMeetupsCount(Filter filter){
+        SqlParameterSource param = new MapSqlParameterSource()
                 .addValue(DbQueryConstants.id_language_param.name(), filter.nullOrIdLanguage())
                 .addValue(DbQueryConstants.title_param.name(), filter.getTitle_substring())
                 .addValue(DbQueryConstants.topic_id_param.name(), filter.nullOrIdTopic())
@@ -140,6 +135,30 @@ public class SearchDaoImpl implements ISearchDAO {
                 .addValue(DbQueryConstants.end_date_param.name(), filter.getTime_to())
                 .addValue(DbQueryConstants.rate_from.name(), filter.nullOrRateFrom())
                 .addValue(DbQueryConstants.rate_to.name(), filter.nullOrRateTo());
+
+        return template.query(searchMeetupsByFilterWithFunction, param, new MeetupDisplayDtoMapper()).size();
+    }
+
+
+    /**
+     * Perform filtered search of meetups
+     * @param filter custom Filter from frontsend.
+     * @return List of matched meetups
+     */
+    @Override
+    public List<MeetupDisplayDTO> getMeetups(final Filter filter, final Integer offset,
+                                             final Integer limit) {
+
+           SqlParameterSource param = new MapSqlParameterSource()
+                .addValue(DbQueryConstants.id_language_param.name(), filter.nullOrIdLanguage())
+                .addValue(DbQueryConstants.title_param.name(), filter.getTitle_substring())
+                .addValue(DbQueryConstants.topic_id_param.name(), filter.nullOrIdTopic())
+                .addValue(DbQueryConstants.start_date_param.name(), filter.getTime_from())
+                .addValue(DbQueryConstants.end_date_param.name(), filter.getTime_to())
+                .addValue(DbQueryConstants.rate_from.name(), filter.nullOrRateFrom())
+                .addValue(DbQueryConstants.rate_to.name(), filter.nullOrRateTo())
+                   .addValue(DbQueryConstants.offset.name(), offset)
+                   .addValue(DbQueryConstants.limit.name(), limit);
 
         return template.query(searchMeetupsByFilterWithFunction, param, new MeetupDisplayDtoMapper());
     }
