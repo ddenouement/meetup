@@ -1,21 +1,23 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RegisterService} from "../services/register.service";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {MatPasswordStrengthComponent} from "@angular-material-extensions/password-strength";
 import {ChangePass} from "../models/changePass";
+import {Subscription} from "rxjs";
+import {LoginService} from "../services/login.service";
 
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit, OnDestroy {
 
   @ViewChild('passwordComponentWithConfirmation', {static: true})
   passwordComponentWithConfirmation: MatPasswordStrengthComponent;
-
+  private subscriptions: Subscription = new Subscription();
   private changeForm: FormGroup;
   private loading = false;
   private error: '';
@@ -24,7 +26,8 @@ export class ChangePasswordComponent implements OnInit {
   constructor(private registerService: RegisterService,
               private httpClient: HttpClient,
               private formBuilder: FormBuilder,
-              private router: Router,) { }
+              private router: Router,
+              private authService: LoginService) { }
 
   onSubmit() {
     this.changePass();
@@ -39,7 +42,8 @@ export class ChangePasswordComponent implements OnInit {
     this.changeForm.controls['currPass'].disable();
     this.changeForm.controls['password'].disable();
     this.changeForm.controls['confirmPassword'].disable();
-    this.registerService.changePassword(pass).subscribe(data => {
+    this.subscriptions.add(this.registerService.changePassword(pass).subscribe(data => {
+        this.authService.logoutUser();
         this.router.navigate(['/verify']);
       },
       error => {
@@ -48,7 +52,7 @@ export class ChangePasswordComponent implements OnInit {
         this.changeForm.controls['currPass'].enable();
         this.changeForm.controls['password'].enable();
         this.changeForm.controls['confirmPassword'].enable();
-      });
+      }));
   }
 
   ngOnInit() {
@@ -63,6 +67,9 @@ export class ChangePasswordComponent implements OnInit {
 
   onStrengthChanged($event: number) {
 
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
 

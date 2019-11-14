@@ -21,8 +21,6 @@
     </svg>
   </a>
   <span class="filler"></span>
-  <p class="time">{{ time | date: 'hh:mm:ss a' }}</p>
-  <hr class="vertical-line">
   <button *ngIf="!_authService.logInUser()" mat-button style="outline: none;" routerLink="/login">Log in</button>
   <button *ngIf="!_authService.logInUser()" [matMenuTriggerFor]="signUp" style="outline: none;" mat-button>Sign up</button>
   <mat-menu #signUp="matMenu">
