@@ -4,13 +4,11 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {MeetupsService} from "../services/meetups.service";
 import {Duration} from "../models/duration.model";
-import {Subscription} from "rxjs";
 import {User} from "../models/user";
 import {LanguagesList} from "../models/languagesList";
 import {Topic} from "../models/topic";
 import {MeetupDto} from "../models/meetupDto.model";
 import {ErrorStateMatcher} from "@angular/material/core";
-import {isValid} from "ngx-bootstrap/chronos/create/valid";
 
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -76,6 +74,7 @@ export class MeetupCreateComponent implements OnInit {
         this.meetupService.getMeetup(+this.meetupId).subscribe(meetupData =>{
           this.isLoading = false;
           this.meetup = meetupData.meetup;
+          this.meetupTopic = meetupData.meetup.topic;
           this.meetupLang = meetupData.meetup.language;
           this.meetupDurationMinutes = meetupData.meetup.durationMinutes;
           const toSelectDuration = this.durations.find(d => d.minutes == this.meetupDurationMinutes);
@@ -87,6 +86,8 @@ export class MeetupCreateComponent implements OnInit {
           });
           this.meetupService.getTopics().subscribe(topicsData=>{
             this.topicsList = topicsData;
+            const toSelectTopic = this.topicsList.find(l => l.name == this.meetupTopic.name);
+            this.form.get('topic').setValue(toSelectTopic);
           });
         });
       }else{
@@ -123,8 +124,8 @@ export class MeetupCreateComponent implements OnInit {
   };
 
   onSaveMeetup(){
-    this.time = this.form.get('time').value;
-    this.date = this.form.get('date').value;
+    this.time = new Date (this.form.get('time').value);
+    this.date = new Date (this.form.get('date').value);
     this.minAtt =this.form.value.minAttendees;
     this.maxAtt = this.form.value.maxAttendees;
     if (this.form.invalid){

@@ -133,13 +133,7 @@ export class MeetupsService {
     return this.http.post<{meetups: MeetupDto[], meetupCount : number}>(this.searchFilterUrl+queryParams,filter);
 
   }
-  getSpeakerMeetupsPaged(meetupsPerPage : number, currentPage: number) {
-    const queryParams = `?pagesize=${meetupsPerPage}&page=${currentPage}`;
-    return this.http
-      .get<{meetups: MeetupDto[], meetupCount : number}>(
-        this.speakerMeetupsUrl+queryParams
-      );
-  }
+
   getSpeakerFutureMeetups(id: number) {
     this.http
       .get<Meetup[]>(
@@ -158,6 +152,7 @@ export class MeetupsService {
         });
       });
   }
+
   getSpeakerPastMeetups(id: number) {
     this.http
       .get<Meetup[]>(
@@ -217,7 +212,6 @@ export class MeetupsService {
   joinMeetup(id:number){
     // @ts-ignore
    return this.http.post(this.joinUrl + id);
-
   }
 
   leaveMeetup(id:number){
@@ -226,17 +220,14 @@ export class MeetupsService {
   }
 
   terminateMeetup(id:number){
-    this.meetupId = id;
     // @ts-ignore
-    return this.http.post("/user/speaker/meetups/"+id+"/terminate");
+    return this.http.post("api/v1/user/speaker/meetups/"+id+"/terminate");
   }
   cancelMeetup(id:number){
-    this.meetupId = id;
     // @ts-ignore
-    return this.http.delete("/user/speaker/meetups/"+id);
+    return this.http.delete("api/v1/user/speaker/meetups/"+id);
   }
   startMeetup(id:number){
-    this.meetupId = id;
     // @ts-ignore
     return this.http.post("api/v1/user/speaker/meetups/"+id+"/start");
   }

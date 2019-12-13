@@ -55,10 +55,14 @@ export class SpeakerProfileComponent implements OnInit {
   private userMeetupFutureSub: Subscription;
   userPastMeetups:Meetup[] = [];
 
+  in_progress = {
+    id: 5,
+    true: "IN PROGRESS"
+  };
   terminated = {
     id: 6,
     true: "TERMINATED"
-  };
+  }
 
   constructor(
     private httpClient: HttpClient,
@@ -132,7 +136,7 @@ export class SpeakerProfileComponent implements OnInit {
         });
       this.meetupsService.getUserPastMeetups().subscribe(meetupsData =>{
         this.userPastMeetups = meetupsData;
-      })
+      });
       this.badgeList = res['badges'];
       this.changeForm = this.formBuilder.group({
         firstName: [res['userDTO'].firstName, Validators.required],
@@ -165,6 +169,7 @@ export class SpeakerProfileComponent implements OnInit {
   onCancel() {
     this.edited = false;
   }
+
   onCancelMeetup(id:number){
     this.loading = true;
     this.meetupsService.cancelMeetup(id).subscribe(res => {
@@ -172,14 +177,15 @@ export class SpeakerProfileComponent implements OnInit {
       this.meetupsService.getSpeakerFutureMeetups(this.speakerId);
     });
   }
+
   onTerminate(id:number){
     this.loading = true;
     this.meetupsService.terminateMeetup(id).subscribe(res => {
       this.loading = false;
       this.meetupsService.getSpeakerPastMeetups(this.speakerId);
     });
-
   }
+
   onStart(id:number){
     this.loading = true;
     this.meetupsService.startMeetup(id).subscribe(res => {

@@ -23,6 +23,7 @@ export class MeetupProfileComponent implements OnInit {
   isLoading = false;
   isAutor = false;
   joinText = "JOIN";
+  startText = "START"
   joined = false;
   private meetupSub: Subscription;
 
@@ -85,10 +86,7 @@ export class MeetupProfileComponent implements OnInit {
         });
     }
   }
-  onStart(){
-    this.isLoading = true;
 
-  }
 
   public convertUTCDateToLocalDate(date) {
     var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);

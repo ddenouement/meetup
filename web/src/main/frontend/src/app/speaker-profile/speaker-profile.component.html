@@ -114,8 +114,7 @@
             <mat-panel-description> {{ meetup.title }}  </mat-panel-description>
           </mat-expansion-panel-header>
           <mat-action-row>
-            <a mat-button color="danger" *ngIf="meetup.stateId === terminated.id" (click)="onTerminate(meetup.id)">TERMINATE</a>
-
+            <a mat-button color="danger" *ngIf="meetup.stateId === in_progress.id" (click)="onTerminate(meetup.id)">TERMINATE</a>
           </mat-action-row>
         </mat-expansion-panel>
         </mat-accordion>

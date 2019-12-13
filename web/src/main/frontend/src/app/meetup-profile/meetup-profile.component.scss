@@ -19,18 +19,25 @@ main{
       margin-right: 10px;
     }
   }
+
   .info{
-    width: auto;
+    width: 39%;
     float: right;
     margin-top: 1rem;
-    mat-icon{
+    .line{
       float: left;
-      margin-right: 10px;
+      display: block;
+      width: 100%;
+      mat-icon{
+        float: left;
+        margin-right: 10px;
+      }
+      mat-card-subtitle{
+        float: left;
+        margin: 5px 10px;
+      }
     }
-    mat-card-subtitle{
-      float: left;
-      margin: 5px 10px;
-    }
+
   }
   .details{
     float: left;
@@ -41,7 +48,7 @@ main{
     }
   }
   @media screen and (max-width: 1400px){
-    .details{
+    .details, .info{
       width: 100%
     }
   }

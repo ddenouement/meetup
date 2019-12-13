@@ -156,9 +156,6 @@ public class MeetupServiceImpl implements IMeetupService {
             throw new MeetupNotFoundException();
         }
         editedMeetup.setSpeakerId(user.getId());
-        if (editedMeetup.getStateId() != MeetupState.IN_PROGRESS.getCode()) {
-            editedMeetup.setStateId(oldMeetup.getStateId());
-        }
         Meetup updated = meetupDao.updateMeetup(editedMeetup, meetupID);
         String changes = getMeetupChanges(oldMeetup, updated);
         if (!changes.isEmpty()) {
